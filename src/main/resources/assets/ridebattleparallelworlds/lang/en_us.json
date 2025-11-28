@@ -1,0 +1,13 @@
+{
+  "itemGroup.ridebattleparallelworlds": "Example Mod Tab",
+  "block.ridebattleparallelworlds.example_block": "Example Block",
+  "item.ridebattleparallelworlds.example_item": "Example Item",
+
+  "ridebattleparallelworlds.configuration.title": "RideBattle Parallel-Worlds Configs",
+  "ridebattleparallelworlds.configuration.section.ridebattleparallelworlds.common.toml": "RideBattle Parallel-Worlds Configs",
+  "ridebattleparallelworlds.configuration.section.ridebattleparallelworlds.common.toml.title": "RideBattle Parallel-Worlds Configs",
+  "ridebattleparallelworlds.configuration.items": "Item List",
+  "ridebattleparallelworlds.configuration.logDirtBlock": "Log Dirt Block",
+  "ridebattleparallelworlds.configuration.magicNumberIntroduction": "Magic Number Text",
+  "ridebattleparallelworlds.configuration.magicNumber": "Magic Number"
+}
