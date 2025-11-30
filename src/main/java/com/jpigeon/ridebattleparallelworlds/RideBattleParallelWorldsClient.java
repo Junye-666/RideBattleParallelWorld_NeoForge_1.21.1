@@ -1,5 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds;
 
+import com.jpigeon.ridebattleparallelworlds.riders.kuuga.KuugaConfig;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,6 +20,6 @@ public class RideBattleParallelWorldsClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-
+        KuugaConfig.init();
     }
 }

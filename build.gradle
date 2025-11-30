@@ -19,11 +19,6 @@ group = mod_group_id
 
 repositories {
     // Add here additional repositories if required by some of the dependencies below.
-    mavenCentral()
-    maven {
-        name = "RedlanceMinecraft"
-        url = "https://repo.redlance.org/public"
-    }
 
     maven {
         name = 'GeckoLib'
@@ -151,8 +146,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     implementation "curse.maven:ridebattle-lib-1306849:7246997"
-    implementation "com.zigythebird.playeranim:PlayerAnimationLibNeo:$project.pal_version"
-    additionalRuntimeClasspath "org.javassist:javassist:3.30.2-GA"
+    implementation "curse.maven:playeranimator-658587:6024462"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 }
 
