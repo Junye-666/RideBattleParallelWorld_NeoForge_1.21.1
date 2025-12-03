@@ -1,7 +1,7 @@
-package com.jpigeon.ridebattleparallelworlds.riders.decade;
+package com.jpigeon.ridebattleparallelworlds.core.riders.decade;
 
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
-import com.jpigeon.ridebattleparallelworlds.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 
 public class DecadeConfig {
     public static RiderConfig DECADE = new RiderConfig(RiderIds.DECADE_ID)

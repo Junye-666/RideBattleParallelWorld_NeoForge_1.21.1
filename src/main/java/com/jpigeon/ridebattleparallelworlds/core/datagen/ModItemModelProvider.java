@@ -1,7 +1,7 @@
-package com.jpigeon.ridebattleparallelworlds.datagen;
+package com.jpigeon.ridebattleparallelworlds.core.datagen;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;

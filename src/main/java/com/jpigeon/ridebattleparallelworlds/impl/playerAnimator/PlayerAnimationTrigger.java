@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.playerAnimator;
+package com.jpigeon.ridebattleparallelworlds.impl.playerAnimator;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import dev.kosmx.playerAnim.api.layered.IAnimation;

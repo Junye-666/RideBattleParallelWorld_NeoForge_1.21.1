@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.geckoLib;
+package com.jpigeon.ridebattleparallelworlds.impl.geckoLib;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;

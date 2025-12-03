@@ -1,11 +1,11 @@
-package com.jpigeon.ridebattleparallelworlds.riders;
+package com.jpigeon.ridebattleparallelworlds.core.riders;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.HenshinEvent;
 import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.playerAnimator.PlayerAnimationTrigger;
-import com.jpigeon.ridebattleparallelworlds.riders.kuuga.ArcleItem;
+import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.EquipmentSlot;

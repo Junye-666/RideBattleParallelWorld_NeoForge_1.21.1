@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.datagen;
+package com.jpigeon.ridebattleparallelworlds.core.datagen;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.core.HolderLookup;

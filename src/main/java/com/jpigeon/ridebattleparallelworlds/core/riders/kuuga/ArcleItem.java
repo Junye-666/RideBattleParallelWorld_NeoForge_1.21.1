@@ -1,9 +1,8 @@
-package com.jpigeon.ridebattleparallelworlds.riders.kuuga;
+package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattleparallelworlds.geckoLib.BaseKamenRiderArmorItem;
-import com.jpigeon.ridebattleparallelworlds.geckoLib.GenericArmorModel;
-import com.jpigeon.ridebattleparallelworlds.geckoLib.GenericArmorRenderer;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderArmorItem;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericArmorModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericArmorRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.*;

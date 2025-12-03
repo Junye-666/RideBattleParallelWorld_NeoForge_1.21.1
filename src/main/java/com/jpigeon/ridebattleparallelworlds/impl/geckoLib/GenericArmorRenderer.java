@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.geckoLib;
+package com.jpigeon.ridebattleparallelworlds.impl.geckoLib;
 
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 

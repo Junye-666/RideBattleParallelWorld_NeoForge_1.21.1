@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.geckoLib;
+package com.jpigeon.ridebattleparallelworlds.impl.geckoLib;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.client.model.HumanoidModel;

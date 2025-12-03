@@ -1,8 +1,8 @@
-package com.jpigeon.ridebattleparallelworlds.item;
+package com.jpigeon.ridebattleparallelworlds.core.item;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.riders.kuuga.ArcleItem;
-import com.jpigeon.ridebattleparallelworlds.riders.kuuga.KuugaArmorItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaArmorItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;

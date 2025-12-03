@@ -1,11 +1,11 @@
-package com.jpigeon.ridebattleparallelworlds.riders.kuuga;
+package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 
 import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;

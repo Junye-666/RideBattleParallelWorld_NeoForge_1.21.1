@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.riders;
+package com.jpigeon.ridebattleparallelworlds.core.riders;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.resources.ResourceLocation;

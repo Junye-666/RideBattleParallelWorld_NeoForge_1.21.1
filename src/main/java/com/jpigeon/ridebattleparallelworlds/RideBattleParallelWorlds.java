@@ -1,6 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds;
 
-import com.jpigeon.ridebattleparallelworlds.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;

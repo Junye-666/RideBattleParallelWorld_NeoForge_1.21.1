@@ -1,7 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds;
 
-import com.jpigeon.ridebattleparallelworlds.riders.kuuga.KuugaConfig;
-import net.minecraft.client.Minecraft;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
