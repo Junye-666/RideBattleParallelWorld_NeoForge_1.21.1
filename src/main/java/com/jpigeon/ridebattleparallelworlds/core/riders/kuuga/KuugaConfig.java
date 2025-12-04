@@ -28,10 +28,10 @@ public class KuugaConfig {
 
     public static final FormConfig KUUGA_MIGHTY_FORM = new FormConfig(MIGHTY_ID)
             .setArmor(
-                    ModItems.KUUGA_HELMET.get(),
-                    ModItems.KUUGA_CHESTPLATE.get(),
+                    ModItems.MIGHTY_HELMET.get(),
+                    ModItems.MIGHTY_CHESTPLATE.get(),
                     null,
-                    ModItems.KUUGA_BOOTS.get()
+                    ModItems.MIGHTY_BOOTS.get()
             )
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
@@ -41,10 +41,10 @@ public class KuugaConfig {
 
     public static final FormConfig KUUGA_DRAGON_FORM = new FormConfig(DRAGON_ID)
             .setArmor(
-                    Items.TURTLE_HELMET,
-                    ModItems.KUUGA_CHESTPLATE.get(),
+                    ModItems.DRAGON_HELMET.get(),
+                    ModItems.DRAGON_CHESTPLATE.get(),
                     null,
-                    ModItems.KUUGA_BOOTS.get()
+                    ModItems.DRAGON_BOOTS.get()
             )
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.JUMP, -1, 2, true)

@@ -12,13 +12,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
-public class RIderHandlerClient {
+public class RiderHandlerClient {
     @SubscribeEvent
     public static void onPlayerLoggedIn(EntityJoinLevelEvent event){
         if (event.getEntity() instanceof Player player){
             ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
             if (legs.getItem() instanceof ArcleItem arcle && !RiderManager.isTransformed(player)){
-                arcle.resetToInBody();
+                arcle.shrinkInBody();
             }
         }
 

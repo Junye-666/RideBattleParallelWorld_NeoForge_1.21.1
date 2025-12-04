@@ -14,9 +14,12 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         // basicItem(ModItems.WORLDS_FRAGMENT.get());
-        basicItem(ModItems.KUUGA_HELMET.get());
-        basicItem(ModItems.KUUGA_CHESTPLATE.get());
-        basicItem(ModItems.KUUGA_BOOTS.get());
+        basicItem(ModItems.MIGHTY_HELMET.get());
+        basicItem(ModItems.MIGHTY_CHESTPLATE.get());
+        basicItem(ModItems.MIGHTY_BOOTS.get());
+        basicItem(ModItems.DRAGON_HELMET.get());
+        basicItem(ModItems.DRAGON_CHESTPLATE.get());
+        basicItem(ModItems.DRAGON_BOOTS.get());
         basicItem(ModItems.ARCLE.get());
         basicItem(ModItems.CHOGODAI_ELEMENT.get());
         basicItem(ModItems.MIGHTY_ELEMENT.get());

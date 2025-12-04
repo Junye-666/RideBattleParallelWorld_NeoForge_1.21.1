@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"idle": {
+		"mighty": {
 			"loop": true
 		},
 		"inBody": {
@@ -27,6 +27,115 @@
 							"vector": [1, 1, 1],
 							"easing": "easeOutBack"
 						}
+					}
+				}
+			}
+		},
+		"pegasus": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"pegasus": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				}
+			}
+		},
+		"dragon": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				},
+				"pegasus": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"titan": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"pegasus": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"titan": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				}
+			}
+		},
+		"shrink": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.25,
+			"bones": {
+				"bone": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.25": {
+							"vector": [0.5, 0.5, 0.5],
+							"easing": "easeInBack",
+							"easingArgs": [1]
+						}
+					}
+				}
+			}
+		},
+		"dragon2": {
+			"loop": true,
+			"animation_length": 0.25,
+			"bones": {
+				"driver": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.25": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				},
+				"pegasus": {
+					"position": {
+						"vector": [0, 0, 0]
 					}
 				}
 			}
