@@ -24,11 +24,13 @@ import java.util.function.Consumer;
 public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoItem {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final String riderName;
+    protected final String formName;
     protected final Map<String, AnimationController<BaseKamenRiderArmorItem>> controllers = new HashMap<>();
 
-    public BaseKamenRiderArmorItem(String riderName, Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public BaseKamenRiderArmorItem(String riderName, @Nullable String formName, Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
         this.riderName = riderName;
+        this.formName = formName;
     }
 
     @Override
@@ -86,17 +88,29 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
 
     // 资源路径生成工具方法
     protected ResourceLocation getModelPath() {
+        if (formName != null) {
+            return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
+                    "geo/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + formName.toLowerCase() + ".geo.json");
+        }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "geo/" + riderName.toLowerCase() + "_armor.geo.json");
+                "geo/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + ".geo.json");
     }
 
     protected ResourceLocation getTexturePath() {
+        if (formName != null) {
+            return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
+                    "textures/armor/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + formName.toLowerCase() + ".png");
+        }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "textures/armor/" + riderName.toLowerCase() + "_armor.png");
+                "textures/armor/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + ".png");
     }
 
     protected ResourceLocation getAnimationPath() {
+        if (formName != null) {
+            return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
+                    "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + formName.toLowerCase() + ".animation.json");
+        }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "animations/" + riderName.toLowerCase() + "_armor.animation.json");
+                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + ".animation.json");
     }
 }

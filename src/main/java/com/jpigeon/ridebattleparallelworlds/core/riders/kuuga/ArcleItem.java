@@ -14,7 +14,7 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
     private boolean isAppearAnimationPlaying = false;
 
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("arcle", material, type, properties);
+        super("kuuga", "arcle", material, type, properties);
     }
 
     @Override

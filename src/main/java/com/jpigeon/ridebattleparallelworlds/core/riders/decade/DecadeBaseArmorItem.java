@@ -8,9 +8,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-public class DecadeArmorItem extends BaseKamenRiderArmorItem {
-    public DecadeArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("decade", material, type, properties);
+public class DecadeBaseArmorItem extends BaseKamenRiderArmorItem {
+    public DecadeBaseArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super("decade", "base", material, type, properties);
     }
 
     @Override
