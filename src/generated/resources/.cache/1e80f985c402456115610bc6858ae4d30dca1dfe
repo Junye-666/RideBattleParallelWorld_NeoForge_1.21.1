@@ -1,4 +1,4 @@
-// 1.21.1	2025-12-05T18:52:33.7990727	Item Models: ridebattleparallelworlds
+// 1.21.1	2025-12-05T18:58:46.2695978	Item Models: ridebattleparallelworlds
 6224e8a0c720510675410e4195b12f08d2ec9840 assets/ridebattleparallelworlds/models/kuuga/arcle.json
 eeb673479f06b0e51a7ac2abfcc1909559187a9a assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_dragon_boots.json
 5717e01283ae71ddbb8ff7123486bdb5cb15df8a assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_dragon_chestplate.json
@@ -12,3 +12,4 @@ c98164fec138973cbc6511971224942e6b16ac97 assets/ridebattleparallelworlds/models/
 b20a732f167ea3c5e29807efc0fe00290d81a34e assets/ridebattleparallelworlds/models/kuuga/chogodai_element.json
 a64fa142e5c73a037baad60527a87119c2dc983a assets/ridebattleparallelworlds/models/kuuga/dragon_element.json
 9200e4b944e4d6d06fe8a4e0d5830d0e96bef43d assets/ridebattleparallelworlds/models/kuuga/mighty_element.json
+d776a98cd4b7dd9b48161fb316dd1c8ca06293b0 assets/ridebattleparallelworlds/models/kuuga/pegasus_element.json

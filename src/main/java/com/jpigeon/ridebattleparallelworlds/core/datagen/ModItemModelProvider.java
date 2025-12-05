@@ -27,5 +27,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.CHOGODAI_ELEMENT.get());
         basicItem(ModItems.MIGHTY_ELEMENT.get());
         basicItem(ModItems.DRAGON_ELEMENT.get());
+        basicItem(ModItems.PEGASUS_ELEMENT.get());
     }
 }
