@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -22,24 +23,18 @@ import net.neoforged.fml.common.EventBusSubscriber;
 public class RiderHandler {
     @SubscribeEvent
     public static void onHenshin(HenshinEvent.Pre event) {
-        Minecraft mc = Minecraft.getInstance();
-        AbstractClientPlayer abstractClientPlayer = null;
-        if (mc.player != null && mc.player.getUUID().equals(event.getPlayer().getUUID())) {
-            abstractClientPlayer = mc.player;
-        }
-        ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
-
+        Player player = event.getPlayer();
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        AbstractClientPlayer abstractClientPlayer = getAbstractPlayer(player);
         // 处理空我
         if (event.getRiderId().equals(RiderIds.KUUGA_ID)) {
-            event.getPlayer().addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 55, 4));
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 55, 4));
             PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
             if (legs.getItem() instanceof ArcleItem arcleItem) {
                 RiderManager.scheduleTicks(10,
                         arcleItem::triggerAppear
                 );
-                RiderManager.scheduleTicks(45,
-                        () -> RiderManager.completeHenshin(event.getPlayer())
-                );
+                RiderManager.completeIn(45, player);
             }
         }
     }
@@ -55,29 +50,24 @@ public class RiderHandler {
 
     @SubscribeEvent
     public static void onSwitch(FormSwitchEvent.Pre event) {
-        Minecraft mc = Minecraft.getInstance();
-        AbstractClientPlayer abstractClientPlayer = null;
-        if (mc.player != null && mc.player.getUUID().equals(event.getPlayer().getUUID())) {
-            abstractClientPlayer = mc.player;
-        }
-        ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
+        Player player = event.getPlayer();
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        AbstractClientPlayer abstractClientPlayer = getAbstractPlayer(player);
 
         if (event.getNewFormId().equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
             PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
             if (legs.getItem() instanceof ArcleItem arcleItem) {
                 RiderManager.scheduleTicks(10,
-                        arcleItem::triggerAppear
+                        () -> arcleItem.setCurrentState(ArcleItem.AnimState.DRAGON)
                 );
-                RiderManager.scheduleTicks(45,
-                        () -> RiderManager.completeHenshin(event.getPlayer())
-                );
+                RiderManager.completeIn(45, player);
             }
         }
         if (event.getNewFormId().equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
             PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
             if (legs.getItem() instanceof ArcleItem arcleItem) {
                 RiderManager.scheduleTicks(10,
-                        arcleItem::triggerAppear
+                        () -> arcleItem.setCurrentState(ArcleItem.AnimState.MIGHTY)
                 );
                 RiderManager.scheduleTicks(45,
                         () -> RiderManager.completeHenshin(event.getPlayer())
@@ -101,18 +91,8 @@ public class RiderHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void postSwitch(FormSwitchEvent.Post event){
-        ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
-        if (legs.getItem() instanceof ArcleItem arcle) {
-            ResourceLocation formId = event.getNewFormId();
-            if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())){
-                arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
-            }
-            if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())){
-                arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
-            }
-
-        }
+    private static AbstractClientPlayer getAbstractPlayer(Player player){
+        Minecraft mc = Minecraft.getInstance();
+        return mc.player != null && mc.player.getUUID().equals(player.getUUID()) ? mc.player : null;
     }
 }

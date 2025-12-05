@@ -9,7 +9,6 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Items;
 
 import java.util.List;
 
