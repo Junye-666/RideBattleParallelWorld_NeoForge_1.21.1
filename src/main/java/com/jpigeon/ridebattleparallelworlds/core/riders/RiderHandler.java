@@ -54,15 +54,6 @@ public class RiderHandler {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         AbstractClientPlayer abstractClientPlayer = getAbstractPlayer(player);
 
-        if (event.getNewFormId().equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
-            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
-            if (legs.getItem() instanceof ArcleItem arcleItem) {
-                RiderManager.scheduleTicks(10,
-                        () -> arcleItem.setCurrentState(ArcleItem.AnimState.DRAGON)
-                );
-                RiderManager.completeIn(45, player);
-            }
-        }
         if (event.getNewFormId().equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
             PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
             if (legs.getItem() instanceof ArcleItem arcleItem) {
@@ -74,6 +65,25 @@ public class RiderHandler {
                 );
             }
         }
+        if (event.getNewFormId().equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
+            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
+            if (legs.getItem() instanceof ArcleItem arcleItem) {
+                RiderManager.scheduleTicks(10,
+                        () -> arcleItem.setCurrentState(ArcleItem.AnimState.DRAGON)
+                );
+                RiderManager.completeIn(45, player);
+            }
+        }
+        if (event.getNewFormId().equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
+            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
+            if (legs.getItem() instanceof ArcleItem arcleItem) {
+                RiderManager.scheduleTicks(10,
+                        () -> arcleItem.setCurrentState(ArcleItem.AnimState.PEGASUS)
+                );
+                RiderManager.completeIn(45, player);
+            }
+        }
+
     }
 
     @SubscribeEvent
@@ -86,6 +96,9 @@ public class RiderHandler {
             }
             if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())){
                 arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
+            }
+            if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())){
+                arcle.setCurrentState(ArcleItem.AnimState.PEGASUS);
             }
 
         }

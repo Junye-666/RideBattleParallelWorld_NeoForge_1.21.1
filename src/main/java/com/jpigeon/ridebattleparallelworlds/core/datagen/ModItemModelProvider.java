@@ -20,6 +20,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.DRAGON_HELMET.get());
         basicItem(ModItems.DRAGON_CHESTPLATE.get());
         basicItem(ModItems.DRAGON_BOOTS.get());
+        basicItem(ModItems.PEGASUS_HELMET.get());
+        basicItem(ModItems.PEGASUS_CHESTPLATE.get());
+        basicItem(ModItems.PEGASUS_BOOTS.get());
         basicItem(ModItems.ARCLE.get());
         basicItem(ModItems.CHOGODAI_ELEMENT.get());
         basicItem(ModItems.MIGHTY_ELEMENT.get());
