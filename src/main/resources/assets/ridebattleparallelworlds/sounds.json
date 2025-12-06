@@ -1,0 +1,32 @@
+{
+  "arcle_appear": {
+    "subtitle": "sounds.ridebattleparallelworlds.arcle_appear",
+    "sounds": [
+      "ridebattleparallelworlds: arcle_appear"
+    ]
+  },
+  "kuuga_mighty": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_mighty",
+    "sounds": [
+      "ridebattleparallelworlds: kuuga_mighty"
+    ]
+  },
+  "kuuga_dragon": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_dragon",
+    "sounds": [
+      "ridebattleparallelworlds: kuuga_dragon"
+    ]
+  },
+  "kuuga_pegasus": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_pegasus",
+    "sounds": [
+      "ridebattleparallelworlds: kuuga_pegasus"
+    ]
+  },
+  "kuuga_titan": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_titan",
+    "sounds": [
+      "ridebattleparallelworlds: kuuga_titan"
+    ]
+  }
+}

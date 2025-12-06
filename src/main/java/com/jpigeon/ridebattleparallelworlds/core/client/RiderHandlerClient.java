@@ -3,6 +3,8 @@ package com.jpigeon.ridebattleparallelworlds.core.client;
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -15,10 +17,27 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 public class RiderHandlerClient {
     @SubscribeEvent
     public static void onPlayerLoggedIn(EntityJoinLevelEvent event){
-        if (event.getEntity() instanceof Player player){
+        if (event.getEntity() instanceof Player player) {
             ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-            if (legs.getItem() instanceof ArcleItem arcle && !RiderManager.isTransformed(player)){
-                arcle.shrinkInBody();
+            if (legs.getItem() instanceof ArcleItem arcle) {
+                if (!RiderManager.isTransformed(player)) {
+                    arcle.shrinkInBody();
+                    return;
+                }
+                ResourceLocation formId = RiderManager.getCurrentForm(player);
+                if (formId == null) return;
+                if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
+                    arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
+                }
+                if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
+                    arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
+                }
+                if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
+                    arcle.setCurrentState(ArcleItem.AnimState.PEGASUS);
+                }
+                if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
+                    arcle.setCurrentState(ArcleItem.AnimState.TITAN);
+                }
             }
         }
 

@@ -15,7 +15,6 @@ public class KuugaMightyItem extends BaseKamenRiderArmorItem {
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        // 使用修正后的方法创建控制器
         addController(registrar, "idle", createLoopAnimationController("idle_controller", "idle"));
     }
 

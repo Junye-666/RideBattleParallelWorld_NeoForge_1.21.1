@@ -1,6 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds;
 
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -25,6 +26,7 @@ public class RideBattleParallelWorlds {
         NeoForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

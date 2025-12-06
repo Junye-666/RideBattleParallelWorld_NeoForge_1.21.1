@@ -8,9 +8,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-public class KuugaPegasusItem extends BaseKamenRiderArmorItem {
-    public KuugaPegasusItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("kuuga", "pegasus", material, type, properties);
+public class KuugaTitanItem extends BaseKamenRiderArmorItem {
+    public KuugaTitanItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super("kuuga", "titan", material, type, properties);
     }
 
     @Override

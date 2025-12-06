@@ -17,11 +17,12 @@ public class KuugaConfig {
     public static final ResourceLocation MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "mighty_form");
     public static final ResourceLocation DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "dragon_form");
     public static final ResourceLocation PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "pegasus_form");
+    public static final ResourceLocation TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "titan_form");
 
     public static final RiderConfig KUUGA = new RiderConfig(RiderIds.KUUGA_ID)
             .setMainDriverItem(ModItems.ARCLE.get(), EquipmentSlot.LEGS)
             .addMainDriverSlot(ARCLE_CORE,
-                    List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get()),
+                    List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get()),
                     true,
                     false
             );
@@ -53,7 +54,7 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.DRAGON_ELEMENT.get())
             ;
 
-    public static final FormConfig KUUGA_PEGASUS_FORM = new FormConfig(DRAGON_ID)
+    public static final FormConfig KUUGA_PEGASUS_FORM = new FormConfig(PEGASUS_ID)
             .setArmor(
                     ModItems.PEGASUS_HELMET.get(),
                     ModItems.PEGASUS_CHESTPLATE.get(),
@@ -67,14 +68,30 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.PEGASUS_ELEMENT.get())
             ;
 
+    public static final FormConfig KUUGA_TITAN_FORM = new FormConfig(TITAN_ID)
+            .setArmor(
+                    ModItems.TITAN_HELMET.get(),
+                    ModItems.TITAN_CHESTPLATE.get(),
+                    null,
+                    ModItems.TITAN_BOOTS.get()
+            )
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SLOWDOWN, -1, 0, true)
+            .addRequiredItem(ARCLE_CORE, ModItems.TITAN_ELEMENT.get())
+            ;
+
     public static void registerKuuga() {
         KUUGA.addForm(KUUGA_MIGHTY_FORM);
         KUUGA.addForm(KUUGA_DRAGON_FORM);
         KUUGA.addForm(KUUGA_PEGASUS_FORM);
+        KUUGA.addForm(KUUGA_TITAN_FORM);
 
         KUUGA_MIGHTY_FORM.setShouldPause(true);
         KUUGA_DRAGON_FORM.setShouldPause(true);
         KUUGA_PEGASUS_FORM.setShouldPause(true);
+        KUUGA_TITAN_FORM.setShouldPause(true);
 
         RiderRegistry.registerRider(KUUGA);
     }
