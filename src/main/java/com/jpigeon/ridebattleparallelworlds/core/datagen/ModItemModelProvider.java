@@ -3,7 +3,11 @@ package com.jpigeon.ridebattleparallelworlds.core.datagen;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ModItemModelProvider extends ItemModelProvider {
@@ -14,6 +18,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         // basicItem(ModItems.WORLDS_FRAGMENT.get());
+        basicItem(ModItems.GROWING_HELMET.get());
+        basicItem(ModItems.GROWING_CHESTPLATE.get());
+        basicItem(ModItems.GROWING_BOOTS.get());
         basicItem(ModItems.MIGHTY_HELMET.get());
         basicItem(ModItems.MIGHTY_CHESTPLATE.get());
         basicItem(ModItems.MIGHTY_BOOTS.get());
@@ -33,4 +40,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.PEGASUS_ELEMENT.get());
         basicItem(ModItems.TITAN_ELEMENT.get());
     }
+
+
 }

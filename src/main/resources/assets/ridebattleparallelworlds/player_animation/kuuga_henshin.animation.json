@@ -2,7 +2,7 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"kuuga_henshin": {
-			"animation_length": 6,
+			"animation_length": 5.5,
 			"bones": {
 				"torso": {
 					"rotation": {
@@ -75,11 +75,11 @@
 							"easing": "easeInOutBack"
 						},
 						"3.9583": {
-							"vector": [5, 0, 40],
+							"vector": [5.51385, 25, 42.3273],
 							"easing": "easeInQuad"
 						},
 						"5.4583": {
-							"vector": [12.5, 0, 40],
+							"vector": [15, 50, 50],
 							"easing": "easeOutBack"
 						}
 					},
@@ -183,11 +183,11 @@
 							"easing": "easeInOutBack"
 						},
 						"3.9583": {
-							"vector": [5, 0, -40],
+							"vector": [5, -25, -40],
 							"easing": "easeInQuad"
 						},
 						"5.4583": {
-							"vector": [12.5, 0, -40],
+							"vector": [15, -50, -50.29354],
 							"easing": "easeOutBack"
 						}
 					},

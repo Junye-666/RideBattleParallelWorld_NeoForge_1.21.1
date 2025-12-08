@@ -79,9 +79,9 @@ public class RiderHandler {
         return mc.player != null && mc.player.getUUID().equals(player.getUUID()) ? mc.player : null;
     }
 
-    private static void setDriverAnim(ItemStack legs, ResourceLocation formId) {
+    public static void setDriverAnim(ItemStack legs, ResourceLocation formId) {
         if (legs.getItem() instanceof ArcleItem arcle) {
-            if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
+            if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId()) || formId.equals(KuugaConfig.KUUGA_GROWING_FORM.getFormId())) {
                 arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
             }
             if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {

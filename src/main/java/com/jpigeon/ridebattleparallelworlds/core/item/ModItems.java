@@ -29,6 +29,15 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     // 盔甲注册
+    public static final DeferredItem<KuugaGrowingItem> GROWING_HELMET = ITEMS.register("kuuga/armor/kuuga_growing_helmet", ()
+            -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaGrowingItem> GROWING_CHESTPLATE = ITEMS.register("kuuga/armor/kuuga_growing_chestplate", ()
+            -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaGrowingItem> GROWING_BOOTS = ITEMS.register("kuuga/armor/kuuga_growing_boots", ()
+            -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+
     public static final DeferredItem<KuugaMightyItem> MIGHTY_HELMET = ITEMS.register("kuuga/armor/kuuga_mighty_helmet", ()
             -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.HELMET, new Item.Properties().stacksTo(1)));
 

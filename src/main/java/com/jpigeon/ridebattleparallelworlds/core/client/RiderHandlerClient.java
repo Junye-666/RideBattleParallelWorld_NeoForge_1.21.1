@@ -2,8 +2,8 @@ package com.jpigeon.ridebattleparallelworlds.core.client;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderHandler;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
-import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +12,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import software.bernie.geckolib.cache.object.GeoBone;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class RiderHandlerClient {
@@ -27,26 +26,9 @@ public class RiderHandlerClient {
                 }
                 ResourceLocation formId = RiderManager.getCurrentForm(player);
                 if (formId == null) return;
-                setDriverAnim(legs, formId);
+                RiderHandler.setDriverAnim(legs, formId);
             }
         }
 
-    }
-
-    private static void setDriverAnim(ItemStack legs, ResourceLocation formId) {
-        if (legs.getItem() instanceof ArcleItem arcle) {
-            if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
-                arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
-            }
-            if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
-                arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
-            }
-            if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
-                arcle.setCurrentState(ArcleItem.AnimState.PEGASUS);
-            }
-            if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
-                arcle.setCurrentState(ArcleItem.AnimState.TITAN);
-            }
-        }
     }
 }

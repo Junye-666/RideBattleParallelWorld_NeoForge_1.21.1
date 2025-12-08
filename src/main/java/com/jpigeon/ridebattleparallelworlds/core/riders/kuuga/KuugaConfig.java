@@ -9,6 +9,7 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Items;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class KuugaConfig {
     public static final ResourceLocation DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "dragon_form");
     public static final ResourceLocation PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "pegasus_form");
     public static final ResourceLocation TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "titan_form");
+    public static final ResourceLocation GRWOING_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "growing_form");
 
     public static final RiderConfig KUUGA = new RiderConfig(RiderIds.KUUGA_ID)
             .setMainDriverItem(ModItems.ARCLE.get(), EquipmentSlot.LEGS)
@@ -82,16 +84,33 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.TITAN_ELEMENT.get())
             ;
 
+    public static final FormConfig KUUGA_GROWING_FORM = new FormConfig(GRWOING_ID)
+            .setArmor(
+                    ModItems.GROWING_HELMET.get(),
+                    ModItems.GROWING_CHESTPLATE.get(),
+                    null,
+                    ModItems.GROWING_BOOTS.get()
+            )
+            .addRequiredItem(ARCLE_CORE, Items.AIR)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            ;
+
     public static void registerKuuga() {
         KUUGA.addForm(KUUGA_MIGHTY_FORM);
         KUUGA.addForm(KUUGA_DRAGON_FORM);
         KUUGA.addForm(KUUGA_PEGASUS_FORM);
         KUUGA.addForm(KUUGA_TITAN_FORM);
+        KUUGA.addForm(KUUGA_GROWING_FORM);
+        KUUGA.setBaseForm(KUUGA_GROWING_FORM.getFormId());
 
         KUUGA_MIGHTY_FORM.setShouldPause(true);
         KUUGA_DRAGON_FORM.setShouldPause(true);
         KUUGA_PEGASUS_FORM.setShouldPause(true);
         KUUGA_TITAN_FORM.setShouldPause(true);
+        KUUGA_GROWING_FORM.setShouldPause(true);
+        KUUGA_GROWING_FORM.setAllowsEmptyDriver(true);
 
         RiderRegistry.registerRider(KUUGA);
     }

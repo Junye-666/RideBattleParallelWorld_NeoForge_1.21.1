@@ -1,8 +1,11 @@
-// 1.21.1	2025-12-06T12:18:46.2611015	Item Models: ridebattleparallelworlds
+// 1.21.1	2025-12-08T21:20:01.8796018	Item Models: ridebattleparallelworlds
 6224e8a0c720510675410e4195b12f08d2ec9840 assets/ridebattleparallelworlds/models/kuuga/arcle.json
 eeb673479f06b0e51a7ac2abfcc1909559187a9a assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_dragon_boots.json
 5717e01283ae71ddbb8ff7123486bdb5cb15df8a assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_dragon_chestplate.json
 f9d1da62d5c3ea0dbdf658422fb8d3581d922463 assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_dragon_helmet.json
+036dfb91cce11f53c8497390957d2860a4bda055 assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_growing_boots.json
+e73d0b6c3bbb111a341b7b678f59e3de55593ea3 assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_growing_chestplate.json
+6bb114e2457f2f1dc36df2279dbbc31960bd66f2 assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_growing_helmet.json
 6452d2d5c53b325871986c2b62011dc037fdbd58 assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_mighty_boots.json
 d2ae4c2a2825aee45106cdea0c9b095912fa782a assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_mighty_chestplate.json
 d602166d612a4437b09dbe0ba9bf8fc666667aeb assets/ridebattleparallelworlds/models/kuuga/armor/kuuga_mighty_helmet.json
