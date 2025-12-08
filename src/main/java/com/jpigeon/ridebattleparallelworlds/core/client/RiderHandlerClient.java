@@ -12,6 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import software.bernie.geckolib.cache.object.GeoBone;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class RiderHandlerClient {
@@ -26,20 +27,26 @@ public class RiderHandlerClient {
                 }
                 ResourceLocation formId = RiderManager.getCurrentForm(player);
                 if (formId == null) return;
-                if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
-                    arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
-                }
-                if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
-                    arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
-                }
-                if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
-                    arcle.setCurrentState(ArcleItem.AnimState.PEGASUS);
-                }
-                if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
-                    arcle.setCurrentState(ArcleItem.AnimState.TITAN);
-                }
+                setDriverAnim(legs, formId);
             }
         }
 
+    }
+
+    private static void setDriverAnim(ItemStack legs, ResourceLocation formId) {
+        if (legs.getItem() instanceof ArcleItem arcle) {
+            if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
+            }
+            if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
+            }
+            if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.PEGASUS);
+            }
+            if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.TITAN);
+            }
+        }
     }
 }

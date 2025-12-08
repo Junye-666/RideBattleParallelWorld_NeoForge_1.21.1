@@ -17,7 +17,7 @@ public class PlayerAnimatorSetup {
     public static void onClientSetup(FMLClientSetupEvent event) {
         PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
                 ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "animation"),
-                42,
+                1000,
                 PlayerAnimatorSetup::registerPlayerAnimation
         );
     }

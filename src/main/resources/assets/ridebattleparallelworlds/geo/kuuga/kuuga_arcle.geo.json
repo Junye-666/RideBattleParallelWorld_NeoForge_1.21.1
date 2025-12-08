@@ -82,7 +82,7 @@
 				{
 					"name": "bone",
 					"parent": "driver",
-					"pivot": [0, 13, 0]
+					"pivot": [0, 12.5, 0]
 				},
 				{
 					"name": "structure",
