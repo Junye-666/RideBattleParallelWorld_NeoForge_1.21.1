@@ -9,8 +9,6 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
 
-import java.util.Optional;
-
 public class GenericArmorModel extends GeoModel<BaseKamenRiderArmorItem> {
     private final ResourceLocation modelPath;
     private final ResourceLocation texturePath;
@@ -39,17 +37,19 @@ public class GenericArmorModel extends GeoModel<BaseKamenRiderArmorItem> {
     }
 
     private GeoBone driver;
+    private GeoBone body;
 
     @Override
     public void setCustomAnimations(BaseKamenRiderArmorItem animatable, long instanceId,
                                     AnimationState<BaseKamenRiderArmorItem> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
 
-        if (driver == null) {
+        if (driver == null || body == null) {
             driver = this.getBone("driver").orElse(null);
+            body = this.getBone("bipedBody").orElse(null);
         }
 
-        if (driver != null) {
+        if (driver != null && body != null) {
             applyBeltConstraint(animationState);
         }
     }
@@ -60,14 +60,8 @@ public class GenericArmorModel extends GeoModel<BaseKamenRiderArmorItem> {
 
         if (entity instanceof Player player && slot == EquipmentSlot.LEGS) {
             if (player.isCrouching()) {
-                Optional<GeoBone> body = getBone("bipedBody");
-                body.ifPresent(
-                        geoBone ->
-                        {
-                            driver.setPosY(geoBone.getPosY() - 1F);
-                            driver.setRotX(geoBone.getRotX() - 0.4F);
-                        }
-                );
+                driver.setPosY(body.getPosY() - 1F);
+                driver.setRotX(body.getRotX() - 0.4F);
             }
         }
     }
