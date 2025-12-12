@@ -12,13 +12,11 @@ import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationT
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
@@ -38,7 +36,7 @@ public class RiderHandler {
                 RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
                 ResourceLocation formId = event.getFormId();
                 RiderManager.scheduleTicks(36, () -> playHenshinSound(player, formId));
-                RiderManager.completeIn(100, player);
+                RiderManager.completeIn(120, player);
             }
         }
     }
@@ -59,10 +57,10 @@ public class RiderHandler {
         AbstractClientPlayer abstractClientPlayer = getAbstractPlayer(player);
         ResourceLocation newFormId = event.getNewFormId();
         if (RiderManager.getActiveRiderConfig(player) == KuugaConfig.KUUGA) {
-            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
+            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_switch", 0);
             RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, newFormId));
-            RiderManager.scheduleTicks(36, () -> playHenshinSound(player, newFormId));
-            RiderManager.completeIn(100, player);
+            playHenshinSound(player, newFormId);
+            RiderManager.completeIn(90, player);
         }
 
     }
@@ -97,18 +95,18 @@ public class RiderHandler {
     }
 
     private static void playHenshinSound(Player player, ResourceLocation formId) {
-        Level level = player.level();
+
         if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.KUUGA_MIGHTY.get(), SoundSource.PLAYERS);
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.KUUGA_DRAGON.get(), SoundSource.PLAYERS);
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_DRAGON.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.KUUGA_PEGASUS.get(), SoundSource.PLAYERS);
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_PEGASUS.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.KUUGA_TITAN.get(), SoundSource.PLAYERS);
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
         }
     }
 }

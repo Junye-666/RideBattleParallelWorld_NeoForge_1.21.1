@@ -1,9 +1,6 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"mighty": {
-			"loop": true
-		},
 		"inBody": {
 			"loop": true,
 			"bones": {
@@ -25,23 +22,36 @@
 						},
 						"0.25": {
 							"vector": [1, 1, 1],
-							"easing": "easeOutBack"
+							"easing": "easeInOutBack"
 						}
 					}
 				}
 			}
 		},
-		"pegasus": {
+		"shrink": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.25,
+			"bones": {
+				"bone": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.25": {
+							"vector": [0.5, 0.5, 0.5],
+							"easing": "easeInBack",
+							"easingArgs": [1]
+						}
+					}
+				}
+			}
+		},
+		"mighty": {
 			"loop": true,
 			"bones": {
 				"mighty": {
 					"position": {
-						"vector": [0, 0, 1]
-					}
-				},
-				"pegasus": {
-					"position": {
-						"vector": [0, 0, -1]
+						"vector": [0, 0, 0]
 					}
 				}
 			}
@@ -62,6 +72,21 @@
 				"pegasus": {
 					"position": {
 						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"pegasus": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"pegasus": {
+					"position": {
+						"vector": [0, 0, -1]
 					}
 				}
 			}
@@ -91,38 +116,19 @@
 				}
 			}
 		},
-		"shrink": {
-			"loop": "hold_on_last_frame",
-			"animation_length": 0.25,
+		"rising_mighty": {
+			"loop": true,
 			"bones": {
-				"bone": {
-					"scale": {
-						"0.0": {
-							"vector": [1, 1, 1]
-						},
-						"0.25": {
-							"vector": [0.5, 0.5, 0.5],
-							"easing": "easeInBack",
-							"easingArgs": [1]
-						}
+				"rising": {
+					"position": {
+						"vector": [0, 0, -3]
 					}
 				}
 			}
 		},
-		"dragon2": {
+		"rising_dragon": {
 			"loop": true,
-			"animation_length": 0.25,
 			"bones": {
-				"driver": {
-					"scale": {
-						"0.0": {
-							"vector": [1, 1, 1]
-						},
-						"0.25": {
-							"vector": [1, 1, 1]
-						}
-					}
-				},
 				"mighty": {
 					"position": {
 						"vector": [0, 0, 1]
@@ -133,9 +139,124 @@
 						"vector": [0, 0, -1]
 					}
 				},
-				"pegasus": {
+				"rising": {
+					"position": {
+						"vector": [0, 0, -3]
+					}
+				}
+			}
+		},
+		"rising_pegasus": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
 					"position": {
 						"vector": [0, 0, 0]
+					}
+				},
+				"pegasus": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				},
+				"rising": {
+					"position": {
+						"vector": [0, 0, -3]
+					}
+				}
+			}
+		},
+		"rising_titan": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"titan": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				},
+				"rising": {
+					"position": {
+						"vector": [0, 0, -3]
+					}
+				}
+			}
+		},
+		"amazing_mighty": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"titan": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"rising": {
+					"position": {
+						"vector": [0, 0, -3]
+					}
+				},
+				"gold": {
+					"position": {
+						"vector": [0, 0, -1]
+					}
+				}
+			}
+		},
+		"ultimate": {
+			"loop": true,
+			"bones": {
+				"mighty": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"dragon": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"titan": {
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"rising": {
+					"position": {
+						"vector": [0, 0, -3]
+					}
+				},
+				"usual": {
+					"position": {
+						"vector": [0, 0, 1]
+					}
+				},
+				"gold": {
+					"position": {
+						"vector": [0, 0, -1]
 					}
 				}
 			}
