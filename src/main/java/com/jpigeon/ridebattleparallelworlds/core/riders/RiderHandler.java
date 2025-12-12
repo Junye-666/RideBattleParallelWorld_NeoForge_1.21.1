@@ -96,7 +96,7 @@ public class RiderHandler {
 
     private static void playHenshinSound(Player player, ResourceLocation formId) {
 
-        if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
+        if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId()) || formId.equals(KuugaConfig.KUUGA_GROWING_FORM.getFormId())) {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
