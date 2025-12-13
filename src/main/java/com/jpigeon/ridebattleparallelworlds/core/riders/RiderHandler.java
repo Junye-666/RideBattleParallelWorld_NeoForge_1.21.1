@@ -118,7 +118,7 @@ public class RiderHandler {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_PEGASUS.get());
         }
 
     }
