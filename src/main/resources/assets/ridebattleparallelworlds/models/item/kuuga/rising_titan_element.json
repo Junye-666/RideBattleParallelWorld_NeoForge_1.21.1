@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ridebattleparallelworlds:item/kuuga/titan_element"
+    "layer0": "ridebattleparallelworlds:item/kuuga/rising_titan_element"
   }
 }

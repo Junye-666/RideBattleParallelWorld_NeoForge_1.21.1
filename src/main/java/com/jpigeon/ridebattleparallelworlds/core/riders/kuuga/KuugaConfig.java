@@ -41,6 +41,7 @@ public class KuugaConfig {
                     null,
                     ModItems.GROWING_BOOTS.get()
             )
+            .setShouldPause(true)
             .addRequiredItem(ARCLE_CORE, Items.AIR)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
@@ -54,6 +55,7 @@ public class KuugaConfig {
                     null,
                     ModItems.MIGHTY_BOOTS.get()
             )
+            .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
@@ -67,6 +69,7 @@ public class KuugaConfig {
                     null,
                     ModItems.DRAGON_BOOTS.get()
             )
+            .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.JUMP, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
@@ -81,6 +84,7 @@ public class KuugaConfig {
                     null,
                     ModItems.PEGASUS_BOOTS.get()
             )
+            .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.JUMP, -1, 0, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 1, true)
@@ -95,6 +99,7 @@ public class KuugaConfig {
                     null,
                     ModItems.TITAN_BOOTS.get()
             )
+            .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
@@ -109,6 +114,7 @@ public class KuugaConfig {
                     null,
                     ModItems.RISING_MIGHTY_BOOTS.get()
             )
+            .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
@@ -122,6 +128,7 @@ public class KuugaConfig {
                     null,
                     ModItems.RISING_DRAGON_BOOTS.get()
             )
+            .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.JUMP, -1, 3, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
@@ -129,10 +136,41 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_DRAGON_ELEMENT.get())
             ;
 
+    public static final FormConfig KUUGA_RISING_PEGASUS_FORM = new FormConfig(RISING_PEGASUS_ID)
+            .setArmor(
+                    ModItems.RISING_PEGASUS_HELMET.get(),
+                    ModItems.RISING_PEGASUS_CHESTPLATE.get(),
+                    null,
+                    ModItems.RISING_PEGASUS_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.JUMP, -1, 0, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 1, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
+            .addRequiredItem(ARCLE_CORE, ModItems.RISING_PEGASUS_ELEMENT.get())
+            ;
+
+    public static final FormConfig KUUGA_RISING_TITAN_FORM = new FormConfig(RISING_TITAN_ID)
+            .setArmor(
+                    ModItems.RISING_TITAN_HELMET.get(),
+                    ModItems.RISING_TITAN_CHESTPLATE.get(),
+                    null,
+                    ModItems.RISING_TITAN_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.DAMAGE_RESISTANCE, -1, 2, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SLOWDOWN, -1, 0, true)
+            .addRequiredItem(ARCLE_CORE, ModItems.RISING_TITAN_ELEMENT.get())
+            ;
 
     public static void registerKuuga() {
         // 形态赋予
         KUUGA.addForm(KUUGA_GROWING_FORM);
+        KUUGA_GROWING_FORM.setAllowsEmptyDriver(true);
         KUUGA.setBaseForm(KUUGA_GROWING_FORM.getFormId());
 
         KUUGA.addForm(KUUGA_MIGHTY_FORM);
@@ -142,18 +180,8 @@ public class KuugaConfig {
 
         KUUGA.addForm(KUUGA_RISING_MIGHTY_FORM);
         KUUGA.addForm(KUUGA_RISING_DRAGON_FORM);
-
-        // 形态暂停
-        KUUGA_GROWING_FORM.setShouldPause(true);
-        KUUGA_GROWING_FORM.setAllowsEmptyDriver(true);
-
-        KUUGA_MIGHTY_FORM.setShouldPause(true);
-        KUUGA_DRAGON_FORM.setShouldPause(true);
-        KUUGA_PEGASUS_FORM.setShouldPause(true);
-        KUUGA_TITAN_FORM.setShouldPause(true);
-
-        KUUGA_RISING_MIGHTY_FORM.setShouldPause(true);
-        KUUGA_RISING_DRAGON_FORM.setShouldPause(true);
+        KUUGA.addForm(KUUGA_RISING_PEGASUS_FORM);
+        KUUGA.addForm(KUUGA_RISING_TITAN_FORM);
 
         RiderRegistry.registerRider(KUUGA);
     }
