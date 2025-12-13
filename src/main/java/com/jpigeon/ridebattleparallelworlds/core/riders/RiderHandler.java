@@ -122,18 +122,20 @@ public class RiderHandler {
         if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
         }
-        // TODO: 补全音效
-        if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())  || formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
+        if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())) {
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_MIGHTY.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_DRAGON.get());
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_DRAGON.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_RISING_PEGASUS_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_PEGASUS.get());
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_PEGASUS.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_RISING_TITAN_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_TITAN.get());
+        }
+        if (formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_AMAZING_MIGHTY.get());
         }
 
     }

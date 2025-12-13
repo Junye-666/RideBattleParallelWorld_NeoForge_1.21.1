@@ -17,6 +17,12 @@ public class ModSounds {
     public static final Supplier<SoundEvent> KUUGA_DRAGON = registerSoundEvent("kuuga_dragon");
     public static final Supplier<SoundEvent> KUUGA_PEGASUS = registerSoundEvent("kuuga_pegasus");
     public static final Supplier<SoundEvent> KUUGA_TITAN = registerSoundEvent("kuuga_titan");
+    public static final Supplier<SoundEvent> KUUGA_RISING_MIGHTY = registerSoundEvent("kuuga_rising_mighty");
+    public static final Supplier<SoundEvent> KUUGA_RISING_DRAGON = registerSoundEvent("kuuga_rising_dragon");
+    public static final Supplier<SoundEvent> KUUGA_RISING_PEGASUS = registerSoundEvent("kuuga_rising_pegasus");
+    public static final Supplier<SoundEvent> KUUGA_RISING_TITAN = registerSoundEvent("kuuga_rising_titan");
+    public static final Supplier<SoundEvent> KUUGA_AMAZING_MIGHTY = registerSoundEvent("kuuga_amazing_mighty");
+    public static final Supplier<SoundEvent> KUUGA_ULTIMATE = registerSoundEvent("kuuga_ultimate");
 
 
     private static Supplier<SoundEvent> registerSoundEvent(String name){

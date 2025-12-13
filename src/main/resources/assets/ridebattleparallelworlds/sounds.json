@@ -2,31 +2,67 @@
   "arcle_appear": {
     "subtitle": "sounds.ridebattleparallelworlds.arcle_appear",
     "sounds": [
-      "ridebattleparallelworlds:arcle_appear"
+      "ridebattleparallelworlds:kuuga/arcle_appear"
     ]
   },
   "kuuga_mighty": {
     "subtitle": "sounds.ridebattleparallelworlds.kuuga_mighty",
     "sounds": [
-      "ridebattleparallelworlds:kuuga_mighty"
+      "ridebattleparallelworlds:kuuga/kuuga_mighty"
     ]
   },
   "kuuga_dragon": {
     "subtitle": "sounds.ridebattleparallelworlds.kuuga_dragon",
     "sounds": [
-      "ridebattleparallelworlds:kuuga_dragon"
+      "ridebattleparallelworlds:kuuga/kuuga_dragon"
     ]
   },
   "kuuga_pegasus": {
     "subtitle": "sounds.ridebattleparallelworlds.kuuga_pegasus",
     "sounds": [
-      "ridebattleparallelworlds:kuuga_pegasus"
+      "ridebattleparallelworlds:kuuga/kuuga_pegasus"
     ]
   },
   "kuuga_titan": {
     "subtitle": "sounds.ridebattleparallelworlds.kuuga_titan",
     "sounds": [
-      "ridebattleparallelworlds:kuuga_titan"
+      "ridebattleparallelworlds:kuuga/kuuga_titan"
+    ]
+  },
+  "kuuga_rising_mighty": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_rising_mighty",
+    "sounds": [
+      "ridebattleparallelworlds:kuuga/kuuga_rising_mighty"
+    ]
+  },
+  "kuuga_rising_dragon": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_rising_dragon",
+    "sounds": [
+      "ridebattleparallelworlds:kuuga/kuuga_rising_dragon"
+    ]
+  },
+  "kuuga_rising_pegasus": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_rising_pegasus",
+    "sounds": [
+      "ridebattleparallelworlds:kuuga/kuuga_rising_pegasus"
+    ]
+  },
+  "kuuga_rising_titan": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_rising_titan",
+    "sounds": [
+      "ridebattleparallelworlds:kuuga/kuuga_rising_titan"
+    ]
+  },
+  "kuuga_amazing_mighty": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_amazing_mighty",
+    "sounds": [
+      "ridebattleparallelworlds:kuuga/kuuga_amazing_mighty"
+    ]
+  },
+  "kuuga_ultimate": {
+    "subtitle": "sounds.ridebattleparallelworlds.kuuga_ultimate",
+    "sounds": [
+      "ridebattleparallelworlds:kuuga/kuuga_ultimate"
     ]
   }
 }
