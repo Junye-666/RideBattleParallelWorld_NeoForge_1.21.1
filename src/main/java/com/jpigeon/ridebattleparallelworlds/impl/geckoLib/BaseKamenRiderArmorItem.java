@@ -25,12 +25,14 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final String riderName;
     protected final String formName;
+    protected final boolean isDriver;
     protected final Map<String, AnimationController<BaseKamenRiderArmorItem>> controllers = new HashMap<>();
 
-    public BaseKamenRiderArmorItem(String riderName, @Nullable String formName, Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public BaseKamenRiderArmorItem(String riderName, @Nullable String formName, Holder<ArmorMaterial> material, Type type, Properties properties, boolean isDriver) {
         super(material, type, properties);
         this.riderName = riderName;
         this.formName = formName;
+        this.isDriver = isDriver;
     }
 
     @Override
@@ -106,11 +108,13 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
     }
 
     protected ResourceLocation getAnimationPath() {
-        if (formName != null) {
-            return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                    "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + formName.toLowerCase() + ".animation.json");
+        if (isDriver) {
+            if (formName != null) {
+                return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
+                        "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + formName.toLowerCase() + ".animation.json");
+            }
         }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + ".animation.json");
+                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_armor.animation.json");
     }
 }

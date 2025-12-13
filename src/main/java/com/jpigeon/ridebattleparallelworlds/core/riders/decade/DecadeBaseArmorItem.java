@@ -10,12 +10,11 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class DecadeBaseArmorItem extends BaseKamenRiderArmorItem {
     public DecadeBaseArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("decade", "base", material, type, properties);
+        super("decade", "base", material, type, properties, false);
     }
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        // 使用修正后的方法创建控制器
         addController(registrar, "idle", createLoopAnimationController("idle_controller", "idle"));
     }
 

@@ -9,68 +9,36 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class ArcleItem extends BaseKamenRiderArmorItem {
-    public enum AnimState {MIGHTY, DRAGON, PEGASUS, TITAN, IN_BODY, APPEAR, SHRINK}
+    public enum AnimState {IN_BODY, APPEAR, SHRINK, MIGHTY, DRAGON, PEGASUS, TITAN, RISING_MIGHTY, RISING_DRAGON, RISING_PEGASUS, RISING_TITAN, AMAZING_MIGHTY, ULTIMATE}
     private AnimState currentState;
     private boolean isAppearAnimationPlaying = false;
     private boolean isShrinkAnimationPlaying = false;
 
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("kuuga", "arcle", material, type, properties);
+        super("kuuga", "arcle", material, type, properties, true);
     }
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
+        addController(registrar, "inBody", createInBodyController());
+        addController(registrar, "appear", createAppearController());
+        addController(registrar, "shrink", createShrinkController());
         addController(registrar, "mighty", createMightyController());
         addController(registrar, "dragon", createDragonController());
         addController(registrar, "pegasus", createPegasusController());
         addController(registrar, "titan", createTitanController());
-        addController(registrar, "inbody", createInBodyController());
-        addController(registrar, "appear", createAppearController());
-        addController(registrar, "shrink", createShrinkController());
-    }
 
-    private AnimationController<BaseKamenRiderArmorItem> createMightyController() {
-        return new AnimationController<>(this, "mighty_controller", 0, state -> {
-            if (currentState == AnimState.MIGHTY) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("mighty"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
+        addController(registrar, "rising_mighty", createRisingMightyController());
+        addController(registrar, "rising_dragon", createRisingDragonController());
+        addController(registrar, "rising_pegasus", createRisingPegasusController());
+        addController(registrar, "rising_titan", createRisingTitanController());
 
-    private AnimationController<BaseKamenRiderArmorItem> createDragonController() {
-        return new AnimationController<>(this, "dragon_controller", 0, state -> {
-            if (currentState == AnimState.DRAGON) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("dragon"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderArmorItem> createPegasusController() {
-        return new AnimationController<>(this, "pegasus_controller", 0, state -> {
-            if (currentState == AnimState.PEGASUS) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("pegasus"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderArmorItem> createTitanController() {
-        return new AnimationController<>(this, "titan_controller", 0, state -> {
-            if (currentState == AnimState.TITAN) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("titan"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
+        addController(registrar, "amazing_mighty", createAmazingMightyController());
+        addController(registrar, "ultimate", createUltimateController());
     }
 
     private AnimationController<BaseKamenRiderArmorItem> createInBodyController() {
-        return new AnimationController<>(this, "inbody_controller", 0, state -> {
+        return new AnimationController<>(this, "inBody_controller", 0, state -> {
             if (currentState == AnimState.IN_BODY) {
                 state.getController().setAnimation(RawAnimation.begin().thenLoop("inBody"));
                 return PlayState.CONTINUE;
@@ -118,6 +86,106 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
                 return PlayState.CONTINUE;
             }
             isShrinkAnimationPlaying = false;
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createMightyController() {
+        return new AnimationController<>(this, "mighty_controller", 0, state -> {
+            if (currentState == AnimState.MIGHTY) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("mighty"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createDragonController() {
+        return new AnimationController<>(this, "dragon_controller", 0, state -> {
+            if (currentState == AnimState.DRAGON) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("dragon"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createPegasusController() {
+        return new AnimationController<>(this, "pegasus_controller", 0, state -> {
+            if (currentState == AnimState.PEGASUS) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("pegasus"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createTitanController() {
+        return new AnimationController<>(this, "titan_controller", 0, state -> {
+            if (currentState == AnimState.TITAN) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("titan"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createRisingMightyController() {
+        return new AnimationController<>(this, "rising_mighty_controller", 0, state -> {
+            if (currentState == AnimState.RISING_MIGHTY) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("rising_mighty"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createRisingDragonController() {
+        return new AnimationController<>(this, "rising_dragon_controller", 0, state -> {
+            if (currentState == AnimState.RISING_DRAGON) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("rising_dragon"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createRisingPegasusController() {
+        return new AnimationController<>(this, "rising_pegasus_controller", 0, state -> {
+            if (currentState == AnimState.RISING_PEGASUS) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("rising_pegasus"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createRisingTitanController() {
+        return new AnimationController<>(this, "rising_titan_controller", 0, state -> {
+            if (currentState == AnimState.RISING_TITAN) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("rising_titan"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createAmazingMightyController() {
+        return new AnimationController<>(this, "amazing_mighty_controller", 0, state -> {
+            if (currentState == AnimState.AMAZING_MIGHTY) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("amazing_mighty"));
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderArmorItem> createUltimateController() {
+        return new AnimationController<>(this, "ultimate_controller", 0, state -> {
+            if (currentState == AnimState.ULTIMATE) {
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("ultimate_mighty"));
+                return PlayState.CONTINUE;
+            }
             return PlayState.STOP;
         });
     }

@@ -10,7 +10,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class KuugaPegasusItem extends BaseKamenRiderArmorItem {
     public KuugaPegasusItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("kuuga", "pegasus", material, type, properties);
+        super("kuuga", "pegasus", material, type, properties, false);
     }
 
     @Override

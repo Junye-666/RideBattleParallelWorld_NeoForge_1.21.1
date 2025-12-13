@@ -10,7 +10,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class KuugaGrowingItem extends BaseKamenRiderArmorItem {
     public KuugaGrowingItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("kuuga", "growing", material, type, properties);
+        super("kuuga", "growing", material, type, properties, false);
     }
 
     @Override

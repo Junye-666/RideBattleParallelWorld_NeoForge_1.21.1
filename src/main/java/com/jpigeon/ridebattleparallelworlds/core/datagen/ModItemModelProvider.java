@@ -18,6 +18,20 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         // basicItem(ModItems.WORLDS_FRAGMENT.get());
+        // 空我
+        basicItem(ModItems.CHOGODAI_ELEMENT.get());
+        basicItem(ModItems.MIGHTY_ELEMENT.get());
+        basicItem(ModItems.DRAGON_ELEMENT.get());
+        basicItem(ModItems.PEGASUS_ELEMENT.get());
+        basicItem(ModItems.TITAN_ELEMENT.get());
+        basicItem(ModItems.RISING_MIGHTY_ELEMENT.get());
+        basicItem(ModItems.RISING_DRAGON_ELEMENT.get());
+        basicItem(ModItems.RISING_PEGASUS_ELEMENT.get());
+        basicItem(ModItems.RISING_TITAN_ELEMENT.get());
+        basicItem(ModItems.AMAZING_MIGHTY_ELEMENT.get());
+        basicItem(ModItems.ULTIMATE_ELEMENT.get());
+
+        // 盔甲
         basicItem(ModItems.GROWING_HELMET.get());
         basicItem(ModItems.GROWING_CHESTPLATE.get());
         basicItem(ModItems.GROWING_BOOTS.get());
@@ -33,12 +47,17 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.TITAN_HELMET.get());
         basicItem(ModItems.TITAN_CHESTPLATE.get());
         basicItem(ModItems.TITAN_BOOTS.get());
+        basicItem(ModItems.RISING_MIGHTY_HELMET.get());
+        basicItem(ModItems.RISING_MIGHTY_CHESTPLATE.get());
+        basicItem(ModItems.RISING_MIGHTY_BOOTS.get());
+        basicItem(ModItems.RISING_DRAGON_HELMET.get());
+        basicItem(ModItems.RISING_DRAGON_CHESTPLATE.get());
+        basicItem(ModItems.RISING_DRAGON_BOOTS.get());
+
+        // 驱动器
         basicItem(ModItems.ARCLE.get());
-        basicItem(ModItems.CHOGODAI_ELEMENT.get());
-        basicItem(ModItems.MIGHTY_ELEMENT.get());
-        basicItem(ModItems.DRAGON_ELEMENT.get());
-        basicItem(ModItems.PEGASUS_ELEMENT.get());
-        basicItem(ModItems.TITAN_ELEMENT.get());
+
+
     }
 
 

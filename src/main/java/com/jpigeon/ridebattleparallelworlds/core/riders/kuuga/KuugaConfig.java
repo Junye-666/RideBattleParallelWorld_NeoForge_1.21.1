@@ -15,19 +15,37 @@ import java.util.List;
 
 public class KuugaConfig {
     public static final ResourceLocation ARCLE_CORE = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "arcle_core");
+
+    public static final ResourceLocation GROWING_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "growing_form");
     public static final ResourceLocation MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "mighty_form");
     public static final ResourceLocation DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "dragon_form");
     public static final ResourceLocation PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "pegasus_form");
     public static final ResourceLocation TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "titan_form");
-    public static final ResourceLocation GRWOING_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "growing_form");
+    public static final ResourceLocation RISING_MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_mighty_form");
+    public static final ResourceLocation RISING_DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_dragon_form");
+    public static final ResourceLocation RISING_PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_pegasus_form");
+    public static final ResourceLocation RISING_TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_titan_form");
 
     public static final RiderConfig KUUGA = new RiderConfig(RiderIds.KUUGA_ID)
             .setMainDriverItem(ModItems.ARCLE.get(), EquipmentSlot.LEGS)
             .addMainDriverSlot(ARCLE_CORE,
-                    List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get()),
+                    List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get(), ModItems.RISING_MIGHTY_ELEMENT.get(), ModItems.RISING_DRAGON_ELEMENT.get(),ModItems.RISING_PEGASUS_ELEMENT.get(), ModItems.RISING_TITAN_ELEMENT.get(), ModItems.AMAZING_MIGHTY_ELEMENT.get(), ModItems.ULTIMATE_ELEMENT.get()),
                     true,
                     false
             );
+
+    public static final FormConfig KUUGA_GROWING_FORM = new FormConfig(GROWING_ID)
+            .setArmor(
+                    ModItems.GROWING_HELMET.get(),
+                    ModItems.GROWING_CHESTPLATE.get(),
+                    null,
+                    ModItems.GROWING_BOOTS.get()
+            )
+            .addRequiredItem(ARCLE_CORE, Items.AIR)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            ;
 
     public static final FormConfig KUUGA_MIGHTY_FORM = new FormConfig(MIGHTY_ID)
             .setArmor(
@@ -84,33 +102,58 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.TITAN_ELEMENT.get())
             ;
 
-    public static final FormConfig KUUGA_GROWING_FORM = new FormConfig(GRWOING_ID)
+    public static final FormConfig KUUGA_RISING_MIGHTY_FORM = new FormConfig(RISING_MIGHTY_ID)
             .setArmor(
-                    ModItems.GROWING_HELMET.get(),
-                    ModItems.GROWING_CHESTPLATE.get(),
+                    ModItems.RISING_MIGHTY_HELMET.get(),
+                    ModItems.RISING_MIGHTY_CHESTPLATE.get(),
                     null,
-                    ModItems.GROWING_BOOTS.get()
+                    ModItems.RISING_MIGHTY_BOOTS.get()
             )
-            .addRequiredItem(ARCLE_CORE, Items.AIR)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
+            .addRequiredItem(ARCLE_CORE, ModItems.RISING_MIGHTY_ELEMENT.get());
+
+    public static final FormConfig KUUGA_RISING_DRAGON_FORM = new FormConfig(RISING_DRAGON_ID)
+            .setArmor(
+                    ModItems.RISING_DRAGON_HELMET.get(),
+                    ModItems.RISING_DRAGON_CHESTPLATE.get(),
+                    null,
+                    ModItems.RISING_DRAGON_BOOTS.get()
+            )
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.JUMP, -1, 3, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 3, true)
+            .addRequiredItem(ARCLE_CORE, ModItems.RISING_DRAGON_ELEMENT.get())
             ;
 
+
     public static void registerKuuga() {
+        // 形态赋予
+        KUUGA.addForm(KUUGA_GROWING_FORM);
+        KUUGA.setBaseForm(KUUGA_GROWING_FORM.getFormId());
+
         KUUGA.addForm(KUUGA_MIGHTY_FORM);
         KUUGA.addForm(KUUGA_DRAGON_FORM);
         KUUGA.addForm(KUUGA_PEGASUS_FORM);
         KUUGA.addForm(KUUGA_TITAN_FORM);
-        KUUGA.addForm(KUUGA_GROWING_FORM);
-        KUUGA.setBaseForm(KUUGA_GROWING_FORM.getFormId());
+
+        KUUGA.addForm(KUUGA_RISING_MIGHTY_FORM);
+        KUUGA.addForm(KUUGA_RISING_DRAGON_FORM);
+
+        // 形态暂停
+        KUUGA_GROWING_FORM.setShouldPause(true);
+        KUUGA_GROWING_FORM.setAllowsEmptyDriver(true);
 
         KUUGA_MIGHTY_FORM.setShouldPause(true);
         KUUGA_DRAGON_FORM.setShouldPause(true);
         KUUGA_PEGASUS_FORM.setShouldPause(true);
         KUUGA_TITAN_FORM.setShouldPause(true);
-        KUUGA_GROWING_FORM.setShouldPause(true);
-        KUUGA_GROWING_FORM.setAllowsEmptyDriver(true);
+
+        KUUGA_RISING_MIGHTY_FORM.setShouldPause(true);
+        KUUGA_RISING_DRAGON_FORM.setShouldPause(true);
 
         RiderRegistry.registerRider(KUUGA);
     }

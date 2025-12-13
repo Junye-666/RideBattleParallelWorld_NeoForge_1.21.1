@@ -25,6 +25,24 @@ public class ModItems {
     public static final DeferredItem<Item> TITAN_ELEMENT = ITEMS.register("kuuga/titan_element", ()
             -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> RISING_MIGHTY_ELEMENT = ITEMS.register("kuuga/rising_mighty_element", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> RISING_DRAGON_ELEMENT = ITEMS.register("kuuga/rising_dragon_element", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> RISING_PEGASUS_ELEMENT = ITEMS.register("kuuga/rising_pegasus_element", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> RISING_TITAN_ELEMENT = ITEMS.register("kuuga/rising_titan_element", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> AMAZING_MIGHTY_ELEMENT = ITEMS.register("kuuga/amazing_mighty_element", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> ULTIMATE_ELEMENT = ITEMS.register("kuuga/ultimate_element", ()
+            -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> WORLDS_FRAGMENT =ITEMS.register("decade/worlds_fragment",
             () -> new Item(new Item.Properties()));
 
@@ -73,6 +91,25 @@ public class ModItems {
 
     public static final DeferredItem<KuugaTitanItem> TITAN_BOOTS = ITEMS.register("kuuga/armor/kuuga_titan_boots", ()
             -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_HELMET = ITEMS.register("kuuga/armor/kuuga_rising_mighty_helmet", ()
+            -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_CHESTPLATE = ITEMS.register("kuuga/armor/kuuga_rising_mighty_chestplate", ()
+            -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_BOOTS = ITEMS.register("kuuga/armor/kuuga_rising_mighty_boots", ()
+            -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_HELMET = ITEMS.register("kuuga/armor/kuuga_rising_dragon_helmet", ()
+            -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_CHESTPLATE = ITEMS.register("kuuga/armor/kuuga_rising_dragon_chestplate", ()
+            -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_BOOTS = ITEMS.register("kuuga/armor/kuuga_rising_dragon_boots", ()
+            -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+
 
     // 需要注意: 腰带注册时不能沿用盔甲物品
     public static final DeferredItem<ArcleItem> ARCLE = ITEMS.register("kuuga/arcle", ()

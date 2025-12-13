@@ -91,12 +91,17 @@ public class RiderHandler {
             if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
                 arcle.setCurrentState(ArcleItem.AnimState.TITAN);
             }
+            if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.RISING_MIGHTY);
+            }
+            if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.RISING_DRAGON);
+            }
         }
     }
 
     private static void playHenshinSound(Player player, ResourceLocation formId) {
-
-        if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId())) {
+        if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId()) || formId.equals(KuugaConfig.KUUGA_GROWING_FORM.getFormId())) {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
@@ -108,5 +113,13 @@ public class RiderHandler {
         if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
         }
+        // TODO: 补全音效
+        if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())) {
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
+        }
+        if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {
+            RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
+        }
+
     }
 }
