@@ -103,6 +103,9 @@ public class RiderHandler {
             if (formId.equals(KuugaConfig.KUUGA_RISING_TITAN_FORM.getFormId())) {
                 arcle.setCurrentState(ArcleItem.AnimState.RISING_TITAN);
             }
+            if (formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.AMAZING_MIGHTY);
+            }
         }
     }
 
@@ -120,7 +123,7 @@ public class RiderHandler {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
         }
         // TODO: 补全音效
-        if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())) {
+        if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())  || formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
             RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
         }
         if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {

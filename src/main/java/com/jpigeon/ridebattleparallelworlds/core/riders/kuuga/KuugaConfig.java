@@ -25,6 +25,8 @@ public class KuugaConfig {
     public static final ResourceLocation RISING_DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_dragon_form");
     public static final ResourceLocation RISING_PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_pegasus_form");
     public static final ResourceLocation RISING_TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_titan_form");
+    public static final ResourceLocation AMAZING_MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "amazing_mighty_form");
+    public static final ResourceLocation ULTIMATE_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "ultimate_form");
 
     public static final RiderConfig KUUGA = new RiderConfig(RiderIds.KUUGA_ID)
             .setMainDriverItem(ModItems.ARCLE.get(), EquipmentSlot.LEGS)
@@ -167,6 +169,25 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_TITAN_ELEMENT.get())
             ;
 
+    public static final FormConfig KUUGA_AMAZING_MIGHTY_FORM = new FormConfig(AMAZING_MIGHTY_ID)
+            .setArmor(
+                    ModItems.AMAZING_MIGHTY_HELMET.get(),
+                    ModItems.AMAZING_MIGHTY_CHESTPLATE.get(),
+                    null,
+                    ModItems.AMAZING_MIGHTY_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.JUMP, -1, 3, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
+            .addEffect(MobEffects.DAMAGE_RESISTANCE, -1, 2, true)
+
+            .addRequiredItem(ARCLE_CORE, ModItems.AMAZING_MIGHTY_ELEMENT.get());
+
+
     public static void registerKuuga() {
         // 形态赋予
         KUUGA.addForm(KUUGA_GROWING_FORM);
@@ -182,6 +203,8 @@ public class KuugaConfig {
         KUUGA.addForm(KUUGA_RISING_DRAGON_FORM);
         KUUGA.addForm(KUUGA_RISING_PEGASUS_FORM);
         KUUGA.addForm(KUUGA_RISING_TITAN_FORM);
+
+        KUUGA.addForm(KUUGA_AMAZING_MIGHTY_FORM);
 
         RiderRegistry.registerRider(KUUGA);
     }

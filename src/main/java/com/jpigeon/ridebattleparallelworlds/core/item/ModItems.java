@@ -128,6 +128,15 @@ public class ModItems {
     public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_BOOTS = ITEMS.register("kuuga/armor/kuuga_rising_titan_boots", ()
             -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
 
+    public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_HELMET = ITEMS.register("kuuga/armor/kuuga_amazing_mighty_helmet", ()
+            -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_CHESTPLATE = ITEMS.register("kuuga/armor/kuuga_amazing_mighty_chestplate", ()
+            -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_BOOTS = ITEMS.register("kuuga/armor/kuuga_amazing_mighty_boots", ()
+            -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+
     // 需要注意: 腰带注册时不能沿用盔甲物品
     public static final DeferredItem<ArcleItem> ARCLE = ITEMS.register("kuuga/arcle", ()
             -> new ArcleItem(PWArmorMaterial.KUUGA_MATERIAL, ArcleItem.Type.LEGGINGS, new Item.Properties().stacksTo(1)));
