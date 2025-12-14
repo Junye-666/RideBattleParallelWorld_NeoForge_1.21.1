@@ -4,6 +4,7 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
 import com.jpigeon.ridebattlelib.core.system.event.HenshinEvent;
 import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
+import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
@@ -106,37 +107,46 @@ public class RiderHandler {
             if (formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
                 arcle.setCurrentState(ArcleItem.AnimState.AMAZING_MIGHTY);
             }
+            if (formId.equals(KuugaConfig.KUUGA_ULTIMATE_FORM.getFormId())) {
+                arcle.setCurrentState(ArcleItem.AnimState.ULTIMATE);
+            }
         }
     }
 
     private static void playHenshinSound(Player player, ResourceLocation formId) {
-        if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId()) || formId.equals(KuugaConfig.KUUGA_GROWING_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
+        RiderConfig config = RiderManager.getActiveRiderConfig(player);
+        if (config == null) return;
+        if (config.equals(KuugaConfig.KUUGA)) {
+            if (formId.equals(KuugaConfig.KUUGA_MIGHTY_FORM.getFormId()) || formId.equals(KuugaConfig.KUUGA_GROWING_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_DRAGON.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_PEGASUS.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_MIGHTY.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_DRAGON.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_RISING_PEGASUS_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_PEGASUS.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_RISING_TITAN_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_TITAN.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_AMAZING_MIGHTY.get());
+            }
+            if (formId.equals(KuugaConfig.KUUGA_ULTIMATE_FORM.getFormId())) {
+                RiderManager.playPublicSound(player, ModSounds.KUUGA_ULTIMATE.get());
+            }
         }
-        if (formId.equals(KuugaConfig.KUUGA_DRAGON_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_DRAGON.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_PEGASUS_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_PEGASUS.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_TITAN_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_RISING_MIGHTY_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_MIGHTY.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_RISING_DRAGON_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_DRAGON.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_RISING_PEGASUS_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_PEGASUS.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_RISING_TITAN_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_TITAN.get());
-        }
-        if (formId.equals(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM.getFormId())) {
-            RiderManager.playPublicSound(player, ModSounds.KUUGA_AMAZING_MIGHTY.get());
-        }
-
     }
 }

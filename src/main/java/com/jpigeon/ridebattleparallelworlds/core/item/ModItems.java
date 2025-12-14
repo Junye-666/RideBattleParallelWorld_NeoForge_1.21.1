@@ -137,6 +137,15 @@ public class ModItems {
     public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_BOOTS = ITEMS.register("kuuga/armor/kuuga_amazing_mighty_boots", ()
             -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
 
+    public static final DeferredItem<KuugaUltimateItem> ULTIMATE_HELMET = ITEMS.register("kuuga/armor/kuuga_ultimate_helmet", ()
+            -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.HELMET, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaUltimateItem> ULTIMATE_CHESTPLATE = ITEMS.register("kuuga/armor/kuuga_ultimate_chestplate", ()
+            -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
+
+    public static final DeferredItem<KuugaUltimateItem> ULTIMATE_BOOTS = ITEMS.register("kuuga/armor/kuuga_ultimate_boots", ()
+            -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
+
     // 需要注意: 腰带注册时不能沿用盔甲物品
     public static final DeferredItem<ArcleItem> ARCLE = ITEMS.register("kuuga/arcle", ()
             -> new ArcleItem(PWArmorMaterial.KUUGA_MATERIAL, ArcleItem.Type.LEGGINGS, new Item.Properties().stacksTo(1)));

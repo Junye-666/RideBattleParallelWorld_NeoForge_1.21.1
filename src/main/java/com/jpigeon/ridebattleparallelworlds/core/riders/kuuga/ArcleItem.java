@@ -183,7 +183,7 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
     private AnimationController<BaseKamenRiderArmorItem> createUltimateController() {
         return new AnimationController<>(this, "ultimate_controller", 0, state -> {
             if (currentState == AnimState.ULTIMATE) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("ultimate_mighty"));
+                state.getController().setAnimation(RawAnimation.begin().thenLoop("ultimate"));
                 return PlayState.CONTINUE;
             }
             return PlayState.STOP;

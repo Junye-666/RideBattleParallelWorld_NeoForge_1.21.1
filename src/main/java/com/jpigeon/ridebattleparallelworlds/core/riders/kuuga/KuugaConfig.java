@@ -187,6 +187,24 @@ public class KuugaConfig {
 
             .addRequiredItem(ARCLE_CORE, ModItems.AMAZING_MIGHTY_ELEMENT.get());
 
+    public static final FormConfig KUUGA_ULTIMATE_FORM = new FormConfig(ULTIMATE_ID)
+            .setArmor(
+                    ModItems.ULTIMATE_HELMET.get(),
+                    ModItems.ULTIMATE_CHESTPLATE.get(),
+                    null,
+                    ModItems.ULTIMATE_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 5, true)
+            .addEffect(MobEffects.JUMP, -1, 4, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 3, true)
+            .addEffect(MobEffects.DAMAGE_RESISTANCE, -1, 3, true)
+
+            .addRequiredItem(ARCLE_CORE, ModItems.ULTIMATE_ELEMENT.get());
+
 
     public static void registerKuuga() {
         // 形态赋予
@@ -205,6 +223,7 @@ public class KuugaConfig {
         KUUGA.addForm(KUUGA_RISING_TITAN_FORM);
 
         KUUGA.addForm(KUUGA_AMAZING_MIGHTY_FORM);
+        KUUGA.addForm(KUUGA_ULTIMATE_FORM);
 
         RiderRegistry.registerRider(KUUGA);
     }
