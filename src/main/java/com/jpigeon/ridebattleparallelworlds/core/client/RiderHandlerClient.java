@@ -2,7 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.core.client;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.riders.RiderHandler;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderHenshinHandler;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -26,7 +26,7 @@ public class RiderHandlerClient {
                 }
                 ResourceLocation formId = RiderManager.getCurrentForm(player);
                 if (formId == null) return;
-                RiderHandler.setDriverAnim(legs, formId);
+                RiderHenshinHandler.setDriverAnim(legs, formId);
             }
         }
 

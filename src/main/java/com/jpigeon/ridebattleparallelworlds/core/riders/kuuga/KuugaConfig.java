@@ -3,9 +3,12 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
+import com.jpigeon.ridebattlelib.core.system.skill.SkillSystem;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,6 +17,7 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 
 public class KuugaConfig {
+    // 形态
     public static final ResourceLocation ARCLE_CORE = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "arcle_core");
 
     public static final ResourceLocation GROWING_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "growing_form");
@@ -48,6 +52,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addSkill(RiderSkills.GROWING_KICK)
             ;
 
     public static final FormConfig KUUGA_MIGHTY_FORM = new FormConfig(MIGHTY_ID)

@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.riders;
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
 import com.jpigeon.ridebattlelib.core.system.event.HenshinEvent;
+import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
@@ -12,17 +13,19 @@ import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
-public class RiderHandler {
+public class RiderHenshinHandler {
     @SubscribeEvent
     public static void onHenshin(HenshinEvent.Pre event) {
         Player player = event.getPlayer();
@@ -30,6 +33,10 @@ public class RiderHandler {
         AbstractClientPlayer abstractClientPlayer = getAbstractPlayer(player);
         // 处理空我
         if (event.getRiderId().equals(RiderIds.KUUGA_ID)) {
+            if (player.isCrouching()) {
+                RiderManager.completeHenshin(player);
+                return;
+            }
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 55, 4));
             PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
             if (legs.getItem() instanceof ArcleItem arcleItem) {
@@ -57,7 +64,14 @@ public class RiderHandler {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         AbstractClientPlayer abstractClientPlayer = getAbstractPlayer(player);
         ResourceLocation newFormId = event.getNewFormId();
+
+        // 处理空我
         if (RiderManager.getActiveRiderConfig(player) == KuugaConfig.KUUGA) {
+            if (player.isCrouching()) {
+                RiderManager.completeHenshin(player);
+                setDriverAnim(legs, newFormId);
+                return;
+            }
             PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_switch", 0);
             RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, newFormId));
             playHenshinSound(player, newFormId);
@@ -149,4 +163,5 @@ public class RiderHandler {
             }
         }
     }
+
 }
