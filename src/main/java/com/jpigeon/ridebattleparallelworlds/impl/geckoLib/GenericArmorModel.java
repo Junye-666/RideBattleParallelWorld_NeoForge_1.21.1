@@ -46,7 +46,7 @@ public class GenericArmorModel extends GeoModel<BaseKamenRiderArmorItem> {
 
         if (driver == null || body == null) {
             driver = this.getBone("driver").orElse(null);
-            body = this.getBone("bipedBody").orElse(null);
+            body = this.getBone("armorBody").orElse(null);
         }
 
         if (driver != null && body != null) {
@@ -59,9 +59,16 @@ public class GenericArmorModel extends GeoModel<BaseKamenRiderArmorItem> {
         EquipmentSlot slot = animationState.getData(DataTickets.EQUIPMENT_SLOT);
 
         if (entity instanceof Player player && slot == EquipmentSlot.LEGS) {
+            driver.setRotY(body.getRotY());
+            driver.setRotZ(body.getRotZ());
+            driver.setPosX(body.getPosX());
+            driver.setRotX(body.getRotX());
             if (player.isCrouching()) {
-                driver.setPosY(body.getPosY() - 1F);
-                driver.setRotX(body.getRotX() - 0.4F);
+                driver.setPosY(body.getPosY() + 1F);
+                driver.setPosZ(body.getPosZ() - 0.5F);
+            } else {
+                driver.setPosY(body.getPosY());
+                driver.setPosZ(body.getPosZ());
             }
         }
     }

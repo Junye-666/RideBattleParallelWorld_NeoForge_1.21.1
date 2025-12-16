@@ -44,7 +44,14 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_boots": "Kuuga Ultimate",
 
   "skill.growing_kick": "Growing Kick",
-  "skill.mighty_kick": "Mighty Kick"
+  "skill.mighty_kick": "Mighty Kick",
+
+  "skill.rising_mighty_kick": "Rising Mighty Kick",
+
+  "skill.amazing_mighty_kick": "Amazing Mighty Kick",
+  "skill.ultra_kick": "Ultra Kick"
+
+
 
 
 }

@@ -38,7 +38,7 @@ public class RiderHandler {
             }
             SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
             SkillHandler.addResistance(player, 120);
-            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
+            playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
             if (legs.getItem() instanceof ArcleItem arcleItem) {
                 RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
                 RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
@@ -72,7 +72,7 @@ public class RiderHandler {
                 setDriverAnim(legs, newFormId);
                 return;
             }
-            PlayerAnimationTrigger.playAnimation(abstractClientPlayer, "kuuga_switch", 0);
+            playAnimation(abstractClientPlayer, "kuuga_switch", 0);
             RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, newFormId));
             playHenshinSound(player, newFormId);
             RiderManager.completeIn(90, player);
@@ -168,5 +168,7 @@ public class RiderHandler {
         }
     }
 
-
+    private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
+        PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
+    }
 }

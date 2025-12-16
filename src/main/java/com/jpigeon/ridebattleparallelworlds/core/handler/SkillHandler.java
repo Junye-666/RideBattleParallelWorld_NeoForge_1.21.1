@@ -5,6 +5,7 @@ import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -38,14 +39,24 @@ public class SkillHandler {
         if (skillId.equals(RiderSkills.MIGHTY_KICK)) {
             mightyKick(serverPlayer);
         }
+        if (skillId.equals(RiderSkills.RISING_MIGHTY_KICK)) {
+            risingMightyKick(serverPlayer);
+        }
+        if (skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK)) {
+            amazingMightyKick(serverPlayer);
+        }
+        if (skillId.equals(RiderSkills.ULTRA_KICK)) {
+            ultimateKick(serverPlayer);
+        }
     }
 
     private static void growingKick(Player serverPlayer) {
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
+        addResistance(serverPlayer, 30);
+        animateKuugaKick(localPlayer);
 
         riderKickJump(localPlayer, 1);
-        addResistance(serverPlayer, 30);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 1));
         RiderManager.scheduleTicks(20, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 2));
     }
@@ -54,6 +65,7 @@ public class SkillHandler {
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
         addResistance(serverPlayer, 30);
+        animateKuugaKick(localPlayer);
 
         riderKickJump(localPlayer, 1);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 1.5));
@@ -63,31 +75,34 @@ public class SkillHandler {
     private static void risingMightyKick(Player serverPlayer) {
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 30);
+        addResistance(serverPlayer, 40);
+        animateKuugaKick(localPlayer);
 
-        riderKickJump(localPlayer, 2);
+        riderKickJump(localPlayer, 1.5);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2));
-        RiderManager.scheduleTicks(20, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 4));
+        RiderManager.scheduleTicks(25, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 4));
     }
 
     private static void amazingMightyKick(Player serverPlayer) {
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 30);
+        addResistance(serverPlayer, 40);
+        animateKuugaKick(localPlayer);
 
-        riderKickJump(localPlayer, 2);
+        riderKickJump(localPlayer, 1.5);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2.5));
-        RiderManager.scheduleTicks(20, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 5));
+        RiderManager.scheduleTicks(25, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 5));
     }
 
     private static void ultimateKick(Player serverPlayer) {
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 30);
+        addResistance(serverPlayer, 40);
+        animateKuugaKick(localPlayer);
 
         riderKickJump(localPlayer, 2);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2.5));
-        RiderManager.scheduleTicks(20, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 6));
+        RiderManager.scheduleTicks(30, () -> createExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 6));
     }
 
 
@@ -95,10 +110,6 @@ public class SkillHandler {
     private static LocalPlayer getLocalPlayer(Player player) {
         Minecraft mc = Minecraft.getInstance();
         return mc.player != null && mc.player.getUUID().equals(player.getUUID()) ? mc.player : null;
-    }
-
-    private static AbstractClientPlayer getAbstractClientPlayer(Player player){
-        return getLocalPlayer(player);
     }
 
     public static void addResistance(Player player, int duration) {
@@ -112,6 +123,7 @@ public class SkillHandler {
     // 技能逻辑
     private static void riderKickJump(Player player, double jumpHeight) {
         player.addDeltaMovement(new Vec3(0, jumpHeight, 0));
+        player.hurtMarked = true;
     }
 
     private static void riderKickForward(Player player, double norm) {
@@ -137,5 +149,14 @@ public class SkillHandler {
                 false,
                 Config.SKILL_EXPLODE_GRIEF.get() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE     // 爆炸类型
         );
+    }
+
+    private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
+        PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
+    }
+
+    private static void animateKuugaKick(AbstractClientPlayer player) {
+        playAnimation(player, "kuuga_mighty_kick", 0);
+        RiderManager.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
     }
 }

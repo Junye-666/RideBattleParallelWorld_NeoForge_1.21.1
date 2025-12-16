@@ -2,6 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.core.riders;
 
 import com.jpigeon.ridebattlelib.core.system.skill.SkillSystem;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -13,19 +14,16 @@ public class RiderSkills {
     public static final ResourceLocation ULTRA_KICK = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "ultra_kick");
 
     private static void registerKuugaSkills(){
-        registerSkill(RiderSkills.GROWING_KICK, 10);
-        registerSkill(RiderSkills.MIGHTY_KICK, 15);
-        registerSkill(RiderSkills.RISING_MIGHTY_KICK, 15);
-        registerSkill(RiderSkills.AMAZING_MIGHTY_KICK, 20);
-        registerSkill(RiderSkills.ULTRA_KICK, 20);
+        registerSkill(RiderSkills.GROWING_KICK, 10, ChatFormatting.WHITE);
+        registerSkill(RiderSkills.MIGHTY_KICK, 15, ChatFormatting.RED);
+        registerSkill(RiderSkills.RISING_MIGHTY_KICK, 15, ChatFormatting.GOLD);
+        registerSkill(RiderSkills.AMAZING_MIGHTY_KICK, 20, ChatFormatting.BLACK);
+        registerSkill(RiderSkills.ULTRA_KICK, 20, ChatFormatting.BLACK);
     }
 
-    private static void registerSkill(ResourceLocation id, int cooldown){
+    private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting chatFormat){
         String name = id.toString().toLowerCase().replace(RideBattleParallelWorlds.MODID + ":", "");
-        RideBattleParallelWorlds.LOGGER.debug(name);
-        Component translateKey = Component.translatable("skill." + name);
-        RideBattleParallelWorlds.LOGGER.debug(translateKey.getString());
-        SkillSystem.registerSkill(id, Component.translatable("skill." + name), cooldown);
+        SkillSystem.registerSkill(id, Component.translatable("skill." + name).withStyle(chatFormat), cooldown);
     }
 
     public static void init(){
