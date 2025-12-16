@@ -12,6 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
@@ -50,9 +52,9 @@ public class KuugaConfig {
             .setShouldPause(true)
             .addRequiredItem(ARCLE_CORE, Items.AIR)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addSkill(RiderSkills.GROWING_KICK)
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             ;
 
     public static final FormConfig KUUGA_MIGHTY_FORM = new FormConfig(MIGHTY_ID)
@@ -67,7 +69,9 @@ public class KuugaConfig {
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
-            .addRequiredItem(ARCLE_CORE, ModItems.MIGHTY_ELEMENT.get());
+            .addRequiredItem(ARCLE_CORE, ModItems.MIGHTY_ELEMENT.get())
+            .addSkill(RiderSkills.MIGHTY_KICK)
+            ;
 
     public static final FormConfig KUUGA_DRAGON_FORM = new FormConfig(DRAGON_ID)
             .setArmor(
@@ -126,7 +130,8 @@ public class KuugaConfig {
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
-            .addRequiredItem(ARCLE_CORE, ModItems.RISING_MIGHTY_ELEMENT.get());
+            .addRequiredItem(ARCLE_CORE, ModItems.RISING_MIGHTY_ELEMENT.get())
+            .addSkill(RiderSkills.RISING_MIGHTY_KICK);
 
     public static final FormConfig KUUGA_RISING_DRAGON_FORM = new FormConfig(RISING_DRAGON_ID)
             .setArmor(
@@ -190,7 +195,8 @@ public class KuugaConfig {
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
             .addEffect(MobEffects.DAMAGE_RESISTANCE, -1, 2, true)
 
-            .addRequiredItem(ARCLE_CORE, ModItems.AMAZING_MIGHTY_ELEMENT.get());
+            .addRequiredItem(ARCLE_CORE, ModItems.AMAZING_MIGHTY_ELEMENT.get())
+            .addSkill(RiderSkills.AMAZING_MIGHTY_KICK);
 
     public static final FormConfig KUUGA_ULTIMATE_FORM = new FormConfig(ULTIMATE_ID)
             .setArmor(
@@ -208,7 +214,8 @@ public class KuugaConfig {
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 3, true)
             .addEffect(MobEffects.DAMAGE_RESISTANCE, -1, 3, true)
 
-            .addRequiredItem(ARCLE_CORE, ModItems.ULTIMATE_ELEMENT.get());
+            .addRequiredItem(ARCLE_CORE, ModItems.ULTIMATE_ELEMENT.get())
+            .addSkill(RiderSkills.ULTRA_KICK);
 
 
     public static void registerKuuga() {
