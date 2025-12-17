@@ -149,7 +149,7 @@ public class SkillHandler {
 
         riderKickJump(localPlayer, 1.5);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2.5));
-        RiderManager.scheduleTicks(30, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 6));
+        RiderManager.scheduleTicks(30, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 100));
     }
 
 

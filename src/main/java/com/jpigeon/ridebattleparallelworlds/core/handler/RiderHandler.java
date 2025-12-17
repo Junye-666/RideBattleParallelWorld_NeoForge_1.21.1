@@ -11,9 +11,11 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -164,6 +166,7 @@ public class RiderHandler {
             }
             if (formId.equals(KuugaConfig.KUUGA_ULTIMATE_FORM.getFormId())) {
                 RiderManager.playPublicSound(player, ModSounds.KUUGA_ULTIMATE.get());
+                player.displayClientMessage(Component.literal(player.getName().getString() + "：一条桑，请看好我最后的变身吧"), false);
             }
         }
     }

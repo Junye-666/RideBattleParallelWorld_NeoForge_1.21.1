@@ -190,7 +190,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
 
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 5, true)
             .addEffect(MobEffects.JUMP, -1, 3, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
             .addEffect(MobEffects.DAMAGE_RESISTANCE, -1, 2, true)
