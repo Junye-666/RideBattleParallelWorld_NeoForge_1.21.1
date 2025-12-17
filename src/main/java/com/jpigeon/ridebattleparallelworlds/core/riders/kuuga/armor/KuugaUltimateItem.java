@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
+package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.armor;
 
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderArmorItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericArmorModel;

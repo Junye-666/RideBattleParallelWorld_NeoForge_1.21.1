@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
+package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.armor;
 
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderArmorItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericArmorModel;
@@ -8,9 +8,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-public class KuugaRisingPegasusItem extends BaseKamenRiderArmorItem {
-    public KuugaRisingPegasusItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("kuuga", "rising_pegasus", material, type, properties, false);
+public class KuugaRisingMightyItem extends BaseKamenRiderArmorItem {
+    public KuugaRisingMightyItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super("kuuga", "rising_mighty", material, type, properties, false);
     }
 
     @Override

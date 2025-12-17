@@ -11,8 +11,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 public class ArcleItem extends BaseKamenRiderArmorItem {
     public enum AnimState {IN_BODY, APPEAR, SHRINK, MIGHTY, DRAGON, PEGASUS, TITAN, RISING_MIGHTY, RISING_DRAGON, RISING_PEGASUS, RISING_TITAN, AMAZING_MIGHTY, ULTIMATE}
     private AnimState currentState;
-    private boolean isAppearAnimationPlaying = false;
-    private boolean isShrinkAnimationPlaying = false;
+    private boolean playingAnimation = false;
 
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super("kuuga", "arcle", material, type, properties, true);
@@ -50,20 +49,20 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
     private AnimationController<BaseKamenRiderArmorItem> createAppearController() {
         return new AnimationController<>(this, "appear_controller", 0, state -> {
             if (currentState == AnimState.APPEAR) {
-                if (!isAppearAnimationPlaying) {
+                if (!playingAnimation) {
                     state.getController().setAnimation(
                             RawAnimation.begin().then("appear", Animation.LoopType.HOLD_ON_LAST_FRAME)
                     );
-                    isAppearAnimationPlaying = true;
+                    playingAnimation = true;
                 }
 
                 // 检查动画是否播放完成
                 if (state.getController().getAnimationState() == AnimationController.State.STOPPED) {
-                    isAppearAnimationPlaying = false;
+                    playingAnimation = false;
                 }
                 return PlayState.CONTINUE;
             }
-            isAppearAnimationPlaying = false;
+            playingAnimation = false;
             return PlayState.STOP;
         });
     }
@@ -71,21 +70,21 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
     private AnimationController<BaseKamenRiderArmorItem> createShrinkController() {
         return new AnimationController<>(this, "shrink_controller", 0, state -> {
             if (currentState == AnimState.SHRINK) {
-                if (!isShrinkAnimationPlaying) {
+                if (!playingAnimation) {
                     state.getController().setAnimation(
                             RawAnimation.begin().then("shrink", Animation.LoopType.HOLD_ON_LAST_FRAME)
                     );
-                    isShrinkAnimationPlaying = true;
+                    playingAnimation = true;
                 }
 
                 // 检查动画是否播放完成
                 if (state.getController().getAnimationState() == AnimationController.State.STOPPED) {
                     setAnimState(AnimState.IN_BODY);
-                    isShrinkAnimationPlaying = false;
+                    playingAnimation = false;
                 }
                 return PlayState.CONTINUE;
             }
-            isShrinkAnimationPlaying = false;
+            playingAnimation = false;
             return PlayState.STOP;
         });
     }
@@ -190,7 +189,7 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
         });
     }
 
-    public void setAnimState(AnimState state) {
+    private void setAnimState(AnimState state) {
         if (currentState != state) {
             currentState = state;
             // 重置所有控制器以确保动画重新开始
