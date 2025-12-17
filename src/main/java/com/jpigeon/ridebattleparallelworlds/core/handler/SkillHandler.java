@@ -35,8 +35,12 @@ public class SkillHandler {
         handleSkill(player, skillId);
     }
 
+    @SubscribeEvent
+    public static void postSkill(SkillEvent.Post event) {
+        animateRiderSkills(event.getPlayer(), event.getSkillId());
+    }
+
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
-        animateRiderSkills(serverPlayer, skillId);
         applyRiderSkills(serverPlayer, skillId);
     }
 
@@ -50,11 +54,15 @@ public class SkillHandler {
             ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
             ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
             if (mainHand.getItem() instanceof DragonRodItem dragonRod) {
+                playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
                 dragonRod.triggerMainSpin();
+                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
             } else if (offHand.getItem() instanceof  DragonRodItem dragonRod) {
-                return;
+                playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
+                dragonRod.triggerOffSpin();
+                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
             }
-            playAnimation(clientPlayer, "kuuga_splash_dragon", 0);
+
         }
 
 

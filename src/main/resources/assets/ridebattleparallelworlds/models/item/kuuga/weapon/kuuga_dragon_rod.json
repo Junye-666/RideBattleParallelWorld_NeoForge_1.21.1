@@ -12,9 +12,66 @@
         25,
         0
       ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        -5,
+        25,
+        0
+      ]
+    },
+    "ground": {
+      "rotation": [
+        75,
+        0,
+        0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -90,
+        45,
+        90
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ]
+    },
+    "head": {
+      "rotation": [
+        -64.23999999999978,
+        -12.2199999999998,
+        -86.4699999999998
+      ],
+      "translation": [
+        0,
+        3.75,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        90,
+        45,
+        -90
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -90,
+        60,
+        90
+      ]
     }
   },
   "textures": {
-    "particle": "ridebattleparallelworlds:item/kuuga/weapon/kuuga_dragon_rod"
+    "particle": "ridebattleparallelworlds:item/kuuga_dragon_rod"
   }
 }

@@ -12,6 +12,9 @@
   "item.ridebattleparallelworlds.kuuga.ultimate_element": "Ultimate Element",
 
   "item.ridebattleparallelworlds.kuuga.armor.arcle": "Arcle",
+  "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_helmet": "Kuuga Growing",
+  "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_chestplate": "Kuuga Growing",
+  "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_boots": "Kuuga Growing",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_mighty_helmet": "Kuuga Mighty",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_mighty_chestplate": "Kuuga Mighty",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_mighty_boots": "Kuuga Mighty",
@@ -42,6 +45,8 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_helmet": "Kuuga Ultimate",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_chestplate": "Kuuga Ultimate",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_boots": "Kuuga Ultimate",
+
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_dragon_rod": "Dragon Rod",
 
   "skill.growing_kick": "Growing Kick",
   "skill.mighty_kick": "Mighty Kick",

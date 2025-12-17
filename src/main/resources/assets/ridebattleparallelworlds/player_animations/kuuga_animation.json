@@ -799,7 +799,7 @@
 				}
 			}
 		},
-		"kuuga_splash_dragon": {
+		"kuuga_splash_dragon_off": {
 			"animation_length": 0.5,
 			"bones": {
 				"torso": {
@@ -817,8 +817,8 @@
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
-						"0.0833": {
-							"vector": [-38.51, 0, 0]
+						"0.125": {
+							"vector": [-80.58136, -17.27821, -2.82064]
 						},
 						"0.25": {
 							"vector": [-47.5, 0, 0],
@@ -849,8 +849,8 @@
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
-						"0.0833": {
-							"vector": [-86.76051, 24.8924, 29.26051]
+						"0.125": {
+							"vector": [-139.18665, 42.04337, 11.97102]
 						},
 						"0.25": {
 							"vector": [-35.26439, 30, 35.26439],
@@ -1048,6 +1048,74 @@
 					},
 					"scale": {
 						"vector": [1, 1, 1]
+					}
+				}
+			}
+		},
+		"kuuga_splash_dragon_main": {
+			"animation_length": 0.75,
+			"bones": {
+				"torso": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [0, 17.42, 0]
+						},
+						"0.3333": {
+							"vector": [0, -42.5, 0],
+							"easing": "easeOutBack"
+						}
+					}
+				},
+				"right_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-60, 0, 0]
+						},
+						"0.3333": {
+							"vector": [-90, -5, 240],
+							"easing": "easeInBack"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-0.5, -0.4, 2.52]
+						},
+						"0.3333": {
+							"vector": [1, 0, -5],
+							"easing": "easeInBack"
+						}
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.3333": {
+							"vector": [45.81187, -19.87732, -27.18815],
+							"easing": "easeInBack"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2083": {
+							"vector": [-0.19, 0, -1.62]
+						},
+						"0.3333": {
+							"vector": [-2, 0, 4],
+							"easing": "easeInBack"
+						}
 					}
 				}
 			}

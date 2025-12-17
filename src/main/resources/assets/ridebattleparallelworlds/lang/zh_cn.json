@@ -12,6 +12,9 @@
   "item.ridebattleparallelworlds.kuuga.ultimate_element": "究极灵石",
 
   "item.ridebattleparallelworlds.kuuga.armor.arcle": "亚古鲁",
+  "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_helmet": "空我 初升",
+  "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_chestplate": "空我 初升",
+  "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_boots": "空我 初升",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_mighty_helmet": "空我 全能",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_mighty_chestplate": "空我 全能",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_mighty_boots": "空我 全能",
@@ -44,6 +47,8 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_helmet": "空我 究极",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_chestplate": "空我 究极",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_boots": "空我 究极",
+
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_dragon_rod": "青龙棍",
 
   "skill.growing_kick": "初升踢",
   "skill.mighty_kick": "全能踢",

@@ -5,6 +5,8 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.*;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.armor.*;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.DragonRodItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -155,7 +157,7 @@ public class ModItems {
 
     // 武器注册
     public static final DeferredItem<DragonRodItem> DRAGON_ROD = ITEMS.register("kuuga/weapon/kuuga_dragon_rod", ()
-            -> new DragonRodItem(new Item.Properties()));
+            -> new DragonRodItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2))));
 
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

@@ -24,6 +24,7 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createIdleController());
         addController(registrar, "spin_main", createSpinMainController());
+        addController(registrar, "spin_off", createSpinOffController());
 
     }
 
@@ -40,7 +41,22 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
     private AnimationController<BaseKamenRiderGeoItem> createSpinMainController() {
         return new AnimationController<>(this, "spin_main_controller", 0, state -> {
             if (currentState == AnimState.SPIN_MAIN_HAND) {
-                state.getController().setAnimation(RawAnimation.begin().then("spin_main", Animation.LoopType.PLAY_ONCE));
+                    state.getController().setAnimation(
+                            RawAnimation.begin().thenPlay("spin_main")
+                    );
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
+
+    private AnimationController<BaseKamenRiderGeoItem> createSpinOffController() {
+        return new AnimationController<>(this, "spin_off_controller", 0, state -> {
+            if (currentState == AnimState.SPIN_MAIN_HAND) {
+                    state.getController().setAnimation(
+                            RawAnimation.begin().thenPlay("spin_off")
+                    );
+                return PlayState.CONTINUE;
             }
             return PlayState.STOP;
         });
@@ -61,7 +77,6 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
     private void setAnimState(AnimState state) {
         if (currentState != state) {
             currentState = state;
-            // 重置所有控制器以确保动画重新开始
             controllers.values().forEach(controller -> {
                 if (controller != null) {
                     controller.forceAnimationReset();
