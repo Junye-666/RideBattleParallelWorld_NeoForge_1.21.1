@@ -31,23 +31,10 @@ public class RiderHandler {
     public static void onHenshin(HenshinEvent.Pre event) {
         Player player = event.getPlayer();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
+        ResourceLocation formId = event.getFormId();
         // 处理空我
         if (event.getRiderId().equals(RiderIds.KUUGA_ID)) {
-            if (player.isCrouching()) {
-                RiderManager.completeHenshin(player);
-                return;
-            }
-            SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
-            SkillHandler.addResistance(player, 120);
-            playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
-            if (legs.getItem() instanceof ArcleItem arcleItem) {
-                RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
-                RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
-                ResourceLocation formId = event.getFormId();
-                RiderManager.scheduleTicks(36, () -> playHenshinSound(player, formId));
-                RiderManager.completeIn(120, player);
-            }
+            handleKuuga(player, legs, formId);
         }
     }
 
@@ -173,5 +160,23 @@ public class RiderHandler {
 
     private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
         PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
+    }
+
+    // 变身辅助
+    private static void handleKuuga(Player player, ItemStack legs, ResourceLocation formId) {
+        if (player.isCrouching()) {
+            RiderManager.completeHenshin(player);
+            return;
+        }
+        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
+        SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
+        SkillHandler.addResistance(player, 120);
+        playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
+        if (legs.getItem() instanceof ArcleItem arcleItem) {
+            RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
+            RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
+            RiderManager.scheduleTicks(36, () -> playHenshinSound(player, formId));
+            RiderManager.completeIn(120, player);
+        }
     }
 }
