@@ -3,36 +3,35 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
-import com.jpigeon.ridebattlelib.core.system.skill.SkillSystem;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
 
+import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
+
 public class KuugaConfig {
     // 形态
-    public static final ResourceLocation ARCLE_CORE = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "arcle_core");
+    public static final ResourceLocation ARCLE_CORE = fromString("arcle_core");
 
-    public static final ResourceLocation GROWING_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "growing_form");
-    public static final ResourceLocation MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "mighty_form");
-    public static final ResourceLocation DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "dragon_form");
-    public static final ResourceLocation PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "pegasus_form");
-    public static final ResourceLocation TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "titan_form");
-    public static final ResourceLocation RISING_MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_mighty_form");
-    public static final ResourceLocation RISING_DRAGON_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_dragon_form");
-    public static final ResourceLocation RISING_PEGASUS_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_pegasus_form");
-    public static final ResourceLocation RISING_TITAN_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "rising_titan_form");
-    public static final ResourceLocation AMAZING_MIGHTY_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "amazing_mighty_form");
-    public static final ResourceLocation ULTIMATE_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "ultimate_form");
+    public static final ResourceLocation GROWING_ID = fromString("growing_form");
+    public static final ResourceLocation MIGHTY_ID = fromString("mighty_form");
+    public static final ResourceLocation DRAGON_ID = fromString("dragon_form");
+    public static final ResourceLocation PEGASUS_ID = fromString("pegasus_form");
+    public static final ResourceLocation TITAN_ID = fromString("titan_form");
+    public static final ResourceLocation RISING_MIGHTY_ID = fromString("rising_mighty_form");
+    public static final ResourceLocation RISING_DRAGON_ID = fromString("rising_dragon_form");
+    public static final ResourceLocation RISING_PEGASUS_ID = fromString("rising_pegasus_form");
+    public static final ResourceLocation RISING_TITAN_ID = fromString("rising_titan_form");
+    public static final ResourceLocation AMAZING_MIGHTY_ID = fromString("amazing_mighty_form");
+    public static final ResourceLocation ULTIMATE_ID = fromString("ultimate_form");
 
     public static final RiderConfig KUUGA = new RiderConfig(RiderIds.KUUGA_ID)
             .setMainDriverItem(ModItems.ARCLE.get(), EquipmentSlot.LEGS)
@@ -85,6 +84,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.JUMP, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1, AttributeModifier.Operation.ADD_VALUE)
             .addRequiredItem(ARCLE_CORE, ModItems.DRAGON_ELEMENT.get())
             ;
 
@@ -145,6 +145,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.JUMP, -1, 3, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 3, true)
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_DRAGON_ELEMENT.get())
             ;
 

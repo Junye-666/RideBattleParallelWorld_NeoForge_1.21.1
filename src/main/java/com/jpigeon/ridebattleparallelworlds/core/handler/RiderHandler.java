@@ -61,7 +61,7 @@ public class RiderHandler {
                 setDriverAnim(legs, newFormId);
                 return;
             }
-            playAnimation(abstractClientPlayer, "kuuga_switch", 0);
+            playAnimation(abstractClientPlayer, "kuuga_switch");
             RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, newFormId));
             playHenshinSound(player, newFormId);
             RiderManager.completeIn(90, player);
@@ -70,7 +70,7 @@ public class RiderHandler {
     }
 
     @SubscribeEvent
-    public static void postHenshin(HenshinEvent.Post event) {
+    public static void postInsert(HenshinEvent.Post event) {
         ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
         ResourceLocation formId = event.getFormId();
         setDriverAnim(legs, formId);
@@ -162,6 +162,10 @@ public class RiderHandler {
         PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
     }
 
+    private static void playAnimation(AbstractClientPlayer player, String animationId) {
+        playAnimation(player, animationId, 0);
+    }
+
     // 变身辅助
     private static void handleKuuga(Player player, ItemStack legs, ResourceLocation formId) {
         if (player.isCrouching()) {
@@ -171,10 +175,12 @@ public class RiderHandler {
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
         SkillHandler.addResistance(player, 120);
-        playAnimation(abstractClientPlayer, "kuuga_henshin", 0);
+        playAnimation(abstractClientPlayer, "kuuga_henshin");
         if (legs.getItem() instanceof ArcleItem arcleItem) {
             RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
-            RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
+            if (arcleItem.getCurrentState() == ArcleItem.AnimState.IN_BODY) {
+                RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
+            }
             RiderManager.scheduleTicks(36, () -> playHenshinSound(player, formId));
             RiderManager.completeIn(120, player);
         }

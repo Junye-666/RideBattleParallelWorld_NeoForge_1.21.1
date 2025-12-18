@@ -1,5 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.RisingTitanSwordItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderArmorItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericArmorModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericArmorRenderer;
@@ -214,6 +215,9 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
         setAnimState(state);
     }
 
+    public AnimState getCurrentState() {
+        return currentState;
+    }
     @Override
     protected GeoArmorRenderer<?> createRenderer() {
         return new GenericArmorRenderer(

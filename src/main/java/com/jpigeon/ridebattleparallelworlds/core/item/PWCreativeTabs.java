@@ -1,0 +1,48 @@
+package com.jpigeon.ridebattleparallelworlds.core.item;
+
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
+
+public class PWCreativeTabs {
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, RideBattleParallelWorlds.MODID);
+
+
+    public static final Supplier<CreativeModeTab> KUUGA_ITEMS_TAB = CREATIVE_MODE_TAB.register("kuuga_items_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.MIGHTY_HELMET.get()))
+                    .title(Component.translatable("creativeTab.ridebattleparallelworlds.kuuga_items"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ModItems.ARCLE);
+                        output.accept(ModItems.CHOGODAI_ELEMENT);
+                        output.accept(ModItems.MIGHTY_ELEMENT);
+                        output.accept(ModItems.DRAGON_ELEMENT);
+                        output.accept(ModItems.PEGASUS_ELEMENT);
+                        output.accept(ModItems.TITAN_ELEMENT);
+                        output.accept(ModItems.RISING_MIGHTY_ELEMENT);
+                        output.accept(ModItems.RISING_DRAGON_ELEMENT);
+                        output.accept(ModItems.RISING_PEGASUS_ELEMENT);
+                        output.accept(ModItems.RISING_TITAN_ELEMENT);
+                        output.accept(ModItems.AMAZING_MIGHTY_ELEMENT);
+                        output.accept(ModItems.ULTIMATE_ELEMENT);
+                        output.accept(ModItems.DRAGON_ROD);
+                        output.accept(ModItems.PEGASUS_BOWGUN);
+                        output.accept(ModItems.TITAN_SWORD);
+                        output.accept(ModItems.RISING_DRAGON_ROD);
+                        output.accept(ModItems.RISING_PEGASUS_BOWGUN);
+                        output.accept(ModItems.RISING_TITAN_SWORD);
+                    })
+
+                    .build());
+
+    public static void register(IEventBus eventBus) {
+        CREATIVE_MODE_TAB.register(eventBus);
+    }
+
+}

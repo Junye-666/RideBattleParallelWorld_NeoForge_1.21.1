@@ -3,30 +3,35 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.*;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderGeoItem;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericItemModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericItemRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-public class DragonRodItem extends BaseKamenRiderGeoItem {
-    public DragonRodItem(Properties properties) {
-        super("kuuga", "dragon_rod", properties.stacksTo(1).durability(0), true);
+public class RisingPegasusBowgunItem extends BaseKamenRiderGeoItem {
+    public RisingPegasusBowgunItem(Properties properties) {
+        super("kuuga", "rising_pegasus_bowgun", properties.stacksTo(1).durability(0), true);
     }
 
-    public enum AnimState {IDLE, SPIN_MAIN_HAND, SPIN_OFF_HAND}
+    public enum AnimState {IDLE, PULL, RELEASE, SHOOT}
     private AnimState currentState;
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createIdleController());
-        addController(registrar, "spin_main", createSpinMainController());
-        addController(registrar, "spin_off", createSpinOffController());
-
+        addController(registrar, "pull", createPullController());
+        addController(registrar, "release", createReleaseController());
+        addController(registrar, "shoot", createShootController());
     }
 
     private AnimationController<BaseKamenRiderGeoItem> createIdleController() {
@@ -39,11 +44,11 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
         });
     }
 
-    private AnimationController<BaseKamenRiderGeoItem> createSpinMainController() {
-        return new AnimationController<>(this, "spin_main_controller", 0, state -> {
-            if (currentState == AnimState.SPIN_MAIN_HAND) {
+    private AnimationController<BaseKamenRiderGeoItem> createPullController() {
+        return new AnimationController<>(this, "pull_controller", 0, state -> {
+            if (currentState == AnimState.PULL) {
                     state.getController().setAnimation(
-                            RawAnimation.begin().thenPlay("spin_main")
+                            RawAnimation.begin().thenPlay("pull")
                     );
                 return PlayState.CONTINUE;
             }
@@ -51,11 +56,11 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
         });
     }
 
-    private AnimationController<BaseKamenRiderGeoItem> createSpinOffController() {
-        return new AnimationController<>(this, "spin_off_controller", 0, state -> {
-            if (currentState == AnimState.SPIN_MAIN_HAND) {
+    private AnimationController<BaseKamenRiderGeoItem> createReleaseController() {
+        return new AnimationController<>(this, "release_controller", 0, state -> {
+            if (currentState == AnimState.RELEASE) {
                     state.getController().setAnimation(
-                            RawAnimation.begin().thenPlay("spin_off")
+                            RawAnimation.begin().thenPlay("release")
                     );
                 return PlayState.CONTINUE;
             }
@@ -63,12 +68,28 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
         });
     }
 
-    public void triggerMainSpin() {
-        setAnimState(AnimState.SPIN_MAIN_HAND);
+    private AnimationController<BaseKamenRiderGeoItem> createShootController() {
+        return new AnimationController<>(this, "shoot_controller", 0, state -> {
+            if (currentState == AnimState.SHOOT) {
+                state.getController().setAnimation(
+                        RawAnimation.begin().thenPlay("shoot")
+                );
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
     }
 
-    public void triggerOffSpin() {
-        setAnimState(AnimState.SPIN_OFF_HAND);
+    public void triggerShoot() {
+        setAnimState(AnimState.SHOOT);
+    }
+
+    public void triggerPull() {
+        setAnimState(AnimState.PULL);
+    }
+
+    public void triggerRelease() {
+        setAnimState(AnimState.RELEASE);
     }
 
     public void setCurrentState(AnimState state){
@@ -97,9 +118,9 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.DRAGON_ID)) {
-                player.getCooldowns().addCooldown(this, 310);
-                RiderManager.triggerSkill(player, RiderSkills.SPLASH_DRAGON);
+            if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_PEGASUS_ID)) {
+                player.getCooldowns().addCooldown(this, 210);
+                RiderManager.triggerSkill(player, RiderSkills.RISING_BLAST_PEGASUS);
             }
         }
         return InteractionResultHolder.success(itemStack);

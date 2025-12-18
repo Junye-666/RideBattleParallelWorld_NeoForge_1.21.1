@@ -11,9 +11,6 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-/*
-* 可直接复制, 修改MODID
- */
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
 public class ModDataGenerators {
 

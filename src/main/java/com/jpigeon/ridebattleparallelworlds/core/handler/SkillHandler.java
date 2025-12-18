@@ -4,15 +4,16 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
-import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.DragonRodItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.*;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -45,47 +46,14 @@ public class SkillHandler {
     }
 
     private static void animateRiderSkills(Player player, ResourceLocation skillId) {
-        AbstractClientPlayer clientPlayer = getLocalPlayer(player);
-        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTRA_KICK)) {
-            playAnimation(clientPlayer, "kuuga_mighty_kick", 0);
-            RiderManager.scheduleTicks(33, () -> playAnimation(clientPlayer, "player_reset", 5));
+        if (RiderManager.isSpecificRider(player, RiderIds.KUUGA_ID)) {
+            animateKuugaSkills(player, skillId);
         }
-        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
-            ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-            ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-            if (mainHand.getItem() instanceof DragonRodItem dragonRod) {
-                playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
-                dragonRod.triggerMainSpin();
-                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
-            } else if (offHand.getItem() instanceof  DragonRodItem dragonRod) {
-                playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
-                dragonRod.triggerOffSpin();
-                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
-            }
-
-        }
-
-
     }
 
     private static void applyRiderSkills(Player player, ResourceLocation skillId) {
-        if (skillId.equals(RiderSkills.GROWING_KICK)) {
-            growingKick(player);
-        }
-        if (skillId.equals(RiderSkills.MIGHTY_KICK)) {
-            mightyKick(player);
-        }
-        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
-            splashDragon(player);
-        }
-        if (skillId.equals(RiderSkills.RISING_MIGHTY_KICK)) {
-            risingMightyKick(player);
-        }
-        if (skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK)) {
-            amazingMightyKick(player);
-        }
-        if (skillId.equals(RiderSkills.ULTRA_KICK)) {
-            ultimateKick(player);
+        if (KuugaConfig.KUUGA.includesForm(RiderManager.getActiveFormConfig(player))) {
+            applyKuugaSkills(player, skillId);
         }
     }
 
@@ -113,13 +81,48 @@ public class SkillHandler {
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
         addResistance(serverPlayer, 30);
+        double distance;
+
+        ItemStack mainHand = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = serverPlayer.getItemInHand(InteractionHand.OFF_HAND);
+        if (mainHand.getItem() instanceof DragonRodItem) {
+            distance = 2.0;
+        } else if (offHand.getItem() instanceof DragonRodItem) {
+            distance = 1.5;
+        } else {
+            distance = 0;
+        }
+        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
+                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
+                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
+                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+                3));
+    }
+
+    private static void blastPegasus(Player serverPlayer) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        addResistance(serverPlayer, 30);
+        double distance = 5;
+
+        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
+                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
+                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
+                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+                1));
+    }
+
+    private static void calamityTitan(Player serverPlayer) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        addResistance(serverPlayer, 20);
 
         double distance = 1.5;
-        Vec3 lookVec = serverPlayer.getLookAngle();
-        double explosionX = serverPlayer.getX() + lookVec.x * distance;
-        double explosionY = serverPlayer.getY() + 1.5 + lookVec.y * distance;
-        double explosionZ = serverPlayer.getZ() + lookVec.z * distance;
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer, explosionX, explosionY, explosionZ, 3));
+        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
+                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
+                serverPlayer.getY() + 1 + serverPlayer.getLookAngle().y * distance,
+                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+                3));
     }
 
     private static void risingMightyKick(Player serverPlayer) {
@@ -130,6 +133,54 @@ public class SkillHandler {
         riderKickJump(localPlayer, 1);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2));
         RiderManager.scheduleTicks(25, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 4));
+    }
+
+    private static void risingSplashDragon(Player serverPlayer) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        addResistance(serverPlayer, 30);
+        double distance;
+
+        ItemStack mainHand = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = serverPlayer.getItemInHand(InteractionHand.OFF_HAND);
+        if (mainHand.getItem() instanceof RisingDragonRodItem) {
+            distance = 2.5;
+        } else if (offHand.getItem() instanceof RisingDragonRodItem) {
+            distance = 2.0;
+        } else {
+            distance = 0;
+        }
+        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
+                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
+                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
+                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+                4));
+    }
+
+    private static void risingBlastPegasus(Player serverPlayer) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        addResistance(serverPlayer, 30);
+        double distance = 7;
+
+        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
+                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
+                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
+                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+                3));
+    }
+
+    private static void risingCalamityTitan(Player serverPlayer) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        addResistance(serverPlayer, 20);
+
+        double distance = 2.0;
+        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
+                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
+                serverPlayer.getY() + 1 + serverPlayer.getLookAngle().y * distance,
+                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+                5));
     }
 
     private static void amazingMightyKick(Player serverPlayer) {
@@ -152,6 +203,129 @@ public class SkillHandler {
         RiderManager.scheduleTicks(30, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 100));
     }
 
+    private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
+        AbstractClientPlayer clientPlayer = getLocalPlayer(player);
+        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTRA_KICK)) {
+            playAnimation(clientPlayer, "kuuga_mighty_kick", 0);
+            RiderManager.scheduleTicks(33, () -> playAnimation(clientPlayer, "player_reset", 5));
+            return;
+        }
+
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
+            if (mainHand.getItem() instanceof DragonRodItem dragonRod) {
+                playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
+                dragonRod.triggerMainSpin();
+                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
+            } else if (offHand.getItem() instanceof DragonRodItem dragonRod) {
+                playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
+                dragonRod.triggerOffSpin();
+                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
+            }
+            return;
+        }
+        if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
+            if (mainHand.getItem() instanceof PegasusBowgunItem pegasusBowgunItem) {
+                playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
+                pegasusBowgunItem.triggerShoot();
+            } else if (offHand.getItem() instanceof PegasusBowgunItem pegasusBowgunItem) {
+                playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
+                pegasusBowgunItem.triggerShoot();
+            }
+            return;
+        }
+        if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
+            playAnimation(clientPlayer, "kuuga_calamity_titan");
+            if (mainHand.getItem() instanceof TitanSwordItem titanSwordItem) {
+                titanSwordItem.setCurrentState(TitanSwordItem.AnimState.STAB);
+                RiderManager.scheduleTicks(15, () -> titanSwordItem.setCurrentState(TitanSwordItem.AnimState.IDLE));
+            } else if (offHand.getItem() instanceof TitanSwordItem titanSwordItem) {
+                titanSwordItem.setCurrentState(TitanSwordItem.AnimState.STAB);
+                RiderManager.scheduleTicks(15, () -> titanSwordItem.setCurrentState(TitanSwordItem.AnimState.IDLE));
+            }
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
+            if (mainHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
+                playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
+                risingDragonRod.triggerMainSpin();
+                RiderManager.scheduleTicks(15, () -> risingDragonRod.setCurrentState(RisingDragonRodItem.AnimState.IDLE));
+            } else if (offHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
+                playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
+                risingDragonRod.triggerOffSpin();
+                RiderManager.scheduleTicks(15, () -> risingDragonRod.setCurrentState(RisingDragonRodItem.AnimState.IDLE));
+            }
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
+            if (mainHand.getItem() instanceof RisingPegasusBowgunItem risingPegasusBowgun) {
+                playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
+                risingPegasusBowgun.triggerShoot();
+            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem risingPegasusBowgun) {
+                playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
+                risingPegasusBowgun.triggerShoot();
+            }
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
+            playAnimation(clientPlayer, "kuuga_calamity_titan");
+            if (mainHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
+                risingTitanSword.triggerStab();
+                RiderManager.scheduleTicks(15, () -> risingTitanSword.setCurrentState(RisingTitanSwordItem.AnimState.IDLE));
+            } else if (offHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
+                risingTitanSword.triggerStab();
+                RiderManager.scheduleTicks(15, () -> risingTitanSword.setCurrentState(RisingTitanSwordItem.AnimState.IDLE));
+            }
+        }
+    }
+
+    private static void applyKuugaSkills(Player player, ResourceLocation skillId) {
+        if (skillId.equals(RiderSkills.GROWING_KICK)) {
+            growingKick(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.MIGHTY_KICK)) {
+            mightyKick(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
+            splashDragon(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
+            blastPegasus(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
+            calamityTitan(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_MIGHTY_KICK)) {
+            risingMightyKick(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
+            risingSplashDragon(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
+            risingBlastPegasus(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
+            risingCalamityTitan(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK)) {
+            amazingMightyKick(player);
+            return;
+        }
+        if (skillId.equals(RiderSkills.ULTRA_KICK)) {
+            ultimateKick(player);
+            return;
+        }
+    }
 
     // ===辅助方法===
     private static LocalPlayer getLocalPlayer(Player player) {
@@ -204,5 +378,9 @@ public class SkillHandler {
 
     private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
         PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
+    }
+
+    private static void playAnimation(AbstractClientPlayer player, String animationId) {
+        playAnimation(player, animationId, 0);
     }
 }

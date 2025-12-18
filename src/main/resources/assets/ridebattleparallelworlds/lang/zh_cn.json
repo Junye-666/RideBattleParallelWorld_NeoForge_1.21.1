@@ -11,7 +11,7 @@
   "item.ridebattleparallelworlds.kuuga.amazing_mighty_element": "惊异全能灵石",
   "item.ridebattleparallelworlds.kuuga.ultimate_element": "究极灵石",
 
-  "item.ridebattleparallelworlds.kuuga.armor.arcle": "亚古鲁",
+  "item.ridebattleparallelworlds.kuuga.arcle": "亚古鲁",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_helmet": "空我 初升",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_chestplate": "空我 初升",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_boots": "空我 初升",
@@ -27,7 +27,6 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_titan_helmet": "空我 泰坦",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_titan_chestplate": "空我 泰坦",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_titan_boots": "空我 泰坦",
-
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_rising_mighty_helmet": "空我 升华全能",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_rising_mighty_chestplate": "空我 升华全能",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_rising_mighty_boots": "空我 升华全能",
@@ -40,7 +39,6 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_rising_titan_helmet": "空我 升华泰坦",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_rising_titan_chestplate": "空我 升华泰坦",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_rising_titan_boots": "空我 升华泰坦",
-
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_amazing_mighty_helmet": "空我 惊异全能",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_amazing_mighty_chestplate": "空我 惊异全能",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_amazing_mighty_boots": "空我 惊异全能",
@@ -49,6 +47,23 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_boots": "空我 究极",
 
   "item.ridebattleparallelworlds.kuuga.weapon.kuuga_dragon_rod": "青龙棍",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_pegasus_bowgun": "天马弩",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_titan_sword": "泰坦剑",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_rising_dragon_rod": "升华·青龙棍",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_rising_pegasus_bowgun": "升华·天马弩",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_rising_titan_sword": "升华·泰坦剑",
+
+  "form.ridebattleparallelworlds.growing_form": "初升形态",
+  "form.ridebattleparallelworlds.mighty_form": "全能形态",
+  "form.ridebattleparallelworlds.dragon_form": "青龙形态",
+  "form.ridebattleparallelworlds.pegasus_form": "天马形态",
+  "form.ridebattleparallelworlds.titan_form": "泰坦形态",
+  "form.ridebattleparallelworlds.rising_mighty_form": "升华·全能形态",
+  "form.ridebattleparallelworlds.rising_dragon_form": "升华·青龙形态",
+  "form.ridebattleparallelworlds.rising_pegasus_form": "升华·天马形态",
+  "form.ridebattleparallelworlds.rising_titan_form": "升华·泰坦形态",
+  "form.ridebattleparallelworlds.amazing_mighty_form": "惊异·全能形态",
+  "form.ridebattleparallelworlds.ultimate_form": "究极形态",
 
   "skill.growing_kick": "初升踢",
   "skill.mighty_kick": "全能踢",
@@ -56,5 +71,7 @@
   "skill.rising_mighty_kick": "升华·全能踢",
 
   "skill.amazing_mighty_kick": "惊异·全能踢",
-  "skill.ultra_kick": "究极·踢"
+  "skill.ultra_kick": "究极·踢",
+
+  "creativeTab.ridebattleparallelworlds.kuuga_items": "空我"
 }

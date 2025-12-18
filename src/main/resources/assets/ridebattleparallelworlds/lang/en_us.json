@@ -11,7 +11,7 @@
   "item.ridebattleparallelworlds.kuuga.amazing_mighty_element": "Amazing Mighty Element",
   "item.ridebattleparallelworlds.kuuga.ultimate_element": "Ultimate Element",
 
-  "item.ridebattleparallelworlds.kuuga.armor.arcle": "Arcle",
+  "item.ridebattleparallelworlds.kuuga.arcle": "Arcle",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_helmet": "Kuuga Growing",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_chestplate": "Kuuga Growing",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_boots": "Kuuga Growing",
@@ -47,6 +47,24 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_boots": "Kuuga Ultimate",
 
   "item.ridebattleparallelworlds.kuuga.weapon.kuuga_dragon_rod": "Dragon Rod",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_titan_sword": "Titan Sword",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_pegasus_bowgun": "Pegasus Bowgun",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_rising_dragon_rod": "Rising Dragon Rod",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_rising_titan_sword": "Rising Titan Sword",
+  "item.ridebattleparallelworlds.kuuga.weapon.kuuga_rising_pegasus_bowgun": "Rising Pegasus Bowgun",
+
+  "form.ridebattleparallelworlds.growing_form": "Growing Form",
+  "form.ridebattleparallelworlds.mighty_form": "Mighty Form",
+  "form.ridebattleparallelworlds.dragon_form": "Dragon Form",
+  "form.ridebattleparallelworlds.pegasus_form": "Pegasus Form",
+  "form.ridebattleparallelworlds.titan_form": "Titan Form",
+  "form.ridebattleparallelworlds.rising_mighty_form": "Rising Mighty Form",
+  "form.ridebattleparallelworlds.rising_dragon_form": "Rising Dragon Form",
+  "form.ridebattleparallelworlds.rising_pegasus_form": "Rising Pegasus Form",
+  "form.ridebattleparallelworlds.rising_titan_form": "Rising Titan Form",
+  "form.ridebattleparallelworlds.amazing_mighty_form": "Amazing Mighty Form",
+  "form.ridebattleparallelworlds.ultimate_form": "Ultimate Form",
+
 
   "skill.growing_kick": "Growing Kick",
   "skill.mighty_kick": "Mighty Kick",
@@ -54,7 +72,9 @@
   "skill.rising_mighty_kick": "Rising Mighty Kick",
 
   "skill.amazing_mighty_kick": "Amazing Mighty Kick",
-  "skill.ultra_kick": "Ultra Kick"
+  "skill.ultra_kick": "Ultra Kick",
+
+  "creativeTab.ridebattleparallelworlds.kuuga_items": "Kuuga"
 
 
 

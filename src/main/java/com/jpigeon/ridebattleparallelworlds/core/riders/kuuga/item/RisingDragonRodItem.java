@@ -3,19 +3,24 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.*;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderGeoItem;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericItemModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericItemRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-public class DragonRodItem extends BaseKamenRiderGeoItem {
-    public DragonRodItem(Properties properties) {
-        super("kuuga", "dragon_rod", properties.stacksTo(1).durability(0), true);
+public class RisingDragonRodItem extends BaseKamenRiderGeoItem {
+    public RisingDragonRodItem(Properties properties) {
+        super("kuuga", "rising_dragon_rod", properties.stacksTo(1).durability(0), true);
     }
 
     public enum AnimState {IDLE, SPIN_MAIN_HAND, SPIN_OFF_HAND}
@@ -97,9 +102,9 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.DRAGON_ID)) {
-                player.getCooldowns().addCooldown(this, 310);
-                RiderManager.triggerSkill(player, RiderSkills.SPLASH_DRAGON);
+            if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID)) {
+                player.getCooldowns().addCooldown(this, 410);
+                RiderManager.triggerSkill(player, RiderSkills.RISING_SPLASH_DRAGON);
             }
         }
         return InteractionResultHolder.success(itemStack);
