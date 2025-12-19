@@ -45,7 +45,7 @@ public class FormWheel {
 
     private static int currentIndex = 0;
 
-    private static int getCurrentIndex() {
+    public static int getCurrentIndex() {
         return currentIndex;
     }
 
@@ -101,7 +101,7 @@ public class FormWheel {
         }
     }
 
-    private static void setArcleSlot(Player player, ResourceLocation formId) {
+    public static void setArcleSlot(Player player, ResourceLocation formId) {
         ResourceLocation arcleCore = KuugaConfig.ARCLE_CORE;
         if (formId.equals(KuugaConfig.MIGHTY_ID)) {
             RiderManager.insertItemToSlot(player, arcleCore, ModItems.MIGHTY_ELEMENT.get());

@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.client;
+package com.jpigeon.ridebattleparallelworlds.core.handler.client;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;

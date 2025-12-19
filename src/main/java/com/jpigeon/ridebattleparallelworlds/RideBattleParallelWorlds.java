@@ -1,5 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds;
 
+import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
+import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
+import com.jpigeon.ridebattleparallelworlds.core.handler.AbilitiesHandler;
 import com.jpigeon.ridebattleparallelworlds.core.handler.FormWheel;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.item.PWCreativeTabs;
@@ -34,7 +37,11 @@ public class RideBattleParallelWorlds {
         ModItems.register(modEventBus);
         ModSounds.register(modEventBus);
 
+        ModEntities.register(modEventBus);
+        ModDataComponents.register(modEventBus);
+
         NeoForge.EVENT_BUS.register(FormWheel.class);
+        NeoForge.EVENT_BUS.register(AbilitiesHandler.class);
 
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

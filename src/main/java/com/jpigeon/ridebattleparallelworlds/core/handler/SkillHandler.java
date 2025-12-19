@@ -4,6 +4,8 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.handler.util.SkillUtils;
+import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
@@ -19,8 +21,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -78,8 +82,6 @@ public class SkillHandler {
     }
 
     private static void splashDragon(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
         addResistance(serverPlayer, 30);
         double distance;
 
@@ -100,21 +102,26 @@ public class SkillHandler {
     }
 
     private static void blastPegasus(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 30);
-        double distance = 5;
+        addResistance(serverPlayer, 20);
 
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
-                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
-                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
-                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
-                1));
+        RiderManager.scheduleTicks(10, () ->
+        SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile -> {
+            skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
+                    .setBaseDamage(2)
+                    .setExplosionPower(3)
+                    .setGravity(0)
+                    .setLifeTime(100)
+                    .onHitEntity((proj, target) -> {
+                        if (target instanceof LivingEntity living) {
+                            living.addEffect(new MobEffectInstance(
+                                    MobEffects.MOVEMENT_SLOWDOWN, 100, 2
+                            ));
+                        }
+                    });
+        }));
     }
 
     private static void calamityTitan(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
         addResistance(serverPlayer, 20);
 
         double distance = 1.5;
@@ -136,8 +143,6 @@ public class SkillHandler {
     }
 
     private static void risingSplashDragon(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
         addResistance(serverPlayer, 30);
         double distance;
 
@@ -158,21 +163,28 @@ public class SkillHandler {
     }
 
     private static void risingBlastPegasus(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
         addResistance(serverPlayer, 30);
-        double distance = 7;
 
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
-                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
-                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
-                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
-                3));
+        addResistance(serverPlayer, 20);
+
+        RiderManager.scheduleTicks(10, () ->
+                SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile -> {
+                    skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
+                            .setBaseDamage(2)
+                            .setExplosionPower(4)
+                            .setGravity(0)
+                            .setLifeTime(100)
+                            .onHitEntity((proj, target) -> {
+                                if (target instanceof LivingEntity living) {
+                                    living.addEffect(new MobEffectInstance(
+                                            MobEffects.MOVEMENT_SLOWDOWN, 100, 2
+                                    ));
+                                }
+                            });
+                }));
     }
 
     private static void risingCalamityTitan(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
         addResistance(serverPlayer, 20);
 
         double distance = 2.0;

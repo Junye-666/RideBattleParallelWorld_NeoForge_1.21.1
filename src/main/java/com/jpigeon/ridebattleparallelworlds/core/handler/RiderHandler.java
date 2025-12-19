@@ -34,7 +34,9 @@ public class RiderHandler {
         ResourceLocation formId = event.getFormId();
         // 处理空我
         if (event.getRiderId().equals(RiderIds.KUUGA_ID)) {
-            handleKuuga(player, legs, formId);
+            ResourceLocation actualFormId = FormWheel.KUUGA_FORM_ID_WHEEL.get(FormWheel.getCurrentIndex());
+            FormWheel.setArcleSlot(player, actualFormId);
+            handleKuuga(player, legs, actualFormId);
         }
     }
 
@@ -178,7 +180,7 @@ public class RiderHandler {
         playAnimation(abstractClientPlayer, "kuuga_henshin");
         if (legs.getItem() instanceof ArcleItem arcleItem) {
             RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
-            if (arcleItem.getCurrentState() == ArcleItem.AnimState.IN_BODY) {
+            if (arcleItem.getCurrentState() == ArcleItem.AnimState.IN_BODY || arcleItem.getCurrentState() == ArcleItem.AnimState.SHRINK) {
                 RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
             }
             RiderManager.scheduleTicks(36, () -> playHenshinSound(player, formId));
