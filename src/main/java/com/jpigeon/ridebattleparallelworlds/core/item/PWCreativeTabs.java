@@ -3,12 +3,16 @@ package com.jpigeon.ridebattleparallelworlds.core.item;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
+
+import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
 
 public class PWCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
@@ -31,14 +35,18 @@ public class PWCreativeTabs {
                         output.accept(ModItems.RISING_TITAN_ELEMENT);
                         output.accept(ModItems.AMAZING_MIGHTY_ELEMENT);
                         output.accept(ModItems.ULTIMATE_ELEMENT);
-                        output.accept(ModItems.DRAGON_ROD);
-                        output.accept(ModItems.PEGASUS_BOWGUN);
-                        output.accept(ModItems.TITAN_SWORD);
-                        output.accept(ModItems.RISING_DRAGON_ROD);
-                        output.accept(ModItems.RISING_PEGASUS_BOWGUN);
-                        output.accept(ModItems.RISING_TITAN_SWORD);
                     })
+                    .build());
 
+    public static final Supplier<CreativeModeTab> DECADE_ITEMS_TAB = CREATIVE_MODE_TAB.register("decade_items_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.DECADE_HELMET.get()))
+                    .title(Component.translatable("creativeTab.ridebattleparallelworlds.decade_items"))
+                    .withTabsBefore(fromString("kuuga_items_tab"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ModItems.DECA_DRIVER);
+                        output.accept(ModItems.KAMEN_RIDE_DECADE);
+                        output.accept(ModItems.KAMEN_RIDE_KUUGA);
+                    })
                     .build());
 
     public static void register(IEventBus eventBus) {

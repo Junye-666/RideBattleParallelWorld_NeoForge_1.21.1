@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.impl.geckoLib;
+package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;

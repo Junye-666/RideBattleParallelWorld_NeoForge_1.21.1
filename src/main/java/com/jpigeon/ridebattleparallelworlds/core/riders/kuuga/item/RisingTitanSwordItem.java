@@ -1,11 +1,12 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
+import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.BaseKamenRiderGeoItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericItemModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.GenericItemRenderer;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -76,7 +77,7 @@ public class RisingTitanSwordItem extends BaseKamenRiderGeoItem {
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
             if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_TITAN_ID)) {
                 player.getCooldowns().addCooldown(this, 410);
-                RiderManager.triggerSkill(player, RiderSkills.RISING_CALAMITY_TITAN);
+                RiderManager.triggerSkill(player, RiderSkills.RISING_CALAMITY_TITAN, SkillEvent.SkillTriggerType.WEAPON);
             }
         }
         return InteractionResultHolder.success(itemStack);

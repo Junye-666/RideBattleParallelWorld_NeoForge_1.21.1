@@ -24,7 +24,7 @@ public class RiderHandlerClient {
                     arcle.shrinkInBody();
                     return;
                 }
-                ResourceLocation formId = RiderManager.getCurrentForm(player);
+                ResourceLocation formId = RiderManager.getCurrentFormId(player);
                 if (formId == null) return;
                 RiderHandler.setDriverAnim(legs, formId);
             }
