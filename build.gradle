@@ -206,3 +206,8 @@ idea {
         downloadJavadoc = true
     }
 }
+
+jar {
+    exclude("com.jpigeon.ridebattleparallelworlds.core.datagen")
+    from sourceSets.main.output
+}
