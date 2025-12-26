@@ -1,13 +1,13 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
-import com.jpigeon.ridebattlelib.core.system.event.HenshinEvent;
-import com.jpigeon.ridebattlelib.core.system.event.ItemInsertionEvent;
-import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
+import com.jpigeon.ridebattlelib.core.system.event.*;
+import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
+import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeSpecialEffect;
+import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
@@ -18,15 +18,19 @@ import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationT
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+
+import java.util.Optional;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
 public class RiderHandler {
@@ -49,9 +53,11 @@ public class RiderHandler {
     @SubscribeEvent
     public static void onUnhenshin(UnhenshinEvent.Post event) {
         ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
-
         if (legs.getItem() instanceof ArcleItem arcle) {
             arcle.shrinkInBody();
+        }
+        if (legs.getItem() instanceof DecaDriverItem decaDriver) {
+            decaDriver.triggerOpen();
         }
     }
 
@@ -60,12 +66,11 @@ public class RiderHandler {
         Player player = event.getPlayer();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         ResourceLocation newFormId = event.getNewFormId();
-
+        RiderConfig config = RiderConfig.findActiveDriverConfig(player);
         // 处理空我
-        if (RiderManager.getActiveRiderConfig(player) == KuugaConfig.KUUGA) {
+        if (config == KuugaConfig.KUUGA) {
             handleKuugaSwitch(player, legs, newFormId);
-        }
-        if (RiderManager.getActiveRiderConfig(player) == DecadeConfig.DECADE) {
+        } else if (config == DecadeConfig.DECADE) {
             handleDecade(event.getPlayer(), legs, newFormId);
         }
 
@@ -79,10 +84,27 @@ public class RiderHandler {
     }
 
     @SubscribeEvent
-    public static void onInsert(ItemInsertionEvent.Pre event) {
-        if (event.getSlotId().equals(DecadeConfig.DECA_CARD)) {
-            ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
+    public static void onInsert(ItemInsertionEvent.Post event) {
+        Player player = event.getPlayer();
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        if (legs.getItem() instanceof DecaDriverItem decaDriver) {
+            RiderManager.playPublicSound(player, ModSounds.DECADE_INSERT.get());
+            decaDriver.triggerClose();
+            ItemStack stack = event.getStack();
+            if (isValidItem(stack, ModTags.Items.KAMEN_RIDE_CARDS)) {
+                RiderManager.scheduleTicks(5, () -> RiderManager.playPublicSound(player, ModSounds.KAMEN_RIDE.get()));
+            } else if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
+                RiderManager.scheduleTicks(5, () -> RiderManager.playPublicSound(player, ModSounds.FORM_RIDE.get()));
+            }
+        }
+    }
 
+    @SubscribeEvent
+    public static void onExtract(SlotExtractionEvent.Post event) {
+        Player player = event.getPlayer();
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        if (legs.getItem() instanceof DecaDriverItem decaDriver) {
+            decaDriver.triggerOpen();
         }
     }
 
@@ -121,31 +143,10 @@ public class RiderHandler {
         }
     }
 
-    private static void playHenshinSound(Player player, ResourceLocation formId) {
-        if (KuugaConfig.KUUGA.includesFormId(formId)) {
-            if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.GROWING_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_MIGHTY.get());
-            } else if (formId.equals(KuugaConfig.DRAGON_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_DRAGON.get());
-            } else if (formId.equals(KuugaConfig.PEGASUS_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_PEGASUS.get());
-            } else if (formId.equals(KuugaConfig.TITAN_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_TITAN.get());
-            } else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_MIGHTY.get());
-            } else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_DRAGON.get());
-            } else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_PEGASUS.get());
-            } else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_RISING_TITAN.get());
-            } else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_AMAZING_MIGHTY.get());
-            } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
-                RiderManager.playPublicSound(player, ModSounds.KUUGA_ULTIMATE.get());
-                player.displayClientMessage(Component.literal(player.getName().getString() + "：一条桑，请看好我最后的变身吧"), false);
-            }
-        }
+    private static void playHenshinSound(Player player, FormConfig form) {
+        Optional<SoundEvent> sound = ModSounds.getHenshinSound(form);
+        if (sound.isEmpty()) return;
+        RiderManager.playPublicSound(player, sound.get());
     }
 
     private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
@@ -171,9 +172,12 @@ public class RiderHandler {
             if (arcleItem.getCurrentState() == ArcleItem.AnimState.IN_BODY || arcleItem.getCurrentState() == ArcleItem.AnimState.SHRINK) {
                 RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
             }
-            RiderManager.scheduleTicks(36, () -> playHenshinSound(player, formId));
-            RiderManager.completeIn(120, player);
         }
+        FormConfig form = RiderManager.getFormConfig(player, formId);
+
+        RiderManager.scheduleTicks(36, () -> playHenshinSound(player, form));
+        Optional<Integer> length = ModSounds.getSoundLength(form);
+        length.ifPresent(integer -> RiderManager.completeIn(integer, player));
     }
 
     private static void handleKuugaSwitch(Player player, ItemStack legs, ResourceLocation formId) {
@@ -185,7 +189,8 @@ public class RiderHandler {
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "kuuga_switch");
         RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
-        playHenshinSound(player, formId);
+        FormConfig form = RiderManager.getFormConfig(player, formId);
+        playHenshinSound(player, form);
         RiderManager.completeIn(90, player);
     }
 
@@ -193,10 +198,11 @@ public class RiderHandler {
         if (legs.getItem() instanceof DecaDriverItem decaDriver) {
             decaDriver.triggerClose();
         }
-        playHenshinSound(player, formId);
+        FormConfig form = RiderManager.getFormConfig(player, formId);
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "decade_insert");
-        if (formId.equals(DecadeConfig.DECADE_BASE_ID)){
+        RiderManager.scheduleTicks(10, () -> playHenshinSound(player, form));
+        if (formId.equals(DecadeConfig.DECADE_BASE_ID)) {
             Level level = player.level();
             DecadeSpecialEffect effect = new DecadeSpecialEffect(
                     ModEntities.DECADE_SPECIAL_EFFECT.get(),
@@ -210,13 +216,13 @@ public class RiderHandler {
 
             effect.setOwner(player);
 
-            if (level.addFreshEntity(effect)){
-                RiderManager.completeIn(20, player);
-                RiderManager.scheduleTicks(25, effect::discard);
-            }
+            RiderManager.scheduleTicks(20, () -> level.addFreshEntity(effect));
         }
-        if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.DRAGON_ID) || formId.equals(KuugaConfig.PEGASUS_ID) || formId.equals(KuugaConfig.TITAN_ID)) {
-            RiderManager.completeIn(90, player);
-        }
+        Optional<Integer> length = ModSounds.getSoundLength(form);
+        length.ifPresent(integer -> RiderManager.completeIn(integer, player));
+    }
+
+    private static boolean isValidItem(ItemStack itemStack, TagKey<Item> tagKey) {
+        return itemStack.is(tagKey);
     }
 }

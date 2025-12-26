@@ -1,10 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds;
 
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeSpecialEffect;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.GenericEntityModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.GenericEntityRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -34,6 +34,8 @@ public class RideBattleParallelWorldsClient {
         RiderSkills.init();
         KuugaConfig.init();
         DecadeConfig.init();
+
+        ModSounds.registerFormSoundMap();
     }
 
     @SubscribeEvent

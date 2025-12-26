@@ -49,13 +49,13 @@ public class SkillHandler {
     }
 
     private static void animateRiderSkills(Player player, ResourceLocation skillId) {
-        if (RiderManager.isSpecificRider(player, RiderIds.KUUGA_ID)) {
+        if (KuugaConfig.KUUGA.includesFormId(RiderManager.getCurrentFormId(player))) {
             animateKuugaSkills(player, skillId);
         }
     }
 
     private static void applyRiderSkills(Player player, ResourceLocation skillId) {
-        if (KuugaConfig.KUUGA.includesFormConfig(RiderManager.getActiveFormConfig(player))) {
+        if (KuugaConfig.KUUGA.includesFormId(RiderManager.getCurrentFormId(player))) {
             applyKuugaSkills(player, skillId);
         }
     }
@@ -104,20 +104,19 @@ public class SkillHandler {
         addResistance(serverPlayer, 20);
 
         RiderManager.scheduleTicks(10, () ->
-        SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile -> {
-            skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
-                    .setBaseDamage(2)
-                    .setExplosionPower(3)
-                    .setGravity(0)
-                    .setLifeTime(100)
-                    .onHitEntity((proj, target) -> {
-                        if (target instanceof LivingEntity living) {
-                            living.addEffect(new MobEffectInstance(
-                                    MobEffects.MOVEMENT_SLOWDOWN, 100, 2
-                            ));
-                        }
-                    });
-        }));
+                SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile ->
+                        skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
+                                .setBaseDamage(2)
+                                .setExplosionPower(3)
+                                .setGravity(0)
+                                .setLifeTime(100)
+                                .onHitEntity((proj, target) -> {
+                                    if (target instanceof LivingEntity living) {
+                                        living.addEffect(new MobEffectInstance(
+                                                MobEffects.MOVEMENT_SLOWDOWN, 100, 2
+                                        ));
+                                    }
+                                })));
     }
 
     private static void calamityTitan(Player serverPlayer) {
@@ -167,20 +166,19 @@ public class SkillHandler {
         addResistance(serverPlayer, 20);
 
         RiderManager.scheduleTicks(10, () ->
-                SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile -> {
-                    skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
-                            .setBaseDamage(2)
-                            .setExplosionPower(4)
-                            .setGravity(0)
-                            .setLifeTime(100)
-                            .onHitEntity((proj, target) -> {
-                                if (target instanceof LivingEntity living) {
-                                    living.addEffect(new MobEffectInstance(
-                                            MobEffects.MOVEMENT_SLOWDOWN, 100, 2
-                                    ));
-                                }
-                            });
-                }));
+                SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile ->
+                        skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
+                                .setBaseDamage(2)
+                                .setExplosionPower(4)
+                                .setGravity(0)
+                                .setLifeTime(100)
+                                .onHitEntity((proj, target) -> {
+                                    if (target instanceof LivingEntity living) {
+                                        living.addEffect(new MobEffectInstance(
+                                                MobEffects.MOVEMENT_SLOWDOWN, 100, 2
+                                        ));
+                                    }
+                                })));
     }
 
     private static void risingCalamityTitan(Player serverPlayer) {
@@ -234,9 +232,7 @@ public class SkillHandler {
                 dragonRod.triggerOffSpin();
                 RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
             }
-            return;
-        }
-        if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
+        } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
             if (mainHand.getItem() instanceof PegasusBowgunItem pegasusBowgunItem) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
                 pegasusBowgunItem.triggerShoot();
@@ -244,9 +240,7 @@ public class SkillHandler {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
                 pegasusBowgunItem.triggerShoot();
             }
-            return;
-        }
-        if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
+        } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
             playAnimation(clientPlayer, "kuuga_calamity_titan");
             if (mainHand.getItem() instanceof TitanSwordItem titanSwordItem) {
                 titanSwordItem.setCurrentState(TitanSwordItem.AnimState.STAB);
@@ -255,9 +249,8 @@ public class SkillHandler {
                 titanSwordItem.setCurrentState(TitanSwordItem.AnimState.STAB);
                 RiderManager.scheduleTicks(15, () -> titanSwordItem.setCurrentState(TitanSwordItem.AnimState.IDLE));
             }
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
+
+        } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
             if (mainHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
                 risingDragonRod.triggerMainSpin();
@@ -267,9 +260,8 @@ public class SkillHandler {
                 risingDragonRod.triggerOffSpin();
                 RiderManager.scheduleTicks(15, () -> risingDragonRod.setCurrentState(RisingDragonRodItem.AnimState.IDLE));
             }
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
+
+        } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
             if (mainHand.getItem() instanceof RisingPegasusBowgunItem risingPegasusBowgun) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
                 risingPegasusBowgun.triggerShoot();
@@ -277,9 +269,7 @@ public class SkillHandler {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
                 risingPegasusBowgun.triggerShoot();
             }
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
+        } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
             playAnimation(clientPlayer, "kuuga_calamity_titan");
             if (mainHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
                 risingTitanSword.triggerStab();
@@ -294,47 +284,26 @@ public class SkillHandler {
     private static void applyKuugaSkills(Player player, ResourceLocation skillId) {
         if (skillId.equals(RiderSkills.GROWING_KICK)) {
             growingKick(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.MIGHTY_KICK)) {
+        } else if (skillId.equals(RiderSkills.MIGHTY_KICK)) {
             mightyKick(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
+        } else if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
             splashDragon(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
+        } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
             blastPegasus(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
+        } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
             calamityTitan(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_MIGHTY_KICK)) {
+        } else if (skillId.equals(RiderSkills.RISING_MIGHTY_KICK)) {
             risingMightyKick(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
+        } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
             risingSplashDragon(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
+        } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
             risingBlastPegasus(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
+        } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
             risingCalamityTitan(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK)) {
+        } else if (skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK)) {
             amazingMightyKick(player);
-            return;
-        }
-        if (skillId.equals(RiderSkills.ULTRA_KICK)) {
+        } else if (skillId.equals(RiderSkills.ULTRA_KICK)) {
             ultimateKick(player);
-            return;
         }
     }
 

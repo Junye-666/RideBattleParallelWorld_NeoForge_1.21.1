@@ -2,12 +2,14 @@ package com.jpigeon.ridebattleparallelworlds.core.handler;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
+import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
-import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.ItemData;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -54,6 +56,17 @@ public class AbilitiesHandler {
             removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
         else if (formId.equals(KuugaConfig.RISING_TITAN_ID))
             removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
+    }
+
+    @SubscribeEvent
+    public static void onExtract(SlotExtractionEvent.Pre event) {
+        ResourceLocation slotId = event.getSlotId();
+        ItemStack stack = event.getExtractedStack();
+        if (slotId.equals(DecadeConfig.DECA_CARD)) {
+            if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
+
+            }
+        }
     }
 
     @SubscribeEvent

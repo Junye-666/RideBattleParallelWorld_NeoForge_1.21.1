@@ -64,5 +64,53 @@
     "sounds": [
       "ridebattleparallelworlds:kuuga/kuuga_ultimate"
     ]
+  },
+  "decade_insert": {
+    "subtitle": "sounds.ridebattleparallelworlds.decade_insert",
+    "sounds": [
+      "ridebattleparallelworlds:decade/decade_insert"
+    ]
+  },
+  "kamen_ride": {
+    "subtitle": "sounds.ridebattleparallelworlds.kamen_ride",
+    "sounds": [
+      "ridebattleparallelworlds:decade/kamen_ride"
+    ]
+  },
+  "form_ride": {
+    "subtitle": "sounds.ridebattleparallelworlds.form_ride",
+    "sounds": [
+      "ridebattleparallelworlds:decade/form_ride"
+    ]
+  },
+  "kr_decade": {
+    "subtitle": "sounds.ridebattleparallelworlds.kr_decade",
+    "sounds": [
+      "ridebattleparallelworlds:decade/kr/kr_decade"
+    ]
+  },
+  "kr_kuuga": {
+    "subtitle": "sounds.ridebattleparallelworlds.kr_kuuga",
+    "sounds": [
+      "ridebattleparallelworlds:decade/kr/kr_kuuga"
+    ]
+  },
+  "fr_kuuga_dragon": {
+    "subtitle": "sounds.ridebattleparallelworlds.fr_kuuga_dragon",
+    "sounds": [
+      "ridebattleparallelworlds:decade/fr/kuuga/fr_kuuga_dragon"
+    ]
+  },
+  "fr_kuuga_pegasus": {
+    "subtitle": "sounds.ridebattleparallelworlds.fr_kuuga_pegasus",
+    "sounds": [
+      "ridebattleparallelworlds:decade/fr/kuuga/fr_kuuga_pegasus"
+    ]
+  },
+  "fr_kuuga_titan": {
+    "subtitle": "sounds.ridebattleparallelworlds.fr_kuuga_titan",
+    "sounds": [
+      "ridebattleparallelworlds:decade/fr/kuuga/fr_kuuga_titan"
+    ]
   }
 }

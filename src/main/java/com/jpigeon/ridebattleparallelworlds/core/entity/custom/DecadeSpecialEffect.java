@@ -1,6 +1,5 @@
 package com.jpigeon.ridebattleparallelworlds.core.entity.custom;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.BaseKamenRiderGeoEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class DecadeSpecialEffect extends BaseKamenRiderGeoEntity {
-    private static final int LIFETIME = 25;
+    private static final int LIFETIME = 46;
     private int lifetime = 0;
     private final float alpha = 0.5f;
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(DecadeSpecialEffect.class, EntityDataSerializers.OPTIONAL_UUID);

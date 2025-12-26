@@ -4,7 +4,6 @@ import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
 import com.jpigeon.ridebattlelib.core.system.henshin.helper.TriggerType;
-import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
@@ -31,7 +30,7 @@ public class DecadeConfig {
                             ModItems.FORM_RIDE_KUUGA_TITAN.get()
                     ),
                     true,
-                    false
+                    true
                     );
 
     public static final FormConfig DECADE_BASE = new FormConfig(DECADE_BASE_ID)
@@ -52,25 +51,28 @@ public class DecadeConfig {
             .addRequiredItem(DECA_CARD, ModItems.KAMEN_RIDE_KUUGA.get())
             .setShouldPause(true)
             .setTriggerType(TriggerType.AUTO)
-            .addGrantedItem(ModItems.FORM_RIDE_KUUGA_DRAGON.get())
-            .addGrantedItem(ModItems.FORM_RIDE_KUUGA_PEGASUS.get())
-            .addGrantedItem(ModItems.FORM_RIDE_KUUGA_TITAN.get())
             ;
 
     public static final FormConfig DECADE_KUUGA_DRAGON = KuugaConfig.KUUGA_DRAGON_FORM.copyWithoutItemsAndSkills()
             .addRequiredItem(DECA_CARD, ModItems.FORM_RIDE_KUUGA_DRAGON.get())
             .setShouldPause(true)
-            .setTriggerType(TriggerType.AUTO);
+            .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(ModItems.DRAGON_ROD.get())
+            ;
 
     public static final FormConfig DECADE_KUUGA_PEGASUS = KuugaConfig.KUUGA_PEGASUS_FORM.copyWithoutItemsAndSkills()
             .addRequiredItem(DECA_CARD, ModItems.FORM_RIDE_KUUGA_PEGASUS.get())
             .setShouldPause(true)
-            .setTriggerType(TriggerType.AUTO);
+            .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(ModItems.PEGASUS_BOWGUN.get())
+            ;
 
     public static final FormConfig DECADE_KUUGA_TITAN = KuugaConfig.KUUGA_TITAN_FORM.copyWithoutItemsAndSkills()
             .addRequiredItem(DECA_CARD, ModItems.FORM_RIDE_KUUGA_TITAN.get())
             .setShouldPause(true)
-            .setTriggerType(TriggerType.AUTO);
+            .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(ModItems.TITAN_SWORD.get())
+            ;
 
 
     private static void registerDecade() {

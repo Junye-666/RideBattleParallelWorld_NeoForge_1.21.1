@@ -3,8 +3,6 @@ package com.jpigeon.ridebattleparallelworlds.core.item;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
@@ -46,6 +44,9 @@ public class PWCreativeTabs {
                         output.accept(ModItems.DECA_DRIVER);
                         output.accept(ModItems.KAMEN_RIDE_DECADE);
                         output.accept(ModItems.KAMEN_RIDE_KUUGA);
+                        output.accept(ModItems.FORM_RIDE_KUUGA_DRAGON);
+                        output.accept(ModItems.FORM_RIDE_KUUGA_PEGASUS);
+                        output.accept(ModItems.FORM_RIDE_KUUGA_TITAN);
                     })
                     .build());
 

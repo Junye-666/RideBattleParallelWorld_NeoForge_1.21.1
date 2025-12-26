@@ -11,6 +11,12 @@
   "item.ridebattleparallelworlds.kuuga.amazing_mighty_element": "Amazing Mighty Element",
   "item.ridebattleparallelworlds.kuuga.ultimate_element": "Ultimate Element",
 
+  "item.ridebattleparallelworlds.decade.cards.kamen_ride_decade_card": "Kamen Ride: Decade",
+  "item.ridebattleparallelworlds.decade.cards.kamen_ride_kuuga_card": "Kamen Ride: Kuuga",
+  "item.ridebattleparallelworlds.decade.cards.form_ride_kuuga_dragon_card": "Form Ride: Kuuga Dragon",
+  "item.ridebattleparallelworlds.decade.cards.form_ride_kuuga_pegasus_card": "Form Ride: Kuuga Pegasus",
+  "item.ridebattleparallelworlds.decade.cards.form_ride_kuuga_titan_card": "Form Ride: Kuuga Titan",
+
   "item.ridebattleparallelworlds.kuuga.arcle": "Arcle",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_helmet": "Kuuga Growing",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_growing_chestplate": "Kuuga Growing",
@@ -46,6 +52,11 @@
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_chestplate": "Kuuga Ultimate",
   "item.ridebattleparallelworlds.kuuga.armor.kuuga_ultimate_boots": "Kuuga Ultimate",
 
+  "item.ridebattleparallelworlds.decade.deca_driver": "Deca Driver",
+  "item.ridebattleparallelworlds.kuuga.armor.decade_base_helmet": "Decade",
+  "item.ridebattleparallelworlds.kuuga.armor.decade_base_chestplate": "Decade",
+  "item.ridebattleparallelworlds.kuuga.armor.decade_base_boots": "Decade",
+
   "item.ridebattleparallelworlds.kuuga.weapon.kuuga_dragon_rod": "Dragon Rod",
   "item.ridebattleparallelworlds.kuuga.weapon.kuuga_titan_sword": "Titan Sword",
   "item.ridebattleparallelworlds.kuuga.weapon.kuuga_pegasus_bowgun": "Pegasus Bowgun",
@@ -75,9 +86,9 @@
   "skill.ultra_kick": "Ultra Kick",
 
   "creativeTab.ridebattleparallelworlds.kuuga_items": "Kuuga",
-  "creativeTab.ridebattleparallelworlds.decade_items": "Decade"
+  "creativeTab.ridebattleparallelworlds.decade_items": "Decade",
 
-
+  "entity.ridebattleparallelworlds.decade_special_effect": ""
 
 
 }

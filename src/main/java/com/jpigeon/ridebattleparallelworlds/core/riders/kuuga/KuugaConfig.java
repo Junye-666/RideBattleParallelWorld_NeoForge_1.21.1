@@ -38,7 +38,7 @@ public class KuugaConfig {
             .addMainDriverSlot(ARCLE_CORE,
                     List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get(), ModItems.RISING_MIGHTY_ELEMENT.get(), ModItems.RISING_DRAGON_ELEMENT.get(),ModItems.RISING_PEGASUS_ELEMENT.get(), ModItems.RISING_TITAN_ELEMENT.get(), ModItems.AMAZING_MIGHTY_ELEMENT.get(), ModItems.ULTIMATE_ELEMENT.get()),
                     true,
-                    false
+                    true
             );
 
     public static final FormConfig KUUGA_GROWING_FORM = new FormConfig(GROWING_ID)
