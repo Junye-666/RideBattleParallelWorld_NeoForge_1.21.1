@@ -41,12 +41,10 @@ public class RiderHandler {
         ResourceLocation formId = event.getFormId();
         // 处理空我
         if (event.getRiderId().equals(RiderIds.KUUGA_ID)) {
-            ResourceLocation actualFormId = FormWheel.KUUGA_FORM_ID_WHEEL.get(FormWheel.getCurrentIndex());
-            FormWheel.setArcleSlot(player, actualFormId);
-            handleKuuga(player, legs, actualFormId);
+            handleKuuga(player, legs, formId);
         }
         if (event.getRiderId().equals(RiderIds.DECADE_ID)) {
-            handleDecade(event.getPlayer(), legs, formId);
+            handleDecade(event.getPlayer(), formId);
         }
     }
 
@@ -71,7 +69,7 @@ public class RiderHandler {
         if (config == KuugaConfig.KUUGA) {
             handleKuugaSwitch(player, legs, newFormId);
         } else if (config == DecadeConfig.DECADE) {
-            handleDecade(event.getPlayer(), legs, newFormId);
+            handleDecade(event.getPlayer(), newFormId);
         }
 
     }
@@ -89,7 +87,7 @@ public class RiderHandler {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         if (legs.getItem() instanceof DecaDriverItem decaDriver) {
             RiderManager.playPublicSound(player, ModSounds.DECADE_INSERT.get());
-            decaDriver.triggerClose();
+            RiderManager.scheduleTicks(5, decaDriver::triggerClose);
             ItemStack stack = event.getStack();
             if (isValidItem(stack, ModTags.Items.KAMEN_RIDE_CARDS)) {
                 RiderManager.scheduleTicks(5, () -> RiderManager.playPublicSound(player, ModSounds.KAMEN_RIDE.get()));
@@ -194,29 +192,25 @@ public class RiderHandler {
         RiderManager.completeIn(90, player);
     }
 
-    private static void handleDecade(Player player, ItemStack legs, ResourceLocation formId) {
-        if (legs.getItem() instanceof DecaDriverItem decaDriver) {
-            decaDriver.triggerClose();
-        }
+    private static void handleDecade(Player player, ResourceLocation formId) {
         FormConfig form = RiderManager.getFormConfig(player, formId);
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "decade_insert");
         RiderManager.scheduleTicks(10, () -> playHenshinSound(player, form));
         if (formId.equals(DecadeConfig.DECADE_BASE_ID)) {
             Level level = player.level();
+
             DecadeSpecialEffect effect = new DecadeSpecialEffect(
                     ModEntities.DECADE_SPECIAL_EFFECT.get(),
                     level
             );
             effect.setPos(player.position());
-            effect.setXRot(player.getXRot());
             effect.setYRot(player.getYRot());
-            effect.setYBodyRot(player.getYRot());
-            effect.setYHeadRot(player.getYHeadRot());
 
             effect.setOwner(player);
 
             RiderManager.scheduleTicks(20, () -> level.addFreshEntity(effect));
+
         }
         Optional<Integer> length = ModSounds.getSoundLength(form);
         length.ifPresent(integer -> RiderManager.completeIn(integer, player));

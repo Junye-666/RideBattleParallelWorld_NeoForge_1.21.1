@@ -1,16 +1,14 @@
 package com.jpigeon.ridebattleparallelworlds.core.entity.custom;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.BaseKamenRiderGeoEntity;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.BaseKamenRiderEffectEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 
@@ -18,15 +16,14 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class DecadeSpecialEffect extends BaseKamenRiderGeoEntity {
-    private static final int LIFETIME = 46;
+public class DecadeSpecialEffect extends BaseKamenRiderEffectEntity {
+    private static final int MAX_LIFETIME = 46;
     private int lifetime = 0;
-    private final float alpha = 0.5f;
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(DecadeSpecialEffect.class, EntityDataSerializers.OPTIONAL_UUID);
 
 
     public DecadeSpecialEffect(EntityType<DecadeSpecialEffect> type, Level level) {
-        super(type, level, "decade", "decade_special_effect", false, false);
+        super(type, level, "decade", "decade_special_effect");
     }
 
     @Override
@@ -41,33 +38,26 @@ public class DecadeSpecialEffect extends BaseKamenRiderGeoEntity {
 
     @Override
     public float getCurrentAlpha() {
-        return alpha;
+        return 0.5f;
     }
 
     @Override
     public void tick() {
         super.tick();
         lifetime++;
+
         Player owner = getOwner();
         if (owner == null) {
             this.discard();
             return;
         }
-        this.setPos(owner.position());
-        this.setXRot(owner.getXRot());
-        this.setYRot(owner.getYHeadRot());
-        if (lifetime % 5 != 0) return;
 
-        // 超时消失改为触发消失动画
-        if (lifetime >= LIFETIME) {
-            this.discard();
-            return;
-        }
+        this.setPos(owner.getX(), owner.getY(), owner.getZ());
+        this.setYRot(owner.getYRot());
 
-        if (owner.isRemoved()) {
+        if (lifetime >= MAX_LIFETIME || owner.isRemoved()) {
             this.discard();
         }
-
     }
 
     @Nullable
@@ -98,23 +88,5 @@ public class DecadeSpecialEffect extends BaseKamenRiderGeoEntity {
     @Override
     public boolean isCustomNameVisible() {
         return false;
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-
-    @Override
-    public boolean isPushable() {
-        return false;
-    }
-
-    public static AttributeSupplier.Builder createAttributes() {
-        return LivingEntity.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 1.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 100.0)
-                .add(Attributes.FOLLOW_RANGE, 0.0);
     }
 }

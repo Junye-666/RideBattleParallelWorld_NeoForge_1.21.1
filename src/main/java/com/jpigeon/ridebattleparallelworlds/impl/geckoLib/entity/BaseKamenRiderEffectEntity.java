@@ -1,49 +1,35 @@
 package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseKamenRiderGeoEntity extends LivingEntity implements GeoEntity {
+public abstract class BaseKamenRiderEffectEntity extends Entity implements GeoEntity {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final String riderName;
     protected final String entityName;
-    protected final boolean hasGravity;
-    protected final boolean isInvulnerable;
-    protected final Map<String, AnimationController<BaseKamenRiderGeoEntity>> controllers = new HashMap<>();
 
-    public BaseKamenRiderGeoEntity(EntityType<? extends LivingEntity> entityType, Level level,
-                                   String riderName, String entityName,
-                                   boolean hasGravity, boolean isInvulnerable) {
+    protected final Map<String, AnimationController<BaseKamenRiderEffectEntity>> controllers = new HashMap<>();
+
+    public BaseKamenRiderEffectEntity(EntityType<?> entityType, Level level,
+                                      String riderName, String entityName) {
         super(entityType, level);
         this.riderName = riderName;
         this.entityName = entityName;
-        this.hasGravity = hasGravity;
-        this.isInvulnerable = isInvulnerable;
 
-        // 根据参数设置实体属性
-        if (!hasGravity) {
-            this.setNoGravity(true);
-        }
-        if (isInvulnerable) {
-            this.setInvulnerable(true);
-        }
+        this.noPhysics = true;
+        this.setNoGravity(true);
     }
 
     @Override
@@ -60,7 +46,7 @@ public abstract class BaseKamenRiderGeoEntity extends LivingEntity implements Ge
      * 添加动画控制器并存储引用
      */
     protected void addController(AnimatableManager.ControllerRegistrar registrar, String name,
-                                 AnimationController<BaseKamenRiderGeoEntity> controller) {
+                                 AnimationController<BaseKamenRiderEffectEntity> controller) {
         controllers.put(name, controller);
         registrar.add(controller);
     }
@@ -69,14 +55,14 @@ public abstract class BaseKamenRiderGeoEntity extends LivingEntity implements Ge
      * 获取指定的动画控制器
      */
     @Nullable
-    public AnimationController<BaseKamenRiderGeoEntity> getController(String name) {
+    public AnimationController<BaseKamenRiderEffectEntity> getController(String name) {
         return controllers.get(name);
     }
 
     /**
      * 创建简单的循环动画控制器
      */
-    protected AnimationController<BaseKamenRiderGeoEntity> createLoopAnimationController(
+    protected AnimationController<BaseKamenRiderEffectEntity> createLoopAnimationController(
             String name, String animationName) {
         return new AnimationController<>(this, name, 0, state -> {
             state.getController().setAnimation(RawAnimation.begin().thenLoop(animationName));
@@ -87,7 +73,7 @@ public abstract class BaseKamenRiderGeoEntity extends LivingEntity implements Ge
     /**
      * 创建单次播放动画控制器
      */
-    protected AnimationController<BaseKamenRiderGeoEntity> createOnceAnimationController(
+    protected AnimationController<BaseKamenRiderEffectEntity> createOnceAnimationController(
             String name, String animationName) {
         return new AnimationController<>(this, name, 0, state -> {
             state.getController().setAnimation(
@@ -140,58 +126,19 @@ public abstract class BaseKamenRiderGeoEntity extends LivingEntity implements Ge
 
     //========== 实体基础方法 ==========
 
+
     @Override
-    public boolean isPushable() {
-        return false;
-    }
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {}
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {}
 
     @Override
     public boolean fireImmune() {
         return true;
-    }
-
-    @Override
-    public boolean isInvisible() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-
-    @Override
-    public boolean isPickable() {
-        return false;
-    }
-
-    @Override
-    public @NotNull HumanoidArm getMainArm() {
-        return HumanoidArm.RIGHT;
-    }
-
-    @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
-        return false;
-    }
-
-    @Override
-    public @NotNull Iterable<ItemStack> getArmorSlots() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public @NotNull ItemStack getItemBySlot(@NotNull EquipmentSlot equipmentSlot) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public void setItemSlot(@NotNull EquipmentSlot equipmentSlot, @NotNull ItemStack itemStack) {
-    }
-
-    @Override
-    public boolean shouldRender(double x, double y, double z) {
-        return super.shouldRender(x, y, z);
     }
 
     //========== 可选的透明度支持 ==========

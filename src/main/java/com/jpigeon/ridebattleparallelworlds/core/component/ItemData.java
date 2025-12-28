@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.handler.util;
+package com.jpigeon.ridebattleparallelworlds.core.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

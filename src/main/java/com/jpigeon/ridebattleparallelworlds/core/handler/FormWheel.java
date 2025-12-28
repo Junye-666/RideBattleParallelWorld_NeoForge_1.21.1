@@ -3,7 +3,10 @@ package com.jpigeon.ridebattleparallelworlds.core.handler;
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
+import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderForms;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.ChatFormatting;
@@ -12,13 +15,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FormWheel {
+    private static final Map<List<ResourceLocation>, Integer> currentIndex = new HashMap<>();
+
+    static {
+        currentIndex.put(RiderForms.KUUGA_FORMS, 0);
+    }
+
     @SubscribeEvent
     public static void onReturnItem(ReturnItemsEvent.Pre event) {
         if (event.isCanceled()) return;
@@ -29,57 +41,64 @@ public class FormWheel {
         }
     }
 
-    public static List<ResourceLocation> KUUGA_FORM_ID_WHEEL = List.of(
-            KuugaConfig.GROWING_ID,
-            KuugaConfig.MIGHTY_ID,
-            KuugaConfig.DRAGON_ID,
-            KuugaConfig.PEGASUS_ID,
-            KuugaConfig.TITAN_ID,
-            KuugaConfig.RISING_MIGHTY_ID,
-            KuugaConfig.RISING_DRAGON_ID,
-            KuugaConfig.RISING_PEGASUS_ID,
-            KuugaConfig.RISING_TITAN_ID,
-            KuugaConfig.AMAZING_MIGHTY_ID,
-            KuugaConfig.ULTIMATE_ID
-    );
-
-    private static int currentIndex = 0;
-
-    public static int getCurrentIndex() {
-        return currentIndex;
+    public static int getCurrentIndex(List<ResourceLocation> list) {
+        return currentIndex.getOrDefault(list, 0);
     }
 
-    private static void setCurrentIndex(int currentIndex) {
-        FormWheel.currentIndex = currentIndex;
+    private static void setCurrentIndex(List<ResourceLocation> list, int index) {
+        currentIndex.put(list, index);
     }
 
     public static void handleRotate(Player player) {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         if (legs.getItem() instanceof ArcleItem) {
-            int currentIndex = getCurrentIndex();
-            int maxIndex = KUUGA_FORM_ID_WHEEL.size();
-            // 循环切换技能
-            int newIndex = (currentIndex + 1) % maxIndex;
-            setCurrentIndex(newIndex);
+            ResourceLocation kuuga = RiderIds.KUUGA_ID;
 
-            // 获取新技能的ID
-            ResourceLocation newId = KUUGA_FORM_ID_WHEEL.get(newIndex);
-            Component displayName =
-                    Component.translatable("form.ridebattleparallelworlds." + newId.getPath().toLowerCase())
-                            .withStyle(getChatFormatting(newId));
+            // 获取所有已解锁形态
+            List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, kuuga);
 
+            if (unlockedForms.isEmpty()) {
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.displayClientMessage(
+                            Component.literal("没有可用的解锁形态").withStyle(ChatFormatting.RED),
+                            true
+                    );
+                }
+                return;
+            }
+
+            // 只在已解锁形态中循环
+            int currentIdx = getCurrentIndex(unlockedForms);
+            int nextIndex = (currentIdx + 1) % unlockedForms.size();
+            setCurrentIndex(unlockedForms, nextIndex);
+
+            ResourceLocation newId = unlockedForms.get(nextIndex);
+
+            // 显示形态名称
+            Component displayName = getDisplayName(newId);
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.displayClientMessage(displayName, true);
             }
 
+            // 更新腰带槽
             RiderManager.extractItemFromSlot(player, KuugaConfig.ARCLE_CORE);
             RiderHandler.setDriverAnim(legs, newId);
-            RiderManager.scheduleTicks(5, () -> setArcleSlot(player, newId));
+            RiderManager.scheduleTicks(1, () -> setArcleSlot(player, newId));
         }
     }
 
-    private static ChatFormatting getChatFormatting(ResourceLocation riderId) {
-        String string = riderId.toString();
+    private static Component getDisplayName(ResourceLocation newId) {
+        if (newId == null) {
+            return Component.literal("为null的形态？");
+        }
+        return Component.translatable("form.ridebattleparallelworlds." + newId.getPath().toLowerCase())
+                .withStyle(getChatFormatting(newId));
+    }
+
+    private static ChatFormatting getChatFormatting(ResourceLocation formId) {
+        if (formId == null) return ChatFormatting.WHITE;
+
+        String string = formId.getPath();
         if (string.contains("amazing") || string.contains("ultimate")) {
             return ChatFormatting.BLACK;
         } else if (string.contains("mighty")) {
@@ -102,27 +121,35 @@ public class FormWheel {
     }
 
     public static void setArcleSlot(Player player, ResourceLocation formId) {
+        if (formId == null || player == null) return;
+
         ResourceLocation arcleCore = KuugaConfig.ARCLE_CORE;
+        Item item = null;
+
         if (formId.equals(KuugaConfig.MIGHTY_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.MIGHTY_ELEMENT.get());
+            item = ModItems.MIGHTY_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.DRAGON_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.DRAGON_ELEMENT.get());
+            item = ModItems.DRAGON_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.PEGASUS_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.PEGASUS_ELEMENT.get());
+            item = ModItems.PEGASUS_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.TITAN_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.TITAN_ELEMENT.get());
+            item = ModItems.TITAN_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.RISING_MIGHTY_ELEMENT.get());
+            item = ModItems.RISING_MIGHTY_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.RISING_DRAGON_ELEMENT.get());
+            item = ModItems.RISING_DRAGON_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.RISING_PEGASUS_ELEMENT.get());
+            item = ModItems.RISING_PEGASUS_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.RISING_TITAN_ELEMENT.get());
+            item = ModItems.RISING_TITAN_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.AMAZING_MIGHTY_ELEMENT.get());
+            item = ModItems.AMAZING_MIGHTY_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
-            RiderManager.insertItemToSlot(player, arcleCore, ModItems.ULTIMATE_ELEMENT.get());
+            item = ModItems.ULTIMATE_ELEMENT.get();
+        }
+
+        if (item != null) {
+            RiderManager.insertItemToSlot(player, arcleCore, item);
         }
     }
 }

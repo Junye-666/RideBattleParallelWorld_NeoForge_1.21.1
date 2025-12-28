@@ -2,16 +2,42 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"decade_insert": {
-			"animation_length": 0.25,
+			"animation_length": 0.5,
 			"bones": {
 				"right_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-78.10716, -52.1186, -4.20971]
 						},
-						"0.25": {
+						"0.125": {
 							"vector": [0, 0, 0],
 							"easing": "easeOutElastic"
+						},
+						"0.2917": {
+							"vector": [-35.26439, -30, -35.26439],
+							"easing": "easeInElastic"
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutExpo"
+						}
+					}
+				},
+				"left_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [-35.26439, 30, 35.26439],
+							"easing": "easeInElastic"
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutExpo"
 						}
 					}
 				}

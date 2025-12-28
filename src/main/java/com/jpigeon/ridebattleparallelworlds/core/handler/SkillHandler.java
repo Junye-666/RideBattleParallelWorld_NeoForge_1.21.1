@@ -6,7 +6,6 @@ import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.SkillUtils;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.*;
@@ -29,6 +28,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Consumer;
+
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
 public class SkillHandler {
 
@@ -44,6 +47,22 @@ public class SkillHandler {
         animateRiderSkills(event.getPlayer(), event.getSkillId());
     }
 
+    private static final Map<ResourceLocation, Consumer<Player>> SKILL_MAP = new HashMap<>();
+
+    static {
+        SKILL_MAP.put(RiderSkills.GROWING_KICK, SkillHandler::growingKick);
+        SKILL_MAP.put(RiderSkills.MIGHTY_KICK, SkillHandler::mightyKick);
+        SKILL_MAP.put(RiderSkills.SPLASH_DRAGON, SkillHandler::splashDragon);
+        SKILL_MAP.put(RiderSkills.BLAST_PEGASUS, SkillHandler::blastPegasus);
+        SKILL_MAP.put(RiderSkills.CALAMITY_TITAN, SkillHandler::calamityTitan);
+        SKILL_MAP.put(RiderSkills.RISING_MIGHTY_KICK, SkillHandler::risingMightyKick);
+        SKILL_MAP.put(RiderSkills.RISING_SPLASH_DRAGON, SkillHandler::risingSplashDragon);
+        SKILL_MAP.put(RiderSkills.RISING_BLAST_PEGASUS, SkillHandler::risingBlastPegasus);
+        SKILL_MAP.put(RiderSkills.RISING_CALAMITY_TITAN, SkillHandler::risingCalamityTitan);
+        SKILL_MAP.put(RiderSkills.AMAZING_MIGHTY_KICK, SkillHandler::amazingMightyKick);
+        SKILL_MAP.put(RiderSkills.ULTRA_KICK, SkillHandler::ultimateKick);
+    }
+
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
         applyRiderSkills(serverPlayer, skillId);
     }
@@ -55,8 +74,9 @@ public class SkillHandler {
     }
 
     private static void applyRiderSkills(Player player, ResourceLocation skillId) {
-        if (KuugaConfig.KUUGA.includesFormId(RiderManager.getCurrentFormId(player))) {
-            applyKuugaSkills(player, skillId);
+        Consumer<Player> skillConsumer = SKILL_MAP.get(skillId);
+        if (skillConsumer != null) {
+            skillConsumer.accept(player);
         }
     }
 
@@ -278,32 +298,6 @@ public class SkillHandler {
                 risingTitanSword.triggerStab();
                 RiderManager.scheduleTicks(15, () -> risingTitanSword.setCurrentState(RisingTitanSwordItem.AnimState.IDLE));
             }
-        }
-    }
-
-    private static void applyKuugaSkills(Player player, ResourceLocation skillId) {
-        if (skillId.equals(RiderSkills.GROWING_KICK)) {
-            growingKick(player);
-        } else if (skillId.equals(RiderSkills.MIGHTY_KICK)) {
-            mightyKick(player);
-        } else if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
-            splashDragon(player);
-        } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
-            blastPegasus(player);
-        } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
-            calamityTitan(player);
-        } else if (skillId.equals(RiderSkills.RISING_MIGHTY_KICK)) {
-            risingMightyKick(player);
-        } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
-            risingSplashDragon(player);
-        } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
-            risingBlastPegasus(player);
-        } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
-            risingCalamityTitan(player);
-        } else if (skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK)) {
-            amazingMightyKick(player);
-        } else if (skillId.equals(RiderSkills.ULTRA_KICK)) {
-            ultimateKick(player);
         }
     }
 

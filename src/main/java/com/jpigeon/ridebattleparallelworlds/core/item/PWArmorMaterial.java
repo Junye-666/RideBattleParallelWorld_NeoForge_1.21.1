@@ -33,7 +33,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.LEGGINGS, 6);
                 attribute.put(ArmorItem.Type.BOOTS, 3);
                 attribute.put(ArmorItem.Type.BODY, 7);
-                    }), 8, 1f, 0.2f, ModItems.CHOGODAI_ELEMENT);
+                    }), 8, 1f, 0.2f, ModItems.MIGHTY_ELEMENT);
 
 
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,

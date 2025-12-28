@@ -5,8 +5,8 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.GenericEntityModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.GenericEntityRenderer;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.RiderEffectModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.RiderEffectRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -18,7 +18,6 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 
 import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
 
@@ -45,19 +44,16 @@ public class RideBattleParallelWorldsClient {
                 context -> new ThrownItemRenderer<>(context, 1.0f, true));
         event.registerEntityRenderer(
                 ModEntities.DECADE_SPECIAL_EFFECT.get(),
-                context -> new GenericEntityRenderer(context, new GenericEntityModel(
-                        generateModelPath("decade", "decade_special_effect"),
-                        generateTexturePath("decade", "decade_special_effect"),
-                        generateAnimationPath("decade", "decade_special_effect")
-                ))
+                context -> new RiderEffectRenderer<>(
+                        context,
+                        new RiderEffectModel<>(
+                                generateModelPath("decade", "decade_special_effect"),
+                                generateTexturePath("decade", "decade_special_effect"),
+                                generateAnimationPath("decade", "decade_special_effect")
+                        )
+                )
         );
     }
-
-    @SubscribeEvent
-    public static void registerAttributes(EntityAttributeCreationEvent event) {
-        ModEntities.registerAttributes(event);
-    }
-
 
     private static ResourceLocation generateModelPath(String riderName, String entityName) {
         return fromString("geo/" + riderName.toLowerCase() + "/entity/" + entityName.toLowerCase() + ".geo.json");

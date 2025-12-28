@@ -17,8 +17,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(RideBattleParallelWorlds.MODID);
 
-    public static final DeferredItem<Item> CHOGODAI_ELEMENT = ITEMS.register("kuuga_chogodai_element",
-            () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> MIGHTY_ELEMENT = ITEMS.register("kuuga_mighty_element", ()
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> DRAGON_ELEMENT = ITEMS.register("kuuga_dragon_element", ()
@@ -41,6 +39,9 @@ public class ModItems {
             -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> DECADE_BLANK_CARD = ITEMS.register("decade_blank_card", ()
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> KAMEN_RIDE_DECADE = ITEMS.register("decade_kamen_ride_decade_card", ()
             -> new Item(new Item.Properties()));

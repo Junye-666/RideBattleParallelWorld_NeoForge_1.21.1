@@ -19,7 +19,7 @@ public class ModEntities {
     public static final Supplier<EntityType<SkillProjectile>> SKILL_PROJECTILE =
             ENTITY_TYPES.register("skill_projectile",
                     () -> EntityType.Builder.<SkillProjectile>of(SkillProjectile::new, MobCategory.MISC)
-                            .sized(0.25f, 0.25f) // 碰撞箱大小
+                            .sized(0.25f, 0.25f)
                             .clientTrackingRange(4)
                             .updateInterval(10)
                             .build("skill_projectile"));
@@ -27,17 +27,13 @@ public class ModEntities {
     public static final Supplier<EntityType<DecadeSpecialEffect>> DECADE_SPECIAL_EFFECT =
             ENTITY_TYPES.register("decade_special_effect",
                     () -> EntityType.Builder.of(DecadeSpecialEffect::new, MobCategory.MISC)
-                            .sized(0.8f, 1.8f)
-                            .clientTrackingRange(4)
+                            .sized(0.2f, 1.8f)
+                            .clientTrackingRange(32)
                             .updateInterval(10)
                             .build("decade_special_effect"));
 
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);
-    }
-
-    public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(DECADE_SPECIAL_EFFECT.get(), DecadeSpecialEffect.createAttributes().build());
     }
 }

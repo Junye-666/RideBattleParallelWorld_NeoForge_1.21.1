@@ -22,7 +22,6 @@ public class PWCreativeTabs {
                     .title(Component.translatable("creativeTab.ridebattleparallelworlds.kuuga_items"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.ARCLE);
-                        output.accept(ModItems.CHOGODAI_ELEMENT);
                         output.accept(ModItems.MIGHTY_ELEMENT);
                         output.accept(ModItems.DRAGON_ELEMENT);
                         output.accept(ModItems.PEGASUS_ELEMENT);
@@ -42,6 +41,8 @@ public class PWCreativeTabs {
                     .withTabsBefore(fromString("kuuga_items_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.DECA_DRIVER);
+                        output.accept(ModItems.WORLDS_FRAGMENT);
+                        output.accept(ModItems.DECADE_BLANK_CARD);
                         output.accept(ModItems.KAMEN_RIDE_DECADE);
                         output.accept(ModItems.KAMEN_RIDE_KUUGA);
                         output.accept(ModItems.FORM_RIDE_KUUGA_DRAGON);

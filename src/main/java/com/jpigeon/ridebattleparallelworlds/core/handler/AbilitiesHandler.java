@@ -5,7 +5,7 @@ import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
 import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
 import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
-import com.jpigeon.ridebattleparallelworlds.core.handler.util.ItemData;
+import com.jpigeon.ridebattleparallelworlds.core.component.ItemData;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
@@ -96,12 +96,9 @@ public class AbilitiesHandler {
             if (oldFormId.equals(KuugaConfig.DRAGON_ID)) removeItemFromPlayer(ModItems.DRAGON_ROD.get(), player);
             if (oldFormId.equals(KuugaConfig.PEGASUS_ID)) removeItemFromPlayer(ModItems.PEGASUS_BOWGUN.get(), player);
             if (oldFormId.equals(KuugaConfig.TITAN_ID)) removeItemFromPlayer(ModItems.TITAN_SWORD.get(), player);
-            if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID))
-                removeItemFromPlayer(ModItems.RISING_DRAGON_ROD.get(), player);
-            if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID))
-                removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
-            if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID))
-                removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
+            if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID)) removeItemFromPlayer(ModItems.RISING_DRAGON_ROD.get(), player);
+            if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID)) removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
+            if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID)) removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
         }
     }
 

@@ -1,6 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds;
 
+import com.jpigeon.ridebattleparallelworlds.core.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
+import com.jpigeon.ridebattleparallelworlds.core.debug.PWCommands;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.handler.AbilitiesHandler;
 import com.jpigeon.ridebattleparallelworlds.core.handler.FormWheel;
@@ -8,6 +10,7 @@ import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.item.PWCreativeTabs;
 import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -43,6 +46,9 @@ public class RideBattleParallelWorlds {
         NeoForge.EVENT_BUS.register(FormWheel.class);
         NeoForge.EVENT_BUS.register(AbilitiesHandler.class);
 
+        PWAttachments.register(modEventBus);
+        NeoForge.EVENT_BUS.addListener(this::registerCommands);
+
         modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -57,5 +63,9 @@ public class RideBattleParallelWorlds {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
 
+    }
+
+    private void registerCommands(RegisterCommandsEvent event) {
+        PWCommands.register(event.getDispatcher());
     }
 }
