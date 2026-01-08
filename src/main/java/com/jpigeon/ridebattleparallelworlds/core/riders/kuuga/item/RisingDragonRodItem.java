@@ -20,76 +20,30 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class RisingDragonRodItem extends BaseKamenRiderGeoItem {
+    public enum AnimState {IDLE, SPIN_MAIN_HAND, SPIN_OFF_HAND}
+
     public RisingDragonRodItem(Properties properties) {
         super("kuuga", "rising_dragon_rod", properties.stacksTo(1).durability(0), true);
     }
 
-    public enum AnimState {IDLE, SPIN_MAIN_HAND, SPIN_OFF_HAND}
-    private AnimState currentState;
-
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "idle", createIdleController());
-        addController(registrar, "spin_main", createSpinMainController());
-        addController(registrar, "spin_off", createSpinOffController());
+        addController(registrar, "idle", createLoopController("idle"));
+        addController(registrar, "spin_main", createOnceController("spin_main"));
+        addController(registrar, "spin_off", createOnceController("spin_off"));
 
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createIdleController() {
-        return new AnimationController<>(this, "idle_controller", 0, state -> {
-            if (currentState == AnimState.IDLE) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("idle"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createSpinMainController() {
-        return new AnimationController<>(this, "spin_main_controller", 0, state -> {
-            if (currentState == AnimState.SPIN_MAIN_HAND) {
-                    state.getController().setAnimation(
-                            RawAnimation.begin().thenPlay("spin_main")
-                    );
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createSpinOffController() {
-        return new AnimationController<>(this, "spin_off_controller", 0, state -> {
-            if (currentState == AnimState.SPIN_MAIN_HAND) {
-                    state.getController().setAnimation(
-                            RawAnimation.begin().thenPlay("spin_off")
-                    );
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
     }
 
     public void triggerMainSpin() {
-        setAnimState(AnimState.SPIN_MAIN_HAND);
+        setAnimState("spin_main");
     }
 
     public void triggerOffSpin() {
-        setAnimState(AnimState.SPIN_OFF_HAND);
+        setAnimState("spin_off");
     }
 
-    public void setCurrentState(AnimState state){
-        setAnimState(state);
-    }
-
-    private void setAnimState(AnimState state) {
-        if (currentState != state) {
-            currentState = state;
-            controllers.values().forEach(controller -> {
-                if (controller != null) {
-                    controller.forceAnimationReset();
-                }
-            });
-        }
+    public void setCurrentState(DragonRodItem.AnimState state){
+        setAnimState(state.name().toLowerCase());
     }
 
     @Override

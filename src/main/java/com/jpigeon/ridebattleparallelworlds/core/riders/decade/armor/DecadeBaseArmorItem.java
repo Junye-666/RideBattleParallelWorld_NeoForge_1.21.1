@@ -15,7 +15,7 @@ public class DecadeBaseArmorItem extends BaseKamenRiderArmorItem {
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "idle", createLoopAnimationController("idle_controller", "idle"));
+        addController(registrar, "idle", createLoopController("idle"));
     }
 
     @Override

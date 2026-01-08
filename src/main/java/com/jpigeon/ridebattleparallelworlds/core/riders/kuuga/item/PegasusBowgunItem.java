@@ -20,92 +20,34 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class PegasusBowgunItem extends BaseKamenRiderGeoItem {
+    public enum AnimState {IDLE, PULL, RELEASE, SHOOT}
+
     public PegasusBowgunItem(Properties properties) {
         super("kuuga", "pegasus_bowgun", properties.stacksTo(1).durability(0), true);
     }
 
-    public enum AnimState {IDLE, PULL, RELEASE, SHOOT}
-    private AnimState currentState;
-
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "idle", createIdleController());
-        addController(registrar, "pull", createPullController());
-        addController(registrar, "release", createReleaseController());
-        addController(registrar, "shoot", createShootController());
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createIdleController() {
-        return new AnimationController<>(this, "idle_controller", 0, state -> {
-            if (currentState == AnimState.IDLE) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("idle"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createPullController() {
-        return new AnimationController<>(this, "pull_controller", 0, state -> {
-            if (currentState == AnimState.PULL) {
-                    state.getController().setAnimation(
-                            RawAnimation.begin().thenPlay("pull")
-                    );
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createReleaseController() {
-        return new AnimationController<>(this, "release_controller", 0, state -> {
-            if (currentState == AnimState.RELEASE) {
-                    state.getController().setAnimation(
-                            RawAnimation.begin().thenPlay("release")
-                    );
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderGeoItem> createShootController() {
-        return new AnimationController<>(this, "shoot_controller", 0, state -> {
-            if (currentState == AnimState.SHOOT) {
-                state.getController().setAnimation(
-                        RawAnimation.begin().thenPlay("shoot")
-                );
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
+        addController(registrar, "idle", createLoopController("idle"));
+        addController(registrar, "pull", createLoopController("pull"));
+        addController(registrar, "release", createLoopController("release"));
+        addController(registrar, "shoot", createOnceController("shoot"));
     }
 
     public void triggerShoot() {
-        setAnimState(AnimState.SHOOT);
+        setAnimState("shoot");
     }
 
     public void triggerPull() {
-        setAnimState(AnimState.PULL);
+        setAnimState("pull");
     }
 
     public void triggerRelease() {
-        setAnimState(AnimState.RELEASE);
+        setAnimState("release");
     }
 
     public void setCurrentState(AnimState state){
-        setAnimState(state);
-    }
-
-    private void setAnimState(AnimState state) {
-        if (currentState != state) {
-            currentState = state;
-            controllers.values().forEach(controller -> {
-                if (controller != null) {
-                    controller.forceAnimationReset();
-                }
-            });
-        }
+        setAnimState(state.name().toLowerCase());
     }
 
     @Override

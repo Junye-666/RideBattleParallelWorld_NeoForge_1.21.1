@@ -20,45 +20,22 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class TitanSwordItem extends BaseKamenRiderGeoItem {
+    public enum AnimState {IDLE, STAB}
+
     public TitanSwordItem(Properties properties) {
         super("kuuga", "titan_sword", properties.stacksTo(1).durability(0), true);
     }
 
-    public enum AnimState {IDLE, STAB}
-    private AnimState currentState;
-
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "idle", createLoopAnimationController("idle_controller", "idle"));
-        addController(registrar, "stab", createStabController());
+        addController(registrar, "idle", createLoopController("idle"));
+        addController(registrar, "stab", createOnceController("stab"));
     }
 
-    private AnimationController<BaseKamenRiderGeoItem> createStabController() {
-        return new AnimationController<>(this, "stab_controller", 0, state -> {
-            if (currentState == AnimState.STAB) {
-                state.getController().setAnimation(
-                        RawAnimation.begin().thenPlay("stab")
-                );
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
+    public void triggerStab(){
+        setAnimState("stab");
     }
 
-    public void setCurrentState(AnimState state){
-        setAnimState(state);
-    }
-
-    private void setAnimState(AnimState state) {
-        if (currentState != state) {
-            currentState = state;
-            controllers.values().forEach(controller -> {
-                if (controller != null) {
-                    controller.forceAnimationReset();
-                }
-            });
-        }
-    }
 
     @Override
     protected GeoItemRenderer<BaseKamenRiderGeoItem> createRenderer() {

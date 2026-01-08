@@ -1,6 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.AnimationManager;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -21,11 +22,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static software.bernie.geckolib.animation.Animation.LoopType.*;
+import static software.bernie.geckolib.animation.Animation.LoopType.HOLD_ON_LAST_FRAME;
+
 public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoItem {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final String riderName;
     protected final String formName;
     protected final boolean animated;
+    protected final AnimationManager<BaseKamenRiderArmorItem> animationManager;
     protected final Map<String, AnimationController<BaseKamenRiderArmorItem>> controllers = new HashMap<>();
 
     public BaseKamenRiderArmorItem(String riderName, String formName, Holder<ArmorMaterial> material, Type type, Properties properties, boolean animated) {
@@ -33,6 +38,7 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
         this.riderName = riderName;
         this.formName = formName;
         this.animated = animated;
+        this.animationManager = new AnimationManager<>(this);
     }
 
     @Override
@@ -45,17 +51,50 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
     protected void addController(AnimatableManager.ControllerRegistrar registrar, String name,
                                  AnimationController<BaseKamenRiderArmorItem> controller) {
         controllers.put(name, controller);
+        animationManager.registerController(name, controller);
         registrar.add(controller);
     }
 
-    // 创建简单的循环动画控制器
-    protected AnimationController<BaseKamenRiderArmorItem> createLoopAnimationController(String name, String animationName) {
-        return new AnimationController<>(this, name, 0, state -> {
-            state.getController().setAnimation(RawAnimation.begin().thenLoop(animationName));
-            return PlayState.CONTINUE;
-        });
+    public void setAnimState(String state) {
+        animationManager.setState(state);
     }
 
+    public String getCurrentAnimState() {
+        return animationManager.getCurrentState();
+    }
+
+    protected AnimationController<BaseKamenRiderArmorItem> createLoopController(
+            String animationName) {
+        return createStateController(animationName, LOOP);
+    }
+
+    protected AnimationController<BaseKamenRiderArmorItem> createOnceController(
+            String animationName) {
+        return createStateController(animationName, PLAY_ONCE);
+    }
+
+    protected AnimationController<BaseKamenRiderArmorItem> createHoldController(
+            String animationName) {
+        return createStateController(animationName, HOLD_ON_LAST_FRAME);
+    }
+
+    protected AnimationController<BaseKamenRiderArmorItem> createStateController(
+            String animationName, Animation.LoopType loopType) {
+        return new AnimationController<>(this, animationName + "_controller", 0, state -> {
+            // 只有当管理器当前状态匹配时才播放动画
+            if (animationManager.getCurrentState().equals(animationName)) {
+                if (loopType.equals(LOOP)) {
+                    state.getController().setAnimation(RawAnimation.begin().thenLoop(animationName));
+                } else if (loopType.equals(PLAY_ONCE)) {
+                    state.getController().setAnimation(RawAnimation.begin().then(animationName, PLAY_ONCE));
+                } else if (loopType.equals(HOLD_ON_LAST_FRAME)) {
+                    state.getController().setAnimation(RawAnimation.begin().then(animationName, HOLD_ON_LAST_FRAME));
+                }
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
+        });
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

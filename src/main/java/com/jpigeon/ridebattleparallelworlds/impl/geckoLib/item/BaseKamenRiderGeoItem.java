@@ -1,6 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.AnimationManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -14,11 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static software.bernie.geckolib.animation.Animation.LoopType.HOLD_ON_LAST_FRAME;
+import static software.bernie.geckolib.animation.Animation.LoopType.LOOP;
+import static software.bernie.geckolib.animation.Animation.LoopType.PLAY_ONCE;
+
 public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final String riderName;
     protected final String itemName;
     protected final boolean animated;
+    protected final AnimationManager<BaseKamenRiderGeoItem> animationManager;
     protected final Map<String, AnimationController<BaseKamenRiderGeoItem>> controllers = new HashMap<>();
 
     public BaseKamenRiderGeoItem(String riderName, String itemName,  Properties properties, boolean animated) {
@@ -26,6 +32,7 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
         this.riderName = riderName;
         this.itemName = itemName;
         this.animated = animated;
+        this.animationManager = new AnimationManager<>(this);
     }
 
     @Override
@@ -38,22 +45,48 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
     protected void addController(AnimatableManager.ControllerRegistrar registrar, String name,
                                  AnimationController<BaseKamenRiderGeoItem> controller) {
         controllers.put(name, controller);
+        animationManager.registerController(name, controller);
         registrar.add(controller);
     }
 
-    // 创建简单的循环动画控制器
-    protected AnimationController<BaseKamenRiderGeoItem> createLoopAnimationController(String name, String animationName) {
-        return new AnimationController<>(this, name, 0, state -> {
-            state.getController().setAnimation(RawAnimation.begin().thenLoop(animationName));
-            return PlayState.CONTINUE;
-        });
+    public void setAnimState(String state) {
+        animationManager.setState(state);
     }
 
-    // 创建单次播放动画控制器
-    protected AnimationController<BaseKamenRiderGeoItem> createOnceAnimationController(String name, String animationName) {
-        return new AnimationController<>(this, name, 0, state -> {
-            state.getController().setAnimation(RawAnimation.begin().then(animationName, Animation.LoopType.HOLD_ON_LAST_FRAME));
-            return PlayState.CONTINUE;
+    public String getCurrentAnimState() {
+        return animationManager.getCurrentState();
+    }
+
+    protected AnimationController<BaseKamenRiderGeoItem> createLoopController(
+            String animationName) {
+        return createStateController(animationName, LOOP);
+    }
+
+    protected AnimationController<BaseKamenRiderGeoItem> createOnceController(
+            String animationName) {
+        return createStateController(animationName, PLAY_ONCE);
+    }
+
+    protected AnimationController<BaseKamenRiderGeoItem> createHoldController(
+            String animationName) {
+        return createStateController(animationName, HOLD_ON_LAST_FRAME);
+    }
+
+    protected AnimationController<BaseKamenRiderGeoItem> createStateController(
+            String animationName, Animation.LoopType loopType) {
+        return new AnimationController<>(this, animationName + "_controller", 0, state -> {
+            // 只有当管理器当前状态匹配时才播放动画
+            if (animationManager.getCurrentState().equals(animationName)) {
+                if (loopType.equals(LOOP)) {
+                    state.getController().setAnimation(RawAnimation.begin().thenLoop(animationName));
+                } else if (loopType.equals(PLAY_ONCE)) {
+                    state.getController().setAnimation(RawAnimation.begin().then(animationName, PLAY_ONCE));
+                } else if (loopType.equals(HOLD_ON_LAST_FRAME)) {
+                    state.getController().setAnimation(RawAnimation.begin().then(animationName, HOLD_ON_LAST_FRAME));
+                }
+                return PlayState.CONTINUE;
+            }
+            return PlayState.STOP;
         });
     }
 

@@ -57,6 +57,7 @@ public class SkillHandler {
     static {
         SKILL_MAP.put(RiderSkills.GROWING_KICK, SkillHandler::growingKick);
         SKILL_MAP.put(RiderSkills.MIGHTY_KICK, SkillHandler::mightyKick);
+        SKILL_MAP.put(RiderSkills.MIGHTY_PUNCH, SkillHandler::mightyPunch);
         SKILL_MAP.put(RiderSkills.SPLASH_DRAGON, SkillHandler::splashDragon);
         SKILL_MAP.put(RiderSkills.BLAST_PEGASUS, SkillHandler::blastPegasus);
         SKILL_MAP.put(RiderSkills.CALAMITY_TITAN, SkillHandler::calamityTitan);
@@ -295,22 +296,18 @@ public class SkillHandler {
         } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
             playAnimation(clientPlayer, "kuuga_calamity_titan");
             if (mainHand.getItem() instanceof TitanSwordItem titanSwordItem) {
-                titanSwordItem.setCurrentState(TitanSwordItem.AnimState.STAB);
-                RiderManager.scheduleTicks(15, () -> titanSwordItem.setCurrentState(TitanSwordItem.AnimState.IDLE));
+                titanSwordItem.triggerStab();
             } else if (offHand.getItem() instanceof TitanSwordItem titanSwordItem) {
-                titanSwordItem.setCurrentState(TitanSwordItem.AnimState.STAB);
-                RiderManager.scheduleTicks(15, () -> titanSwordItem.setCurrentState(TitanSwordItem.AnimState.IDLE));
+                titanSwordItem.triggerStab();
             }
 
         } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
             if (mainHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
                 risingDragonRod.triggerMainSpin();
-                RiderManager.scheduleTicks(15, () -> risingDragonRod.setCurrentState(RisingDragonRodItem.AnimState.IDLE));
             } else if (offHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
                 risingDragonRod.triggerOffSpin();
-                RiderManager.scheduleTicks(15, () -> risingDragonRod.setCurrentState(RisingDragonRodItem.AnimState.IDLE));
             }
 
         } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
@@ -325,10 +322,8 @@ public class SkillHandler {
             playAnimation(clientPlayer, "kuuga_calamity_titan");
             if (mainHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
                 risingTitanSword.triggerStab();
-                RiderManager.scheduleTicks(15, () -> risingTitanSword.setCurrentState(RisingTitanSwordItem.AnimState.IDLE));
             } else if (offHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
                 risingTitanSword.triggerStab();
-                RiderManager.scheduleTicks(15, () -> risingTitanSword.setCurrentState(RisingTitanSwordItem.AnimState.IDLE));
             }
         }
     }

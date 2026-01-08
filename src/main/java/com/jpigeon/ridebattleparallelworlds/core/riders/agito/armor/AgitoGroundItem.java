@@ -10,8 +10,6 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class AgitoGroundItem extends BaseKamenRiderArmorItem {
     public enum AnimState {IDLE, OPEN, POWERED}
-    private AnimState currentState = AnimState.IDLE;
-    private boolean playingAnimation = false;
 
     public AgitoGroundItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super("agito", "ground", material, type, properties, true);
@@ -19,76 +17,20 @@ public class AgitoGroundItem extends BaseKamenRiderArmorItem {
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "idle", createIdleController());
-        addController(registrar, "powered", createPoweredController());
-        addController(registrar, "open", createOpenController());
-    }
-
-    private AnimationController<BaseKamenRiderArmorItem> createIdleController() {
-        return new AnimationController<>(this, "idle_controller", 0, state -> {
-            if (currentState == AnimState.IDLE) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("idle"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderArmorItem> createPoweredController() {
-        return new AnimationController<>(this, "powered_controller", 0, state -> {
-            if (currentState == AnimState.POWERED) {
-                state.getController().setAnimation(RawAnimation.begin().thenLoop("powered"));
-                return PlayState.CONTINUE;
-            }
-            return PlayState.STOP;
-        });
-    }
-
-    private AnimationController<BaseKamenRiderArmorItem> createOpenController() {
-        return new AnimationController<>(this, "open_controller", 0, state -> {
-            if (currentState == AnimState.OPEN) {
-                if (!playingAnimation) {
-                    state.getController().setAnimation(
-                            RawAnimation.begin().then("appear", Animation.LoopType.HOLD_ON_LAST_FRAME)
-                    );
-                    playingAnimation = true;
-                }
-
-                if (state.getController().getAnimationState() == AnimationController.State.STOPPED) {
-                    playingAnimation = false;
-                }
-                return PlayState.CONTINUE;
-            }
-            playingAnimation = false;
-            return PlayState.STOP;
-        });
-    }
-
-    private void setAnimState(AnimState state) {
-        if (currentState != state) {
-            currentState = state;
-            controllers.values().forEach(controller -> {
-                if (controller != null) {
-                    controller.forceAnimationReset();
-                }
-            });
-        }
+        addController(registrar, "idle", createLoopController("idle"));
+        addController(registrar, "open", createHoldController("open"));
     }
 
     public void triggerOpen() {
-        setAnimState(AnimState.OPEN);
+        setAnimState("open");
     }
 
     public void setClosed() {
-        setAnimState(AnimState.IDLE);
+        setAnimState("idle");
     }
 
     public void setCurrentState(AnimState state){
-        setAnimState(state);
-    }
-
-    public AnimState getCurrentState() {
-        return currentState;
+        setAnimState(state.name().toLowerCase());
     }
 
     @Override

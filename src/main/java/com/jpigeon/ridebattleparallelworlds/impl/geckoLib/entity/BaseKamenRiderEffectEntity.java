@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -62,9 +63,8 @@ public abstract class BaseKamenRiderEffectEntity extends Entity implements GeoEn
     /**
      * 创建简单的循环动画控制器
      */
-    protected AnimationController<BaseKamenRiderEffectEntity> createLoopAnimationController(
-            String name, String animationName) {
-        return new AnimationController<>(this, name, 0, state -> {
+    protected AnimationController<BaseKamenRiderEffectEntity> createLoopController(String animationName) {
+        return new AnimationController<>(this, animationName + "_controller", 0, state -> {
             state.getController().setAnimation(RawAnimation.begin().thenLoop(animationName));
             return PlayState.CONTINUE;
         });
@@ -73,9 +73,8 @@ public abstract class BaseKamenRiderEffectEntity extends Entity implements GeoEn
     /**
      * 创建单次播放动画控制器
      */
-    protected AnimationController<BaseKamenRiderEffectEntity> createOnceAnimationController(
-            String name, String animationName) {
-        return new AnimationController<>(this, name, 0, state -> {
+    protected AnimationController<BaseKamenRiderEffectEntity> createOnceController(String animationName) {
+        return new AnimationController<>(this, animationName + "_controller", 0, state -> {
             state.getController().setAnimation(
                     RawAnimation.begin().then(animationName, Animation.LoopType.HOLD_ON_LAST_FRAME)
             );
@@ -128,13 +127,13 @@ public abstract class BaseKamenRiderEffectEntity extends Entity implements GeoEn
 
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {}
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {}
+    protected void readAdditionalSaveData(@NotNull CompoundTag tag) {}
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {}
+    protected void addAdditionalSaveData(@NotNull CompoundTag tag) {}
 
     @Override
     public boolean fireImmune() {

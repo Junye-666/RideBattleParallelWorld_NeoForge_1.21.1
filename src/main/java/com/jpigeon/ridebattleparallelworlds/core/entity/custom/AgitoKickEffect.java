@@ -27,7 +27,7 @@ public class AgitoKickEffect extends BaseKamenRiderEffectEntity {
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "agito_kick_effect_controller", createOnceAnimationController("agito_kick_effect_controller", "turn"));
+        addController(registrar, "agito_kick_effect_controller", createOnceController("turn"));
     }
 
     @Override

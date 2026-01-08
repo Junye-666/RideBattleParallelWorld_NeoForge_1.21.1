@@ -136,33 +136,9 @@ public class RiderHandler {
 
     public static void setDriverAnim(ItemStack legs, ResourceLocation formId) {
         if (legs.getItem() instanceof ArcleItem arcle) {
-            if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.GROWING_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.MIGHTY);
-            } else if (formId.equals(KuugaConfig.DRAGON_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.DRAGON);
-            } else if (formId.equals(KuugaConfig.PEGASUS_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.PEGASUS);
-            } else if (formId.equals(KuugaConfig.TITAN_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.TITAN);
-            } else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.RISING_MIGHTY);
-            } else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.RISING_DRAGON);
-            } else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.RISING_PEGASUS);
-            } else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.RISING_TITAN);
-            } else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.AMAZING_MIGHTY);
-            } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
-                arcle.setCurrentState(ArcleItem.AnimState.ULTIMATE);
-            }
+            arcle.setStateByFormId(formId);
         } else if (legs.getItem() instanceof AlterRingItem alterRing) {
-            if (formId.equals(AgitoConfig.GROUND_ID)) {
-                alterRing.setCurrentState(AlterRingItem.AnimState.GROUND);
-            } else if (formId.equals(AgitoConfig.FLAME_ID)) {
-                alterRing.setCurrentState(AlterRingItem.AnimState.FLAME);
-            }
+            alterRing.setStateByFormId(formId);
         }
     }
 
@@ -192,7 +168,7 @@ public class RiderHandler {
         playAnimation(abstractClientPlayer, "kuuga_henshin");
         if (legs.getItem() instanceof ArcleItem arcleItem) {
             RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
-            if (arcleItem.getCurrentState() == ArcleItem.AnimState.IN_BODY || arcleItem.getCurrentState() == ArcleItem.AnimState.SHRINK) {
+            if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
                 RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
             }
         }
@@ -221,7 +197,7 @@ public class RiderHandler {
     private static void prepareAgito(Player player, ItemStack legs) {
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "agito_prepare");
-        if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentState() == AlterRingItem.AnimState.IN_BODY || alterRing.getCurrentState() == AlterRingItem.AnimState.SHRINK)) {
+        if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentAnimState().equals("inBody") || alterRing.getCurrentAnimState().equals("shrink"))) {
             alterRing.triggerAppear();
             setDriverAnim(legs, RiderManager.getPendingForm(player));
         }

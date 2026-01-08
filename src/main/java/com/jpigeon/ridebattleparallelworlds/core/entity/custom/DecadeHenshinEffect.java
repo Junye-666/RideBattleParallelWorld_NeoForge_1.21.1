@@ -27,7 +27,7 @@ public class DecadeHenshinEffect extends BaseKamenRiderEffectEntity {
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "decade_henshin_controller", createOnceAnimationController("decade_henshin_controller", "decade_henshin"));
+        addController(registrar, "decade_henshin_controller", createOnceController("decade_henshin"));
     }
 
     @Override
