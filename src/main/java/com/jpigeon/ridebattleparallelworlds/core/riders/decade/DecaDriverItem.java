@@ -8,9 +8,6 @@ import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
-import static software.bernie.geckolib.animation.Animation.LoopType.HOLD_ON_LAST_FRAME;
-import static software.bernie.geckolib.animation.Animation.LoopType.LOOP;
-
 public class DecaDriverItem extends BaseKamenRiderArmorItem {
     public enum AnimState {IDLE, OPEN, CLOSE}
 

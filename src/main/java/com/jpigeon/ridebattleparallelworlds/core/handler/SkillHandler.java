@@ -279,11 +279,9 @@ public class SkillHandler {
             if (mainHand.getItem() instanceof DragonRodItem dragonRod) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
                 dragonRod.triggerMainSpin();
-                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
             } else if (offHand.getItem() instanceof DragonRodItem dragonRod) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
                 dragonRod.triggerOffSpin();
-                RiderManager.scheduleTicks(15, () -> dragonRod.setCurrentState(DragonRodItem.AnimState.IDLE));
             }
         } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
             if (mainHand.getItem() instanceof PegasusBowgunItem pegasusBowgunItem) {
