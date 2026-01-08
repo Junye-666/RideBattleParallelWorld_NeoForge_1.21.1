@@ -35,6 +35,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> KAMEN_RIDE = registerSoundEvent("kamen_ride");
     public static final Supplier<SoundEvent> KR_DECADE = registerSoundEvent("kr_decade");
     public static final Supplier<SoundEvent> KR_KUUGA = registerSoundEvent("kr_kuuga");
+    public static final Supplier<SoundEvent> KR_AGITO = registerSoundEvent("kr_agito");
 
     public static final Supplier<SoundEvent> FORM_RIDE = registerSoundEvent("form_ride");
     public static final Supplier<SoundEvent> FR_KUUGA_DRAGON = registerSoundEvent("fr_kuuga_dragon");
@@ -89,6 +90,8 @@ public class ModSounds {
         registerHenshinSound(DecadeConfig.DECADE_KUUGA_DRAGON, FR_KUUGA_DRAGON.get(), 90);
         registerHenshinSound(DecadeConfig.DECADE_KUUGA_PEGASUS, FR_KUUGA_PEGASUS.get(), 90);
         registerHenshinSound(DecadeConfig.DECADE_KUUGA_TITAN, FR_KUUGA_TITAN.get(), 90);
+
+        registerHenshinSound(DecadeConfig.DECADE_AGITO_GROUND, KR_AGITO.get(), 65);
     }
 
 }

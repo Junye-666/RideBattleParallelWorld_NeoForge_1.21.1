@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ridebattleparallelworlds:item/shocker/armor/shocker_combatman_helmet"
+  }
+}

@@ -1,15 +1,16 @@
 package com.jpigeon.ridebattleparallelworlds.core.item;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoFlameItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.armor.DecadeBaseArmorItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.armor.*;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -38,6 +39,11 @@ public class ModItems {
     public static final DeferredItem<Item> ULTIMATE_ELEMENT = ITEMS.register("kuuga_ultimate_element", ()
             -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> GROUND_ELEMENT = ITEMS.register("agito_ground_element", ()
+            -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> FLAME_ELEMENT = ITEMS.register("agito_flame_element", ()
+            -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
             -> new Item(new Item.Properties()));
 
@@ -52,6 +58,8 @@ public class ModItems {
     public static final DeferredItem<Item> FORM_RIDE_KUUGA_PEGASUS = ITEMS.register("decade_form_ride_kuuga_pegasus_card", ()
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> FORM_RIDE_KUUGA_TITAN = ITEMS.register("decade_form_ride_kuuga_titan_card", ()
+            -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> KAMEN_RIDE_AGITO = ITEMS.register("decade_kamen_ride_agito_card", ()
             -> new Item(new Item.Properties()));
 
 
@@ -142,6 +150,26 @@ public class ModItems {
     public static final DeferredItem<RisingTitanSwordItem> RISING_TITAN_SWORD = ITEMS.register("kuuga_rising_titan_sword", ()
             -> new RisingTitanSwordItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, 0)).rarity((Rarity.EPIC))));
 
+    // 亚极陀
+    // 盔甲
+    public static final DeferredItem<AlterRingItem> ALTER_RING = ITEMS.register("agito_alter_ring", ()
+            -> new AlterRingItem(PWArmorMaterial.AGITO_MATERIAL, AlterRingItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final DeferredItem<AgitoGroundItem> GROUND_HELMET = ITEMS.register("agito_ground_helmet", ()
+            -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<AgitoGroundItem> GROUND_CHESTPLATE = ITEMS.register("agito_ground_chestplate", ()
+            -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredItem<AgitoGroundItem> GROUND_BOOTS = ITEMS.register("agito_ground_boots", ()
+            -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.BOOTS, new Item.Properties()));
+
+    public static final DeferredItem<AgitoFlameItem> FLAME_HELMET = ITEMS.register("agito_flame_helmet", ()
+            -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<AgitoFlameItem> FLAME_CHESTPLATE = ITEMS.register("agito_flame_chestplate", ()
+            -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredItem<AgitoFlameItem> FLAME_BOOTS = ITEMS.register("agito_flame_boots", ()
+            -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.BOOTS, new Item.Properties()));
+
+
     // Decade
     // 盔甲
     public static final DeferredItem<DecaDriverItem> DECA_DRIVER = ITEMS.register("decade_deca_driver", ()
@@ -155,6 +183,16 @@ public class ModItems {
             -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.BOOTS, new Item.Properties()));
 
 
+
+    // 修卡
+    public static final DeferredItem<ShockerCombatManItem> SHOCKER_HELMET = ITEMS.register("shocker_combatman_helmet", ()
+            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<ShockerCombatManItem> SHOCKER_CHESTPLATE = ITEMS.register("shocker_combatman_chestplate", ()
+            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredItem<ShockerCombatManItem> SHOCKER_LEGGINGS = ITEMS.register("shocker_combatman_leggings", ()
+            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.LEGGINGS, new Item.Properties()));
+    public static final DeferredItem<ShockerCombatManItem> SHOCKER_BOOTS = ITEMS.register("shocker_combatman_boots", ()
+            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.BOOTS, new Item.Properties()));
 
 
     public static void register(IEventBus modEventBus) {

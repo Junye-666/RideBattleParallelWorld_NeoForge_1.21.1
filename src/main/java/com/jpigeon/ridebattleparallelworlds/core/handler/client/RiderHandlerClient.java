@@ -2,7 +2,9 @@ package com.jpigeon.ridebattleparallelworlds.core.handler.client;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManItem;
 import com.jpigeon.ridebattleparallelworlds.core.handler.RiderHandler;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import net.minecraft.resources.ResourceLocation;
@@ -18,19 +20,33 @@ import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class RiderHandlerClient {
     @SubscribeEvent
-    public static void onPlayerLoggedIn(EntityJoinLevelEvent event){
+    public static void onPlayerLoggedIn(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Player player) {
             ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-            if (legs.getItem() instanceof ArcleItem arcle) {
-                if (!RiderManager.isTransformed(player)) {
-                    arcle.shrinkInBody();
-                    return;
+            switch (legs.getItem()) {
+                case ArcleItem arcle -> {
+                    if (!RiderManager.isTransformed(player)) {
+                        arcle.shrinkInBody();
+                        return;
+                    }
+                    ResourceLocation formId = RiderManager.getCurrentFormId(player);
+                    if (formId == null) return;
+                    RiderHandler.setDriverAnim(legs, formId);
                 }
-                ResourceLocation formId = RiderManager.getCurrentFormId(player);
-                if (formId == null) return;
-                RiderHandler.setDriverAnim(legs, formId);
-            } else if (legs.getItem() instanceof DecaDriverItem decaDriver) {
-                if (!RiderManager.isTransformed(player)) decaDriver.triggerOpen();
+                case AlterRingItem alterRingItem -> {
+                    if (!RiderManager.isTransformed(player)) {
+                        alterRingItem.shrinkInBody();
+                        return;
+                    }
+                    ResourceLocation formId = RiderManager.getCurrentFormId(player);
+                    if (formId == null) return;
+                    RiderHandler.setDriverAnim(legs, formId);
+                }
+                case DecaDriverItem decaDriver -> {
+                    if (!RiderManager.isDriverEmpty(player)) decaDriver.triggerOpen();
+                }
+                default -> {
+                }
             }
         }
     }
@@ -38,8 +54,17 @@ public class RiderHandlerClient {
     @SubscribeEvent
     public static void onPlayerEquip(LivingEquipmentChangeEvent event) {
         ItemStack stack = event.getTo();
-        if (stack.getItem() instanceof DecaDriverItem decaDriver) {
-            decaDriver.triggerOpen();
+        if (!(event.getEntity() instanceof Player player)) return;
+        switch (stack.getItem()) {
+            case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
+            case AlterRingItem alterRingItem -> {
+                if (!RiderManager.isTransformed(player)) {
+                    alterRingItem.shrinkInBody();
+                }
+            }
+            case ShockerCombatManItem ignored -> RiderManager.transform(player);
+            default -> {
+            }
         }
     }
 }

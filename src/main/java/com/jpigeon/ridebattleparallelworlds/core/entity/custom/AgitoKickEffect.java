@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 
@@ -16,19 +15,19 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class DecadeSpecialEffect extends BaseKamenRiderEffectEntity {
-    private static final int MAX_LIFETIME = 46;
+public class AgitoKickEffect extends BaseKamenRiderEffectEntity {
+    private static final int MAX_LIFETIME = 150;
     private int lifetime = 0;
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(DecadeSpecialEffect.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AgitoKickEffect.class, EntityDataSerializers.OPTIONAL_UUID);
 
 
-    public DecadeSpecialEffect(EntityType<DecadeSpecialEffect> type, Level level) {
-        super(type, level, "decade", "decade_special_effect");
+    public AgitoKickEffect(EntityType<AgitoKickEffect> type, Level level) {
+        super(type, level, "agito", "agito_kick_effect");
     }
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "decade_henshin_controller", createOnceAnimationController("decade_henshin_controller", "decade_henshin"));
+        addController(registrar, "agito_kick_effect_controller", createOnceAnimationController("agito_kick_effect_controller", "turn"));
     }
 
     @Override

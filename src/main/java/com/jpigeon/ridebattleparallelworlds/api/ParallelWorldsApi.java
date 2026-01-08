@@ -8,7 +8,6 @@ import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWDataSyncPacket
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +31,7 @@ public class ParallelWorldsApi {
         // 解锁形态
         boolean success = data.unlockForm(riderId, formId);
         if (success) {
-            // ✅ 重要：设置数据回玩家以触发保存
+            // 设置数据回玩家以触发保存
             player.setData(PWAttachments.PW_DATA, data);
 
             // 同步到客户端
@@ -111,10 +110,6 @@ public class ParallelWorldsApi {
         }
 
         PWData data = player.getData(PWAttachments.PW_DATA);
-        if (data == null) {
-            return Collections.emptyMap();
-        }
-
         return data.getRiderUnlockStatus(riderId);
     }
 

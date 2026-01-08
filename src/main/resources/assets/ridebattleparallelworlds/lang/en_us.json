@@ -11,6 +11,8 @@
   "item.ridebattleparallelworlds.kuuga_amazing_mighty_element": "Amazing Mighty Element",
   "item.ridebattleparallelworlds.kuuga_ultimate_element": "Ultimate Element",
 
+  "item.ridebattleparallelworlds.agito_ground_element": "Ground Element",
+
   "item.ridebattleparallelworlds.decade_worlds_fragment": "Worlds Fragment",
   "item.ridebattleparallelworlds.decade_blank_card": "Blank Ride Card",
   "item.ridebattleparallelworlds.decade_kamen_ride_decade_card": "Kamen Ride: Decade",
@@ -18,6 +20,7 @@
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_dragon_card": "Form Ride: Kuuga Dragon",
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_pegasus_card": "Form Ride: Kuuga Pegasus",
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_titan_card": "Form Ride: Kuuga Titan",
+  "item.ridebattleparallelworlds.decade_kamen_ride_agito_card": "Kamen Ride: Agito",
 
   "item.ridebattleparallelworlds.kuuga_arcle": "Arcle",
   "item.ridebattleparallelworlds.kuuga_growing_helmet": "Kuuga Growing",
@@ -54,10 +57,24 @@
   "item.ridebattleparallelworlds.kuuga_ultimate_chestplate": "Kuuga Ultimate",
   "item.ridebattleparallelworlds.kuuga_ultimate_boots": "Kuuga Ultimate",
 
+  "item.ridebattleparallelworlds.agito_alter_ring": "Alter Ring",
+  "item.ridebattleparallelworlds.agito_ground_helmet": "AgitΩ Ground",
+  "item.ridebattleparallelworlds.agito_ground_chestplate": "AgitΩ Ground",
+  "item.ridebattleparallelworlds.agito_ground_boots": "AgitΩ Ground",
+  "item.ridebattleparallelworlds.agito_flame_helmet": "AgitΩ Flame",
+  "item.ridebattleparallelworlds.agito_flame_chestplate": "AgitΩ Flame",
+  "item.ridebattleparallelworlds.agito_flame_boots": "AgitΩ Flame",
+
+
   "item.ridebattleparallelworlds.decade_deca_driver": "Deca Driver",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",
   "item.ridebattleparallelworlds.decade_base_chestplate": "Decade",
   "item.ridebattleparallelworlds.decade_base_boots": "Decade",
+
+  "item.ridebattleparallelworlds.shocker_combatman_helmet": "Shocker Combatman",
+  "item.ridebattleparallelworlds.shocker_combatman_chestplate": "Shocker Combatman",
+  "item.ridebattleparallelworlds.shocker_combatman_leggings": "Shocker Combatman",
+  "item.ridebattleparallelworlds.shocker_combatman_boots": "Shocker Combatman",
 
   "item.ridebattleparallelworlds.kuuga_dragon_rod": "Dragon Rod",
   "item.ridebattleparallelworlds.kuuga_titan_sword": "Titan Sword",
@@ -87,10 +104,13 @@
   "skill.amazing_mighty_kick": "Amazing Mighty Kick",
   "skill.ultra_kick": "Ultra Kick",
 
+  "skill.ground_kick": "Ground Kick",
+
   "creativeTab.ridebattleparallelworlds.kuuga_items": "Kuuga",
+  "creativeTab.ridebattleparallelworlds.agito_items": "Agito",
   "creativeTab.ridebattleparallelworlds.decade_items": "Decade",
 
-  "entity.ridebattleparallelworlds.decade_special_effect": "",
+  "entity.ridebattleparallelworlds.decade_special_effect": "Decade Henshin Effect",
 
   "ridebattleparallelworlds.configuration.skillExplosionGrief": "Skill Explosion Grief"
 }

@@ -28,11 +28,11 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
     protected final boolean animated;
     protected final Map<String, AnimationController<BaseKamenRiderArmorItem>> controllers = new HashMap<>();
 
-    public BaseKamenRiderArmorItem(String riderName, String formName, Holder<ArmorMaterial> material, Type type, Properties properties, boolean isDriver) {
+    public BaseKamenRiderArmorItem(String riderName, String formName, Holder<ArmorMaterial> material, Type type, Properties properties, boolean animated) {
         super(material, type, properties.stacksTo(1));
         this.riderName = riderName;
         this.formName = formName;
-        this.animated = isDriver;
+        this.animated = animated;
     }
 
     @Override

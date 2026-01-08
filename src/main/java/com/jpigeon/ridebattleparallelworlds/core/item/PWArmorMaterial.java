@@ -35,6 +35,15 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.BODY, 7);
                     }), 8, 1f, 0.2f, ModItems.MIGHTY_ELEMENT);
 
+    public static final Holder<ArmorMaterial> AGITO_MATERIAL = register("agito",
+            Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
+                attribute.put(ArmorItem.Type.HELMET, 4);
+                attribute.put(ArmorItem.Type.CHESTPLATE, 7);
+                attribute.put(ArmorItem.Type.LEGGINGS, 5);
+                attribute.put(ArmorItem.Type.BOOTS, 4);
+                attribute.put(ArmorItem.Type.BODY, 8);
+            }), 8, 1f, 0.2f, ModItems.MIGHTY_ELEMENT);
+
 
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,
                                                   int enchantability, float toughness, float knockbackResistance,

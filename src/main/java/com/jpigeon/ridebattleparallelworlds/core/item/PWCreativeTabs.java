@@ -35,10 +35,20 @@ public class PWCreativeTabs {
                     })
                     .build());
 
+    public static final Supplier<CreativeModeTab> AGITO_ITEMS_TAB = CREATIVE_MODE_TAB.register("agito_items_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GROUND_HELMET.get()))
+                    .title(Component.translatable("creativeTab.ridebattleparallelworlds.agito_items"))
+                    .withTabsBefore(fromString("kuuga_items_tab"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ModItems.ALTER_RING);
+                        output.accept(ModItems.GROUND_ELEMENT);
+                    })
+                    .build());
+
     public static final Supplier<CreativeModeTab> DECADE_ITEMS_TAB = CREATIVE_MODE_TAB.register("decade_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.DECADE_HELMET.get()))
                     .title(Component.translatable("creativeTab.ridebattleparallelworlds.decade_items"))
-                    .withTabsBefore(fromString("kuuga_items_tab"))
+                    .withTabsBefore(fromString("agito_items_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.DECA_DRIVER);
                         output.accept(ModItems.WORLDS_FRAGMENT);
@@ -48,6 +58,7 @@ public class PWCreativeTabs {
                         output.accept(ModItems.FORM_RIDE_KUUGA_DRAGON);
                         output.accept(ModItems.FORM_RIDE_KUUGA_PEGASUS);
                         output.accept(ModItems.FORM_RIDE_KUUGA_TITAN);
+                        output.accept(ModItems.KAMEN_RIDE_AGITO);
                     })
                     .build());
 

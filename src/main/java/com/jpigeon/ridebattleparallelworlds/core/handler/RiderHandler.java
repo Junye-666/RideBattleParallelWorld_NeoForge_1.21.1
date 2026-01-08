@@ -6,9 +6,13 @@ import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeSpecialEffect;
+import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeHenshinEffect;
+import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
@@ -39,23 +43,26 @@ public class RiderHandler {
         Player player = event.getPlayer();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         ResourceLocation formId = event.getFormId();
+        ResourceLocation riderId = event.getRiderId();
         // 处理空我
-        if (event.getRiderId().equals(RiderIds.KUUGA_ID)) {
+        if (riderId.equals(RiderIds.KUUGA_ID)) {
             handleKuuga(player, legs, formId);
-        }
-        if (event.getRiderId().equals(RiderIds.DECADE_ID)) {
-            handleDecade(event.getPlayer(), formId);
+        } else if (riderId.equals(RiderIds.AGITO_ID)) {
+            completeAgito(player, legs, formId);
+        } else if (riderId.equals(RiderIds.DECADE_ID)) {
+            handleDecade(player, formId);
         }
     }
 
     @SubscribeEvent
     public static void onUnhenshin(UnhenshinEvent.Post event) {
         ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
-        if (legs.getItem() instanceof ArcleItem arcle) {
-            arcle.shrinkInBody();
-        }
-        if (legs.getItem() instanceof DecaDriverItem decaDriver) {
-            decaDriver.triggerOpen();
+        switch (legs.getItem()) {
+            case ArcleItem arcle -> arcle.shrinkInBody();
+            case AlterRingItem alterRing -> alterRing.shrinkInBody();
+            case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
+            default -> {
+            }
         }
     }
 
@@ -68,6 +75,8 @@ public class RiderHandler {
         // 处理空我
         if (config == KuugaConfig.KUUGA) {
             handleKuugaSwitch(player, legs, newFormId);
+        } else if (config == AgitoConfig.AGITO) {
+            completeAgito(event.getPlayer(), legs, newFormId);
         } else if (config == DecadeConfig.DECADE) {
             handleDecade(event.getPlayer(), newFormId);
         }
@@ -79,6 +88,14 @@ public class RiderHandler {
         ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
         ResourceLocation formId = event.getFormId();
         setDriverAnim(legs, formId);
+        AbstractClientPlayer clientPlayer = getAbstractClientPlayer(event.getPlayer());
+        ItemStack head = event.getPlayer().getItemBySlot(EquipmentSlot.HEAD);
+        if (head.getItem() instanceof AgitoGroundItem agitoGround) {
+            agitoGround.setCurrentState(AgitoGroundItem.AnimState.IDLE);
+        }
+        if (formId.equals(ShockerConfig.COMBATMAN_ID)) {
+            playAnimation(clientPlayer, "shocker_greeting");
+        }
     }
 
     @SubscribeEvent
@@ -94,6 +111,8 @@ public class RiderHandler {
             } else if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
                 RiderManager.scheduleTicks(5, () -> RiderManager.playPublicSound(player, ModSounds.FORM_RIDE.get()));
             }
+        } else if (legs.getItem() instanceof AlterRingItem) {
+            prepareAgito(player, legs);
         }
     }
 
@@ -137,6 +156,12 @@ public class RiderHandler {
                 arcle.setCurrentState(ArcleItem.AnimState.AMAZING_MIGHTY);
             } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
                 arcle.setCurrentState(ArcleItem.AnimState.ULTIMATE);
+            }
+        } else if (legs.getItem() instanceof AlterRingItem alterRing) {
+            if (formId.equals(AgitoConfig.GROUND_ID)) {
+                alterRing.setCurrentState(AlterRingItem.AnimState.GROUND);
+            } else if (formId.equals(AgitoConfig.FLAME_ID)) {
+                alterRing.setCurrentState(AlterRingItem.AnimState.FLAME);
             }
         }
     }
@@ -192,6 +217,23 @@ public class RiderHandler {
         RiderManager.completeIn(90, player);
     }
 
+
+    private static void prepareAgito(Player player, ItemStack legs) {
+        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
+        playAnimation(abstractClientPlayer, "agito_prepare");
+        if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentState() == AlterRingItem.AnimState.IN_BODY || alterRing.getCurrentState() == AlterRingItem.AnimState.SHRINK)) {
+            alterRing.triggerAppear();
+            setDriverAnim(legs, RiderManager.getPendingForm(player));
+        }
+    }
+
+    private static void completeAgito(Player player, ItemStack legs, ResourceLocation formId) {
+        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
+        playAnimation(abstractClientPlayer, "agito_henshin");
+        RiderManager.completeIn(10, player);
+        RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
+    }
+
     private static void handleDecade(Player player, ResourceLocation formId) {
         FormConfig form = RiderManager.getFormConfig(player, formId);
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
@@ -200,7 +242,7 @@ public class RiderHandler {
         if (formId.equals(DecadeConfig.DECADE_BASE_ID)) {
             Level level = player.level();
 
-            DecadeSpecialEffect effect = new DecadeSpecialEffect(
+            DecadeHenshinEffect effect = new DecadeHenshinEffect(
                     ModEntities.DECADE_SPECIAL_EFFECT.get(),
                     level
             );

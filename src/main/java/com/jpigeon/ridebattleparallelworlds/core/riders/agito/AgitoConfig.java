@@ -1,0 +1,75 @@
+package com.jpigeon.ridebattleparallelworlds.core.riders.agito;
+
+import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
+import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
+import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
+import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+
+import java.util.List;
+
+import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
+
+public class AgitoConfig {
+    public static final ResourceLocation ALTER_RING_CORE = fromString("alter_ring_core");
+
+    public static final ResourceLocation GROUND_ID = fromString("ground_form");
+    public static final ResourceLocation FLAME_ID = fromString("flame_form");
+
+    public static final RiderConfig AGITO = new RiderConfig(RiderIds.AGITO_ID)
+            .setMainDriverItem(ModItems.ALTER_RING.get(), EquipmentSlot.LEGS)
+            .addMainDriverSlot(ALTER_RING_CORE,
+                    List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get()),
+                    true,
+                    true
+            );
+
+    public static final FormConfig AGITO_GROUND_FORM = new FormConfig(GROUND_ID)
+            .setArmor(
+                    ModItems.GROUND_HELMET.get(),
+                    ModItems.GROUND_CHESTPLATE.get(),
+                    null,
+                    ModItems.GROUND_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
+            .addRequiredItem(ALTER_RING_CORE, ModItems.GROUND_ELEMENT.get())
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addSkill(RiderSkills.GROUND_KICK)
+            ;
+
+    public static final FormConfig AGITO_FLAME_FORM = new FormConfig(FLAME_ID)
+            .setArmor(
+                    ModItems.FLAME_HELMET.get(),
+                    ModItems.FLAME_CHESTPLATE.get(),
+                    null,
+                    ModItems.FLAME_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
+            .addRequiredItem(ALTER_RING_CORE, ModItems.FLAME_ELEMENT.get())
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            ;
+
+    private static void registerAgito() {
+        AGITO.addForm(AGITO_GROUND_FORM);
+        AGITO.addForm(AGITO_FLAME_FORM);
+
+        RiderRegistry.registerRider(AGITO);
+    }
+
+    public static void init() {
+        registerAgito();
+    }
+}

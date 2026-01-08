@@ -11,6 +11,8 @@
   "item.ridebattleparallelworlds.kuuga_amazing_mighty_element": "惊异全能灵石",
   "item.ridebattleparallelworlds.kuuga_ultimate_element": "究极灵石",
 
+  "item.ridebattleparallelworlds.agito_ground_element": "大地元素",
+
   "item.ridebattleparallelworlds.decade_worlds_fragment": "世界碎片",
   "item.ridebattleparallelworlds.decade_blank_card": "空白驾驭卡",
   "item.ridebattleparallelworlds.decade_kamen_ride_decade_card": "假面驾驭: Decade",
@@ -18,6 +20,7 @@
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_dragon_card": "形态驾驭: 空我 青龙",
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_pegasus_card": "形态驾驭: 空我 天马",
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_titan_card": "形态驾驭: 空我 泰坦",
+  "item.ridebattleparallelworlds.decade_kamen_ride_agito_card": "假面驾驭: 亚极陀",
 
   "item.ridebattleparallelworlds.kuuga_arcle": "亚古鲁",
   "item.ridebattleparallelworlds.kuuga_growing_helmet": "空我 初升",
@@ -54,10 +57,23 @@
   "item.ridebattleparallelworlds.kuuga_ultimate_chestplate": "空我 究极",
   "item.ridebattleparallelworlds.kuuga_ultimate_boots": "空我 究极",
 
+  "item.ridebattleparallelworlds.agito_alter_ring": "变化圆环",
+  "item.ridebattleparallelworlds.agito_ground_helmet": "亚极陀 大地",
+  "item.ridebattleparallelworlds.agito_ground_chestplate": "亚极陀 大地",
+  "item.ridebattleparallelworlds.agito_ground_boots": "亚极陀 大地",
+  "item.ridebattleparallelworlds.agito_flame_helmet": "亚极陀 火焰",
+  "item.ridebattleparallelworlds.agito_flame_chestplate": "亚极陀 火焰",
+  "item.ridebattleparallelworlds.agito_flame_boots": "亚极陀 火焰",
+
   "item.ridebattleparallelworlds.decade_deca_driver": "Decade 驱动器",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",
   "item.ridebattleparallelworlds.decade_base_chestplate": "Decade",
   "item.ridebattleparallelworlds.decade_base_boots": "Decade",
+
+  "item.ridebattleparallelworlds.shocker_combatman_helmet": "修卡 战斗员",
+  "item.ridebattleparallelworlds.shocker_combatman_chestplate": "修卡 战斗员",
+  "item.ridebattleparallelworlds.shocker_combatman_leggings": "修卡 战斗员",
+  "item.ridebattleparallelworlds.shocker_combatman_boots": "修卡 战斗员",
 
   "item.ridebattleparallelworlds.kuuga_dragon_rod": "青龙棍",
   "item.ridebattleparallelworlds.kuuga_pegasus_bowgun": "天马弩",
@@ -86,10 +102,13 @@
   "skill.amazing_mighty_kick": "惊异·全能踢",
   "skill.ultra_kick": "究极·踢",
 
+  "skill.ground_kick": "大地踢",
+
   "creativeTab.ridebattleparallelworlds.kuuga_items": "空我",
+  "creativeTab.ridebattleparallelworlds.agito_items": "亚极陀",
   "creativeTab.ridebattleparallelworlds.decade_items": "Decade",
 
-  "entity.ridebattleparallelworlds.decade_special_effect": "",
+  "entity.ridebattleparallelworlds.decade_special_effect": "Decade变身特效",
 
   "ridebattleparallelworlds.configuration.skillExplosionGrief": "技能破坏方块"
 }

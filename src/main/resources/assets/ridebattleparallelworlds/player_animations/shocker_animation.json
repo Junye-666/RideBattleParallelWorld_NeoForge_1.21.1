@@ -1,0 +1,30 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"shocker_greeting": {
+			"animation_length": 0.75,
+			"bones": {
+				"right_arm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.25": {
+							"vector": [-135.99297, 10.54529, -10.72858],
+							"easing": "easeOutBack"
+						},
+						"0.5": {
+							"vector": [-135.99297, 10.54529, -10.72858],
+							"easing": "linear"
+						},
+						"0.75": {
+							"vector": [0, 0, 0],
+							"easing": "easeInBack"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

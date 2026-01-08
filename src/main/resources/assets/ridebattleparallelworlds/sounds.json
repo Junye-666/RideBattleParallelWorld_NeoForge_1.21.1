@@ -112,5 +112,11 @@
     "sounds": [
       "ridebattleparallelworlds:decade/fr/kuuga/fr_kuuga_titan"
     ]
+  },
+  "kr_agito": {
+    "subtitle": "sounds.ridebattleparallelworlds.kr_agito",
+    "sounds": [
+      "ridebattleparallelworlds:decade/kr/kr_agito"
+    ]
   }
 }

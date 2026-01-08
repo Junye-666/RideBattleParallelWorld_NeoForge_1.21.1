@@ -1,7 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds;
 
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
+import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
@@ -32,7 +34,9 @@ public class RideBattleParallelWorldsClient {
     static void onClientSetup(FMLClientSetupEvent event) {
         RiderSkills.init();
         KuugaConfig.init();
+        AgitoConfig.init();
         DecadeConfig.init();
+        ShockerConfig.init();
 
         ModSounds.registerFormSoundMap();
     }
@@ -52,6 +56,18 @@ public class RideBattleParallelWorldsClient {
                                 generateAnimationPath("decade", "decade_special_effect")
                         )
                 )
+        );
+        event.registerEntityRenderer(
+                ModEntities.AGITO_KICK_EFFECT.get(),
+                context -> new RiderEffectRenderer<>(
+                        context,
+                        new RiderEffectModel<>(
+                                generateModelPath("agito", "agito_kick_effect"),
+                                generateTexturePath("agito", "agito_kick_effect"),
+                                generateAnimationPath("agito", "agito_kick_effect")
+                        )
+                )
+
         );
     }
 

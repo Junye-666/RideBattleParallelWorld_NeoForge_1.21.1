@@ -4,9 +4,13 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
+import com.jpigeon.ridebattleparallelworlds.core.entity.custom.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.SkillUtils;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.*;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
@@ -20,6 +24,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -61,22 +66,23 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.RISING_CALAMITY_TITAN, SkillHandler::risingCalamityTitan);
         SKILL_MAP.put(RiderSkills.AMAZING_MIGHTY_KICK, SkillHandler::amazingMightyKick);
         SKILL_MAP.put(RiderSkills.ULTRA_KICK, SkillHandler::ultimateKick);
+
+        SKILL_MAP.put(RiderSkills.GROUND_KICK, SkillHandler::groundKick);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
-        applyRiderSkills(serverPlayer, skillId);
+        Consumer<Player> skillConsumer = SKILL_MAP.get(skillId);
+        if (skillConsumer != null) {
+            skillConsumer.accept(serverPlayer);
+            serverPlayer.hurtMarked = true;
+        }
     }
 
     private static void animateRiderSkills(Player player, ResourceLocation skillId) {
         if (KuugaConfig.KUUGA.includesFormId(RiderManager.getCurrentFormId(player))) {
             animateKuugaSkills(player, skillId);
-        }
-    }
-
-    private static void applyRiderSkills(Player player, ResourceLocation skillId) {
-        Consumer<Player> skillConsumer = SKILL_MAP.get(skillId);
-        if (skillConsumer != null) {
-            skillConsumer.accept(player);
+        } else if (AgitoConfig.AGITO.includesFormId(RiderManager.getCurrentFormId(player))) {
+            animateAgitoSkills(player, skillId);
         }
     }
 
@@ -98,6 +104,12 @@ public class SkillHandler {
         riderKickJump(localPlayer, 1);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 1.5));
         RiderManager.scheduleTicks(20, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 3));
+    }
+
+    private static void mightyPunch(Player serverPlayer) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+
     }
 
     private static void splashDragon(Player serverPlayer) {
@@ -229,7 +241,27 @@ public class SkillHandler {
 
         riderKickJump(localPlayer, 1.5);
         RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2.5));
-        RiderManager.scheduleTicks(30, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 100));
+        RiderManager.scheduleTicks(30, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 7));
+    }
+
+    private static void groundKick(Player serverPlayer) {
+        Level level = serverPlayer.level();
+        AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
+        effect.setOwner(serverPlayer);
+        level.addFreshEntity(effect);
+
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        addResistance(serverPlayer, 170);
+        if (serverPlayer.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
+            agitoGround.triggerOpen();
+            RiderManager.scheduleTicks(160, agitoGround::setClosed);
+        }
+
+        RiderManager.scheduleTicks(130, () -> riderKickJump(localPlayer, 1.5));
+        RiderManager.scheduleTicks(150, () -> riderKickForward(localPlayer, 1.5));
+        RiderManager.scheduleTicks(160, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 3));
+
     }
 
     private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
@@ -298,6 +330,14 @@ public class SkillHandler {
                 risingTitanSword.triggerStab();
                 RiderManager.scheduleTicks(15, () -> risingTitanSword.setCurrentState(RisingTitanSwordItem.AnimState.IDLE));
             }
+        }
+    }
+
+    private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
+        AbstractClientPlayer clientPlayer = getLocalPlayer(player);
+        if (skillId.equals(RiderSkills.GROUND_KICK)) {
+            playAnimation(clientPlayer, "agito_kick_prepare", 0);
+            RiderManager.scheduleTicks(130, () -> playAnimation(clientPlayer, "agito_kick", 5));
         }
     }
 

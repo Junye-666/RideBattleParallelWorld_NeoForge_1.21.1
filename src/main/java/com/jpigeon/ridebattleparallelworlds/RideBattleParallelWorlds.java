@@ -22,7 +22,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(RideBattleParallelWorlds.MODID)
@@ -35,7 +34,7 @@ public class RideBattleParallelWorlds {
         modEventBus.addListener(PWPacketHandler::register);
         NeoForge.EVENT_BUS.register(this);
 
-        PWCreativeTabs.CREATIVE_MODE_TAB.register(modEventBus);
+        PWCreativeTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
         ModSounds.register(modEventBus);
@@ -49,15 +48,10 @@ public class RideBattleParallelWorlds {
         PWAttachments.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(this::registerCommands);
 
-        modEventBus.addListener(this::addCreative);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-    }
-
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
     }
 
     @SubscribeEvent

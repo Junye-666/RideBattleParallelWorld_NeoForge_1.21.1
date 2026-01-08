@@ -6,6 +6,7 @@ import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
 import com.jpigeon.ridebattlelib.core.system.henshin.helper.TriggerType;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
@@ -27,7 +28,8 @@ public class DecadeConfig {
                             ModItems.KAMEN_RIDE_KUUGA.get(),
                             ModItems.FORM_RIDE_KUUGA_DRAGON.get(),
                             ModItems.FORM_RIDE_KUUGA_PEGASUS.get(),
-                            ModItems.FORM_RIDE_KUUGA_TITAN.get()
+                            ModItems.FORM_RIDE_KUUGA_TITAN.get(),
+                            ModItems.KAMEN_RIDE_AGITO.get()
                     ),
                     true,
                     true
@@ -74,6 +76,13 @@ public class DecadeConfig {
             .addGrantedItem(ModItems.TITAN_SWORD.get())
             ;
 
+    public static final FormConfig DECADE_AGITO_GROUND = AgitoConfig.AGITO_GROUND_FORM.copyWithoutItemsAndSkills()
+            .addRequiredItem(DECA_CARD, ModItems.KAMEN_RIDE_AGITO.get())
+            .setShouldPause(true)
+            .setTriggerType(TriggerType.AUTO)
+            ;
+
+
 
     private static void registerDecade() {
         DECADE.addForm(DECADE_BASE);
@@ -82,6 +91,8 @@ public class DecadeConfig {
         DECADE.addForm(DECADE_KUUGA_DRAGON);
         DECADE.addForm(DECADE_KUUGA_PEGASUS);
         DECADE.addForm(DECADE_KUUGA_TITAN);
+
+        DECADE.addForm(DECADE_AGITO_GROUND);
 
         RiderRegistry.registerRider(DECADE);
     }
