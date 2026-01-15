@@ -50,4 +50,8 @@ public class AnimationManager<T extends GeoAnimatable> {
     public AnimationController<T> getController(String name) {
         return controllers.get(name);
     }
+
+    public T getAnimatable() {
+        return animatable;
+    }
 }
