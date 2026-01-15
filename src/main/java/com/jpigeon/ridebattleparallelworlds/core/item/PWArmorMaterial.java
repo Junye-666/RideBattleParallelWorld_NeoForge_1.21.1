@@ -42,7 +42,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.LEGGINGS, 5);
                 attribute.put(ArmorItem.Type.BOOTS, 4);
                 attribute.put(ArmorItem.Type.BODY, 8);
-            }), 8, 1f, 0.2f, ModItems.MIGHTY_ELEMENT);
+            }), 8, 1f, 0.2f, ModItems.GROUND_ELEMENT);
 
 
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,

@@ -5,6 +5,8 @@ import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManI
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoFlameItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoStormItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoTrinityItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.armor.DecadeBaseArmorItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
@@ -42,6 +44,8 @@ public class ModItems {
     public static final DeferredItem<Item> GROUND_ELEMENT = ITEMS.register("agito_ground_element", ()
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> FLAME_ELEMENT = ITEMS.register("agito_flame_element", ()
+            -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> STORM_ELEMENT = ITEMS.register("agito_storm_element", ()
             -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
@@ -169,6 +173,20 @@ public class ModItems {
     public static final DeferredItem<AgitoFlameItem> FLAME_BOOTS = ITEMS.register("agito_flame_boots", ()
             -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.BOOTS, new Item.Properties()));
 
+    public static final DeferredItem<AgitoStormItem> STORM_HELMET = ITEMS.register("agito_storm_helmet", ()
+            -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<AgitoStormItem> STORM_CHESTPLATE = ITEMS.register("agito_storm_chestplate", ()
+            -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredItem<AgitoStormItem> STORM_BOOTS = ITEMS.register("agito_storm_boots", ()
+            -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.BOOTS, new Item.Properties()));
+/*
+    public static final DeferredItem<AgitoTrinityItem> TRINITY_HELMET = ITEMS.register("agito_trinity_helmet", ()
+            -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<AgitoTrinityItem> TRINITY_CHESTPLATE = ITEMS.register("agito_trinity_chestplate", ()
+            -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredItem<AgitoTrinityItem> TRINITY_BOOTS = ITEMS.register("agito_trinity_boots", ()
+            -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.BOOTS, new Item.Properties()));
+*/
 
     // Decade
     // 盔甲

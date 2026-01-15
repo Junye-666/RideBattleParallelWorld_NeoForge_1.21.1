@@ -12,6 +12,8 @@
   "item.ridebattleparallelworlds.kuuga_ultimate_element": "Ultimate Element",
 
   "item.ridebattleparallelworlds.agito_ground_element": "Ground Element",
+  "item.ridebattleparallelworlds.agito_flame_element": "Flame Element",
+  "item.ridebattleparallelworlds.agito_storm_element": "Storm Element",
 
   "item.ridebattleparallelworlds.decade_worlds_fragment": "Worlds Fragment",
   "item.ridebattleparallelworlds.decade_blank_card": "Blank Ride Card",
@@ -64,7 +66,9 @@
   "item.ridebattleparallelworlds.agito_flame_helmet": "AgitΩ Flame",
   "item.ridebattleparallelworlds.agito_flame_chestplate": "AgitΩ Flame",
   "item.ridebattleparallelworlds.agito_flame_boots": "AgitΩ Flame",
-
+  "item.ridebattleparallelworlds.agito_storm_helmet": "AgitΩ Storm",
+  "item.ridebattleparallelworlds.agito_storm_chestplate": "AgitΩ Storm",
+  "item.ridebattleparallelworlds.agito_storm_boots": "AgitΩ Storm",
 
   "item.ridebattleparallelworlds.decade_deca_driver": "Deca Driver",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",

@@ -42,6 +42,8 @@ public class PWCreativeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.ALTER_RING);
                         output.accept(ModItems.GROUND_ELEMENT);
+                        output.accept(ModItems.FLAME_ELEMENT);
+                        output.accept(ModItems.STORM_ELEMENT);
                     })
                     .build());
 

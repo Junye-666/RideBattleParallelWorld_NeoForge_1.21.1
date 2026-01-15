@@ -1,0 +1,27 @@
+package com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor;
+
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.ArmorMaterial;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+
+public class AgitoStormItem extends BaseKamenRiderArmorItem {
+    public AgitoStormItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super("agito", "storm", material, type, properties, false);
+    }
+
+    @Override
+    protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
+        addController(registrar, "idle", createLoopController("idle"));
+    }
+
+    @Override
+    protected GeoArmorRenderer<?> createRenderer() {
+        return new GenericArmorRenderer(
+                new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
+        );
+    }
+}

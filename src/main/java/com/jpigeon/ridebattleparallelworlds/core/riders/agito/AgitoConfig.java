@@ -20,11 +20,12 @@ public class AgitoConfig {
 
     public static final ResourceLocation GROUND_ID = fromString("ground_form");
     public static final ResourceLocation FLAME_ID = fromString("flame_form");
+    public static final ResourceLocation STORM_ID = fromString("storm_form");
 
     public static final RiderConfig AGITO = new RiderConfig(RiderIds.AGITO_ID)
             .setMainDriverItem(ModItems.ALTER_RING.get(), EquipmentSlot.LEGS)
             .addMainDriverSlot(ALTER_RING_CORE,
-                    List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get()),
+                    List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get()),
                     true,
                     true
             );
@@ -62,9 +63,27 @@ public class AgitoConfig {
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             ;
 
+    public static final FormConfig AGITO_STORM_FORM = new FormConfig(STORM_ID)
+            .setArmor(
+                    ModItems.STORM_HELMET.get(),
+                    ModItems.STORM_CHESTPLATE.get(),
+                    null,
+                    ModItems.STORM_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
+            .addRequiredItem(ALTER_RING_CORE, ModItems.STORM_ELEMENT.get())
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            ;
+
+
     private static void registerAgito() {
         AGITO.addForm(AGITO_GROUND_FORM);
         AGITO.addForm(AGITO_FLAME_FORM);
+        AGITO.addForm(AGITO_STORM_FORM);
 
         RiderRegistry.registerRider(AGITO);
     }

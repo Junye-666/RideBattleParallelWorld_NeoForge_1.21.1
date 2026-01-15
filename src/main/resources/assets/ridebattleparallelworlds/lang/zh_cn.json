@@ -12,6 +12,8 @@
   "item.ridebattleparallelworlds.kuuga_ultimate_element": "究极灵石",
 
   "item.ridebattleparallelworlds.agito_ground_element": "大地元素",
+  "item.ridebattleparallelworlds.agito_flame_element": "火焰元素",
+  "item.ridebattleparallelworlds.agito_storm_element": "风暴元素",
 
   "item.ridebattleparallelworlds.decade_worlds_fragment": "世界碎片",
   "item.ridebattleparallelworlds.decade_blank_card": "空白驾驭卡",
@@ -64,6 +66,9 @@
   "item.ridebattleparallelworlds.agito_flame_helmet": "亚极陀 火焰",
   "item.ridebattleparallelworlds.agito_flame_chestplate": "亚极陀 火焰",
   "item.ridebattleparallelworlds.agito_flame_boots": "亚极陀 火焰",
+  "item.ridebattleparallelworlds.agito_storm_helmet": "亚极陀 风暴",
+  "item.ridebattleparallelworlds.agito_storm_chestplate": "亚极陀 风暴",
+  "item.ridebattleparallelworlds.agito_storm_boots": "亚极陀 风暴",
 
   "item.ridebattleparallelworlds.decade_deca_driver": "Decade 驱动器",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",
