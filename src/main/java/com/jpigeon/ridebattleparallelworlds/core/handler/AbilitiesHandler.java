@@ -2,21 +2,24 @@ package com.jpigeon.ridebattleparallelworlds.core.handler;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
-import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
 import com.jpigeon.ridebattleparallelworlds.core.component.ItemData;
 import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 public class AbilitiesHandler {
@@ -57,9 +60,13 @@ public class AbilitiesHandler {
     }
 
     @SubscribeEvent
-    public static void onExtract(SlotExtractionEvent.Pre event) {
-        ResourceLocation slotId = event.getSlotId();
-        ItemStack stack = event.getExtractedStack();
+    public static void onHit(AttackEntityEvent event) {
+        Player player = event.getEntity();
+        LivingEntity target = event.getTarget().getControllingPassenger();
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (mainHand.getItem() instanceof FlameSaberItem flameSaber && !flameSaber.getCurrentAnimState().equals("idle")) {
+            flameSaber.setClose();
+        }
     }
 
     @SubscribeEvent

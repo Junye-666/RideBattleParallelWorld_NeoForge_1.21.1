@@ -1,12 +1,16 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
+import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
+import com.jpigeon.ridebattlelib.core.system.network.handler.PacketHandler;
+import com.jpigeon.ridebattlelib.core.system.network.packet.InsertItemPacket;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderForms;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.ChatFormatting;
@@ -29,12 +33,14 @@ public class FormWheel {
 
     static {
         currentIndex.put(RiderForms.KUUGA_FORMS, 0);
+        currentIndex.put(RiderForms.AGITO_FORMS, 0);
     }
 
     @SubscribeEvent
     public static void onReturnItem(ReturnItemsEvent.Pre event) {
         if (event.isCanceled()) return;
-        if (event.getConfig().equals(KuugaConfig.KUUGA)) {
+        RiderConfig config = event.getConfig();
+        if (config.equals(KuugaConfig.KUUGA) || config.equals(AgitoConfig.AGITO)) {
             Player player = event.getPlayer();
             if (player == null || !player.isCrouching()) return;
             handleRotate(player);
@@ -43,7 +49,8 @@ public class FormWheel {
 
     @SubscribeEvent
     public static void onExtract(SlotExtractionEvent.Pre event) {
-        if (event.getSlotId().equals(KuugaConfig.ARCLE_CORE)) {
+        ResourceLocation slotId = event.getSlotId();
+        if (slotId.equals(KuugaConfig.ARCLE_CORE) || slotId.equals(AgitoConfig.ALTER_RING_CORE)) {
             event.setExtractedStack(Items.AIR);
         }
     }
@@ -88,9 +95,32 @@ public class FormWheel {
             }
 
             // 更新腰带槽
-            RiderManager.extractItemFromSlot(player, KuugaConfig.ARCLE_CORE);
+            setArcleSlot(player, newId);
             RiderHandler.setDriverAnim(legs, newId);
-            RiderManager.scheduleTicks(1, () -> setArcleSlot(player, newId));
+        } else if (legs.getItem() instanceof AlterRingItem) {
+            ResourceLocation agito = RiderIds.AGITO_ID;
+            List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, agito);
+            if (unlockedForms.isEmpty()) {
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.displayClientMessage(
+                            Component.literal("没有可用的解锁形态").withStyle(ChatFormatting.RED),
+                            true
+                    );
+                }
+                return;
+            }
+            int currentIdx = getCurrentIndex(unlockedForms);
+            int nextIndex = (currentIdx + 1) % unlockedForms.size();
+            setCurrentIndex(unlockedForms, nextIndex);
+            ResourceLocation newId = unlockedForms.get(nextIndex);
+
+            Component displayName = getDisplayName(newId);
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.displayClientMessage(displayName, true);
+            }
+
+            setAlterRingSlot(player, newId);
+            RiderHandler.setDriverAnim(legs, newId);
         }
     }
 
@@ -103,19 +133,21 @@ public class FormWheel {
     }
 
     private static ChatFormatting getChatFormatting(ResourceLocation formId) {
-        if (formId == null) return ChatFormatting.WHITE;
+        if (formId == null) return ChatFormatting.BOLD;
 
         String string = formId.getPath();
         if (string.contains("amazing") || string.contains("ultimate")) {
             return ChatFormatting.BLACK;
-        } else if (string.contains("mighty")) {
+        } else if (string.contains("mighty") || string.contains("flame")) {
             return ChatFormatting.RED;
-        } else if (string.contains("dragon")) {
+        } else if (string.contains("dragon") || string.contains("storm")) {
             return ChatFormatting.DARK_AQUA;
         } else if (string.contains("pegasus")) {
             return ChatFormatting.DARK_GREEN;
         } else if (string.contains("titan")) {
             return ChatFormatting.DARK_PURPLE;
+        } else if (string.contains("ground")) {
+            return ChatFormatting.GOLD;
         }
         return ChatFormatting.BOLD;
     }
@@ -149,7 +181,25 @@ public class FormWheel {
         }
 
         if (item != null) {
-            RiderManager.insertItemToSlot(player, arcleCore, item);
+            PacketHandler.sendToServer(new InsertItemPacket(player.getUUID(), arcleCore, item.getDefaultInstance()));
+        }
+    }
+
+    public static void setAlterRingSlot(Player player, ResourceLocation formId) {
+        if (formId == null || player == null) return;
+
+        ResourceLocation alterRingCore = AgitoConfig.ALTER_RING_CORE;
+        Item item = null;
+        if (formId.equals(AgitoConfig.GROUND_ID)) {
+            item = ModItems.GROUND_ELEMENT.get();
+        } else if (formId.equals(AgitoConfig.FLAME_ID)) {
+            item = ModItems.FLAME_ELEMENT.get();
+        } else if (formId.equals(AgitoConfig.STORM_ID)) {
+            item = ModItems.STORM_HELMET.get();
+        }
+
+        if (item != null) {
+            PacketHandler.sendToServer(new InsertItemPacket(player.getUUID(), alterRingCore, item.getDefaultInstance()));
         }
     }
 }

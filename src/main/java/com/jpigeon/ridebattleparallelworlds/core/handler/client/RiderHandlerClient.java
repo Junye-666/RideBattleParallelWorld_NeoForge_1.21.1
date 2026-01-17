@@ -10,7 +10,6 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberIte
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,13 +50,6 @@ public class RiderHandlerClient {
                 default -> {
                 }
             }
-            ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-            switch (mainHand.getItem()) {
-                case FlameSaberItem flameSaber -> flameSaber.setClose();
-                default -> {
-
-                }
-            }
         }
     }
 
@@ -67,9 +59,14 @@ public class RiderHandlerClient {
         if (!(event.getEntity() instanceof Player player)) return;
         switch (stack.getItem()) {
             case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
-            case AlterRingItem alterRingItem -> {
+            case ArcleItem arcle -> {
                 if (!RiderManager.isTransformed(player)) {
-                    alterRingItem.shrinkInBody();
+                    arcle.shrinkInBody();
+                }
+            }
+            case AlterRingItem alterRing -> {
+                if (!RiderManager.isTransformed(player)) {
+                    alterRing.shrinkInBody();
                 }
             }
             case ShockerCombatManItem ignored -> RiderManager.transform(player);
@@ -84,6 +81,5 @@ public class RiderHandlerClient {
         if (stack.getItem() instanceof FlameSaberItem flameSaber) {
             flameSaber.setClose();
         }
-
     }
 }

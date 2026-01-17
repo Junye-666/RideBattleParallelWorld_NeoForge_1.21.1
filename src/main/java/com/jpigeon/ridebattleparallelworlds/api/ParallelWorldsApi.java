@@ -78,9 +78,6 @@ public class ParallelWorldsApi {
         }
 
         PWData data = player.getData(PWAttachments.PW_DATA);
-        if (data == null) {
-            return Collections.emptyList();
-        }
 
         return data.getUnlockedForms(riderId);
     }

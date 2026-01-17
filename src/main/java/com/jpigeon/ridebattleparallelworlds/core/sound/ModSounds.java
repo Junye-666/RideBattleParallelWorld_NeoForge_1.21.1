@@ -30,6 +30,9 @@ public class ModSounds {
     public static final Supplier<SoundEvent> KUUGA_AMAZING_MIGHTY = registerSoundEvent("kuuga_amazing_mighty");
     public static final Supplier<SoundEvent> KUUGA_ULTIMATE = registerSoundEvent("kuuga_ultimate");
 
+    public static final Supplier<SoundEvent> AGITO_PREPARE = registerSoundEvent("agito_prepare");
+    public static final Supplier<SoundEvent> AGITO_STEADY = registerSoundEvent("agito_steady");
+    public static final Supplier<SoundEvent> AGITO_FINISH = registerSoundEvent("agito_finish");
 
     public static final Supplier<SoundEvent> DECADE_INSERT = registerSoundEvent("decade_insert");
     public static final Supplier<SoundEvent> KAMEN_RIDE = registerSoundEvent("kamen_ride");
@@ -41,6 +44,9 @@ public class ModSounds {
     public static final Supplier<SoundEvent> FR_KUUGA_DRAGON = registerSoundEvent("fr_kuuga_dragon");
     public static final Supplier<SoundEvent> FR_KUUGA_PEGASUS = registerSoundEvent("fr_kuuga_pegasus");
     public static final Supplier<SoundEvent> FR_KUUGA_TITAN = registerSoundEvent("fr_kuuga_titan");
+    public static final Supplier<SoundEvent> FR_AGITO_FLAME = registerSoundEvent("fr_agito_flame");
+    public static final Supplier<SoundEvent> FR_AGITO_STORM = registerSoundEvent("fr_agito_storm");
+
 
     private static Supplier<SoundEvent> registerSoundEvent(String name){
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, name);
@@ -92,6 +98,9 @@ public class ModSounds {
         registerHenshinSound(DecadeConfig.DECADE_KUUGA_TITAN, FR_KUUGA_TITAN.get(), 90);
 
         registerHenshinSound(DecadeConfig.DECADE_AGITO_GROUND, KR_AGITO.get(), 65);
+        registerHenshinSound(DecadeConfig.DECADE_AGITO_FLAME, FR_AGITO_FLAME.get(), 70);
+        registerHenshinSound(DecadeConfig.DECADE_AGITO_STORM, FR_AGITO_STORM.get(), 70);
+
     }
 
 }

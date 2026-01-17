@@ -1,5 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds.core.debug;
 
+import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWData;
@@ -30,9 +31,9 @@ public class PWCommands {
                                         ))
                                 )
                         )
-                        .then(Commands.literal("checkData")
-                                .executes(context -> checkData(context.getSource()))
-                        )
+                )
+                .then(Commands.literal("checkData")
+                        .executes(context -> checkData(context.getSource()))
                 )
         );
     }
@@ -48,18 +49,21 @@ public class PWCommands {
         PWData dataBefore = player.getData(PWAttachments.PW_DATA);
         boolean wasUnlocked = dataBefore.isFormUnlocked(riderId, formId);
 
-        source.sendSuccess(() ->
-                Component.literal("解锁前: " + (wasUnlocked ? "已解锁" : "未解锁"))
-                        .withStyle(ChatFormatting.YELLOW), false);
+        if (Config.DEBUG_MODE.get()) {
+            source.sendSuccess(() ->
+                    Component.literal("解锁前: " + (wasUnlocked ? "已解锁" : "未解锁"))
+                            .withStyle(ChatFormatting.YELLOW), false);
+        }
+
 
         // 执行解锁
         boolean success = ParallelWorldsApi.unlockForm(player, riderId, formId);
 
-        if (success) {
+        if (success && Config.DEBUG_MODE.get()) {
             source.sendSuccess(() ->
                     Component.literal("成功解锁形态" + formId.getPath())
                             .withStyle(ChatFormatting.GREEN), false);
-        } else {
+        } else if (Config.DEBUG_MODE.get()){
             source.sendFailure(Component.literal("解锁失败或形态已解锁"));
         }
 

@@ -23,6 +23,8 @@
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_pegasus_card": "形态驾驭: 空我 天马",
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_titan_card": "形态驾驭: 空我 泰坦",
   "item.ridebattleparallelworlds.decade_kamen_ride_agito_card": "假面驾驭: 亚极陀",
+  "item.ridebattleparallelworlds.decade_form_ride_agito_flame_card": "形态驾驭: 亚极陀 火焰",
+  "item.ridebattleparallelworlds.decade_form_ride_agito_storm_card": "形态驾驭: 亚极陀 风暴",
 
   "item.ridebattleparallelworlds.kuuga_arcle": "亚古鲁",
   "item.ridebattleparallelworlds.kuuga_growing_helmet": "空我 初升",
@@ -86,6 +88,7 @@
   "item.ridebattleparallelworlds.kuuga_rising_dragon_rod": "升华·青龙棍",
   "item.ridebattleparallelworlds.kuuga_rising_pegasus_bowgun": "升华·天马弩",
   "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "升华·泰坦剑",
+  "item.ridebattleparallelworlds.agito_flame_saber": "火焰军刀",
 
   "form.ridebattleparallelworlds.growing_form": "初升形态",
   "form.ridebattleparallelworlds.mighty_form": "全能形态",
@@ -98,6 +101,9 @@
   "form.ridebattleparallelworlds.rising_titan_form": "升华·泰坦形态",
   "form.ridebattleparallelworlds.amazing_mighty_form": "惊异·全能形态",
   "form.ridebattleparallelworlds.ultimate_form": "究极形态",
+  "form.ridebattleparallelworlds.ground_form": "大地形态",
+  "form.ridebattleparallelworlds.flame_form": "火焰形态",
+  "form.ridebattleparallelworlds.storm_form": "暴风形态",
 
   "skill.growing_kick": "初升踢",
   "skill.mighty_kick": "全能踢",
@@ -115,5 +121,7 @@
 
   "entity.ridebattleparallelworlds.decade_special_effect": "Decade变身特效",
 
-  "ridebattleparallelworlds.configuration.skillExplosionGrief": "技能破坏方块"
+  "ridebattleparallelworlds.configuration.skillExplosionGrief": "技能破坏方块",
+  "ridebattleparallelworlds.configuration.riderSoundsVolume": "音效音量",
+  "ridebattleparallelworlds.configuration.debugMode": "Debug模式"
 }

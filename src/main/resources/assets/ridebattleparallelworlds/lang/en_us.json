@@ -23,6 +23,8 @@
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_pegasus_card": "Form Ride: Kuuga Pegasus",
   "item.ridebattleparallelworlds.decade_form_ride_kuuga_titan_card": "Form Ride: Kuuga Titan",
   "item.ridebattleparallelworlds.decade_kamen_ride_agito_card": "Kamen Ride: Agito",
+  "item.ridebattleparallelworlds.decade_form_ride_agito_flame_card": "Form Ride: Agito Flame",
+  "item.ridebattleparallelworlds.decade_form_ride_agito_storm_card": "Form Ride: Agito Storm",
 
   "item.ridebattleparallelworlds.kuuga_arcle": "Arcle",
   "item.ridebattleparallelworlds.kuuga_growing_helmet": "Kuuga Growing",
@@ -84,8 +86,9 @@
   "item.ridebattleparallelworlds.kuuga_titan_sword": "Titan Sword",
   "item.ridebattleparallelworlds.kuuga_pegasus_bowgun": "Pegasus Bowgun",
   "item.ridebattleparallelworlds.kuuga_rising_dragon_rod": "Rising Dragon Rod",
-  "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "Rising Titan Sword",
   "item.ridebattleparallelworlds.kuuga_rising_pegasus_bowgun": "Rising Pegasus Bowgun",
+  "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "Rising Titan Sword",
+  "item.ridebattleparallelworlds.agito_flame_saber": "Flame Saber",
 
   "form.ridebattleparallelworlds.growing_form": "Growing Form",
   "form.ridebattleparallelworlds.mighty_form": "Mighty Form",
@@ -98,7 +101,9 @@
   "form.ridebattleparallelworlds.rising_titan_form": "Rising Titan Form",
   "form.ridebattleparallelworlds.amazing_mighty_form": "Amazing Mighty Form",
   "form.ridebattleparallelworlds.ultimate_form": "Ultimate Form",
-
+  "form.ridebattleparallelworlds.ground_form": "Ground Form",
+  "form.ridebattleparallelworlds.flame_form": "Flame Form",
+  "form.ridebattleparallelworlds.storm_form": "Storm Form",
 
   "skill.growing_kick": "Growing Kick",
   "skill.mighty_kick": "Mighty Kick",
@@ -116,5 +121,7 @@
 
   "entity.ridebattleparallelworlds.decade_special_effect": "Decade Henshin Effect",
 
-  "ridebattleparallelworlds.configuration.skillExplosionGrief": "Skill Explosion Grief"
+  "ridebattleparallelworlds.configuration.skillExplosionGrief": "Skill Explosion Grief",
+  "ridebattleparallelworlds.configuration.riderSoundsVolume": "Sounds Volume",
+  "ridebattleparallelworlds.configuration.debugMode": "Debug Mode"
 }

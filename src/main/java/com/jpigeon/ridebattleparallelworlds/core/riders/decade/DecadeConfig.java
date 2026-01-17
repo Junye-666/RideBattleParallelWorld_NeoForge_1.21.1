@@ -88,6 +88,7 @@ public class DecadeConfig {
             .addRequiredItem(DECA_CARD, ModItems.FORM_RIDE_AGITO_FLAME.get())
             .setShouldPause(true)
             .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(ModItems.FLAME_SABER.get())
             ;
 
     public static final FormConfig DECADE_AGITO_STORM = AgitoConfig.AGITO_STORM_FORM.copyWithoutItemsAndSkills()
@@ -105,6 +106,8 @@ public class DecadeConfig {
         DECADE.addForm(DECADE_KUUGA_DRAGON);
         DECADE.addForm(DECADE_KUUGA_PEGASUS);
         DECADE.addForm(DECADE_KUUGA_TITAN);
+        DECADE.addForm(DECADE_AGITO_FLAME);
+        DECADE.addForm(DECADE_AGITO_STORM);
 
         DECADE.addForm(DECADE_AGITO_GROUND);
 

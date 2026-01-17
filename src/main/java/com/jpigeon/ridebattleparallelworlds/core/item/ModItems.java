@@ -207,8 +207,6 @@ public class ModItems {
     public static final DeferredItem<DecadeBaseArmorItem> DECADE_BOOTS = ITEMS.register("decade_base_boots", ()
             -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.BOOTS, new Item.Properties()));
 
-
-
     // 修卡
     public static final DeferredItem<ShockerCombatManItem> SHOCKER_HELMET = ITEMS.register("shocker_combatman_helmet", ()
             -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.HELMET, new Item.Properties()));

@@ -4,6 +4,7 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.*;
 import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
+import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeHenshinEffect;
@@ -103,13 +104,13 @@ public class RiderHandler {
         Player player = event.getPlayer();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         if (legs.getItem() instanceof DecaDriverItem decaDriver) {
-            RiderManager.playPublicSound(player, ModSounds.DECADE_INSERT.get());
+            playSound(player, ModSounds.DECADE_INSERT.get());
             RiderManager.scheduleTicks(5, decaDriver::triggerClose);
             ItemStack stack = event.getStack();
             if (isValidItem(stack, ModTags.Items.KAMEN_RIDE_CARDS)) {
-                RiderManager.scheduleTicks(5, () -> RiderManager.playPublicSound(player, ModSounds.KAMEN_RIDE.get()));
+                RiderManager.scheduleTicks(5, () -> playSound(player, ModSounds.KAMEN_RIDE.get()));
             } else if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
-                RiderManager.scheduleTicks(5, () -> RiderManager.playPublicSound(player, ModSounds.FORM_RIDE.get()));
+                RiderManager.scheduleTicks(5, () -> playSound(player, ModSounds.FORM_RIDE.get()));
             }
         } else if (legs.getItem() instanceof AlterRingItem) {
             prepareAgito(player, legs);
@@ -145,7 +146,7 @@ public class RiderHandler {
     private static void playHenshinSound(Player player, FormConfig form) {
         Optional<SoundEvent> sound = ModSounds.getHenshinSound(form);
         if (sound.isEmpty()) return;
-        RiderManager.playPublicSound(player, sound.get());
+        playSound(player, sound.get());
     }
 
     private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
@@ -167,7 +168,7 @@ public class RiderHandler {
         SkillHandler.addResistance(player, 120);
         playAnimation(abstractClientPlayer, "kuuga_henshin");
         if (legs.getItem() instanceof ArcleItem arcleItem) {
-            RiderManager.playPublicSound(player, ModSounds.ARCLE_APPEAR.get());
+            playSound(player, ModSounds.ARCLE_APPEAR.get());
             if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
                 RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
             }
@@ -197,6 +198,8 @@ public class RiderHandler {
     private static void prepareAgito(Player player, ItemStack legs) {
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "agito_prepare");
+        playSound(player, ModSounds.AGITO_PREPARE.get());
+        if (!RiderManager.isTransformed(player)) RiderManager.scheduleTicks(20, () -> playSound(player, ModSounds.AGITO_STEADY.get()));
         if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentAnimState().equals("inBody") || alterRing.getCurrentAnimState().equals("shrink"))) {
             alterRing.triggerAppear();
             setDriverAnim(legs, RiderManager.getPendingForm(player));
@@ -206,6 +209,8 @@ public class RiderHandler {
     private static void completeAgito(Player player, ItemStack legs, ResourceLocation formId) {
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "agito_henshin");
+        Minecraft.getInstance().getSoundManager().stop();
+        playSound(player, ModSounds.AGITO_FINISH.get());
         RiderManager.completeIn(10, player);
         RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
     }
@@ -236,5 +241,9 @@ public class RiderHandler {
 
     private static boolean isValidItem(ItemStack itemStack, TagKey<Item> tagKey) {
         return itemStack.is(tagKey);
+    }
+
+    public static void playSound(Player player, SoundEvent soundEvent) {
+        RiderManager.playPublicSound(player, soundEvent, ((float) Config.RIDER_SOUNDS_VOLUME.get() / 100));
     }
 }

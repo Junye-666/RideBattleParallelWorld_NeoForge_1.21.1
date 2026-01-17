@@ -2,6 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.core.attachment;
 
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderForms;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -26,16 +27,23 @@ public class PWData {
 
     public PWData(FormUnlockData formUnlockData) {
         this.formUnlockData = formUnlockData != null ? formUnlockData : new FormUnlockData();
-        initializeKuugaForms();
+        initializeRiderForms();
     }
 
-    private void initializeKuugaForms() {
+    private void initializeRiderForms() {
         // 检查是否已经有数据，避免覆盖
         if (formUnlockData.getRiderUnlockStatus(RiderIds.KUUGA_ID).isEmpty()) {
             formUnlockData.registerRiderForms(
                     RiderIds.KUUGA_ID,
                     RiderForms.KUUGA_FORMS,
                     List.of(KuugaConfig.GROWING_ID)
+            );
+        }
+        if (formUnlockData.getRiderUnlockStatus(RiderIds.AGITO_ID).isEmpty()) {
+            formUnlockData.registerRiderForms(
+                    RiderIds.AGITO_ID,
+                    RiderForms.AGITO_FORMS,
+                    List.of(AgitoConfig.GROUND_ID)
             );
         }
     }

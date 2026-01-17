@@ -65,6 +65,24 @@
       "ridebattleparallelworlds:kuuga/kuuga_ultimate"
     ]
   },
+  "agito_prepare": {
+    "subtitle": "sounds.ridebattleparallelworlds.agito_prepare",
+    "sounds": [
+      "ridebattleparallelworlds:agito/agito_prepare"
+    ]
+  },
+  "agito_steady": {
+    "subtitle": "sounds.ridebattleparallelworlds.agito_steady",
+    "sounds": [
+      "ridebattleparallelworlds:agito/agito_steady"
+    ]
+  },
+  "agito_finish": {
+    "subtitle": "sounds.ridebattleparallelworlds.agito_finish",
+    "sounds": [
+      "ridebattleparallelworlds:agito/agito_finish"
+    ]
+  },
   "decade_insert": {
     "subtitle": "sounds.ridebattleparallelworlds.decade_insert",
     "sounds": [
@@ -117,6 +135,18 @@
     "subtitle": "sounds.ridebattleparallelworlds.kr_agito",
     "sounds": [
       "ridebattleparallelworlds:decade/kr/kr_agito"
+    ]
+  },
+  "fr_agito_flame": {
+    "subtitle": "sounds.ridebattleparallelworlds.fr_agito_flame",
+    "sounds": [
+      "ridebattleparallelworlds:decade/fr/agito/fr_agito_flame"
+    ]
+  },
+  "fr_agito_storm": {
+    "subtitle": "sounds.ridebattleparallelworlds.fr_agito_storm",
+    "sounds": [
+      "ridebattleparallelworlds:decade/fr/agito/fr_agito_storm"
     ]
   }
 }

@@ -2,18 +2,29 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"agito_prepare": {
-			"animation_length": 1,
+			"animation_length": 2,
 			"bones": {
 				"torso": {
 					"rotation": {
 						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [0, -25, 0],
+							"easing": "easeOutCirc"
+						},
+						"0.5": {
 							"vector": [0, -25, 0]
 						},
-						"0.25": {
+						"0.75": {
 							"vector": [0, 20, 0],
 							"easing": "easeInCirc"
 						},
-						"1.0": {
+						"0.9375": {
+							"vector": [0, 20, 0],
+							"easing": "easeInCirc"
+						},
+						"2.0": {
 							"vector": [0, -25, 0],
 							"easing": "easeInSine"
 						}
@@ -22,30 +33,52 @@
 				"right_arm": {
 					"rotation": {
 						"0.0": {
-							"vector": [-5.74912, -36.6102, -47.98262]
+							"vector": [0, 0, 0]
 						},
 						"0.125": {
+							"vector": [-5.74912, -36.6102, -47.98262],
+							"easing": "easeOutCirc"
+						},
+						"0.5": {
+							"vector": [-5.74912, -36.6102, -47.98262]
+						},
+						"0.625": {
 							"vector": [-96.35681, -7.37768, 22.53962],
 							"easing": "easeOutCirc"
 						},
-						"0.25": {
+						"0.75": {
 							"vector": [-124.29792, 11.33395, 9.98086],
 							"easing": "easeInCirc"
 						},
-						"1.0": {
+						"0.9375": {
+							"vector": [-124.29792, 11.33395, 9.98086],
+							"easing": "easeInCirc"
+						},
+						"2.0": {
 							"vector": [-96.79792, 11.33395, 9.98086],
 							"easing": "easeInSine"
 						}
 					},
 					"position": {
 						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [1, 0, -3],
+							"easing": "easeOutCirc"
+						},
+						"0.5": {
 							"vector": [1, 0, -3]
 						},
-						"0.25": {
+						"0.75": {
 							"vector": [0, -4, 1],
 							"easing": "easeInCirc"
 						},
-						"1.0": {
+						"0.9375": {
+							"vector": [0, -4, 1],
+							"easing": "easeInCirc"
+						},
+						"2.0": {
 							"vector": [0, 0, -5],
 							"easing": "easeInSine"
 						}
@@ -53,21 +86,41 @@
 				},
 				"left_arm": {
 					"rotation": {
-						"vector": [-37.5, 0, 0]
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.125": {
+							"vector": [-37.5, 0, 0],
+							"easing": "easeOutCirc"
+						},
+						"0.5": {
+							"vector": [-37.5, 0, 0]
+						}
 					},
 					"position": {
 						"0.0": {
-							"vector": [0, 0, 3]
+							"vector": [0, 0, 0]
 						},
 						"0.125": {
+							"vector": [0, 0, 3],
+							"easing": "easeOutCirc"
+						},
+						"0.5": {
+							"vector": [0, 0, 3]
+						},
+						"0.625": {
 							"vector": [0, -1, 3],
 							"easing": "easeOutCirc"
 						},
-						"0.25": {
+						"0.75": {
 							"vector": [0, -1, -1],
 							"easing": "easeInCirc"
 						},
-						"1.0": {
+						"0.9375": {
+							"vector": [0, -1, -1],
+							"easing": "easeInCirc"
+						},
+						"2.0": {
 							"vector": [0, -1, 3],
 							"easing": "easeInSine"
 						}
