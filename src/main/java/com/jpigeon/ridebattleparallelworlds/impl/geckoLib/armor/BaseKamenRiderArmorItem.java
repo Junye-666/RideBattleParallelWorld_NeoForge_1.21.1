@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import static software.bernie.geckolib.animation.Animation.LoopType.*;
-import static software.bernie.geckolib.animation.Animation.LoopType.HOLD_ON_LAST_FRAME;
 
 public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoItem {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);

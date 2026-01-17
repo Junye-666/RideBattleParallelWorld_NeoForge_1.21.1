@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.attachment;
 
-import com.google.common.collect.Table;
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;

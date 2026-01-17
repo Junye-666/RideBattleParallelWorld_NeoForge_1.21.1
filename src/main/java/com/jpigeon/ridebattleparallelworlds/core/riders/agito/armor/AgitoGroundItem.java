@@ -5,7 +5,7 @@ import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorMode
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class AgitoGroundItem extends BaseKamenRiderArmorItem {

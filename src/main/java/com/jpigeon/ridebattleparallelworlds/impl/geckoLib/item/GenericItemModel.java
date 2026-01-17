@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item;
 
-import software.bernie.geckolib.model.GeoModel;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.model.GeoModel;
 
 public class GenericItemModel extends GeoModel<BaseKamenRiderGeoItem> {
     private final ResourceLocation modelPath;

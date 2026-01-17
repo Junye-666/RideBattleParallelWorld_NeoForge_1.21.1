@@ -10,19 +10,17 @@ import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.item.PWCreativeTabs;
 import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
-
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import org.slf4j.Logger;
 
 @Mod(RideBattleParallelWorlds.MODID)
 public class RideBattleParallelWorlds {

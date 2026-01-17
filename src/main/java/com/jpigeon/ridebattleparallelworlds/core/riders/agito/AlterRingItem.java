@@ -6,7 +6,7 @@ import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRend
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorMaterial;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class AlterRingItem extends BaseKamenRiderArmorItem {

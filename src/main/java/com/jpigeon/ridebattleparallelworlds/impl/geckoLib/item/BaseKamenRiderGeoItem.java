@@ -15,9 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static software.bernie.geckolib.animation.Animation.LoopType.HOLD_ON_LAST_FRAME;
-import static software.bernie.geckolib.animation.Animation.LoopType.LOOP;
-import static software.bernie.geckolib.animation.Animation.LoopType.PLAY_ONCE;
+import static software.bernie.geckolib.animation.Animation.LoopType.*;
 
 public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
