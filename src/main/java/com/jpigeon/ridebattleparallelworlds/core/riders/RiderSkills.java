@@ -25,6 +25,7 @@ public class RiderSkills {
 
     // 亚极陀
     public static final ResourceLocation GROUND_KICK = fromString("ground_kick");
+    public static final ResourceLocation SABER_SLASH = fromString("saber_slash");
 
     private static void registerKuugaSkills(){
         registerSkill(GROWING_KICK, 10, ChatFormatting.WHITE);
@@ -41,6 +42,7 @@ public class RiderSkills {
         registerSkill(ULTRA_KICK, 30, ChatFormatting.BLACK);
 
         registerSkill(GROUND_KICK, 15, ChatFormatting.YELLOW);
+        registerSkill(SABER_SLASH, 15);
     }
 
     private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting chatFormat){

@@ -43,7 +43,7 @@ public class PegasusBowgunItem extends BaseKamenRiderGeoItem {
         setAnimState("release");
     }
 
-    public void setCurrentState(AnimState state){
+    public void setCurrentState(AnimState state) {
         setAnimState(state.name().toLowerCase());
     }
 
@@ -60,6 +60,7 @@ public class PegasusBowgunItem extends BaseKamenRiderGeoItem {
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
             if (RiderManager.isSpecificForm(player, KuugaConfig.PEGASUS_ID)) {
                 player.getCooldowns().addCooldown(this, 110);
+                triggerShoot();
                 RiderManager.triggerSkill(player, RiderSkills.BLAST_PEGASUS, SkillEvent.SkillTriggerType.WEAPON);
             }
         }

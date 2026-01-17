@@ -56,6 +56,9 @@ public class RisingDragonRodItem extends BaseKamenRiderGeoItem {
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
             if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID)) {
                 player.getCooldowns().addCooldown(this, 410);
+                if (usedHand.equals(InteractionHand.MAIN_HAND)) {
+                    triggerMainSpin();
+                } else triggerOffSpin();
                 RiderManager.triggerSkill(player, RiderSkills.RISING_SPLASH_DRAGON, SkillEvent.SkillTriggerType.WEAPON);
             }
         }

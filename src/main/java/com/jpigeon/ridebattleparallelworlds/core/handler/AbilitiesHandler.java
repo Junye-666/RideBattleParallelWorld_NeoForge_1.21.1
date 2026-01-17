@@ -62,11 +62,6 @@ public class AbilitiesHandler {
     public static void onExtract(SlotExtractionEvent.Pre event) {
         ResourceLocation slotId = event.getSlotId();
         ItemStack stack = event.getExtractedStack();
-        if (slotId.equals(DecadeConfig.DECA_CARD)) {
-            if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
-
-            }
-        }
     }
 
     @SubscribeEvent
@@ -94,11 +89,11 @@ public class AbilitiesHandler {
             }
         } else {
             if (oldFormId.equals(KuugaConfig.DRAGON_ID)) removeItemFromPlayer(ModItems.DRAGON_ROD.get(), player);
-            if (oldFormId.equals(KuugaConfig.PEGASUS_ID)) removeItemFromPlayer(ModItems.PEGASUS_BOWGUN.get(), player);
-            if (oldFormId.equals(KuugaConfig.TITAN_ID)) removeItemFromPlayer(ModItems.TITAN_SWORD.get(), player);
-            if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID)) removeItemFromPlayer(ModItems.RISING_DRAGON_ROD.get(), player);
-            if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID)) removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
-            if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID)) removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
+            else if (oldFormId.equals(KuugaConfig.PEGASUS_ID)) removeItemFromPlayer(ModItems.PEGASUS_BOWGUN.get(), player);
+            else if (oldFormId.equals(KuugaConfig.TITAN_ID)) removeItemFromPlayer(ModItems.TITAN_SWORD.get(), player);
+            else if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID)) removeItemFromPlayer(ModItems.RISING_DRAGON_ROD.get(), player);
+            else if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID)) removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
+            else if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID)) removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
         }
     }
 

@@ -1,9 +1,9 @@
-package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
+package com.jpigeon.ridebattleparallelworlds.core.riders.agito.item;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
-import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemRenderer;
@@ -13,30 +13,27 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-public class DragonRodItem extends BaseKamenRiderGeoItem {
-    public enum AnimState {IDLE, SPIN_MAIN_HAND, SPIN_OFF_HAND}
+public class FlameSaberItem extends BaseKamenRiderGeoItem {
+    public enum AnimState {IDLE, OPEN}
 
-    public DragonRodItem(Properties properties) {
-        super("kuuga", "dragon_rod", properties.stacksTo(1).durability(0), true);
+    public FlameSaberItem(Properties properties) {
+        super("agito", "flame_saber", properties.stacksTo(1).durability(0), true);
     }
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createLoopController("idle"));
-        addController(registrar, "spin_main", createOnceController("spin_main"));
-        addController(registrar, "spin_off", createOnceController("spin_off"));
-
+        addController(registrar, "open", createHoldController("open"));
     }
 
-    public void triggerMainSpin() {
-        setAnimState("spin_main");
+    public void triggerOpen(){
+        setAnimState("open");
     }
-
-    public void triggerOffSpin() {
-        setAnimState("spin_off");
+    public void setClose(){
+        setAnimState("idle");
     }
 
     @Override
@@ -50,12 +47,10 @@ public class DragonRodItem extends BaseKamenRiderGeoItem {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.DRAGON_ID)) {
+            if (RiderManager.isSpecificForm(player, AgitoConfig.FLAME_ID)) {
                 player.getCooldowns().addCooldown(this, 310);
-                if (usedHand.equals(InteractionHand.MAIN_HAND)) {
-                    triggerMainSpin();
-                } else triggerOffSpin();
-                RiderManager.triggerSkill(player, RiderSkills.SPLASH_DRAGON, SkillEvent.SkillTriggerType.WEAPON);
+                triggerOpen();
+                RiderManager.triggerSkill(player, RiderSkills.SABER_SLASH, SkillEvent.SkillTriggerType.WEAPON);
             }
         }
         return InteractionResultHolder.success(itemStack);

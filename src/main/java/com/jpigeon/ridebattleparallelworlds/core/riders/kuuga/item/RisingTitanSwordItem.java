@@ -46,6 +46,7 @@ public class RisingTitanSwordItem extends BaseKamenRiderGeoItem {
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
             if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_TITAN_ID)) {
                 player.getCooldowns().addCooldown(this, 410);
+                triggerStab();
                 RiderManager.triggerSkill(player, RiderSkills.RISING_CALAMITY_TITAN, SkillEvent.SkillTriggerType.WEAPON);
             }
         }

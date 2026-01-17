@@ -1,13 +1,16 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler.client;
 
 import com.jpigeon.ridebattlelib.api.RiderManager;
+import com.jpigeon.ridebattlelib.core.system.event.ItemGrantEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManItem;
 import com.jpigeon.ridebattleparallelworlds.core.handler.RiderHandler;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -48,6 +51,13 @@ public class RiderHandlerClient {
                 default -> {
                 }
             }
+            ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+            switch (mainHand.getItem()) {
+                case FlameSaberItem flameSaber -> flameSaber.setClose();
+                default -> {
+
+                }
+            }
         }
     }
 
@@ -66,5 +76,14 @@ public class RiderHandlerClient {
             default -> {
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onGrantItem(ItemGrantEvent.Post event) {
+        ItemStack stack = event.getStack();
+        if (stack.getItem() instanceof FlameSaberItem flameSaber) {
+            flameSaber.setClose();
+        }
+
     }
 }

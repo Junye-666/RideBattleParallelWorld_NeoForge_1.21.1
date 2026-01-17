@@ -11,6 +11,7 @@ import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.*;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
@@ -69,6 +70,7 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.ULTRA_KICK, SkillHandler::ultimateKick);
 
         SKILL_MAP.put(RiderSkills.GROUND_KICK, SkillHandler::groundKick);
+        SKILL_MAP.put(RiderSkills.SABER_SLASH, SkillHandler::saberSlash);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
@@ -262,9 +264,13 @@ public class SkillHandler {
         RiderManager.scheduleTicks(130, () -> riderKickJump(localPlayer, 1.5));
         RiderManager.scheduleTicks(150, () -> riderKickForward(localPlayer, 1.5));
         RiderManager.scheduleTicks(160, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 3));
-
     }
 
+    private static void saberSlash(Player player) {
+        // TODO: 添加延迟伤害
+    }
+
+    // 动画逻辑方法
     private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
         AbstractClientPlayer clientPlayer = getLocalPlayer(player);
         if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTRA_KICK)) {
@@ -276,53 +282,33 @@ public class SkillHandler {
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
-            if (mainHand.getItem() instanceof DragonRodItem dragonRod) {
+            if (mainHand.getItem() instanceof DragonRodItem) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
-                dragonRod.triggerMainSpin();
-            } else if (offHand.getItem() instanceof DragonRodItem dragonRod) {
+            } else if (offHand.getItem() instanceof DragonRodItem) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
-                dragonRod.triggerOffSpin();
             }
         } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof PegasusBowgunItem pegasusBowgunItem) {
+            if (mainHand.getItem() instanceof PegasusBowgunItem) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
-                pegasusBowgunItem.triggerShoot();
-            } else if (offHand.getItem() instanceof PegasusBowgunItem pegasusBowgunItem) {
+            } else if (offHand.getItem() instanceof PegasusBowgunItem) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
-                pegasusBowgunItem.triggerShoot();
             }
         } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
             playAnimation(clientPlayer, "kuuga_calamity_titan");
-            if (mainHand.getItem() instanceof TitanSwordItem titanSwordItem) {
-                titanSwordItem.triggerStab();
-            } else if (offHand.getItem() instanceof TitanSwordItem titanSwordItem) {
-                titanSwordItem.triggerStab();
-            }
-
         } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
-            if (mainHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
+            if (mainHand.getItem() instanceof RisingDragonRodItem) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
-                risingDragonRod.triggerMainSpin();
-            } else if (offHand.getItem() instanceof RisingDragonRodItem risingDragonRod) {
+            } else if (offHand.getItem() instanceof RisingDragonRodItem) {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
-                risingDragonRod.triggerOffSpin();
             }
-
         } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof RisingPegasusBowgunItem risingPegasusBowgun) {
+            if (mainHand.getItem() instanceof RisingPegasusBowgunItem ) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
-                risingPegasusBowgun.triggerShoot();
-            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem risingPegasusBowgun) {
+            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem ) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
-                risingPegasusBowgun.triggerShoot();
             }
         } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
             playAnimation(clientPlayer, "kuuga_calamity_titan");
-            if (mainHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
-                risingTitanSword.triggerStab();
-            } else if (offHand.getItem() instanceof RisingTitanSwordItem risingTitanSword) {
-                risingTitanSword.triggerStab();
-            }
         }
     }
 
@@ -331,6 +317,16 @@ public class SkillHandler {
         if (skillId.equals(RiderSkills.GROUND_KICK)) {
             playAnimation(clientPlayer, "agito_kick_prepare", 0);
             RiderManager.scheduleTicks(130, () -> playAnimation(clientPlayer, "agito_kick", 5));
+        }
+
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+        if (skillId.equals(RiderSkills.SABER_SLASH)) {
+            if (mainHand.getItem() instanceof FlameSaberItem flameSaber) {
+                flameSaber.triggerOpen();
+            } else if (offHand.getItem() instanceof FlameSaberItem flameSaber) {
+                flameSaber.triggerOpen();
+            }
         }
     }
 

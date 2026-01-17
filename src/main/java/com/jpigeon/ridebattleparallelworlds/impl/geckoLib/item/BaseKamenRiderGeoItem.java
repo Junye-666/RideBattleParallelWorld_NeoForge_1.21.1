@@ -126,7 +126,7 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
     protected ResourceLocation getAnimationPath() {
         if (animated) {
             return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                    "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + itemName.toLowerCase() + ".animation.json");
+                    "animations/" + riderName.toLowerCase() + "/item/" + riderName.toLowerCase() + "_" + itemName.toLowerCase() + ".animation.json");
         }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
                 "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_item.animation.json");

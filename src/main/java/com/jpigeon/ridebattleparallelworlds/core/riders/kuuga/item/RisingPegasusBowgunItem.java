@@ -58,6 +58,7 @@ public class RisingPegasusBowgunItem extends BaseKamenRiderGeoItem {
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
             if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_PEGASUS_ID)) {
                 player.getCooldowns().addCooldown(this, 210);
+                triggerShoot();
                 RiderManager.triggerSkill(player, RiderSkills.RISING_BLAST_PEGASUS, SkillEvent.SkillTriggerType.WEAPON);
             }
         }

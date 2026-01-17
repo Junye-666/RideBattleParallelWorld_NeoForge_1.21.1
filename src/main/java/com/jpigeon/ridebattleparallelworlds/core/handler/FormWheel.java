@@ -41,6 +41,13 @@ public class FormWheel {
         }
     }
 
+    @SubscribeEvent
+    public static void onExtract(SlotExtractionEvent.Pre event) {
+        if (event.getSlotId().equals(KuugaConfig.ARCLE_CORE)) {
+            event.setExtractedStack(Items.AIR);
+        }
+    }
+
     public static int getCurrentIndex(List<ResourceLocation> list) {
         return currentIndex.getOrDefault(list, 0);
     }
@@ -111,13 +118,6 @@ public class FormWheel {
             return ChatFormatting.DARK_PURPLE;
         }
         return ChatFormatting.BOLD;
-    }
-
-    @SubscribeEvent
-    public static void onExtract(SlotExtractionEvent.Pre event) {
-        if (event.getSlotId().equals(KuugaConfig.ARCLE_CORE)) {
-            event.setExtractedStack(Items.AIR);
-        }
     }
 
     public static void setArcleSlot(Player player, ResourceLocation formId) {

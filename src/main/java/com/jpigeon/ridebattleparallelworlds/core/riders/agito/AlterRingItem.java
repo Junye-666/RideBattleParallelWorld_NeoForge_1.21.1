@@ -38,15 +38,14 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
     }
 
     public void setStateByFormId(ResourceLocation formId) {
+        if (formId == null) return;
         if (formId.equals(AgitoConfig.GROUND_ID)) {
             setAnimState("ground");
         } else if (formId.equals(AgitoConfig.FLAME_ID)) {
             setAnimState("flame");
+        } else if (formId.equals(AgitoConfig.STORM_ID)) {
+            setAnimState("storm");
         }
-    }
-
-    public void setCurrentState(AnimState state) {
-        setAnimState(state.name().toLowerCase());
     }
 
     @Override
