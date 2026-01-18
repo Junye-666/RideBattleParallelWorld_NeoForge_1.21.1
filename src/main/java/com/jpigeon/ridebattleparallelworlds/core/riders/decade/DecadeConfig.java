@@ -95,6 +95,7 @@ public class DecadeConfig {
             .addRequiredItem(DECA_CARD, ModItems.FORM_RIDE_AGITO_STORM.get())
             .setShouldPause(true)
             .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(ModItems.STORM_HALBERD.get())
             ;
 
 

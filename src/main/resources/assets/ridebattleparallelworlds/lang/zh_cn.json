@@ -89,6 +89,7 @@
   "item.ridebattleparallelworlds.kuuga_rising_pegasus_bowgun": "升华·天马弩",
   "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "升华·泰坦剑",
   "item.ridebattleparallelworlds.agito_flame_saber": "火焰军刀",
+  "item.ridebattleparallelworlds.agito_storm_halberd": "暴风战戟",
 
   "form.ridebattleparallelworlds.growing_form": "初升形态",
   "form.ridebattleparallelworlds.mighty_form": "全能形态",
@@ -123,5 +124,14 @@
 
   "ridebattleparallelworlds.configuration.skillExplosionGrief": "技能破坏方块",
   "ridebattleparallelworlds.configuration.riderSoundsVolume": "音效音量",
-  "ridebattleparallelworlds.configuration.debugMode": "Debug模式"
+  "ridebattleparallelworlds.configuration.debugMode": "Debug模式",
+
+  "tooltip.arcle.tutorial": "Shift + X 轮转形态, G 变身",
+  "tooltip.arcle.description": "请看好了，我的变身！",
+  "tooltip.alterRing.description": "为了人类，为了AgitΩ",
+  "tooltip.decaDriver.description": "只是一个路过的假面骑士~",
+
+  "message.riderGreet.login": "欢迎来到骑士战争平行世界的beta版本！",
+  "message.riderHint.login": "请用 /ridebattleparallelworlds \"骑士名\" unlockForm \"形态名\" 以解锁骑士形态",
+  "message.fromHint.login": "\"骑士名\" 必须小写，示例kuuga, \"形态名\" 按照\"官方名 + _form\"的格式: mighty_form"
 }

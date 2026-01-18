@@ -6,6 +6,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
 
 public class RiderSkills {
@@ -25,12 +28,15 @@ public class RiderSkills {
 
     // 亚极陀
     public static final ResourceLocation GROUND_KICK = fromString("ground_kick");
+    public static final ResourceLocation FLAME_SABER = fromString("flame_saber");
+    public static final ResourceLocation STORM_HALBERD = fromString("storm_halberd");
     public static final ResourceLocation SABER_SLASH = fromString("saber_slash");
+    public static final ResourceLocation HALBERD_SPIN = fromString("halberd_spin");
 
     private static void registerKuugaSkills(){
         registerSkill(GROWING_KICK, 10, ChatFormatting.WHITE);
         registerSkill(MIGHTY_KICK, 15, ChatFormatting.RED);
-        registerSkill(MIGHTY_PUNCH, 15, ChatFormatting.RED);
+        registerSkill(MIGHTY_PUNCH, 15, ChatFormatting.RED, true);
         registerSkill(SPLASH_DRAGON, 15);
         registerSkill(BLAST_PEGASUS, 5);
         registerSkill(CALAMITY_TITAN, 15);
@@ -42,17 +48,33 @@ public class RiderSkills {
         registerSkill(ULTRA_KICK, 30, ChatFormatting.BLACK);
 
         registerSkill(GROUND_KICK, 15, ChatFormatting.YELLOW);
-        registerSkill(SABER_SLASH, 15);
+        registerSkill(FLAME_SABER, 15, ChatFormatting.RED);
+        registerSkill(SABER_SLASH, 15, true);
+        registerSkill(STORM_HALBERD, 15, ChatFormatting.BLUE);
+        registerSkill(HALBERD_SPIN, 15, true);
+    }
+
+    private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting chatFormat, boolean buffered){
+        String name = id.toString().toLowerCase().replace(RideBattleParallelWorlds.MODID + ":", "");
+        SkillSystem.registerSkill(id, Component.translatable("skill." + name).withStyle(chatFormat), cooldown);
+        String tag = "skill_" + name;
+        RideBattleParallelWorlds.LOGGER.debug(tag);
+        if (buffered) BUFFERED_SKILL_TAGS.put(id, tag);
     }
 
     private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting chatFormat){
-        String name = id.toString().toLowerCase().replace(RideBattleParallelWorlds.MODID + ":", "");
-        SkillSystem.registerSkill(id, Component.translatable("skill." + name).withStyle(chatFormat), cooldown);
+        registerSkill(id, cooldown, chatFormat, false);
     }
 
     private static void registerSkill(ResourceLocation id, int cooldown){
         registerSkill(id, cooldown, ChatFormatting.BOLD);
     }
+
+    private static void registerSkill(ResourceLocation id, int cooldown, boolean buffered){
+        registerSkill(id, cooldown, ChatFormatting.BOLD, buffered);
+    }
+
+    public static Map<ResourceLocation, String> BUFFERED_SKILL_TAGS = new HashMap<>();
 
     public static void init(){
         registerKuugaSkills();

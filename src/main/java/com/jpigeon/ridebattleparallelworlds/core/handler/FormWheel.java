@@ -14,6 +14,7 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -65,6 +66,7 @@ public class FormWheel {
 
     public static void handleRotate(Player player) {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        Minecraft.getInstance().getSoundManager().stop();
         if (legs.getItem() instanceof ArcleItem) {
             ResourceLocation kuuga = RiderIds.KUUGA_ID;
 
@@ -195,7 +197,7 @@ public class FormWheel {
         } else if (formId.equals(AgitoConfig.FLAME_ID)) {
             item = ModItems.FLAME_ELEMENT.get();
         } else if (formId.equals(AgitoConfig.STORM_ID)) {
-            item = ModItems.STORM_HELMET.get();
+            item = ModItems.STORM_ELEMENT.get();
         }
 
         if (item != null) {

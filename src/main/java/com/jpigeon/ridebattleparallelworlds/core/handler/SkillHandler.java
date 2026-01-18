@@ -12,6 +12,7 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.StormHalberdItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.DragonRodItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.PegasusBowgunItem;
@@ -24,10 +25,12 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +39,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,6 +60,15 @@ public class SkillHandler {
         animateRiderSkills(event.getPlayer(), event.getSkillId());
     }
 
+    @SubscribeEvent
+    public static void onDamageEntity(AttackEntityEvent event) {
+        Player player = event.getEntity();
+        Entity target = event.getTarget();
+        if (!(target instanceof LivingEntity living)) return;
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        handleBufferedDamage(player, living, mainHand, event);
+    }
+
     private static final Map<ResourceLocation, Consumer<Player>> SKILL_MAP = new HashMap<>();
 
     static {
@@ -73,7 +86,10 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.ULTRA_KICK, SkillHandler::ultimateKick);
 
         SKILL_MAP.put(RiderSkills.GROUND_KICK, SkillHandler::groundKick);
+        SKILL_MAP.put(RiderSkills.FLAME_SABER, SkillHandler::flameSaber);
         SKILL_MAP.put(RiderSkills.SABER_SLASH, SkillHandler::saberSlash);
+        SKILL_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
+        SKILL_MAP.put(RiderSkills.HALBERD_SPIN, SkillHandler::halberdSpin);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
@@ -269,8 +285,57 @@ public class SkillHandler {
         RiderManager.scheduleTicks(160, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 3));
     }
 
+    private static void flameSaber(Player player) {
+        ItemStack flameSaber = new ItemStack(ModItems.FLAME_SABER.get());
+        if (!player.getInventory().add(flameSaber)) player.drop(flameSaber, false);
+    }
+
     private static void saberSlash(Player player) {
-        // TODO: 添加延迟伤害
+        if (!player.getTags().contains("skill_saber_slash")) {
+            addTag(player, "skill_saber_slash");
+        }
+    }
+
+    private static void stormHalberd(Player player) {
+        ItemStack stormHalberd = new ItemStack(ModItems.STORM_HALBERD.get());
+        if (!player.getInventory().add(stormHalberd)) player.drop(stormHalberd, false);
+    }
+
+    private static void halberdSpin(Player player) {
+        if (!player.getTags().contains("skill_halberd_spin")) {
+            addTag(player, "skill_halberd_spin");
+        }
+    }
+
+    private static void handleBufferedDamage(Player player, LivingEntity living, ItemStack mainHand, AttackEntityEvent event) {
+        player.getTags().stream()
+                .filter(tag -> tag.startsWith("skill_"))
+                .forEach(skillTag -> {
+                            switch (skillTag) {
+                                case "skill_saber_slash" -> {
+                                    if (mainHand.getItem() instanceof FlameSaberItem flameSaber) {
+                                        event.setCanceled(true);
+                                        hurt(player, living, 30);
+                                        player.removeTag(skillTag);
+                                        flameSaber.setClose();
+                                    }
+                                }
+                                case "skill_halberd_spin" -> {
+                                    if (mainHand.getItem() instanceof StormHalberdItem stormHalberd) {
+                                        event.setCanceled(true);
+                                        hurt(player, living, 35);
+                                        player.removeTag(skillTag);
+                                        stormHalberd.setClose();
+                                    }
+                                }
+
+                                default -> {
+                                }
+                            }
+                        RiderManager.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
+                        }
+
+                );
     }
 
     // 动画逻辑方法
@@ -305,9 +370,9 @@ public class SkillHandler {
                 playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
             }
         } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof RisingPegasusBowgunItem ) {
+            if (mainHand.getItem() instanceof RisingPegasusBowgunItem) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
-            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem ) {
+            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem) {
                 playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
             }
         } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
@@ -380,6 +445,14 @@ public class SkillHandler {
 
     private static void createKickExplosion(Player player, BlockPos pos, float damage) {
         createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), damage);
+    }
+
+    private static void addTag(Player player, String tag) {
+        player.addTag(tag);
+    }
+
+    private static void hurt(Player player, LivingEntity target, float amount) {
+        target.hurt(target.damageSources().mobAttack(player), amount);
     }
 
     private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {

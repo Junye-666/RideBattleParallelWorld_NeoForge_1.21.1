@@ -9,6 +9,8 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -18,37 +20,41 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class RiderHandlerClient {
     @SubscribeEvent
-    public static void onPlayerLoggedIn(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-            switch (legs.getItem()) {
-                case ArcleItem arcle -> {
-                    if (!RiderManager.isTransformed(player)) {
-                        arcle.shrinkInBody();
-                        return;
-                    }
-                    ResourceLocation formId = RiderManager.getCurrentFormId(player);
-                    if (formId == null) return;
-                    RiderHandler.setDriverAnim(legs, formId);
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        player.displayClientMessage(Component.translatable("message.riderGreet.login"), false);
+        player.displayClientMessage(Component.translatable("message.riderHint.login"), false);
+        player.displayClientMessage(Component.translatable("message.fromHint.login"), false);
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        switch (legs.getItem()) {
+            case ArcleItem arcle -> {
+                if (!RiderManager.isTransformed(player)) {
+                    arcle.shrinkInBody();
+                    return;
                 }
-                case AlterRingItem alterRingItem -> {
-                    if (!RiderManager.isTransformed(player)) {
-                        alterRingItem.shrinkInBody();
-                        return;
-                    }
-                    ResourceLocation formId = RiderManager.getCurrentFormId(player);
-                    if (formId == null) return;
-                    RiderHandler.setDriverAnim(legs, formId);
+                ResourceLocation formId = RiderManager.getCurrentFormId(player);
+                if (formId == null) return;
+                RiderHandler.setDriverAnim(legs, formId);
+            }
+            case AlterRingItem alterRingItem -> {
+                if (!RiderManager.isTransformed(player)) {
+                    alterRingItem.shrinkInBody();
+                    return;
                 }
-                case DecaDriverItem decaDriver -> {
-                    if (!RiderManager.isDriverEmpty(player)) decaDriver.triggerOpen();
-                }
-                default -> {
-                }
+                ResourceLocation formId = RiderManager.getCurrentFormId(player);
+                if (formId == null) return;
+                RiderHandler.setDriverAnim(legs, formId);
+            }
+            case DecaDriverItem decaDriver -> {
+                if (!RiderManager.isDriverEmpty(player)) decaDriver.triggerOpen();
+            }
+            default -> {
             }
         }
     }

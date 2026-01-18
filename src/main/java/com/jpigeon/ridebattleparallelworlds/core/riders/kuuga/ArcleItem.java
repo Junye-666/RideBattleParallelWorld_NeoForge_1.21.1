@@ -3,11 +3,18 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
+
+import java.util.List;
 
 public class ArcleItem extends BaseKamenRiderArmorItem {
     public enum AnimState {IN_BODY, APPEAR, SHRINK, MIGHTY, DRAGON, PEGASUS, TITAN, RISING_MIGHTY, RISING_DRAGON, RISING_PEGASUS, RISING_TITAN, AMAZING_MIGHTY, ULTIMATE}
@@ -77,5 +84,15 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
         return new GenericArmorRenderer(
                 new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
         );
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltip, tooltipFlag);
+        if (Screen.hasShiftDown()) {
+            tooltip.add(Component.translatable("tooltip.arcle.tutorial"));
+        } else {
+            tooltip.add(Component.translatable("tooltip.arcle.description"));
+        }
     }
 }

@@ -10,7 +10,9 @@ import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
+import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
@@ -65,6 +67,22 @@ public class RiderHandler {
             default -> {
             }
         }
+        Player player = event.getPlayer();
+        if (event.getRiderId().equals(RiderIds.AGITO_ID)) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack stack = player.getInventory().getItem(i);
+                if (ItemStack.isSameItem(stack, ModItems.FLAME_SABER.get().getDefaultInstance()) || ItemStack.isSameItem(stack, ModItems.STORM_HALBERD.get().getDefaultInstance())) {
+                    int removeAmount = stack.getCount();
+                    stack.shrink(removeAmount);
+                }
+            }
+        }
+        RiderSkills.BUFFERED_SKILL_TAGS.values().stream().filter(tag -> tag.startsWith("skill_"))
+                .forEach(skillTag -> {
+                    if (player.getTags().contains(skillTag)) {
+                        player.removeTag(skillTag);
+                    }
+                });
     }
 
     @SubscribeEvent
@@ -199,7 +217,8 @@ public class RiderHandler {
         AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         playAnimation(abstractClientPlayer, "agito_prepare");
         playSound(player, ModSounds.AGITO_PREPARE.get());
-        if (!RiderManager.isTransformed(player)) RiderManager.scheduleTicks(20, () -> playSound(player, ModSounds.AGITO_STEADY.get()));
+        if (!RiderManager.isTransformed(player))
+            RiderManager.scheduleTicks(20, () -> playSound(player, ModSounds.AGITO_STEADY.get()));
         if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentAnimState().equals("inBody") || alterRing.getCurrentAnimState().equals("shrink"))) {
             alterRing.triggerAppear();
             setDriverAnim(legs, RiderManager.getPendingForm(player));

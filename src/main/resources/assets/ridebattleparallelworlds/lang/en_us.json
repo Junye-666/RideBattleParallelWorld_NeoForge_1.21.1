@@ -89,6 +89,7 @@
   "item.ridebattleparallelworlds.kuuga_rising_pegasus_bowgun": "Rising Pegasus Bowgun",
   "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "Rising Titan Sword",
   "item.ridebattleparallelworlds.agito_flame_saber": "Flame Saber",
+  "item.ridebattleparallelworlds.agito_storm_halberd": "Storm Halberd",
 
   "form.ridebattleparallelworlds.growing_form": "Growing Form",
   "form.ridebattleparallelworlds.mighty_form": "Mighty Form",
@@ -123,5 +124,13 @@
 
   "ridebattleparallelworlds.configuration.skillExplosionGrief": "Skill Explosion Grief",
   "ridebattleparallelworlds.configuration.riderSoundsVolume": "Sounds Volume",
-  "ridebattleparallelworlds.configuration.debugMode": "Debug Mode"
+  "ridebattleparallelworlds.configuration.debugMode": "Debug Mode",
+
+  "tooltip.arcle.tutorial": "Shift + X to switch between forms, G to henshin",
+  "tooltip.arcle.description": "Please watch, my Henshin!",
+  "tooltip.alterRing.description": "For the mankind, for AgitΩ",
+  "tooltip.decaDriver.description": "Just a passing-by Kamen Rider~",
+  "message.riderGreet.login": "Welcome to the ParallelWorlds' beta version!",
+  "message.riderHint.login": "use /ridebattleparallelworlds \"riderName\" unlockForm \"formName\" to unlock specific rider Forms!",
+  "message.fromHint.login": "\"riderName\" only in lowercases like: kuuga, \"formName\" with the format \"official form name + _form\" such as: mighty_form"
 }

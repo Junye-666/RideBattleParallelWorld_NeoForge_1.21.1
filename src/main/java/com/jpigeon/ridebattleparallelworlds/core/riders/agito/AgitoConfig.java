@@ -56,11 +56,12 @@ public class AgitoConfig {
             )
             .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
             .addRequiredItem(ALTER_RING_CORE, ModItems.FLAME_ELEMENT.get())
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addSkill(RiderSkills.FLAME_SABER)
             ;
 
     public static final FormConfig AGITO_STORM_FORM = new FormConfig(STORM_ID)
@@ -72,11 +73,12 @@ public class AgitoConfig {
             )
             .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 1, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
             .addRequiredItem(ALTER_RING_CORE, ModItems.STORM_ELEMENT.get())
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addSkill(RiderSkills.STORM_HALBERD)
             ;
 
 
