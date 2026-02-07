@@ -47,10 +47,15 @@ public class StormHalberdItem extends BaseKamenRiderGeoItem {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, AgitoConfig.STORM_ID)) {
-                player.getCooldowns().addCooldown(this, 310);
-                triggerOpen();
-                RiderManager.triggerSkill(player, RiderSkills.HALBERD_SPIN, SkillEvent.SkillTriggerType.WEAPON);
+            if (RiderManager.isSpecificForm(player, AgitoConfig.STORM_ID) || RiderManager.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
+                if (usedHand.equals(InteractionHand.MAIN_HAND)) {
+                    player.getCooldowns().addCooldown(this, 310);
+                    triggerOpen();
+                    RiderManager.triggerSkill(player, RiderSkills.HALBERD_SPIN, SkillEvent.SkillTriggerType.WEAPON);
+                } else {
+                    return InteractionResultHolder.pass(itemStack);
+                }
+
             }
         }
         return InteractionResultHolder.success(itemStack);

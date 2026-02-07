@@ -65,7 +65,7 @@ public class KuugaConfig {
             )
             .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 1, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
             .addRequiredItem(ARCLE_CORE, ModItems.MIGHTY_ELEMENT.get())

@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -92,7 +93,7 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("tooltip.arcle.tutorial"));
         } else {
-            tooltip.add(Component.translatable("tooltip.arcle.description"));
+            tooltip.add(Component.translatable("tooltip.arcle.description").withStyle(ChatFormatting.RED));
         }
     }
 }

@@ -66,7 +66,6 @@ public class FormWheel {
 
     public static void handleRotate(Player player) {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-        Minecraft.getInstance().getSoundManager().stop();
         if (legs.getItem() instanceof ArcleItem) {
             ResourceLocation kuuga = RiderIds.KUUGA_ID;
 
@@ -100,6 +99,7 @@ public class FormWheel {
             setArcleSlot(player, newId);
             RiderHandler.setDriverAnim(legs, newId);
         } else if (legs.getItem() instanceof AlterRingItem) {
+            Minecraft.getInstance().getSoundManager().stop();
             ResourceLocation agito = RiderIds.AGITO_ID;
             List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, agito);
             if (unlockedForms.isEmpty()) {
@@ -198,6 +198,10 @@ public class FormWheel {
             item = ModItems.FLAME_ELEMENT.get();
         } else if (formId.equals(AgitoConfig.STORM_ID)) {
             item = ModItems.STORM_ELEMENT.get();
+        } else if (formId.equals(AgitoConfig.TRINITY_ID)) {
+            item = ModItems.TRINITY_ELEMENT.get();
+        } else if (formId.equals(AgitoConfig.BURNING_ID)) {
+            item = ModItems.BURNING_ELEMENT.get();
         }
 
         if (item != null) {

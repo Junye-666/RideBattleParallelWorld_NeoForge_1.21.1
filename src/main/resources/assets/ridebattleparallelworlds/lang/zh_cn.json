@@ -105,9 +105,11 @@
   "form.ridebattleparallelworlds.ground_form": "大地形态",
   "form.ridebattleparallelworlds.flame_form": "火焰形态",
   "form.ridebattleparallelworlds.storm_form": "暴风形态",
+  "form.ridebattleparallelworlds.trinity_form": "三重形态",
 
   "skill.growing_kick": "初升踢",
   "skill.mighty_kick": "全能踢",
+  "skill.mighty_punch": "全能全",
 
   "skill.rising_mighty_kick": "升华·全能踢",
 

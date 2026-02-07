@@ -53,6 +53,6 @@ public class DecaDriverItem extends BaseKamenRiderArmorItem {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
-        tooltip.add(Component.translatable("tooltip.decaDriver.description"));
+        tooltip.add(Component.translatable("tooltip.decaDriver.description").withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 }

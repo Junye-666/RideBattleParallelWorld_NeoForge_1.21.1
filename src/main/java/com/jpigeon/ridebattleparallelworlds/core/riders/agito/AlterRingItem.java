@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.agito;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -31,6 +32,7 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
         addController(registrar, "ground", createLoopController("ground"));
         addController(registrar, "flame", createLoopController("flame"));
         addController(registrar, "storm", createLoopController("storm"));
+        addController(registrar, "trinity", createLoopController("trinity"));
 
         addController(registrar, "burning", createLoopController("burning"));
     }
@@ -46,13 +48,10 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
 
     public void setStateByFormId(ResourceLocation formId) {
         if (formId == null) return;
-        if (formId.equals(AgitoConfig.GROUND_ID)) {
-            setAnimState("ground");
-        } else if (formId.equals(AgitoConfig.FLAME_ID)) {
-            setAnimState("flame");
-        } else if (formId.equals(AgitoConfig.STORM_ID)) {
-            setAnimState("storm");
-        }
+        if (formId.equals(AgitoConfig.GROUND_ID)) setAnimState("ground");
+        else if (formId.equals(AgitoConfig.FLAME_ID)) setAnimState("flame");
+        else if (formId.equals(AgitoConfig.STORM_ID)) setAnimState("storm");
+        else if (formId.equals(AgitoConfig.TRINITY_ID)) setAnimState("trinity");
     }
 
     @Override
@@ -68,7 +67,7 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("tooltip.arcle.tutorial"));
         } else {
-            tooltip.add(Component.translatable("tooltip.alterRing.description"));
+            tooltip.add(Component.translatable("tooltip.alterRing.description").withStyle(ChatFormatting.GOLD));
         }
 
     }

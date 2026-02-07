@@ -44,6 +44,8 @@ public class PWCreativeTabs {
                         output.accept(ModItems.GROUND_ELEMENT);
                         output.accept(ModItems.FLAME_ELEMENT);
                         output.accept(ModItems.STORM_ELEMENT);
+                        output.accept(ModItems.TRINITY_ELEMENT);
+                        output.accept(ModItems.BURNING_ELEMENT);
                         output.accept(ModItems.FLAME_SABER);
                         output.accept(ModItems.STORM_HALBERD);
                     })

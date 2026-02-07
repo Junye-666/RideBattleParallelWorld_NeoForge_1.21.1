@@ -367,7 +367,7 @@
 					]
 				},
 				{
-					"name": "strom",
+					"name": "storm",
 					"parent": "core",
 					"pivot": [0, 13.5, -2.3],
 					"cubes": [

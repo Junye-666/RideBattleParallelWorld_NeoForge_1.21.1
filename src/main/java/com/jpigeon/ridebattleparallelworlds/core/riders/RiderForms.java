@@ -15,6 +15,7 @@ public class RiderForms {
     );
     public static final List<ResourceLocation> AGITO_FORMS = List.of(
             AgitoConfig.GROUND_ID,
-            AgitoConfig.FLAME_ID, AgitoConfig.STORM_ID
+            AgitoConfig.FLAME_ID, AgitoConfig.STORM_ID, AgitoConfig.TRINITY_ID,
+            AgitoConfig.BURNING_ID
     );
 }

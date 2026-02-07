@@ -21,11 +21,13 @@ public class AgitoConfig {
     public static final ResourceLocation GROUND_ID = fromString("ground_form");
     public static final ResourceLocation FLAME_ID = fromString("flame_form");
     public static final ResourceLocation STORM_ID = fromString("storm_form");
+    public static final ResourceLocation TRINITY_ID = fromString("trinity_form");
+    public static final ResourceLocation BURNING_ID = fromString("burning_form");
 
     public static final RiderConfig AGITO = new RiderConfig(RiderIds.AGITO_ID)
             .setMainDriverItem(ModItems.ALTER_RING.get(), EquipmentSlot.LEGS)
             .addMainDriverSlot(ALTER_RING_CORE,
-                    List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get()),
+                    List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get(), ModItems.TRINITY_ELEMENT.get(), ModItems.BURNING_ELEMENT.get()),
                     true,
                     true
             );
@@ -81,11 +83,29 @@ public class AgitoConfig {
             .addSkill(RiderSkills.STORM_HALBERD)
             ;
 
+    public static final FormConfig AGITO_TRINITY_FORM = new FormConfig(TRINITY_ID)
+            .setArmor(
+                    ModItems.TRINITY_HELMET.get(),
+                    ModItems.TRINITY_CHESTPLATE.get(),
+                    null,
+                    ModItems.TRINITY_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 1, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
+            .addRequiredItem(ALTER_RING_CORE, ModItems.TRINITY_ELEMENT.get())
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addSkill(RiderSkills.TRINITY_WEAPON)
+            ;
+
 
     private static void registerAgito() {
         AGITO.addForm(AGITO_GROUND_FORM);
         AGITO.addForm(AGITO_FLAME_FORM);
         AGITO.addForm(AGITO_STORM_FORM);
+        AGITO.addForm(AGITO_TRINITY_FORM);
 
         RiderRegistry.registerRider(AGITO);
     }

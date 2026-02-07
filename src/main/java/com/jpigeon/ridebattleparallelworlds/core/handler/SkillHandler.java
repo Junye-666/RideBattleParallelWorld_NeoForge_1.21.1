@@ -36,12 +36,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -66,7 +69,16 @@ public class SkillHandler {
         Entity target = event.getTarget();
         if (!(target instanceof LivingEntity living)) return;
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        handleBufferedDamage(player, living, mainHand, event);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+        handleBufferedDamage(player, living, mainHand, offHand, event);
+    }
+
+    @SubscribeEvent
+    public static void onCollision(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+        if (!RiderManager.isTransformed(player)) return;
+        if (player.level().isClientSide()) return;
+        handleKickCollide(player);
     }
 
     private static final Map<ResourceLocation, Consumer<Player>> SKILL_MAP = new HashMap<>();
@@ -90,6 +102,8 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.SABER_SLASH, SkillHandler::saberSlash);
         SKILL_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
         SKILL_MAP.put(RiderSkills.HALBERD_SPIN, SkillHandler::halberdSpin);
+        SKILL_MAP.put(RiderSkills.TRINITY_WEAPON, SkillHandler::trinityWeapon);
+        SKILL_MAP.put(RiderSkills.FIRESTORM_ATTACK, SkillHandler::firestormAttack);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
@@ -107,31 +121,31 @@ public class SkillHandler {
             animateAgitoSkills(player, skillId);
         }
     }
-
     private static void growingKick(Player serverPlayer) {
+        addTag(serverPlayer, "skill_growing_kick");
+
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 30);
+        addResistance(serverPlayer, 40 + getTolerance());
 
-        riderKickJump(localPlayer, 1);
-        RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 1));
-        RiderManager.scheduleTicks(20, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 2));
+        riderKickJump(localPlayer, 1.5);
+        riderKickForward(localPlayer, 1, 5);
+        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_growing_kick"));
     }
 
     private static void mightyKick(Player serverPlayer) {
+        addTag(serverPlayer, "skill_mighty_kick");
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 30);
+        addResistance(serverPlayer, 40 + getTolerance());
 
         riderKickJump(localPlayer, 1);
-        RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 1.5));
-        RiderManager.scheduleTicks(20, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 3));
+        riderKickForward(localPlayer, 1.5, 10);
+        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_mighty_kick"));
     }
 
     private static void mightyPunch(Player serverPlayer) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-
+        addTag(serverPlayer, "skill_mighty_punch");
     }
 
     private static void splashDragon(Player serverPlayer) {
@@ -185,13 +199,14 @@ public class SkillHandler {
     }
 
     private static void risingMightyKick(Player serverPlayer) {
+        addTag(serverPlayer, "skill_rising_mighty_kick");
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 40);
+        addResistance(serverPlayer, 40 + getTolerance());
 
         riderKickJump(localPlayer, 1);
-        RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2));
-        RiderManager.scheduleTicks(25, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 4));
+        riderKickForward(localPlayer, 2, 10);
+        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_rising_mighty_kick"));
     }
 
     private static void risingSplashDragon(Player serverPlayer) {
@@ -247,26 +262,29 @@ public class SkillHandler {
     }
 
     private static void amazingMightyKick(Player serverPlayer) {
+        addTag(serverPlayer, "skill_amazing_mighty_kick");
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 40);
+        addResistance(serverPlayer, 40 + getTolerance());
 
         riderKickJump(localPlayer, 1);
-        RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2.5));
-        RiderManager.scheduleTicks(25, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 5));
+        riderKickForward(localPlayer, 2.5, 10);
+        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_amazing_mighty_kick"));
     }
 
     private static void ultimateKick(Player serverPlayer) {
+        addTag(serverPlayer, "skill_ultimate_kick");
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 40);
+        addResistance(serverPlayer, 40 + getTolerance());
 
         riderKickJump(localPlayer, 1.5);
-        RiderManager.scheduleTicks(10, () -> riderKickForward(localPlayer, 2.5));
-        RiderManager.scheduleTicks(30, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 7));
+        riderKickForward(localPlayer, 2.5, 10);
+        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_ultimate_kick"));
     }
 
     private static void groundKick(Player serverPlayer) {
+        addTag(serverPlayer, "skill_ground_kick");
         Level level = serverPlayer.level();
         AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
         effect.setOwner(serverPlayer);
@@ -274,15 +292,15 @@ public class SkillHandler {
 
         LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
         if (localPlayer == null) return;
-        addResistance(serverPlayer, 170);
+        addResistance(serverPlayer, 150 + getTolerance());
         if (serverPlayer.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.triggerOpen();
-            RiderManager.scheduleTicks(160, agitoGround::setClosed);
+            RiderManager.scheduleTicks(80 + getTolerance(), agitoGround::setClosed);
         }
 
-        RiderManager.scheduleTicks(130, () -> riderKickJump(localPlayer, 1.5));
-        RiderManager.scheduleTicks(150, () -> riderKickForward(localPlayer, 1.5));
-        RiderManager.scheduleTicks(160, () -> createKickExplosion(serverPlayer, serverPlayer.getBlockPosBelowThatAffectsMyMovement(), 3));
+        RiderManager.scheduleTicks(50, () -> riderKickJump(localPlayer, 1.5));
+        riderKickForward(localPlayer, 1.5, 70);
+        RiderManager.scheduleTicks(80 + getTolerance(), () -> removeTag(serverPlayer, "skill_ground_kick"));
     }
 
     private static void flameSaber(Player player) {
@@ -290,52 +308,122 @@ public class SkillHandler {
         if (!player.getInventory().add(flameSaber)) player.drop(flameSaber, false);
     }
 
-    private static void saberSlash(Player player) {
-        if (!player.getTags().contains("skill_saber_slash")) {
-            addTag(player, "skill_saber_slash");
-        }
+    private static void saberSlash(Player serverPlayer) {
+        addTag(serverPlayer, "skill_saber_slash");
+
     }
 
-    private static void stormHalberd(Player player) {
+    private static void stormHalberd(Player serverPlayer) {
         ItemStack stormHalberd = new ItemStack(ModItems.STORM_HALBERD.get());
-        if (!player.getInventory().add(stormHalberd)) player.drop(stormHalberd, false);
+        if (!serverPlayer.getInventory().add(stormHalberd)) serverPlayer.drop(stormHalberd, false);
     }
 
-    private static void halberdSpin(Player player) {
-        if (!player.getTags().contains("skill_halberd_spin")) {
-            addTag(player, "skill_halberd_spin");
+    private static void halberdSpin(Player serverPlayer) {
+        addTag(serverPlayer, "skill_halberd_spin");
+    }
+
+    private static void trinityWeapon(Player serverPlayer) {
+        flameSaber(serverPlayer);
+        stormHalberd(serverPlayer);
+    }
+
+    private static void firestormAttack(Player serverPlayer) {
+        addTag(serverPlayer, "skill_firestorm_attack");
+    }
+
+    private static void handleBufferedDamage(Player player, LivingEntity living, ItemStack mainHand, ItemStack offHand, AttackEntityEvent event) {
+        List<String> skillTags = player.getTags().stream()
+                .filter(tag -> tag.startsWith("skill_"))
+                .toList();
+
+        for (String skillTag : skillTags) {
+            switch (skillTag) {
+                case "skill_saber_slash" -> {
+                    if (mainHand.getItem() instanceof FlameSaberItem flameSaber) {
+                        hurt(player, living, 30);
+                        flameSaber.setClose();
+                    }
+                }
+                case "skill_halberd_spin" -> {
+                    if (mainHand.getItem() instanceof StormHalberdItem stormHalberd) {
+                        hurt(player, living, 35);
+                        stormHalberd.setClose();
+                    }
+                }
+                case "skill_firestorm_attack" -> {
+                    if (mainHand.getItem() instanceof FlameSaberItem flameSaber
+                            && offHand.getItem() instanceof StormHalberdItem stormHalberd) {
+                        hurt(player, living, 70);
+                        flameSaber.setClose();
+                        stormHalberd.setClose();
+                    }
+                }
+                case "skill_mighty_punch" -> {
+                    hurt(player, living, 15);
+                    knockBack(player, living, 2);
+                }
+                default -> {
+                }
+            }
+            removeTag(player, skillTag);
+
+            RiderManager.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
         }
     }
 
-    private static void handleBufferedDamage(Player player, LivingEntity living, ItemStack mainHand, AttackEntityEvent event) {
-        player.getTags().stream()
-                .filter(tag -> tag.startsWith("skill_"))
-                .forEach(skillTag -> {
-                            switch (skillTag) {
-                                case "skill_saber_slash" -> {
-                                    if (mainHand.getItem() instanceof FlameSaberItem flameSaber) {
-                                        event.setCanceled(true);
-                                        hurt(player, living, 30);
-                                        player.removeTag(skillTag);
-                                        flameSaber.setClose();
-                                    }
-                                }
-                                case "skill_halberd_spin" -> {
-                                    if (mainHand.getItem() instanceof StormHalberdItem stormHalberd) {
-                                        event.setCanceled(true);
-                                        hurt(player, living, 35);
-                                        player.removeTag(skillTag);
-                                        stormHalberd.setClose();
-                                    }
-                                }
+    private static void handleKickCollide(Player player) {
+        Level level = player.level();
+        List<String> skillTags = player.getTags().stream()
+                .filter(tag -> tag.startsWith("skill_") && tag.endsWith("_kick"))
+                .toList();
+        if (skillTags.isEmpty()) return;
 
-                                default -> {
-                                }
-                            }
-                        RiderManager.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
+        // 使用玩家的视线方向作为踢击方向
+        Vec3 lookAngle = player.getLookAngle();
+        Vec3 playerPos = player.position();
+
+        // 计算踢击的起始点
+        Vec3 kickStart = playerPos.add(0, 0, 0).add(lookAngle.scale(0.5));
+
+        // 创建踢击的检测区域
+        double range = 1.0;
+        double radius = 0.5;
+
+        // 查找踢击范围内的实体
+        AABB kickBox = new AABB(
+                kickStart.x - radius, kickStart.y - radius, kickStart.z - radius,
+                kickStart.x + lookAngle.x * range + radius,
+                kickStart.y + lookAngle.y * range + radius,
+                kickStart.z + lookAngle.z * range + radius
+        );
+
+        List<LivingEntity> entities = level.getEntitiesOfClass(
+                LivingEntity.class,
+                kickBox,
+                e -> e != player && e.isAlive()
+        );
+        if (entities.isEmpty()) return;
+
+        for (LivingEntity entity : entities) {
+            if (entity.getBoundingBox().intersects(kickBox) || entity.getBoundingBox().intersects(player.getBoundingBox())) {
+                for (String skillTag : skillTags) {
+                    switch (skillTag) {
+                        case "skill_growing_kick" -> createKickExplosion(player, entity, 2);
+                        case "skill_mighty_kick" -> createKickExplosion(player, entity, 3);
+                        case "skill_rising_mighty_kick" -> createKickExplosion(player, entity, 4);
+                        case "skill_amazing_mighty_kick" -> createKickExplosion(player, entity, 5);
+                        case "skill_ultimate_kick" -> createKickExplosion(player, entity, 7);
+                        default -> {
                         }
+                    }
+                    removeTag(player, skillTag);
+                }
+            }
+        }
+    }
 
-                );
+    private static int getTolerance() {
+        return Config.SKILL_TOLERANCE_TIME.get() * 20;
     }
 
     // 动画逻辑方法
@@ -384,17 +472,7 @@ public class SkillHandler {
         AbstractClientPlayer clientPlayer = getLocalPlayer(player);
         if (skillId.equals(RiderSkills.GROUND_KICK)) {
             playAnimation(clientPlayer, "agito_kick_prepare", 0);
-            RiderManager.scheduleTicks(130, () -> playAnimation(clientPlayer, "agito_kick", 5));
-        }
-
-        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-        if (skillId.equals(RiderSkills.SABER_SLASH)) {
-            if (mainHand.getItem() instanceof FlameSaberItem flameSaber) {
-                flameSaber.triggerOpen();
-            } else if (offHand.getItem() instanceof FlameSaberItem flameSaber) {
-                flameSaber.triggerOpen();
-            }
+            RiderManager.scheduleTicks(45, () -> playAnimation(clientPlayer, "agito_kick", 2));
         }
     }
 
@@ -414,18 +492,21 @@ public class SkillHandler {
 
     // 技能逻辑
     private static void riderKickJump(Player player, double jumpHeight) {
-        player.addDeltaMovement(new Vec3(0, jumpHeight, 0));
-        player.hurtMarked = true;
+        Vec3 currentMovement = player.getKnownMovement();
+        player.setDeltaMovement(new Vec3(currentMovement.x, jumpHeight, currentMovement.z));
     }
 
-    private static void riderKickForward(Player player, double norm) {
-        Vec3 lookVec = player.getLookAngle();
-        Vec3 movement = player.getDeltaMovement();
-        player.addDeltaMovement(new Vec3(
-                movement.x + lookVec.x * norm * 1.5,
-                movement.y + lookVec.y * norm,
-                movement.z + lookVec.z * norm * 1.5
-        ));
+    private static void riderKickForward(Player player, double norm, int ticks) {
+        RiderManager.scheduleTicks(ticks, () -> {
+                    Vec3 lookVec = player.getLookAngle();
+                    Vec3 movement = player.getDeltaMovement();
+                    player.addDeltaMovement(new Vec3(
+                            movement.x + lookVec.x * norm * 1.5,
+                            movement.y + lookVec.y * norm,
+                            movement.z + lookVec.z * norm * 1.5
+                    ));
+                }
+        );
     }
 
     private static void createExplosion(Player player, double x, double y, double z, float damage) {
@@ -443,16 +524,42 @@ public class SkillHandler {
         );
     }
 
-    private static void createKickExplosion(Player player, BlockPos pos, float damage) {
+    private static void createKickExplosion(Player player, LivingEntity entity, float damage) {
+        BlockPos pos = entity.getOnPos();
         createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), damage);
+
+        LocalPlayer localPlayer = getLocalPlayer(player);
+        if (localPlayer != null) {
+            Vec3 angle = localPlayer.getLookAngle();
+            Vec3 current = localPlayer.getKnownMovement();
+            Vec3 back = new Vec3(-(angle.x * current.x) , 0.5, -(angle.z * current.z));
+            localPlayer.setDeltaMovement(0, 0, 0);
+            localPlayer.addDeltaMovement(back);
+        }
     }
 
     private static void addTag(Player player, String tag) {
-        player.addTag(tag);
+        if (!player.getTags().contains(tag)) {
+            player.addTag(tag);
+        }
+    }
+
+    private static void removeTag(Player player, String tag) {
+        if (player.getTags().contains(tag)) {
+            player.removeTag(tag);
+        }
     }
 
     private static void hurt(Player player, LivingEntity target, float amount) {
-        target.hurt(target.damageSources().mobAttack(player), amount);
+        if (!target.level().isClientSide() && target.isAlive()) {
+            target.hurt(target.damageSources().mobAttack(player), amount);
+        }
+    }
+
+    private static void knockBack(Player player, LivingEntity target, float amount) {
+        if (!target.level().isClientSide() && target.isAlive()) {
+            target.knockback(amount, -player.getLookAngle().x, -player.getLookAngle().z);
+        }
     }
 
     private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {

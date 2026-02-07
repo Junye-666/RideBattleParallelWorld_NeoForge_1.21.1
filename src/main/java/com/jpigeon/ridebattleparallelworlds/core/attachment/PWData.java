@@ -48,6 +48,22 @@ public class PWData {
         }
     }
 
+    public void reloadFormUnlockData() {
+        List<ResourceLocation> KUUGA_FORMS = formUnlockData.getUnlockedForms(RiderIds.KUUGA_ID);
+        List<ResourceLocation> AGITO_FORMS = formUnlockData.getUnlockedForms(RiderIds.AGITO_ID);
+        clearAllFormUnlockData();
+        formUnlockData.registerRiderForms(
+                RiderIds.KUUGA_ID,
+                RiderForms.KUUGA_FORMS,
+                KUUGA_FORMS
+        );
+        formUnlockData.registerRiderForms(
+                RiderIds.AGITO_ID,
+                RiderForms.AGITO_FORMS,
+                AGITO_FORMS
+        );
+    }
+
     public boolean isFormUnlocked(ResourceLocation riderId, ResourceLocation formId) {
         return formUnlockData.isFormUnlocked(riderId, formId);
     }

@@ -32,6 +32,9 @@ public class PWCommands {
                                 )
                         )
                 )
+                .then(Commands.literal("reloadData")
+                        .executes(context -> reloadData(context.getSource()))
+                )
                 .then(Commands.literal("checkData")
                         .executes(context -> checkData(context.getSource()))
                 )
@@ -63,7 +66,7 @@ public class PWCommands {
             source.sendSuccess(() ->
                     Component.literal("成功解锁形态" + formId.getPath())
                             .withStyle(ChatFormatting.GREEN), false);
-        } else if (Config.DEBUG_MODE.get()){
+        } else if (Config.DEBUG_MODE.get()) {
             source.sendFailure(Component.literal("解锁失败或形态已解锁"));
         }
 
@@ -95,6 +98,18 @@ public class PWCommands {
             }
         }
 
+        return 1;
+    }
+
+    private static int reloadData(CommandSourceStack source) {
+        ServerPlayer player = source.getPlayer();
+        if (player == null) return 0;
+
+        PWData data = player.getData(PWAttachments.PW_DATA);
+        source.sendSuccess(() ->
+                Component.literal("=== 重置所有变身数据 ===")
+                        .withStyle(ChatFormatting.BOLD), false);
+        data.reloadFormUnlockData();
         return 1;
     }
 }

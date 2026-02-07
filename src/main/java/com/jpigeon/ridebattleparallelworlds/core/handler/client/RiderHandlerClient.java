@@ -29,8 +29,8 @@ public class RiderHandlerClient {
         Player player = event.getEntity();
 
         player.displayClientMessage(Component.translatable("message.riderGreet.login"), false);
-        player.displayClientMessage(Component.translatable("message.riderHint.login"), false);
-        player.displayClientMessage(Component.translatable("message.fromHint.login"), false);
+        player.displayClientMessage(Component.translatable("message.riderHint.login").withStyle(ChatFormatting.GREEN), false);
+        player.displayClientMessage(Component.translatable("message.fromHint.login").withStyle(ChatFormatting.RED), false);
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         switch (legs.getItem()) {
             case ArcleItem arcle -> {
