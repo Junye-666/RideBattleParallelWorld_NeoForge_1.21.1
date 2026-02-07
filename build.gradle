@@ -146,7 +146,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     implementation "curse.maven:ridebattle-lib-1306849:7464065"
-    implementation "curse.maven:playeranimator-658587:6024462"
+    implementation "curse.maven:playeranimator-658587:7389814"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     runtimeOnly files("libs/dummmmmmy-1.21-2.0.11-neoforge.jar")
     runtimeOnly files("libs/moonlight-1.21-2.28.2-neoforge.jar")

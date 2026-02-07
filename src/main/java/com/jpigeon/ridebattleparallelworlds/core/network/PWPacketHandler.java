@@ -3,8 +3,11 @@ package com.jpigeon.ridebattleparallelworlds.core.network;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWData;
+import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWDataSyncPacket;
+import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,7 +31,7 @@ public class PWPacketHandler {
 
                             PWData data = clientPlayer.getData(PWAttachments.PW_DATA);
 
-                            // ✅ 修复：同步完整的 FormUnlockData
+                            // 同步完整的 FormUnlockData
                             Map<ResourceLocation, Map<ResourceLocation, Boolean>> allUnlockData =
                                     payload.data().getFormUnlockData().getAllUnlockData();
 
@@ -46,7 +49,23 @@ public class PWPacketHandler {
                                 }
                             }
                         }
-                );
+                )
+                .playToClient(
+                        PWAnimationPacket.TYPE,
+                        PWAnimationPacket.STREAM_CODEC,
+                        (payload, context) -> context.enqueueWork(() -> {
+                            Minecraft minecraft = Minecraft.getInstance();
+                            LocalPlayer clientPlayer = minecraft.player;
+
+                            if (clientPlayer == null) return;
+                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
+
+                            PlayerAnimationHandler.handleAnimation(clientPlayer, payload.animationId(), payload.fadeDuration());
+                        })
+
+                )
+
+        ;
     }
 
     public static void sendToServer(CustomPacketPayload packet) {

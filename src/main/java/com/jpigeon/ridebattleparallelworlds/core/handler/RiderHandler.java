@@ -4,6 +4,7 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.*;
 import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
+import com.jpigeon.ridebattlelib.core.system.network.handler.PacketHandler;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
@@ -11,6 +12,7 @@ import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeHenshinEffe
 import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
@@ -21,11 +23,9 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
-import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
@@ -107,13 +107,12 @@ public class RiderHandler {
         ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
         ResourceLocation formId = event.getFormId();
         setDriverAnim(legs, formId);
-        AbstractClientPlayer clientPlayer = getAbstractClientPlayer(event.getPlayer());
         ItemStack head = event.getPlayer().getItemBySlot(EquipmentSlot.HEAD);
         if (head.getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.setCurrentState(AgitoGroundItem.AnimState.IDLE);
         }
         if (formId.equals(ShockerConfig.COMBATMAN_ID)) {
-            playAnimation(clientPlayer, "shocker_greeting");
+            playAnimation(event.getPlayer(), "shocker_greeting");
         }
     }
 
@@ -144,15 +143,6 @@ public class RiderHandler {
         }
     }
 
-    private static LocalPlayer getLocalPlayer(Player player) {
-        Minecraft mc = Minecraft.getInstance();
-        return mc.player != null && mc.player.getUUID().equals(player.getUUID()) ? mc.player : null;
-    }
-
-    private static AbstractClientPlayer getAbstractClientPlayer(Player player) {
-        return getLocalPlayer(player);
-    }
-
     public static void setDriverAnim(ItemStack legs, ResourceLocation formId) {
         if (legs.getItem() instanceof ArcleItem arcle) {
             arcle.setStateByFormId(formId);
@@ -167,11 +157,13 @@ public class RiderHandler {
         playSound(player, sound.get());
     }
 
-    private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
-        PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
+    private static void playAnimation(Player player, String animationId, int fadeDuration) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
+        }
     }
 
-    private static void playAnimation(AbstractClientPlayer player, String animationId) {
+    private static void playAnimation(Player player, String animationId) {
         playAnimation(player, animationId, 0);
     }
 
@@ -181,10 +173,9 @@ public class RiderHandler {
             RiderManager.completeHenshin(player);
             return;
         }
-        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
         SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
         SkillHandler.addResistance(player, 120);
-        playAnimation(abstractClientPlayer, "kuuga_henshin");
+        playAnimation(player, "kuuga_henshin");
         if (legs.getItem() instanceof ArcleItem arcleItem) {
             playSound(player, ModSounds.ARCLE_APPEAR.get());
             if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
@@ -204,8 +195,7 @@ public class RiderHandler {
             setDriverAnim(legs, formId);
             return;
         }
-        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
-        playAnimation(abstractClientPlayer, "kuuga_switch");
+        playAnimation(player, "kuuga_switch");
         RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
         FormConfig form = RiderManager.getFormConfig(player, formId);
         playHenshinSound(player, form);
@@ -214,8 +204,7 @@ public class RiderHandler {
 
 
     private static void prepareAgito(Player player, ItemStack legs) {
-        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
-        playAnimation(abstractClientPlayer, "agito_prepare");
+        playAnimation(player, "agito_prepare");
         playSound(player, ModSounds.AGITO_PREPARE.get());
         if (!RiderManager.isTransformed(player))
             RiderManager.scheduleTicks(20, () -> playSound(player, ModSounds.AGITO_STEADY.get()));
@@ -226,8 +215,7 @@ public class RiderHandler {
     }
 
     private static void completeAgito(Player player, ItemStack legs, ResourceLocation formId) {
-        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
-        playAnimation(abstractClientPlayer, "agito_henshin");
+        playAnimation(player, "agito_henshin");
         Minecraft.getInstance().getSoundManager().stop();
         playSound(player, ModSounds.AGITO_FINISH.get());
         RiderManager.completeIn(10, player);
@@ -236,8 +224,7 @@ public class RiderHandler {
 
     private static void handleDecade(Player player, ResourceLocation formId) {
         FormConfig form = RiderManager.getFormConfig(player, formId);
-        AbstractClientPlayer abstractClientPlayer = getAbstractClientPlayer(player);
-        playAnimation(abstractClientPlayer, "decade_insert");
+        playAnimation(player, "decade_insert");
         RiderManager.scheduleTicks(10, () -> playHenshinSound(player, form));
         if (formId.equals(DecadeConfig.DECADE_BASE_ID)) {
             Level level = player.level();

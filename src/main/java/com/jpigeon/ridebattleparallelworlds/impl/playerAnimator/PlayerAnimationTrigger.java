@@ -9,8 +9,7 @@ import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerAnimationTrigger {
     /**
@@ -22,28 +21,46 @@ public class PlayerAnimationTrigger {
      * @param easeType     缓动函数类型（如 Ease.LINEAR, Ease.QUAD_IN_OUT）
      */
     public static void playAnimation(
-            AbstractClientPlayer player,
+            @NotNull AbstractClientPlayer player,
             String animationId,
             int fadeDuration,
             Ease easeType) {
 
-        // 1. 获取动画层
-        ModifierLayer<IAnimation> animationLayer = (ModifierLayer<IAnimation>) PlayerAnimationAccess.getPlayerAssociatedData(player)
-                .get(ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "animation"));
+        ResourceLocation layerId =
+                ResourceLocation.fromNamespaceAndPath(
+                        RideBattleParallelWorlds.MODID,
+                        "animation"
+                );
 
-        if (animationLayer == null) {
-            return; // 动画层不可用，直接返回
+        var animationData = PlayerAnimationAccess.getPlayerAssociatedData(player);
+
+        IAnimation rawLayer = animationData.get(layerId);
+        if (!(rawLayer instanceof ModifierLayer<?> modifierLayer)) {
+            return;
         }
 
-        // 2. 获取动画资源
-        IAnimation animationResource = Objects.requireNonNull(PlayerAnimationRegistry.getAnimation(
-                ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, animationId)
-        )).playAnimation();
+        @SuppressWarnings("unchecked")
+        ModifierLayer<IAnimation> animationLayer =
+                (ModifierLayer<IAnimation>) modifierLayer;
 
-        // 3. 创建淡入修饰器（使用传入的缓动函数）
-        AbstractFadeModifier fadeModifier = AbstractFadeModifier.standardFadeIn(fadeDuration, easeType);
+        // 3. 获取动画资源（你原来的逻辑，不动）
+        var animEntry = PlayerAnimationRegistry.getAnimation(
+                ResourceLocation.fromNamespaceAndPath(
+                        RideBattleParallelWorlds.MODID,
+                        animationId
+                )
+        );
+        if (animEntry == null) {
+            return;
+        }
 
-        // 4. 替换动画并应用淡入效果
+        IAnimation animationResource = animEntry.playAnimation();
+
+        // 4. 创建淡入修饰器
+        AbstractFadeModifier fadeModifier =
+                AbstractFadeModifier.standardFadeIn(fadeDuration, easeType);
+
+        // 5. 应用动画
         animationLayer.replaceAnimationWithFade(fadeModifier, animationResource);
     }
 
