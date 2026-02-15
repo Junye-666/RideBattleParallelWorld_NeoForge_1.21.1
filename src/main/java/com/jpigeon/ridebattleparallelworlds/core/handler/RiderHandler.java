@@ -37,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
+import java.util.List;
 import java.util.Optional;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
@@ -69,13 +70,7 @@ public class RiderHandler {
         }
         Player player = event.getPlayer();
         if (event.getRiderId().equals(RiderIds.AGITO_ID)) {
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                ItemStack stack = player.getInventory().getItem(i);
-                if (ItemStack.isSameItem(stack, ModItems.FLAME_SABER.get().getDefaultInstance()) || ItemStack.isSameItem(stack, ModItems.STORM_HALBERD.get().getDefaultInstance())) {
-                    int removeAmount = stack.getCount();
-                    stack.shrink(removeAmount);
-                }
-            }
+            removeAgitoWeapon(player);
         }
         RiderSkills.SKILL_TAGS.values().stream().filter(tag -> tag.startsWith("skill_"))
                 .forEach(skillTag -> {
@@ -89,12 +84,14 @@ public class RiderHandler {
     public static void onSwitch(FormSwitchEvent.Pre event) {
         Player player = event.getPlayer();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        ResourceLocation oldFormId = event.getOldFormId();
         ResourceLocation newFormId = event.getNewFormId();
         RiderConfig config = RiderConfig.findActiveDriverConfig(player);
         // 处理空我
         if (config == KuugaConfig.KUUGA) {
             handleKuugaSwitch(player, legs, newFormId);
         } else if (config == AgitoConfig.AGITO) {
+            removeAgitoWeapon(player);
             completeAgito(event.getPlayer(), legs, newFormId);
         } else if (config == DecadeConfig.DECADE) {
             handleDecade(event.getPlayer(), newFormId);
@@ -206,6 +203,16 @@ public class RiderHandler {
         RiderManager.completeIn(90, player);
     }
 
+    private static void removeAgitoWeapon(Player player) {
+        List<Item> toRemove = List.of(ModItems.FLAME_SABER.get(), ModItems.STORM_HALBERD.get(), ModItems.SHINING_CALIBUR.get());
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (toRemove.contains(stack.getItem())) {
+                int removeAmount = stack.getCount();
+                stack.shrink(removeAmount);
+            }
+        }
+    }
 
     private static void prepareAgito(Player player, ItemStack legs, ItemStack stack) {
         if (stack.is(ModItems.BURNING_ELEMENT.get()) || stack.is(ModItems.SHINING_ELEMENT.get()))

@@ -14,6 +14,7 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.StormHalberdItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.DragonRodItem;
@@ -100,11 +101,13 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.FLAME_SABER, SkillHandler::flameSaber);
         SKILL_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
         SKILL_MAP.put(RiderSkills.TRINITY_WEAPON, SkillHandler::trinityWeapon);
+        SKILL_MAP.put(RiderSkills.SHINING_CALIBUR, SkillHandler::shiningCalibur);
 
         TAGGED_SKILLS.add(RiderSkills.MIGHTY_PUNCH);
         TAGGED_SKILLS.add(RiderSkills.SABER_SLASH);
         TAGGED_SKILLS.add(RiderSkills.HALBERD_SPIN);
         TAGGED_SKILLS.add(RiderSkills.FIRESTORM_ATTACK);
+        TAGGED_SKILLS.add(RiderSkills.BURNING_BOMBER);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
@@ -306,18 +309,26 @@ public class SkillHandler {
     }
 
     private static void flameSaber(Player player) {
-        ItemStack flameSaber = new ItemStack(ModItems.FLAME_SABER.get());
+        ItemStack flameSaber = ModItems.FLAME_SABER.toStack();
         if (!player.getInventory().add(flameSaber)) player.drop(flameSaber, false);
     }
 
     private static void stormHalberd(Player player) {
-        ItemStack stormHalberd = new ItemStack(ModItems.STORM_HALBERD.get());
+        ItemStack stormHalberd = ModItems.STORM_HALBERD.toStack();
         if (!player.getInventory().add(stormHalberd)) player.drop(stormHalberd, false);
     }
 
     private static void trinityWeapon(Player player) {
         flameSaber(player);
         stormHalberd(player);
+    }
+
+    private static void shiningCalibur(Player player) {
+        ItemStack shiningCalibur = ModItems.SHINING_CALIBUR.toStack();
+        if (shiningCalibur.getItem() instanceof ShiningCaliburItem calibur) {
+            if (!player.getInventory().add(shiningCalibur)) player.drop(shiningCalibur, false);
+            calibur.setClose();
+        }
     }
 
     private static void handleDamageEntity(Player player, LivingEntity living) {
@@ -355,6 +366,13 @@ public class SkillHandler {
                         hurt(player, living, 70);
                         flameSaber.setClose();
                         stormHalberd.setClose();
+                    }
+                }
+                case "skill_burning_bomber" -> {
+                    if (mainHand.getItem() instanceof ShiningCaliburItem) {
+                        hurt(player, living, 60);
+                        knockBack(player, living, 2);
+                        RiderManager.scheduleTicks(20, () -> createExplosion(player, living, 4));
                     }
                 }
                 case "skill_mighty_punch" -> {
@@ -536,6 +554,11 @@ public class SkillHandler {
                 false,
                 Config.SKILL_EXPLODE_GRIEF.get() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE     // 爆炸类型
         );
+    }
+
+    private static void createExplosion(Player player, LivingEntity entity, float damage) {
+        BlockPos pos = entity.getOnPos();
+        createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), damage);
     }
 
     private static void createKickExplosion(Player player, LivingEntity entity, float damage) {

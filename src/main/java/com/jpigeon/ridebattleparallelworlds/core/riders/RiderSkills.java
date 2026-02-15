@@ -31,9 +31,11 @@ public class RiderSkills {
     public static final ResourceLocation FLAME_SABER = fromString("flame_saber");
     public static final ResourceLocation STORM_HALBERD = fromString("storm_halberd");
     public static final ResourceLocation TRINITY_WEAPON = fromString("trinity_weapon");
+    public static final ResourceLocation SHINING_CALIBUR = fromString("shining_calibur");
     public static final ResourceLocation SABER_SLASH = fromString("saber_slash");
     public static final ResourceLocation HALBERD_SPIN = fromString("halberd_spin");
     public static final ResourceLocation FIRESTORM_ATTACK = fromString("firestorm_attack");
+    public static final ResourceLocation BURNING_BOMBER = fromString("burning_bomber");
 
 
     private static void registerKuugaSkills(){
@@ -57,6 +59,8 @@ public class RiderSkills {
         registerSkill(HALBERD_SPIN, 15, true);
         registerSkill(TRINITY_WEAPON, 15, ChatFormatting.GOLD);
         registerSkill(FIRESTORM_ATTACK, 20, true);
+        registerSkill(SHINING_CALIBUR, 15);
+        registerSkill(BURNING_BOMBER, 30, true);
     }
 
     private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting chatFormat, boolean needsTag){

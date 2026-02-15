@@ -7,6 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManI
 import com.jpigeon.ridebattleparallelworlds.core.handler.RiderHandler;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.ArcleItem;
 import net.minecraft.ChatFormatting;
@@ -86,6 +87,9 @@ public class RiderHandlerClient {
         ItemStack stack = event.getStack();
         if (stack.getItem() instanceof FlameSaberItem flameSaber) {
             flameSaber.setClose();
+        }
+        if (stack.getItem() instanceof ShiningCaliburItem shiningCalibur) {
+            shiningCalibur.setClose();
         }
     }
 }

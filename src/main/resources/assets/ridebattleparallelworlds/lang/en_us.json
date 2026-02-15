@@ -94,6 +94,7 @@
   "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "Rising Titan Sword",
   "item.ridebattleparallelworlds.agito_flame_saber": "Flame Saber",
   "item.ridebattleparallelworlds.agito_storm_halberd": "Storm Halberd",
+  "item.ridebattleparallelworlds.agito_shining_calibur": "Shining Calibur",
 
   "form.ridebattleparallelworlds.growing_form": "Growing Form",
   "form.ridebattleparallelworlds.mighty_form": "Mighty Form",
@@ -126,6 +127,10 @@
   "skill.ultimate_punch": "Ultimate Punch",
 
   "skill.ground_kick": "Ground Kick",
+  "skill.flame_saber": "Flame Saber",
+  "skill.storm_halberd": "Storm Halberd",
+  "skill.trinity_weapon": "Trinity Weapon",
+  "skill.shining_calibur": "Shining Calibur",
 
   "creativeTab.ridebattleparallelworlds.kuuga_items": "Kuuga",
   "creativeTab.ridebattleparallelworlds.agito_items": "Agito",

@@ -94,6 +94,7 @@
   "item.ridebattleparallelworlds.kuuga_rising_titan_sword": "升华·泰坦剑",
   "item.ridebattleparallelworlds.agito_flame_saber": "火焰军刀",
   "item.ridebattleparallelworlds.agito_storm_halberd": "暴风战戟",
+  "item.ridebattleparallelworlds.agito_shining_calibur": "闪耀王剑",
 
   "form.ridebattleparallelworlds.growing_form": "初升形态",
   "form.ridebattleparallelworlds.mighty_form": "全能形态",
@@ -126,6 +127,10 @@
   "skill.ultimate_punch": "究极·拳",
 
   "skill.ground_kick": "大地踢",
+  "skill.flame_saber": "火焰军刀",
+  "skill.storm_halberd": "暴风战戟",
+  "skill.trinity_weapon": "三重刀戟",
+  "skill.shining_calibur": "闪耀王剑",
 
   "creativeTab.ridebattleparallelworlds.kuuga_items": "空我",
   "creativeTab.ridebattleparallelworlds.agito_items": "亚极陀",

@@ -5,6 +5,7 @@ import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManI
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.*;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.FlameSaberItem;
+import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.item.StormHalberdItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.armor.DecadeBaseArmorItem;
@@ -209,6 +210,8 @@ public class ModItems {
             -> new FlameSaberItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 3, 0)).rarity(Rarity.RARE)));
     public static final DeferredItem<StormHalberdItem> STORM_HALBERD = ITEMS.register("agito_storm_halberd", ()
             -> new StormHalberdItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 2, -0.5f)).rarity(Rarity.RARE)));
+    public static final DeferredItem<ShiningCaliburItem> SHINING_CALIBUR = ITEMS.register("agito_shining_calibur", ()
+            -> new ShiningCaliburItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, 0.5f)).rarity(Rarity.RARE)));
 
 
     // Decade

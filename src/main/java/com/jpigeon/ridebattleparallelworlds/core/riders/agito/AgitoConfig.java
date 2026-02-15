@@ -115,6 +115,7 @@ public class AgitoConfig {
             .addEffect(MobEffects.FIRE_RESISTANCE, -1, 0, true)
             .addRequiredItem(ALTER_RING_CORE, ModItems.BURNING_ELEMENT.get())
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addSkill(RiderSkills.SHINING_CALIBUR)
             ;
 
 
