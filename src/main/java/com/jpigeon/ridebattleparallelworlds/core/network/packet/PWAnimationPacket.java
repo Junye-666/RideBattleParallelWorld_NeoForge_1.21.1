@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.network.packet;
 
-import com.jpigeon.ridebattlelib.core.system.network.handler.UUIDStreamCodec;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -19,7 +19,7 @@ public record PWAnimationPacket(UUID playerId, String animationId, Integer fadeD
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PWAnimationPacket> STREAM_CODEC =
             StreamCodec.composite(
-                    UUIDStreamCodec.INSTANCE,
+                    UUIDUtil.STREAM_CODEC,
                     PWAnimationPacket::playerId,
                     ByteBufCodecs.STRING_UTF8,
                     PWAnimationPacket::animationId,

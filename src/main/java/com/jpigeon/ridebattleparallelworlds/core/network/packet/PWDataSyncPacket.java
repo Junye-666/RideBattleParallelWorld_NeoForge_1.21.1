@@ -1,8 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.core.network.packet;
 
-import com.jpigeon.ridebattlelib.core.system.network.handler.UUIDStreamCodec;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWData;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,7 +20,7 @@ public record PWDataSyncPacket(UUID playerId, PWData data) implements CustomPack
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PWDataSyncPacket> STREAM_CODEC =
             StreamCodec.composite(
-                    UUIDStreamCodec.INSTANCE,
+                    UUIDUtil.STREAM_CODEC,
                     PWDataSyncPacket::playerId,
                     ByteBufCodecs.fromCodecWithRegistries(PWData.CODEC),
                     PWDataSyncPacket::data,

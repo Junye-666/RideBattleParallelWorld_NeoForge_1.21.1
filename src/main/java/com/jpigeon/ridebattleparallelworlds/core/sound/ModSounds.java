@@ -46,6 +46,7 @@ public class ModSounds {
     public static final Supplier<SoundEvent> FR_KUUGA_TITAN = registerSoundEvent("fr_kuuga_titan");
     public static final Supplier<SoundEvent> FR_AGITO_FLAME = registerSoundEvent("fr_agito_flame");
     public static final Supplier<SoundEvent> FR_AGITO_STORM = registerSoundEvent("fr_agito_storm");
+    public static final Supplier<SoundEvent> FR_AGITO_BURNING = registerSoundEvent("fr_agito_burning");
 
 
     private static Supplier<SoundEvent> registerSoundEvent(String name){
@@ -100,6 +101,7 @@ public class ModSounds {
         registerHenshinSound(DecadeConfig.DECADE_AGITO_GROUND, KR_AGITO.get(), 65);
         registerHenshinSound(DecadeConfig.DECADE_AGITO_FLAME, FR_AGITO_FLAME.get(), 70);
         registerHenshinSound(DecadeConfig.DECADE_AGITO_STORM, FR_AGITO_STORM.get(), 70);
+        registerHenshinSound(DecadeConfig.DECADE_AGITO_BURNING, FR_AGITO_BURNING.get(), 70);
 
     }
 

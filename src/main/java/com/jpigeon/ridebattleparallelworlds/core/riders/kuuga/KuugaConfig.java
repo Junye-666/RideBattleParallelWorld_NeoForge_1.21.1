@@ -227,7 +227,7 @@ public class KuugaConfig {
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
 
             .addRequiredItem(ARCLE_CORE, ModItems.ULTIMATE_ELEMENT.get())
-            .addSkill(RiderSkills.ULTRA_KICK);
+            .addSkill(RiderSkills.ULTIMATE_KICK);
 
 
     public static void registerKuuga() {

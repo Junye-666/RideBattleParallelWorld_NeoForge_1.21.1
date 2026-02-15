@@ -4,7 +4,6 @@ import com.jpigeon.ridebattlelib.api.RiderManager;
 import com.jpigeon.ridebattlelib.core.system.event.*;
 import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
-import com.jpigeon.ridebattlelib.core.system.network.handler.PacketHandler;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
@@ -12,6 +11,7 @@ import com.jpigeon.ridebattleparallelworlds.core.entity.custom.DecadeHenshinEffe
 import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
@@ -77,7 +77,7 @@ public class RiderHandler {
                 }
             }
         }
-        RiderSkills.BUFFERED_SKILL_TAGS.values().stream().filter(tag -> tag.startsWith("skill_"))
+        RiderSkills.SKILL_TAGS.values().stream().filter(tag -> tag.startsWith("skill_"))
                 .forEach(skillTag -> {
                     if (player.getTags().contains(skillTag)) {
                         player.removeTag(skillTag);
@@ -120,17 +120,17 @@ public class RiderHandler {
     public static void onInsert(ItemInsertionEvent.Post event) {
         Player player = event.getPlayer();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        ItemStack stack = event.getStack();
         if (legs.getItem() instanceof DecaDriverItem decaDriver) {
             playSound(player, ModSounds.DECADE_INSERT.get());
             RiderManager.scheduleTicks(5, decaDriver::triggerClose);
-            ItemStack stack = event.getStack();
             if (isValidItem(stack, ModTags.Items.KAMEN_RIDE_CARDS)) {
                 RiderManager.scheduleTicks(5, () -> playSound(player, ModSounds.KAMEN_RIDE.get()));
             } else if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
                 RiderManager.scheduleTicks(5, () -> playSound(player, ModSounds.FORM_RIDE.get()));
             }
         } else if (legs.getItem() instanceof AlterRingItem) {
-            prepareAgito(player, legs);
+            prepareAgito(player, legs, stack);
         }
     }
 
@@ -159,12 +159,16 @@ public class RiderHandler {
 
     private static void playAnimation(Player player, String animationId, int fadeDuration) {
         if (player instanceof ServerPlayer serverPlayer) {
-            PacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
+            PWPacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
         }
     }
 
     private static void playAnimation(Player player, String animationId) {
         playAnimation(player, animationId, 0);
+    }
+
+    public static void playSound(Player player, SoundEvent soundEvent) {
+        RiderManager.playPublicSound(player, soundEvent, ((float) Config.RIDER_SOUNDS_VOLUME.get() / 100));
     }
 
     // 变身辅助
@@ -203,11 +207,13 @@ public class RiderHandler {
     }
 
 
-    private static void prepareAgito(Player player, ItemStack legs) {
-        playAnimation(player, "agito_prepare");
+    private static void prepareAgito(Player player, ItemStack legs, ItemStack stack) {
+        if (stack.is(ModItems.BURNING_ELEMENT.get()) || stack.is(ModItems.SHINING_ELEMENT.get()))
+            playAnimation(player, "agito_prepare_b");
+        else playAnimation(player, "agito_prepare");
         playSound(player, ModSounds.AGITO_PREPARE.get());
         if (!RiderManager.isTransformed(player))
-            RiderManager.scheduleTicks(20, () -> playSound(player, ModSounds.AGITO_STEADY.get()));
+            playSound(player, ModSounds.AGITO_STEADY.get());
         if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentAnimState().equals("inBody") || alterRing.getCurrentAnimState().equals("shrink"))) {
             alterRing.triggerAppear();
             setDriverAnim(legs, RiderManager.getPendingForm(player));
@@ -217,6 +223,7 @@ public class RiderHandler {
     private static void completeAgito(Player player, ItemStack legs, ResourceLocation formId) {
         playAnimation(player, "agito_henshin");
         Minecraft.getInstance().getSoundManager().stop();
+        // TODO : 燃烧/闪耀相关音效
         playSound(player, ModSounds.AGITO_FINISH.get());
         RiderManager.completeIn(10, player);
         RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
@@ -247,9 +254,5 @@ public class RiderHandler {
 
     private static boolean isValidItem(ItemStack itemStack, TagKey<Item> tagKey) {
         return itemStack.is(tagKey);
-    }
-
-    public static void playSound(Player player, SoundEvent soundEvent) {
-        RiderManager.playPublicSound(player, soundEvent, ((float) Config.RIDER_SOUNDS_VOLUME.get() / 100));
     }
 }

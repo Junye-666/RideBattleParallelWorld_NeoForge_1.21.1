@@ -8,10 +8,13 @@ import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.Item;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
 
@@ -19,20 +22,21 @@ public class DecadeConfig {
     public static final ResourceLocation DECA_CARD = fromString("decade_card_slot");
     public static final ResourceLocation DECADE_BASE_ID = fromString("decade_base");
 
+    public static List<Item> getRideCards() {
+        return BuiltInRegistries.ITEM.entrySet().stream()
+                .filter(entry -> {
+                   ResourceLocation id = entry.getKey().location();
+                   return id.getPath().contains("_ride") && id.getPath().endsWith("_card");
+                })
+                .map(Map.Entry::getValue)
+                .toList();
+    }
+
     public static final RiderConfig DECADE = new RiderConfig(RiderIds.DECADE_ID)
             .setMainDriverItem(ModItems.DECA_DRIVER.get())
             .addMainDriverSlot(
                     DECA_CARD,
-                    List.of(
-                            ModItems.KAMEN_RIDE_DECADE.get(),
-                            ModItems.KAMEN_RIDE_KUUGA.get(),
-                            ModItems.FORM_RIDE_KUUGA_DRAGON.get(),
-                            ModItems.FORM_RIDE_KUUGA_PEGASUS.get(),
-                            ModItems.FORM_RIDE_KUUGA_TITAN.get(),
-                            ModItems.KAMEN_RIDE_AGITO.get(),
-                            ModItems.FORM_RIDE_AGITO_FLAME.get(),
-                            ModItems.FORM_RIDE_AGITO_STORM.get()
-                    ),
+                    getRideCards(),
                     true,
                     true
                     );
@@ -98,6 +102,12 @@ public class DecadeConfig {
             .addGrantedItem(ModItems.STORM_HALBERD.get())
             ;
 
+    public static final FormConfig DECADE_AGITO_BURNING = AgitoConfig.AGITO_BURNING_FORM.copyWithoutItemsAndSkills()
+            .addRequiredItem(DECA_CARD, ModItems.FORM_RIDE_AGITO_BURNING.get())
+            .setShouldPause(true)
+            .setTriggerType(TriggerType.AUTO)
+            ;
+
 
 
     private static void registerDecade() {
@@ -107,10 +117,11 @@ public class DecadeConfig {
         DECADE.addForm(DECADE_KUUGA_DRAGON);
         DECADE.addForm(DECADE_KUUGA_PEGASUS);
         DECADE.addForm(DECADE_KUUGA_TITAN);
-        DECADE.addForm(DECADE_AGITO_FLAME);
-        DECADE.addForm(DECADE_AGITO_STORM);
 
         DECADE.addForm(DECADE_AGITO_GROUND);
+        DECADE.addForm(DECADE_AGITO_FLAME);
+        DECADE.addForm(DECADE_AGITO_STORM);
+        DECADE.addForm(DECADE_AGITO_BURNING);
 
         RiderRegistry.registerRider(DECADE);
     }

@@ -8,6 +8,8 @@ import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.entity.custom.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.core.handler.util.SkillUtils;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
+import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
@@ -18,13 +20,12 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.DragonRodItem
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.PegasusBowgunItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.RisingDragonRodItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.RisingPegasusBowgunItem;
-import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationTrigger;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -43,6 +44,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,9 +70,7 @@ public class SkillHandler {
         Player player = event.getEntity();
         Entity target = event.getTarget();
         if (!(target instanceof LivingEntity living)) return;
-        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-        handleBufferedDamage(player, living, mainHand, offHand, event);
+        handleDamageEntity(player, living);
     }
 
     @SubscribeEvent
@@ -82,11 +82,11 @@ public class SkillHandler {
     }
 
     private static final Map<ResourceLocation, Consumer<Player>> SKILL_MAP = new HashMap<>();
+    private static final List<ResourceLocation> TAGGED_SKILLS = new ArrayList<>();
 
     static {
         SKILL_MAP.put(RiderSkills.GROWING_KICK, SkillHandler::growingKick);
         SKILL_MAP.put(RiderSkills.MIGHTY_KICK, SkillHandler::mightyKick);
-        SKILL_MAP.put(RiderSkills.MIGHTY_PUNCH, SkillHandler::mightyPunch);
         SKILL_MAP.put(RiderSkills.SPLASH_DRAGON, SkillHandler::splashDragon);
         SKILL_MAP.put(RiderSkills.BLAST_PEGASUS, SkillHandler::blastPegasus);
         SKILL_MAP.put(RiderSkills.CALAMITY_TITAN, SkillHandler::calamityTitan);
@@ -95,23 +95,30 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.RISING_BLAST_PEGASUS, SkillHandler::risingBlastPegasus);
         SKILL_MAP.put(RiderSkills.RISING_CALAMITY_TITAN, SkillHandler::risingCalamityTitan);
         SKILL_MAP.put(RiderSkills.AMAZING_MIGHTY_KICK, SkillHandler::amazingMightyKick);
-        SKILL_MAP.put(RiderSkills.ULTRA_KICK, SkillHandler::ultimateKick);
-
+        SKILL_MAP.put(RiderSkills.ULTIMATE_KICK, SkillHandler::ultimateKick);
         SKILL_MAP.put(RiderSkills.GROUND_KICK, SkillHandler::groundKick);
         SKILL_MAP.put(RiderSkills.FLAME_SABER, SkillHandler::flameSaber);
-        SKILL_MAP.put(RiderSkills.SABER_SLASH, SkillHandler::saberSlash);
         SKILL_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
-        SKILL_MAP.put(RiderSkills.HALBERD_SPIN, SkillHandler::halberdSpin);
         SKILL_MAP.put(RiderSkills.TRINITY_WEAPON, SkillHandler::trinityWeapon);
-        SKILL_MAP.put(RiderSkills.FIRESTORM_ATTACK, SkillHandler::firestormAttack);
+
+        TAGGED_SKILLS.add(RiderSkills.MIGHTY_PUNCH);
+        TAGGED_SKILLS.add(RiderSkills.SABER_SLASH);
+        TAGGED_SKILLS.add(RiderSkills.HALBERD_SPIN);
+        TAGGED_SKILLS.add(RiderSkills.FIRESTORM_ATTACK);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
+        String tag = RiderSkills.SKILL_TAGS.get(skillId);
+        if (tag != null) {
+            addTag(serverPlayer, tag);
+        }
+
         Consumer<Player> skillConsumer = SKILL_MAP.get(skillId);
         if (skillConsumer != null) {
             skillConsumer.accept(serverPlayer);
             serverPlayer.hurtMarked = true;
         }
+
     }
 
     private static void animateRiderSkills(Player player, ResourceLocation skillId) {
@@ -121,39 +128,35 @@ public class SkillHandler {
             animateAgitoSkills(player, skillId);
         }
     }
-    private static void growingKick(Player serverPlayer) {
-        addTag(serverPlayer, "skill_growing_kick");
 
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 40 + getTolerance());
+    private static void growingKick(Player player) {
+        int duration = calculateTolerance(40);
+        kickSequence(player, duration);
 
-        riderKickJump(localPlayer, 1.5);
-        riderKickForward(localPlayer, 1, 5);
-        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_growing_kick"));
+        addResistance(player, duration);
+
+        riderKickJump(player, 1.5);
+        riderKickForward(player, 1, 5);
+        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
     }
 
-    private static void mightyKick(Player serverPlayer) {
-        addTag(serverPlayer, "skill_mighty_kick");
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 40 + getTolerance());
+    private static void mightyKick(Player player) {
+        int duration = calculateTolerance(40);
+        kickSequence(player, duration);
 
-        riderKickJump(localPlayer, 1);
-        riderKickForward(localPlayer, 1.5, 10);
-        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_mighty_kick"));
+        addResistance(player, duration);
+
+        riderKickJump(player, 1.5);
+        riderKickForward(player, 1.5, 10);
+        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
     }
 
-    private static void mightyPunch(Player serverPlayer) {
-        addTag(serverPlayer, "skill_mighty_punch");
-    }
-
-    private static void splashDragon(Player serverPlayer) {
-        addResistance(serverPlayer, 30);
+    private static void splashDragon(Player player) {
+        addResistance(player, 30);
         double distance;
 
-        ItemStack mainHand = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = serverPlayer.getItemInHand(InteractionHand.OFF_HAND);
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         if (mainHand.getItem() instanceof DragonRodItem) {
             distance = 2.0;
         } else if (offHand.getItem() instanceof DragonRodItem) {
@@ -161,18 +164,18 @@ public class SkillHandler {
         } else {
             distance = 0;
         }
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
-                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
-                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
-                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+                player.getX() + player.getLookAngle().x * distance,
+                player.getY() + 1.5 + player.getLookAngle().y * distance,
+                player.getZ() + player.getLookAngle().z * distance,
                 3));
     }
 
-    private static void blastPegasus(Player serverPlayer) {
-        addResistance(serverPlayer, 20);
+    private static void blastPegasus(Player player) {
+        addResistance(player, 20);
 
         RiderManager.scheduleTicks(10, () ->
-                SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile ->
+                SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
                                 .setExplosionPower(3)
@@ -187,34 +190,34 @@ public class SkillHandler {
                                 })));
     }
 
-    private static void calamityTitan(Player serverPlayer) {
-        addResistance(serverPlayer, 20);
+    private static void calamityTitan(Player player) {
+        addResistance(player, 20);
 
         double distance = 1.5;
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
-                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
-                serverPlayer.getY() + 1 + serverPlayer.getLookAngle().y * distance,
-                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+                player.getX() + player.getLookAngle().x * distance,
+                player.getY() + 1 + player.getLookAngle().y * distance,
+                player.getZ() + player.getLookAngle().z * distance,
                 3));
     }
 
-    private static void risingMightyKick(Player serverPlayer) {
-        addTag(serverPlayer, "skill_rising_mighty_kick");
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 40 + getTolerance());
+    private static void risingMightyKick(Player player) {
+        int duration = calculateTolerance(40);
+        kickSequence(player, duration);
+        addTag(player, "skill_rising_mighty_kick");
+        addResistance(player, duration);
 
-        riderKickJump(localPlayer, 1);
-        riderKickForward(localPlayer, 2, 10);
-        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_rising_mighty_kick"));
+        riderKickJump(player, 1.5);
+        riderKickForward(player, 2, 10);
+        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
     }
 
-    private static void risingSplashDragon(Player serverPlayer) {
-        addResistance(serverPlayer, 30);
+    private static void risingSplashDragon(Player player) {
+        addResistance(player, 30);
         double distance;
 
-        ItemStack mainHand = serverPlayer.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = serverPlayer.getItemInHand(InteractionHand.OFF_HAND);
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         if (mainHand.getItem() instanceof RisingDragonRodItem) {
             distance = 2.5;
         } else if (offHand.getItem() instanceof RisingDragonRodItem) {
@@ -222,20 +225,20 @@ public class SkillHandler {
         } else {
             distance = 0;
         }
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
-                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
-                serverPlayer.getY() + 1.5 + serverPlayer.getLookAngle().y * distance,
-                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+                player.getX() + player.getLookAngle().x * distance,
+                player.getY() + 1.5 + player.getLookAngle().y * distance,
+                player.getZ() + player.getLookAngle().z * distance,
                 4));
     }
 
-    private static void risingBlastPegasus(Player serverPlayer) {
-        addResistance(serverPlayer, 30);
+    private static void risingBlastPegasus(Player player) {
+        addResistance(player, 30);
 
-        addResistance(serverPlayer, 20);
+        addResistance(player, 20);
 
         RiderManager.scheduleTicks(10, () ->
-                SkillUtils.launchCustom(serverPlayer, 3.0F, skillProjectile ->
+                SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
                                 .setExplosionPower(4)
@@ -250,57 +253,56 @@ public class SkillHandler {
                                 })));
     }
 
-    private static void risingCalamityTitan(Player serverPlayer) {
-        addResistance(serverPlayer, 20);
+    private static void risingCalamityTitan(Player player) {
+        addResistance(player, 20);
 
         double distance = 2.0;
-        RiderManager.scheduleTicks(10, () -> createExplosion(serverPlayer,
-                serverPlayer.getX() + serverPlayer.getLookAngle().x * distance,
-                serverPlayer.getY() + 1 + serverPlayer.getLookAngle().y * distance,
-                serverPlayer.getZ() + serverPlayer.getLookAngle().z * distance,
+        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+                player.getX() + player.getLookAngle().x * distance,
+                player.getY() + 1 + player.getLookAngle().y * distance,
+                player.getZ() + player.getLookAngle().z * distance,
                 5));
     }
 
-    private static void amazingMightyKick(Player serverPlayer) {
-        addTag(serverPlayer, "skill_amazing_mighty_kick");
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 40 + getTolerance());
+    private static void amazingMightyKick(Player player) {
+        int duration = calculateTolerance(40);
+        kickSequence(player, duration);
 
-        riderKickJump(localPlayer, 1);
-        riderKickForward(localPlayer, 2.5, 10);
-        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_amazing_mighty_kick"));
+        addResistance(player, duration);
+
+        riderKickJump(player, 1.5);
+        riderKickForward(player, 2.5, 10);
+        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
     }
 
-    private static void ultimateKick(Player serverPlayer) {
-        addTag(serverPlayer, "skill_ultimate_kick");
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 40 + getTolerance());
+    private static void ultimateKick(Player player) {
+        int duration = calculateTolerance(40);
+        kickSequence(player, duration);
 
-        riderKickJump(localPlayer, 1.5);
-        riderKickForward(localPlayer, 2.5, 10);
-        RiderManager.scheduleTicks(40 + getTolerance(), () -> removeTag(serverPlayer, "skill_ultimate_kick"));
+        addResistance(player, duration);
+
+        riderKickJump(player, 1.5);
+        riderKickForward(player, 2.5, 10);
+        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
     }
 
-    private static void groundKick(Player serverPlayer) {
-        addTag(serverPlayer, "skill_ground_kick");
-        Level level = serverPlayer.level();
+    private static void groundKick(Player player) {
+        int duration = calculateTolerance(120);
+        kickSequence(player, duration);
+        Level level = player.level();
         AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
-        effect.setOwner(serverPlayer);
+        effect.setOwner(player);
         level.addFreshEntity(effect);
 
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        addResistance(serverPlayer, 150 + getTolerance());
-        if (serverPlayer.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
+        addResistance(player, duration);
+        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.triggerOpen();
-            RiderManager.scheduleTicks(80 + getTolerance(), agitoGround::setClosed);
+            RiderManager.scheduleTicks(duration, agitoGround::setClosed);
         }
 
-        RiderManager.scheduleTicks(50, () -> riderKickJump(localPlayer, 1.5));
-        riderKickForward(localPlayer, 1.5, 70);
-        RiderManager.scheduleTicks(80 + getTolerance(), () -> removeTag(serverPlayer, "skill_ground_kick"));
+        RiderManager.scheduleTicks(50, () -> riderKickJump(player, 2));
+        riderKickForward(player, 1.5, 70);
+        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
     }
 
     private static void flameSaber(Player player) {
@@ -308,30 +310,27 @@ public class SkillHandler {
         if (!player.getInventory().add(flameSaber)) player.drop(flameSaber, false);
     }
 
-    private static void saberSlash(Player serverPlayer) {
-        addTag(serverPlayer, "skill_saber_slash");
-
-    }
-
-    private static void stormHalberd(Player serverPlayer) {
+    private static void stormHalberd(Player player) {
         ItemStack stormHalberd = new ItemStack(ModItems.STORM_HALBERD.get());
-        if (!serverPlayer.getInventory().add(stormHalberd)) serverPlayer.drop(stormHalberd, false);
+        if (!player.getInventory().add(stormHalberd)) player.drop(stormHalberd, false);
     }
 
-    private static void halberdSpin(Player serverPlayer) {
-        addTag(serverPlayer, "skill_halberd_spin");
+    private static void trinityWeapon(Player player) {
+        flameSaber(player);
+        stormHalberd(player);
     }
 
-    private static void trinityWeapon(Player serverPlayer) {
-        flameSaber(serverPlayer);
-        stormHalberd(serverPlayer);
+    private static void handleDamageEntity(Player player, LivingEntity living) {
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+        if (RiderManager.isSpecificForm(player, AgitoConfig.BURNING_ID)) {
+            living.igniteForSeconds(3);
+        }
+
+        handleBufferedDamage(player, living, mainHand, offHand);
     }
 
-    private static void firestormAttack(Player serverPlayer) {
-        addTag(serverPlayer, "skill_firestorm_attack");
-    }
-
-    private static void handleBufferedDamage(Player player, LivingEntity living, ItemStack mainHand, ItemStack offHand, AttackEntityEvent event) {
+    private static void handleBufferedDamage(Player player, LivingEntity living, ItemStack mainHand, ItemStack offHand) {
         List<String> skillTags = player.getTags().stream()
                 .filter(tag -> tag.startsWith("skill_"))
                 .toList();
@@ -372,54 +371,66 @@ public class SkillHandler {
     }
 
     private static void handleKickCollide(Player player) {
-        Level level = player.level();
-        List<String> skillTags = player.getTags().stream()
-                .filter(tag -> tag.startsWith("skill_") && tag.endsWith("_kick"))
-                .toList();
-        if (skillTags.isEmpty()) return;
+        if (!player.level().isClientSide && isKicking(player)) {
 
-        // 使用玩家的视线方向作为踢击方向
-        Vec3 lookAngle = player.getLookAngle();
-        Vec3 playerPos = player.position();
+            List<String> skillTags = player.getTags().stream()
+                    .filter(tag -> tag.startsWith("skill_") && tag.endsWith("_kick"))
+                    .toList();
+            if (skillTags.isEmpty()) return;
 
-        // 计算踢击的起始点
-        Vec3 kickStart = playerPos.add(0, 0, 0).add(lookAngle.scale(0.5));
+            Level level = player.level();
 
-        // 创建踢击的检测区域
-        double range = 1.0;
-        double radius = 0.5;
+            // 水平方向（避免踢到天上）
+            Vec3 look = player.getLookAngle();
+            Vec3 horizontalLook = new Vec3(look.x, 0, look.z).normalize();
 
-        // 查找踢击范围内的实体
-        AABB kickBox = new AABB(
-                kickStart.x - radius, kickStart.y - radius, kickStart.z - radius,
-                kickStart.x + lookAngle.x * range + radius,
-                kickStart.y + lookAngle.y * range + radius,
-                kickStart.z + lookAngle.z * range + radius
-        );
+            // 前方扩展距离（飞踢前伸）
+            double forwardDistance = 0.8;
 
-        List<LivingEntity> entities = level.getEntitiesOfClass(
-                LivingEntity.class,
-                kickBox,
-                e -> e != player && e.isAlive()
-        );
-        if (entities.isEmpty()) return;
+            // 扩展玩家碰撞盒
+            AABB kickBox = player.getBoundingBox()
+                    .expandTowards(horizontalLook.scale(forwardDistance))
+                    .inflate(0.3); // 稍微加点宽度
 
-        for (LivingEntity entity : entities) {
-            if (entity.getBoundingBox().intersects(kickBox) || entity.getBoundingBox().intersects(player.getBoundingBox())) {
+            List<LivingEntity> entities = level.getEntitiesOfClass(
+                    LivingEntity.class,
+                    kickBox,
+                    e -> e != player && e.isAlive()
+            );
+
+            if (entities.isEmpty()) return;
+
+            for (LivingEntity entity : entities) {
+
                 for (String skillTag : skillTags) {
                     switch (skillTag) {
                         case "skill_growing_kick" -> createKickExplosion(player, entity, 2);
-                        case "skill_mighty_kick" -> createKickExplosion(player, entity, 3);
+                        case "skill_mighty_kick", "skill_ground_kick" -> createKickExplosion(player, entity, 3);
                         case "skill_rising_mighty_kick" -> createKickExplosion(player, entity, 4);
                         case "skill_amazing_mighty_kick" -> createKickExplosion(player, entity, 5);
                         case "skill_ultimate_kick" -> createKickExplosion(player, entity, 7);
-                        default -> {
-                        }
                     }
+
                     removeTag(player, skillTag);
+                    removeTag(player, "rider_kicking");
                 }
+
+                break;
             }
         }
+    }
+
+    private static boolean isKicking(Player player) {
+        return player.getTags().contains("rider_kicking");
+    }
+
+    private static void kickSequence(Player player, int ticks) {
+        RiderManager.scheduleTicks(10, () -> addTag(player, "rider_kicking"));
+        RiderManager.scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
+    }
+
+    private static int calculateTolerance(int origin) {
+        return origin + getTolerance();
     }
 
     private static int getTolerance() {
@@ -428,10 +439,9 @@ public class SkillHandler {
 
     // 动画逻辑方法
     private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
-        AbstractClientPlayer clientPlayer = getLocalPlayer(player);
-        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTRA_KICK)) {
-            playAnimation(clientPlayer, "kuuga_mighty_kick", 0);
-            RiderManager.scheduleTicks(33, () -> playAnimation(clientPlayer, "player_reset", 5));
+        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTIMATE_KICK)) {
+            playAnimation(player, "kuuga_mighty_kick", 0);
+            RiderManager.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
             return;
         }
 
@@ -439,40 +449,39 @@ public class SkillHandler {
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
         if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
             if (mainHand.getItem() instanceof DragonRodItem) {
-                playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
+                playAnimation(player, "kuuga_splash_dragon_main");
             } else if (offHand.getItem() instanceof DragonRodItem) {
-                playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
+                playAnimation(player, "kuuga_splash_dragon_off");
             }
         } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
             if (mainHand.getItem() instanceof PegasusBowgunItem) {
-                playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
+                playAnimation(player, "kuuga_blast_pegasus_main");
             } else if (offHand.getItem() instanceof PegasusBowgunItem) {
-                playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
+                playAnimation(player, "kuuga_blast_pegasus_off");
             }
         } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
-            playAnimation(clientPlayer, "kuuga_calamity_titan");
+            playAnimation(player, "kuuga_calamity_titan");
         } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
             if (mainHand.getItem() instanceof RisingDragonRodItem) {
-                playAnimation(clientPlayer, "kuuga_splash_dragon_main", 0);
+                playAnimation(player, "kuuga_splash_dragon_main");
             } else if (offHand.getItem() instanceof RisingDragonRodItem) {
-                playAnimation(clientPlayer, "kuuga_splash_dragon_off", 0);
+                playAnimation(player, "kuuga_splash_dragon_off");
             }
         } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
             if (mainHand.getItem() instanceof RisingPegasusBowgunItem) {
-                playAnimation(clientPlayer, "kuuga_blast_pegasus_main");
+                playAnimation(player, "kuuga_blast_pegasus_main");
             } else if (offHand.getItem() instanceof RisingPegasusBowgunItem) {
-                playAnimation(clientPlayer, "kuuga_blast_pegasus_off");
+                playAnimation(player, "kuuga_blast_pegasus_off");
             }
         } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
-            playAnimation(clientPlayer, "kuuga_calamity_titan");
+            playAnimation(player, "kuuga_calamity_titan");
         }
     }
 
     private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
-        AbstractClientPlayer clientPlayer = getLocalPlayer(player);
         if (skillId.equals(RiderSkills.GROUND_KICK)) {
-            playAnimation(clientPlayer, "agito_kick_prepare", 0);
-            RiderManager.scheduleTicks(45, () -> playAnimation(clientPlayer, "agito_kick", 2));
+            playAnimation(player, "agito_kick_prepare", 5);
+            RiderManager.scheduleTicks(45, () -> playAnimation(player, "agito_kick", 2));
         }
     }
 
@@ -491,16 +500,21 @@ public class SkillHandler {
     }
 
     // 技能逻辑
-    private static void riderKickJump(Player player, double jumpHeight) {
-        Vec3 currentMovement = player.getKnownMovement();
-        player.setDeltaMovement(new Vec3(currentMovement.x, jumpHeight, currentMovement.z));
+    private static void riderKickJump(Player serverPlayer, double jumpHeight) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
+        Vec3 currentMovement = localPlayer.getKnownMovement();
+        localPlayer.setDeltaMovement(new Vec3(currentMovement.x, jumpHeight, currentMovement.z));
+
     }
 
-    private static void riderKickForward(Player player, double norm, int ticks) {
+    private static void riderKickForward(Player serverPlayer, double norm, int ticks) {
+        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
+        if (localPlayer == null) return;
         RiderManager.scheduleTicks(ticks, () -> {
-                    Vec3 lookVec = player.getLookAngle();
-                    Vec3 movement = player.getDeltaMovement();
-                    player.addDeltaMovement(new Vec3(
+                    Vec3 lookVec = localPlayer.getLookAngle();
+                    Vec3 movement = localPlayer.getDeltaMovement();
+                    localPlayer.addDeltaMovement(new Vec3(
                             movement.x + lookVec.x * norm * 1.5,
                             movement.y + lookVec.y * norm,
                             movement.z + lookVec.z * norm * 1.5
@@ -532,7 +546,7 @@ public class SkillHandler {
         if (localPlayer != null) {
             Vec3 angle = localPlayer.getLookAngle();
             Vec3 current = localPlayer.getKnownMovement();
-            Vec3 back = new Vec3(-(angle.x * current.x) , 0.5, -(angle.z * current.z));
+            Vec3 back = new Vec3(-(angle.x * current.x), 0.5, -(angle.z * current.z));
             localPlayer.setDeltaMovement(0, 0, 0);
             localPlayer.addDeltaMovement(back);
         }
@@ -562,11 +576,13 @@ public class SkillHandler {
         }
     }
 
-    private static void playAnimation(AbstractClientPlayer player, String animationId, int fadeDuration) {
-        PlayerAnimationTrigger.playAnimation(player, animationId, fadeDuration);
+    private static void playAnimation(Player player, String animationId, int fadeDuration) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PWPacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
+        }
     }
 
-    private static void playAnimation(AbstractClientPlayer player, String animationId) {
+    private static void playAnimation(Player player, String animationId) {
         playAnimation(player, animationId, 0);
     }
 }

@@ -148,5 +148,11 @@
     "sounds": [
       "ridebattleparallelworlds:decade/fr/agito/fr_agito_storm"
     ]
+  },
+  "fr_agito_burning": {
+    "subtitle": "sounds.ridebattleparallelworlds.fr_agito_burning",
+    "sounds": [
+      "ridebattleparallelworlds:decade/fr/agito/fr_agito_burning"
+    ]
   }
 }

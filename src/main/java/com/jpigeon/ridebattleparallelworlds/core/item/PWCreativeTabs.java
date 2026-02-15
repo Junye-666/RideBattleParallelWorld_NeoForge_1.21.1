@@ -65,6 +65,9 @@ public class PWCreativeTabs {
                         output.accept(ModItems.FORM_RIDE_KUUGA_PEGASUS);
                         output.accept(ModItems.FORM_RIDE_KUUGA_TITAN);
                         output.accept(ModItems.KAMEN_RIDE_AGITO);
+                        output.accept(ModItems.FORM_RIDE_AGITO_FLAME);
+                        output.accept(ModItems.FORM_RIDE_AGITO_STORM);
+                        output.accept(ModItems.FORM_RIDE_AGITO_BURNING);
                     })
                     .build());
 

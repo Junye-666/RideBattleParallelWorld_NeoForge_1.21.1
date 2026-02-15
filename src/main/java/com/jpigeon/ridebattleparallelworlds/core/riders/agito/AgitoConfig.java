@@ -92,12 +92,29 @@ public class AgitoConfig {
             )
             .setShouldPause(true)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 1, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 2, true)
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
             .addRequiredItem(ALTER_RING_CORE, ModItems.TRINITY_ELEMENT.get())
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addSkill(RiderSkills.TRINITY_WEAPON)
+            ;
+
+    public static final FormConfig AGITO_BURNING_FORM = new FormConfig(BURNING_ID)
+            .setArmor(
+                    ModItems.BURNING_HELMET.get(),
+                    ModItems.BURNING_CHESTPLATE.get(),
+                    null,
+                    ModItems.BURNING_BOOTS.get()
+            )
+            .setShouldPause(true)
+            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
+            .addEffect(MobEffects.DAMAGE_BOOST, -1, 3, true)
+            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
+            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
+            .addEffect(MobEffects.FIRE_RESISTANCE, -1, 0, true)
+            .addRequiredItem(ALTER_RING_CORE, ModItems.BURNING_ELEMENT.get())
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             ;
 
 
@@ -106,6 +123,7 @@ public class AgitoConfig {
         AGITO.addForm(AGITO_FLAME_FORM);
         AGITO.addForm(AGITO_STORM_FORM);
         AGITO.addForm(AGITO_TRINITY_FORM);
+        AGITO.addForm(AGITO_BURNING_FORM);
 
         RiderRegistry.registerRider(AGITO);
     }

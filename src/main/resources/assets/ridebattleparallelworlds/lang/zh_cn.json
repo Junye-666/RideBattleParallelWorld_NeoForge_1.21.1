@@ -1,5 +1,4 @@
 {
-  "item.ridebattleparallelworlds.kuuga_chogodai_element": "超古代元素",
   "item.ridebattleparallelworlds.kuuga_mighty_element": "全能灵石",
   "item.ridebattleparallelworlds.kuuga_dragon_element": "青龙灵石",
   "item.ridebattleparallelworlds.kuuga_pegasus_element": "天马灵石",
@@ -14,6 +13,7 @@
   "item.ridebattleparallelworlds.agito_ground_element": "大地元素",
   "item.ridebattleparallelworlds.agito_flame_element": "火焰元素",
   "item.ridebattleparallelworlds.agito_storm_element": "风暴元素",
+  "item.ridebattleparallelworlds.agito_burning_element": "燃烧元素",
 
   "item.ridebattleparallelworlds.decade_worlds_fragment": "世界碎片",
   "item.ridebattleparallelworlds.decade_blank_card": "空白驾驭卡",
@@ -25,6 +25,7 @@
   "item.ridebattleparallelworlds.decade_kamen_ride_agito_card": "假面驾驭: 亚极陀",
   "item.ridebattleparallelworlds.decade_form_ride_agito_flame_card": "形态驾驭: 亚极陀 火焰",
   "item.ridebattleparallelworlds.decade_form_ride_agito_storm_card": "形态驾驭: 亚极陀 风暴",
+  "item.ridebattleparallelworlds.decade_form_ride_agito_burning_card": "形态驾驭: 亚极陀 燃烧",
 
   "item.ridebattleparallelworlds.kuuga_arcle": "亚古鲁",
   "item.ridebattleparallelworlds.kuuga_growing_helmet": "空我 初升",
@@ -71,6 +72,9 @@
   "item.ridebattleparallelworlds.agito_storm_helmet": "亚极陀 风暴",
   "item.ridebattleparallelworlds.agito_storm_chestplate": "亚极陀 风暴",
   "item.ridebattleparallelworlds.agito_storm_boots": "亚极陀 风暴",
+  "item.ridebattleparallelworlds.agito_burning_helmet": "亚极陀 燃烧",
+  "item.ridebattleparallelworlds.agito_burning_chestplate": "亚极陀 燃烧",
+  "item.ridebattleparallelworlds.agito_burning_boots": "亚极陀 燃烧",
 
   "item.ridebattleparallelworlds.decade_deca_driver": "Decade 驱动器",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",
@@ -106,15 +110,20 @@
   "form.ridebattleparallelworlds.flame_form": "火焰形态",
   "form.ridebattleparallelworlds.storm_form": "暴风形态",
   "form.ridebattleparallelworlds.trinity_form": "三重形态",
+  "form.ridebattleparallelworlds.burning_form": "燃烧形态",
 
   "skill.growing_kick": "初升踢",
+  "skill.growing_punch": "初升拳",
   "skill.mighty_kick": "全能踢",
-  "skill.mighty_punch": "全能全",
+  "skill.mighty_punch": "全能拳",
 
   "skill.rising_mighty_kick": "升华·全能踢",
+  "skill.rising_mighty_punch": "升华·全能拳",
 
   "skill.amazing_mighty_kick": "惊异·全能踢",
-  "skill.ultra_kick": "究极·踢",
+  "skill.amazing_mighty_punch": "惊异·全能拳",
+  "skill.ultimate_kick": "究极·踢",
+  "skill.ultimate_punch": "究极·拳",
 
   "skill.ground_kick": "大地踢",
 

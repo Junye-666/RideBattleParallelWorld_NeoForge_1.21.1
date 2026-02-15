@@ -671,6 +671,11 @@
 				{
 					"name": "armorRightLeg",
 					"parent": "bipedLeftArm",
+					"pivot": [-2, 12, 0]
+				},
+				{
+					"name": "armorRightBoot",
+					"parent": "bipedLeftArm",
 					"pivot": [-2, 12, 0],
 					"cubes": [
 						{
@@ -686,11 +691,6 @@
 							}
 						}
 					]
-				},
-				{
-					"name": "armorRightBoot",
-					"parent": "bipedLeftArm",
-					"pivot": [-2, 12, 0]
 				},
 				{
 					"name": "bootRight",
@@ -908,6 +908,11 @@
 				{
 					"name": "armorLeftLeg",
 					"parent": "bipedLeftLeg",
+					"pivot": [2, 12, 0]
+				},
+				{
+					"name": "armorLeftBoot",
+					"parent": "bipedLeftLeg",
 					"pivot": [2, 12, 0],
 					"cubes": [
 						{
@@ -923,11 +928,6 @@
 							}
 						}
 					]
-				},
-				{
-					"name": "armorLeftBoot",
-					"parent": "bipedLeftLeg",
-					"pivot": [2, 12, 0]
 				},
 				{
 					"name": "bootLeft",

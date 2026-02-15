@@ -3,7 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.handler;
 import com.jpigeon.ridebattlelib.core.system.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
-import com.jpigeon.ridebattlelib.core.system.network.handler.PacketHandler;
+import com.jpigeon.ridebattlelib.core.system.network.PacketHandler;
 import com.jpigeon.ridebattlelib.core.system.network.packet.InsertItemPacket;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
@@ -140,7 +140,7 @@ public class FormWheel {
         String string = formId.getPath();
         if (string.contains("amazing") || string.contains("ultimate")) {
             return ChatFormatting.BLACK;
-        } else if (string.contains("mighty") || string.contains("flame")) {
+        } else if (string.contains("mighty") || string.contains("flame") || string.contains("burning")) {
             return ChatFormatting.RED;
         } else if (string.contains("dragon") || string.contains("storm")) {
             return ChatFormatting.DARK_AQUA;
