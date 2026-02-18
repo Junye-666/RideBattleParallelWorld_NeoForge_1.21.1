@@ -1,34 +1,35 @@
-package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item;
+package com.jpigeon.ridebattleparallelworlds.impl.geckoLib.block;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.AnimationManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import static software.bernie.geckolib.animation.Animation.LoopType.*;
 
-public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
+public abstract class BaseKamenRiderBlock extends BlockEntity implements GeoBlockEntity {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final String riderName;
-    protected final String itemName;
+    protected final String blockName;
     protected final boolean animated;
-    protected final AnimationManager<BaseKamenRiderGeoItem> animationManager;
-    protected final Map<String, AnimationController<BaseKamenRiderGeoItem>> controllers = new HashMap<>();
+    protected final AnimationManager<BaseKamenRiderBlock> animationManager;
+    protected final Map<String, AnimationController<BaseKamenRiderBlock>> controllers = new HashMap<>();
 
-    public BaseKamenRiderGeoItem(String riderName, String itemName,  Properties properties, boolean animated) {
-        super(properties);
+    public BaseKamenRiderBlock(String riderName, String formName, BlockEntityType<?> type, BlockPos pos, BlockState blockState, boolean animated) {
+        super(type, pos, blockState);
         this.riderName = riderName;
-        this.itemName = itemName;
+        this.blockName = formName;
         this.animated = animated;
         this.animationManager = new AnimationManager<>(this);
     }
@@ -41,7 +42,7 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
     protected abstract void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar);
 
     protected void addController(AnimatableManager.ControllerRegistrar registrar, String name,
-                                 AnimationController<BaseKamenRiderGeoItem> controller) {
+                                 AnimationController<BaseKamenRiderBlock> controller) {
         controllers.put(name, controller);
         animationManager.registerController(name, controller);
         registrar.add(controller);
@@ -55,22 +56,22 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
         return animationManager.getCurrentState();
     }
 
-    protected AnimationController<BaseKamenRiderGeoItem> createLoopController(
+    protected AnimationController<BaseKamenRiderBlock> createLoopController(
             String animationName) {
         return createStateController(animationName, LOOP);
     }
 
-    protected AnimationController<BaseKamenRiderGeoItem> createOnceController(
+    protected AnimationController<BaseKamenRiderBlock> createOnceController(
             String animationName) {
         return createStateController(animationName, PLAY_ONCE);
     }
 
-    protected AnimationController<BaseKamenRiderGeoItem> createHoldController(
+    protected AnimationController<BaseKamenRiderBlock> createHoldController(
             String animationName) {
         return createStateController(animationName, HOLD_ON_LAST_FRAME);
     }
 
-    protected AnimationController<BaseKamenRiderGeoItem> createStateController(
+    protected AnimationController<BaseKamenRiderBlock> createStateController(
             String animationName, Animation.LoopType loopType) {
         return new AnimationController<>(this, animationName + "_controller", 0, state -> {
             // 只有当管理器当前状态匹配时才播放动画
@@ -93,40 +94,26 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
         return cache;
     }
 
-    @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-        consumer.accept(new GeoRenderProvider() {
-            private GeoItemRenderer<BaseKamenRiderGeoItem> renderer;
-
-            @Override
-            public GeoItemRenderer<BaseKamenRiderGeoItem> getGeoItemRenderer() {
-                if (this.renderer == null) {
-                    this.renderer = createRenderer();
-                }
-                return this.renderer;
-            }
-        });
-    }
-
-    protected abstract GeoItemRenderer<BaseKamenRiderGeoItem> createRenderer();
+    protected abstract GeoArmorRenderer<?> createRenderer();
 
     // 资源路径生成工具方法
     protected ResourceLocation getModelPath() {
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "geo/" + riderName.toLowerCase() + "/item/" + riderName.toLowerCase() + "_" + itemName.toLowerCase() + ".geo.json");
+                "geo/" + riderName.toLowerCase() + "/block/" + riderName.toLowerCase() + "_" + blockName.toLowerCase() + ".geo.json");
+
     }
 
     protected ResourceLocation getTexturePath() {
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "textures/item/" + riderName.toLowerCase() + "/geo_item/" + riderName.toLowerCase() + "_" + itemName.toLowerCase() + ".png");
+                "textures/block/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + blockName.toLowerCase() + ".png");
     }
 
     protected ResourceLocation getAnimationPath() {
         if (animated) {
             return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                    "animations/" + riderName.toLowerCase() + "/item/" + riderName.toLowerCase() + "_" + itemName.toLowerCase() + ".animation.json");
+                    "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + blockName.toLowerCase() + ".animation.json");
         }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_item.animation.json");
+                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_block.animation.json");
     }
 }
