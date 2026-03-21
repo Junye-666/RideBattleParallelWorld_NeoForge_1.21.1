@@ -467,7 +467,10 @@ public class SkillHandler {
     // 技能逻辑
     private static void riderKickJump(Player player, double jumpHeight) {
         if (player == null) return;
-        addDeltaMovement(player, new Vec3(0, jumpHeight, 0));
+        Vec3 currentMovement = player.getKnownMovement();
+        Vec3 jump = new Vec3(currentMovement.x, currentMovement.y + jumpHeight, currentMovement.z);
+        setDeltaMovement(player, 0, 0, 0);
+        addDeltaMovement(player, jump);
     }
 
     private static void riderKickForward(Player player, double norm, int ticks) {

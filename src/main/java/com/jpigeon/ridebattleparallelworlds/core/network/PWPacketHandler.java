@@ -9,7 +9,6 @@ import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWDataSyncPacket
 import com.jpigeon.ridebattleparallelworlds.core.network.packet.PlayerMovementPacket;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +20,7 @@ import java.util.Map;
 public class PWPacketHandler {
     public static void register(final RegisterPayloadHandlersEvent event) {
         event.registrar(RideBattleParallelWorlds.MODID)
-                .versioned("0.0.1")
+                .versioned("0.0.3")
                 .playToClient(
                         PWDataSyncPacket.TYPE,
                         PWDataSyncPacket.STREAM_CODEC,
@@ -56,10 +55,9 @@ public class PWPacketHandler {
                         PWAnimationPacket.TYPE,
                         PWAnimationPacket.STREAM_CODEC,
                         (payload, context) -> context.enqueueWork(() -> {
-                            Minecraft minecraft = Minecraft.getInstance();
-                            LocalPlayer clientPlayer = minecraft.player;
+                            Player clientPlayer = context.player();
 
-                            if (clientPlayer == null) return;
+                            // 只应用给对应玩家
                             if (!clientPlayer.getUUID().equals(payload.playerId())) return;
 
                             PlayerAnimationHandler.handleAnimation(clientPlayer, payload.animationId(), payload.fadeDuration());
@@ -70,14 +68,13 @@ public class PWPacketHandler {
                         PlayerMovementPacket.TYPE,
                         PlayerMovementPacket.STREAM_CODEC,
                         (payload, context) -> context.enqueueWork(() -> {
-                                    Minecraft minecraft = Minecraft.getInstance();
-                                    LocalPlayer clientPlayer = minecraft.player;
+                            Player clientPlayer = context.player();
 
-                                    if (clientPlayer == null) return;
-                                    if (!clientPlayer.getUUID().equals(payload.playerId())) return;
+                            // 只应用给对应玩家
+                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
 
-                                    ClientUtils.deplacePlayer(clientPlayer, payload.x(), payload.y(), payload.z(), payload.operationType());
-                                })
+                            ClientUtils.deplacePlayer(clientPlayer, payload.x(), payload.y(), payload.z(), payload.operationType());
+                        })
                 )
         ;
     }

@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
@@ -62,22 +61,26 @@ public class RiderHandlerClient {
 
     @SubscribeEvent
     public static void onPlayerEquip(LivingEquipmentChangeEvent event) {
+        EquipmentSlot slot = event.getSlot();
         ItemStack stack = event.getTo();
         if (!(event.getEntity() instanceof Player player)) return;
-        switch (stack.getItem()) {
-            case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
-            case ArcleItem arcle -> {
-                if (!RiderManager.isTransformed(player)) {
-                    arcle.shrinkInBody();
+
+        if (slot.isArmor()) {
+            switch (stack.getItem()) {
+                case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
+                case ArcleItem arcle -> {
+                    if (!RiderManager.isTransformed(player)) {
+                        arcle.shrinkInBody();
+                    }
                 }
-            }
-            case AlterRingItem alterRing -> {
-                if (!RiderManager.isTransformed(player)) {
-                    alterRing.shrinkInBody();
+                case AlterRingItem alterRing -> {
+                    if (!RiderManager.isTransformed(player)) {
+                        alterRing.shrinkInBody();
+                    }
                 }
-            }
-            case ShockerCombatManItem ignored -> RiderManager.transform(player);
-            default -> {
+                case ShockerCombatManItem ignored -> RiderManager.transform(player);
+                default -> {
+                }
             }
         }
     }
