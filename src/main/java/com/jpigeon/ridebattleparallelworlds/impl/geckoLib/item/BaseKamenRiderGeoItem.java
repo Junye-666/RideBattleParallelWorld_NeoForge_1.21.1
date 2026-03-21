@@ -127,6 +127,6 @@ public abstract class BaseKamenRiderGeoItem extends Item implements GeoItem {
                     "animations/" + riderName.toLowerCase() + "/item/" + riderName.toLowerCase() + "_" + itemName.toLowerCase() + ".animation.json");
         }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_item.animation.json");
+                "animations/no_item.animation.json");
     }
 }

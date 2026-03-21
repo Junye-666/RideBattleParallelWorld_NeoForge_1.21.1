@@ -137,6 +137,6 @@ public abstract class BaseKamenRiderArmorItem extends ArmorItem implements GeoIt
                     "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_" + formName.toLowerCase() + ".animation.json");
         }
         return ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID,
-                "animations/" + riderName.toLowerCase() + "/" + riderName.toLowerCase() + "_armor.animation.json");
+                "animations/no_armor.animation.json");
     }
 }

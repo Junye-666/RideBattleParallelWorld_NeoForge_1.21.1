@@ -10,6 +10,7 @@ import com.jpigeon.ridebattleparallelworlds.core.handler.util.SkillUtils;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWAnimationPacket;
+import com.jpigeon.ridebattleparallelworlds.core.network.packet.PlayerMovementPacket;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.armor.AgitoGroundItem;
@@ -21,8 +22,6 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.DragonRodItem
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.PegasusBowgunItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.RisingDragonRodItem;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item.RisingPegasusBowgunItem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +43,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -455,6 +455,120 @@ public class SkillHandler {
         return Config.SKILL_TOLERANCE_TIME.get() * 20;
     }
 
+    // ===辅助方法===
+    public static void addResistance(Player player, int duration) {
+        addEffect(player, MobEffects.DAMAGE_RESISTANCE, duration, 4);
+    }
+
+    public static void addEffect(Player player, Holder<MobEffect> effect, int duration, int level) {
+        player.addEffect(new MobEffectInstance(effect, duration, level, true, false));
+    }
+
+    // 技能逻辑
+    private static void riderKickJump(Player player, double jumpHeight) {
+        if (player == null) return;
+        addDeltaMovement(player, new Vec3(0, jumpHeight, 0));
+    }
+
+    private static void riderKickForward(Player player, double norm, int ticks) {
+        if (player == null) return;
+        RiderManager.scheduleTicks(ticks, () -> {
+                    Vec3 lookVec = player.getLookAngle();
+                    Vec3 movement = player.getDeltaMovement();
+                    addDeltaMovement(player, new Vec3(
+                            movement.x + lookVec.x * norm * 1.5,
+                            movement.y + lookVec.y * norm,
+                            movement.z + lookVec.z * norm * 1.5
+                    ));
+                }
+        );
+    }
+
+    private static void createExplosion(Player player, double x, double y, double z, float damage) {
+        Level level = player.level();
+
+        // 创建爆炸
+        level.explode(
+                player,                              // 爆炸源
+                x,                                   // X坐标
+                y,                                   // Y坐标
+                z,                                   // Z坐标
+                damage,                              // 爆炸威力
+                false,
+                Config.SKILL_EXPLODE_GRIEF.get() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE     // 爆炸类型
+        );
+    }
+
+    private static void createExplosion(Player player, LivingEntity entity, float damage) {
+        BlockPos pos = entity.getOnPos();
+        createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), damage);
+    }
+
+    private static void createKickExplosion(Player player, LivingEntity entity, float damage) {
+        BlockPos pos = entity.getOnPos();
+        createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), damage);
+
+        Vec3 angle = player.getLookAngle();
+        Vec3 current = player.getKnownMovement();
+        Vec3 back = new Vec3(-(angle.x * current.x), 0.5, -(angle.z * current.z));
+        setDeltaMovement(player, 0, 0, 0);
+        addDeltaMovement(player, back);
+    }
+
+    private static void addTag(Player player, String tag) {
+        if (!player.getTags().contains(tag)) {
+            player.addTag(tag);
+        }
+    }
+
+    private static void removeTag(Player player, String tag) {
+        if (player.getTags().contains(tag)) {
+            player.removeTag(tag);
+        }
+    }
+
+    private static void hurt(Player player, LivingEntity target, float amount) {
+        if (!target.level().isClientSide() && target.isAlive()) {
+            target.hurt(target.damageSources().mobAttack(player), amount);
+        }
+    }
+
+    private static void knockBack(Player player, LivingEntity target, float amount) {
+        if (!target.level().isClientSide() && target.isAlive()) {
+            target.knockback(amount, -player.getLookAngle().x, -player.getLookAngle().z);
+        }
+    }
+
+    private static void playAnimation(Player player, String animationId, int fadeDuration) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PWPacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
+        }
+    }
+
+    private static void playAnimation(Player player, String animationId) {
+        playAnimation(player, animationId, 0);
+    }
+
+    private static void addDeltaMovement(Player player, double x, double y, double z) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.sendToPlayer(serverPlayer, new PlayerMovementPacket(player.getUUID(), x, y, z, "add"));
+        }
+    }
+
+    private static void addDeltaMovement(Player player, Vec3 movement) {
+        addDeltaMovement(player, movement.x(), movement.y(), movement.z());
+    }
+
+    private static void setDeltaMovement(Player player, double x, double y, double z) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.sendToPlayer(serverPlayer, new PlayerMovementPacket(player.getUUID(), x, y, z, "set"));
+        }
+    }
+
+    private static void setDeltaMovement(Player player, Vec3 movement) {
+        setDeltaMovement(player, movement.x(), movement.y(), movement.z());
+    }
+
     // 动画逻辑方法
     private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
         if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTIMATE_KICK)) {
@@ -503,109 +617,4 @@ public class SkillHandler {
         }
     }
 
-    // ===辅助方法===
-    private static LocalPlayer getLocalPlayer(Player player) {
-        Minecraft mc = Minecraft.getInstance();
-        return mc.player != null && mc.player.getUUID().equals(player.getUUID()) ? mc.player : null;
-    }
-
-    public static void addResistance(Player player, int duration) {
-        addEffect(player, MobEffects.DAMAGE_RESISTANCE, duration, 4);
-    }
-
-    public static void addEffect(Player player, Holder<MobEffect> effect, int duration, int level) {
-        player.addEffect(new MobEffectInstance(effect, duration, level, true, false));
-    }
-
-    // 技能逻辑
-    private static void riderKickJump(Player serverPlayer, double jumpHeight) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        Vec3 currentMovement = localPlayer.getKnownMovement();
-        localPlayer.setDeltaMovement(new Vec3(currentMovement.x, jumpHeight, currentMovement.z));
-
-    }
-
-    private static void riderKickForward(Player serverPlayer, double norm, int ticks) {
-        LocalPlayer localPlayer = getLocalPlayer(serverPlayer);
-        if (localPlayer == null) return;
-        RiderManager.scheduleTicks(ticks, () -> {
-                    Vec3 lookVec = localPlayer.getLookAngle();
-                    Vec3 movement = localPlayer.getDeltaMovement();
-                    localPlayer.addDeltaMovement(new Vec3(
-                            movement.x + lookVec.x * norm * 1.5,
-                            movement.y + lookVec.y * norm,
-                            movement.z + lookVec.z * norm * 1.5
-                    ));
-                }
-        );
-    }
-
-    private static void createExplosion(Player player, double x, double y, double z, float damage) {
-        Level level = player.level();
-
-        // 创建爆炸
-        level.explode(
-                player,                              // 爆炸源
-                x,                                   // X坐标
-                y,                                   // Y坐标
-                z,                                   // Z坐标
-                damage,                              // 爆炸威力
-                false,
-                Config.SKILL_EXPLODE_GRIEF.get() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE     // 爆炸类型
-        );
-    }
-
-    private static void createExplosion(Player player, LivingEntity entity, float damage) {
-        BlockPos pos = entity.getOnPos();
-        createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), damage);
-    }
-
-    private static void createKickExplosion(Player player, LivingEntity entity, float damage) {
-        BlockPos pos = entity.getOnPos();
-        createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), damage);
-
-        LocalPlayer localPlayer = getLocalPlayer(player);
-        if (localPlayer != null) {
-            Vec3 angle = localPlayer.getLookAngle();
-            Vec3 current = localPlayer.getKnownMovement();
-            Vec3 back = new Vec3(-(angle.x * current.x), 0.5, -(angle.z * current.z));
-            localPlayer.setDeltaMovement(0, 0, 0);
-            localPlayer.addDeltaMovement(back);
-        }
-    }
-
-    private static void addTag(Player player, String tag) {
-        if (!player.getTags().contains(tag)) {
-            player.addTag(tag);
-        }
-    }
-
-    private static void removeTag(Player player, String tag) {
-        if (player.getTags().contains(tag)) {
-            player.removeTag(tag);
-        }
-    }
-
-    private static void hurt(Player player, LivingEntity target, float amount) {
-        if (!target.level().isClientSide() && target.isAlive()) {
-            target.hurt(target.damageSources().mobAttack(player), amount);
-        }
-    }
-
-    private static void knockBack(Player player, LivingEntity target, float amount) {
-        if (!target.level().isClientSide() && target.isAlive()) {
-            target.knockback(amount, -player.getLookAngle().x, -player.getLookAngle().z);
-        }
-    }
-
-    private static void playAnimation(Player player, String animationId, int fadeDuration) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            PWPacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
-        }
-    }
-
-    private static void playAnimation(Player player, String animationId) {
-        playAnimation(player, animationId, 0);
-    }
 }

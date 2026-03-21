@@ -3,8 +3,10 @@ package com.jpigeon.ridebattleparallelworlds.core.network;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWData;
+import com.jpigeon.ridebattleparallelworlds.core.handler.util.ClientUtils;
 import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWDataSyncPacket;
+import com.jpigeon.ridebattleparallelworlds.core.network.packet.PlayerMovementPacket;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -64,7 +66,19 @@ public class PWPacketHandler {
                         })
 
                 )
+                .playToClient(
+                        PlayerMovementPacket.TYPE,
+                        PlayerMovementPacket.STREAM_CODEC,
+                        (payload, context) -> context.enqueueWork(() -> {
+                                    Minecraft minecraft = Minecraft.getInstance();
+                                    LocalPlayer clientPlayer = minecraft.player;
 
+                                    if (clientPlayer == null) return;
+                                    if (!clientPlayer.getUUID().equals(payload.playerId())) return;
+
+                                    ClientUtils.deplacePlayer(clientPlayer, payload.x(), payload.y(), payload.z(), payload.operationType());
+                                })
+                )
         ;
     }
 

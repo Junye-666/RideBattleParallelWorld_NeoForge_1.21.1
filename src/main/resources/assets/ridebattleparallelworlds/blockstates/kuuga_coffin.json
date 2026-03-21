@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "ridebattleparallelworlds/geo/kuuga/block/kuuga_coffin.geo.json"}
+  }
+}

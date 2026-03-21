@@ -1,5 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds;
 
+import com.jpigeon.ridebattleparallelworlds.core.block.ModBlockEntities;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
@@ -7,6 +8,8 @@ import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.block.GenericBlockEntityModel;
+import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.block.GenericBlockEntityRenderer;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.RiderEffectModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.RiderEffectRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -51,9 +54,9 @@ public class RideBattleParallelWorldsClient {
                 context -> new RiderEffectRenderer<>(
                         context,
                         new RiderEffectModel<>(
-                                generateModelPath("decade", "decade_special_effect"),
-                                generateTexturePath("decade", "decade_special_effect"),
-                                generateAnimationPath("decade", "decade_special_effect")
+                                generateEntityModelPath("decade", "decade_special_effect"),
+                                generateEntityTexturePath("decade", "decade_special_effect"),
+                                generateEntityAnimationPath("decade", "decade_special_effect")
                         )
                 )
         );
@@ -62,22 +65,47 @@ public class RideBattleParallelWorldsClient {
                 context -> new RiderEffectRenderer<>(
                         context,
                         new RiderEffectModel<>(
-                                generateModelPath("agito", "agito_kick_effect"),
-                                generateTexturePath("agito", "agito_kick_effect"),
-                                generateAnimationPath("agito", "agito_kick_effect")
+                                generateEntityModelPath("agito", "agito_kick_effect"),
+                                generateEntityTexturePath("agito", "agito_kick_effect"),
+                                generateEntityAnimationPath("agito", "agito_kick_effect")
                         )
                 )
+        );
+        event.registerBlockEntityRenderer(
+                ModBlockEntities.KUUGA_COFFIN_BE.get(),
+                context -> new GenericBlockEntityRenderer(
+                        context,
+                        new GenericBlockEntityModel(
+                                generateBlockModelPath("kuuga", "kuuga_coffin"),
+                                generateBlockTexturePath("kuuga", "kuuga_coffin"),
+                                generateBlockAnimationPath("kuuga", "kuuga_coffin")
+                        )
 
+                )
         );
     }
 
-    private static ResourceLocation generateModelPath(String riderName, String entityName) {
+    private static ResourceLocation generateEntityModelPath(String riderName, String entityName) {
         return fromString("geo/" + riderName.toLowerCase() + "/entity/" + entityName.toLowerCase() + ".geo.json");
     }
-    private static ResourceLocation generateTexturePath(String riderName, String entityName) {
-        return fromString("textures/entity/" + riderName.toLowerCase() + "/" + entityName.toLowerCase() +".png");
+
+    private static ResourceLocation generateEntityTexturePath(String riderName, String entityName) {
+        return fromString("textures/entity/" + riderName.toLowerCase() + "/" + entityName.toLowerCase() + ".png");
     }
-    private static ResourceLocation generateAnimationPath(String riderName, String entityName) {
+
+    private static ResourceLocation generateEntityAnimationPath(String riderName, String entityName) {
         return fromString("animations/" + riderName.toLowerCase() + "/entity/" + entityName + ".animation.json");
+    }
+
+    private static ResourceLocation generateBlockModelPath(String riderName, String blockName) {
+        return fromString("geo/" + riderName.toLowerCase() + "/block/" + blockName.toLowerCase() + ".geo.json");
+    }
+
+    private static ResourceLocation generateBlockTexturePath(String riderName, String blockName) {
+        return fromString("textures/block/" + riderName.toLowerCase() + "/" + blockName.toLowerCase() + ".png");
+    }
+
+    private static ResourceLocation generateBlockAnimationPath(String riderName, String blockName) {
+        return fromString("animations/" + riderName.toLowerCase() + "/block/" + blockName.toLowerCase() + ".animation.json");
     }
 }
