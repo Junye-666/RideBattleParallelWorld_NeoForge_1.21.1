@@ -231,13 +231,13 @@ public class ModItems {
 
     // 修卡
     public static final DeferredItem<ShockerCombatManItem> SHOCKER_HELMET = ITEMS.register("shocker_combatman_helmet", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.HELMET, new Item.Properties()));
+            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.HELMET, new Item.Properties()));
     public static final DeferredItem<ShockerCombatManItem> SHOCKER_CHESTPLATE = ITEMS.register("shocker_combatman_chestplate", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.CHESTPLATE, new Item.Properties()));
+            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.CHESTPLATE, new Item.Properties()));
     public static final DeferredItem<ShockerCombatManItem> SHOCKER_LEGGINGS = ITEMS.register("shocker_combatman_leggings", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.LEGGINGS, new Item.Properties()));
+            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.LEGGINGS, new Item.Properties()));
     public static final DeferredItem<ShockerCombatManItem> SHOCKER_BOOTS = ITEMS.register("shocker_combatman_boots", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.AGITO_MATERIAL, ShockerCombatManItem.Type.BOOTS, new Item.Properties()));
+            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.BOOTS, new Item.Properties()));
 
 
     public static void register(IEventBus modEventBus) {
