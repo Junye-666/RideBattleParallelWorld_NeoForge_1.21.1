@@ -4,28 +4,32 @@ package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.block;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class KuugaCoffinBlock extends BaseEntityBlock {
+import java.util.List;
+import java.util.Objects;
+
+public class KuugaCoffinBlock extends BaseEntityBlock{
     public static final VoxelShape SHAPE = Block.box(0, 0, -8, 16, 8, 24);
     public static final MapCodec<KuugaCoffinBlock> CODEC = simpleCodec(KuugaCoffinBlock::new);
 
     public KuugaCoffinBlock(Properties properties) {
-        super(properties.noTerrainParticles().destroyTime(5));
+        super(properties.noTerrainParticles().destroyTime(5).explosionResistance(5).sound(SoundType.DEEPSLATE));
     }
 
     @Override
@@ -61,8 +65,12 @@ public class KuugaCoffinBlock extends BaseEntityBlock {
     @Override
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof KuugaCoffinBlockEntity coffinBlockEntity) {
-            coffinBlockEntity.triggerOpen();
-            level.updateNeighbourForOutputSignal(pos, this);
+            if (coffinBlockEntity.isOpen()) {
+                level.destroyBlock(pos, false, player, 1);
+            } else {
+                coffinBlockEntity.triggerOpen();
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
     }

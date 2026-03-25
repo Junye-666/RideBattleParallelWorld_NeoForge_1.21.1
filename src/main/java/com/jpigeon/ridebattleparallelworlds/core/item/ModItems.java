@@ -23,6 +23,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(RideBattleParallelWorlds.MODID);
 
+    public static final DeferredItem<Item> RIDER_INGOT = ITEMS.register("rider_ingot", ()
+            -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> MIGHTY_ELEMENT = ITEMS.register("kuuga_mighty_element", ()
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> DRAGON_ELEMENT = ITEMS.register("kuuga_dragon_element", ()

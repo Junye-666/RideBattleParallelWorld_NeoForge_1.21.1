@@ -21,4 +21,8 @@ public class KuugaCoffinBlockEntity extends BaseRiderGeoBlockEntity {
     public void triggerOpen() {
         setAnimState("open");
     }
+
+    public boolean isOpen() {
+        return !getCurrentAnimState().equals("idle");
+    }
 }
