@@ -1,9 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.decade;
 
-import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
-import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
-import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
-import com.jpigeon.ridebattlelib.core.system.henshin.helper.TriggerType;
+import com.jpigeon.ridebattlelib.common.config.FormConfig;
+import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.config.TriggerType;
+import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;

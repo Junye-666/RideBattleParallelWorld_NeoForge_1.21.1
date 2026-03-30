@@ -1,9 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.*;
-import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
-import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.config.FormConfig;
+import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.event.*;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
@@ -120,11 +120,11 @@ public class RiderHandler {
         ItemStack stack = event.getStack();
         if (legs.getItem() instanceof DecaDriverItem decaDriver) {
             playSound(player, ModSounds.DECADE_INSERT.get());
-            RiderManager.scheduleTicks(5, decaDriver::triggerClose);
+            RideBattleAPI.scheduleTicks(5, decaDriver::triggerClose);
             if (isValidItem(stack, ModTags.Items.KAMEN_RIDE_CARDS)) {
-                RiderManager.scheduleTicks(5, () -> playSound(player, ModSounds.KAMEN_RIDE.get()));
+                RideBattleAPI.scheduleTicks(5, () -> playSound(player, ModSounds.KAMEN_RIDE.get()));
             } else if (isValidItem(stack, ModTags.Items.FORM_RIDE_CARDS)) {
-                RiderManager.scheduleTicks(5, () -> playSound(player, ModSounds.FORM_RIDE.get()));
+                RideBattleAPI.scheduleTicks(5, () -> playSound(player, ModSounds.FORM_RIDE.get()));
             }
         } else if (legs.getItem() instanceof AlterRingItem) {
             prepareAgito(player, legs, stack);
@@ -165,13 +165,13 @@ public class RiderHandler {
     }
 
     public static void playSound(Player player, SoundEvent soundEvent) {
-        RiderManager.playPublicSound(player, soundEvent, ((float) Config.RIDER_SOUNDS_VOLUME.get() / 100));
+        RideBattleAPI.playPublicSound(player, soundEvent, ((float) Config.RIDER_SOUNDS_VOLUME.get() / 100));
     }
 
     // 变身辅助
     private static void handleKuuga(Player player, ItemStack legs, ResourceLocation formId) {
         if (player.isCrouching()) {
-            RiderManager.completeHenshin(player);
+            RideBattleAPI.completeHenshin(player);
             return;
         }
         SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
@@ -180,27 +180,27 @@ public class RiderHandler {
         if (legs.getItem() instanceof ArcleItem arcleItem) {
             playSound(player, ModSounds.ARCLE_APPEAR.get());
             if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
-                RiderManager.scheduleTicks(5, arcleItem::triggerAppear);
+                RideBattleAPI.scheduleTicks(5, arcleItem::triggerAppear);
             }
         }
-        FormConfig form = RiderManager.getFormConfig(player, formId);
+        FormConfig form = RideBattleAPI.getFormConfig(player, formId);
 
-        RiderManager.scheduleTicks(36, () -> playHenshinSound(player, form));
+        RideBattleAPI.scheduleTicks(36, () -> playHenshinSound(player, form));
         Optional<Integer> length = ModSounds.getSoundLength(form);
-        length.ifPresent(integer -> RiderManager.completeIn(integer, player));
+        length.ifPresent(integer -> RideBattleAPI.completeIn(integer, player));
     }
 
     private static void handleKuugaSwitch(Player player, ItemStack legs, ResourceLocation formId) {
         if (player.isCrouching()) {
-            RiderManager.completeHenshin(player);
+            RideBattleAPI.completeHenshin(player);
             setDriverAnim(legs, formId);
             return;
         }
         playAnimation(player, "kuuga_switch");
-        RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
-        FormConfig form = RiderManager.getFormConfig(player, formId);
+        RideBattleAPI.scheduleTicks(10, () -> setDriverAnim(legs, formId));
+        FormConfig form = RideBattleAPI.getFormConfig(player, formId);
         playHenshinSound(player, form);
-        RiderManager.completeIn(90, player);
+        RideBattleAPI.completeIn(90, player);
     }
 
     private static void removeAgitoWeapon(Player player) {
@@ -219,11 +219,11 @@ public class RiderHandler {
             playAnimation(player, "agito_prepare_b");
         else playAnimation(player, "agito_prepare");
         playSound(player, ModSounds.AGITO_PREPARE.get());
-        if (!RiderManager.isTransformed(player))
+        if (!RideBattleAPI.isTransformed(player))
             playSound(player, ModSounds.AGITO_STEADY.get());
         if (legs.getItem() instanceof AlterRingItem alterRing && (alterRing.getCurrentAnimState().equals("inBody") || alterRing.getCurrentAnimState().equals("shrink"))) {
             alterRing.triggerAppear();
-            setDriverAnim(legs, RiderManager.getPendingForm(player));
+            setDriverAnim(legs, RideBattleAPI.getPendingForm(player));
         }
     }
 
@@ -232,14 +232,14 @@ public class RiderHandler {
         Minecraft.getInstance().getSoundManager().stop();
         // TODO : 燃烧/闪耀相关音效
         playSound(player, ModSounds.AGITO_FINISH.get());
-        RiderManager.completeIn(10, player);
-        RiderManager.scheduleTicks(10, () -> setDriverAnim(legs, formId));
+        RideBattleAPI.completeIn(10, player);
+        RideBattleAPI.scheduleTicks(10, () -> setDriverAnim(legs, formId));
     }
 
     private static void handleDecade(Player player, ResourceLocation formId) {
-        FormConfig form = RiderManager.getFormConfig(player, formId);
+        FormConfig form = RideBattleAPI.getFormConfig(player, formId);
         playAnimation(player, "decade_insert");
-        RiderManager.scheduleTicks(10, () -> playHenshinSound(player, form));
+        RideBattleAPI.scheduleTicks(10, () -> playHenshinSound(player, form));
         if (formId.equals(DecadeConfig.DECADE_BASE_ID)) {
             Level level = player.level();
 
@@ -252,11 +252,11 @@ public class RiderHandler {
 
             effect.setOwner(player);
 
-            RiderManager.scheduleTicks(20, () -> level.addFreshEntity(effect));
+            RideBattleAPI.scheduleTicks(20, () -> level.addFreshEntity(effect));
 
         }
         Optional<Integer> length = ModSounds.getSoundLength(form);
-        length.ifPresent(integer -> RiderManager.completeIn(integer, player));
+        length.ifPresent(integer -> RideBattleAPI.completeIn(integer, player));
     }
 
     private static boolean isValidItem(ItemStack itemStack, TagKey<Item> tagKey) {

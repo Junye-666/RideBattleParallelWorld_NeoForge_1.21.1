@@ -1,8 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.extra.shocker;
 
-import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
-import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
-import com.jpigeon.ridebattlelib.core.system.henshin.RiderRegistry;
+
+import com.jpigeon.ridebattlelib.common.config.FormConfig;
+import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;

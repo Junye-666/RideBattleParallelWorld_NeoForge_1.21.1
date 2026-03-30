@@ -1,10 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler;
 
-import com.jpigeon.ridebattlelib.core.system.event.ReturnItemsEvent;
-import com.jpigeon.ridebattlelib.core.system.event.SlotExtractionEvent;
-import com.jpigeon.ridebattlelib.core.system.henshin.RiderConfig;
-import com.jpigeon.ridebattlelib.core.system.network.PacketHandler;
-import com.jpigeon.ridebattlelib.core.system.network.packet.InsertItemPacket;
+import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.event.ReturnItemsEvent;
+import com.jpigeon.ridebattlelib.common.event.SlotExtractionEvent;
+import com.jpigeon.ridebattlelib.common.network.packet.InsertItemPacket;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderForms;
@@ -24,6 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -183,7 +183,7 @@ public class FormWheel {
         }
 
         if (item != null) {
-            PacketHandler.sendToServer(new InsertItemPacket(player.getUUID(), arcleCore, item.getDefaultInstance()));
+            PacketDistributor.sendToServer(new InsertItemPacket(player.getUUID(), arcleCore, item.getDefaultInstance()));
         }
     }
 
@@ -205,7 +205,7 @@ public class FormWheel {
         }
 
         if (item != null) {
-            PacketHandler.sendToServer(new InsertItemPacket(player.getUUID(), alterRingCore, item.getDefaultInstance()));
+            PacketDistributor.sendToServer(new InsertItemPacket(player.getUUID(), alterRingCore, item.getDefaultInstance()));
         }
     }
 }

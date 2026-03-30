@@ -18,8 +18,6 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import java.util.List;
 
 public class ArcleItem extends BaseKamenRiderArmorItem {
-    public enum AnimState {IN_BODY, APPEAR, SHRINK, MIGHTY, DRAGON, PEGASUS, TITAN, RISING_MIGHTY, RISING_DRAGON, RISING_PEGASUS, RISING_TITAN, AMAZING_MIGHTY, ULTIMATE}
-
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super("kuuga", "arcle", material, type, properties, true);
     }
@@ -50,10 +48,6 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
 
     public void shrinkInBody() {
         setAnimState("shrink");
-    }
-
-    public void setCurrentState(AnimState state) {
-        setAnimState(state.name().toLowerCase());
     }
 
     public void setStateByFormId(ResourceLocation formId) {

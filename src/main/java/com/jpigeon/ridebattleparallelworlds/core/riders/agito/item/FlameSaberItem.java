@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.agito.item;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
@@ -17,8 +17,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class FlameSaberItem extends BaseKamenRiderGeoItem {
-    public enum AnimState {IDLE, OPEN}
-
     public FlameSaberItem(Properties properties) {
         super("agito", "flame_saber", properties.stacksTo(1).durability(0), true);
     }
@@ -46,19 +44,19 @@ public class FlameSaberItem extends BaseKamenRiderGeoItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, AgitoConfig.FLAME_ID) || RiderManager.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
+        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
+            if (RideBattleAPI.isSpecificForm(player, AgitoConfig.FLAME_ID) || RideBattleAPI.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
                 if (usedHand.equals(InteractionHand.MAIN_HAND)) {
                     triggerOpen();
                     if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof StormHalberdItem stormHalberd) {
                         stormHalberd.triggerOpen();
-                        RiderManager.triggerSkill(player, RiderSkills.FIRESTORM_ATTACK, SkillEvent.SkillTriggerType.WEAPON);
+                        RideBattleAPI.triggerSkill(player, RiderSkills.FIRESTORM_ATTACK, SkillEvent.SkillTriggerType.WEAPON);
                         player.getCooldowns().addCooldown(this, 410);
                         player.getCooldowns().addCooldown(stormHalberd, 410);
                         return InteractionResultHolder.success(itemStack);
                     }
                     player.getCooldowns().addCooldown(this, 310);
-                    RiderManager.triggerSkill(player, RiderSkills.SABER_SLASH, SkillEvent.SkillTriggerType.WEAPON);
+                    RideBattleAPI.triggerSkill(player, RiderSkills.SABER_SLASH, SkillEvent.SkillTriggerType.WEAPON);
                 } else {
                     return InteractionResultHolder.pass(itemStack);
                 }

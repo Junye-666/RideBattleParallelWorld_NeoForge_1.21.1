@@ -1,8 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.FormSwitchEvent;
-import com.jpigeon.ridebattlelib.core.system.event.UnhenshinEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.FormSwitchEvent;
+import com.jpigeon.ridebattlelib.common.event.UnhenshinEvent;
 import com.jpigeon.ridebattleparallelworlds.core.component.ItemData;
 import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
@@ -24,18 +24,18 @@ public class AbilitiesHandler {
         Player player = event.getEntity();
         ItemStack originalItem = event.getItemStack();
 
-        if (RiderManager.isSpecificRider(player, RiderIds.KUUGA_ID)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.DRAGON_ID) && !hasItemInInventory(ModItems.DRAGON_ROD.get(), player) && isValidItem(originalItem, Tags.Items.RODS)) {
+        if (RideBattleAPI.isSpecificRider(player, RiderIds.KUUGA_ID)) {
+            if (RideBattleAPI.isSpecificForm(player, KuugaConfig.DRAGON_ID) && !hasItemInInventory(ModItems.DRAGON_ROD.get(), player) && isValidItem(originalItem, Tags.Items.RODS)) {
                 convertItemTo(player, originalItem, ModItems.DRAGON_ROD.get());
-            } else if (RiderManager.isSpecificForm(player, KuugaConfig.PEGASUS_ID) && !hasItemInInventory(ModItems.PEGASUS_BOWGUN.get(), player) && (isValidItem(originalItem, Tags.Items.TOOLS_BOW) || isValidItem(originalItem, Tags.Items.TOOLS_CROSSBOW))) {
+            } else if (RideBattleAPI.isSpecificForm(player, KuugaConfig.PEGASUS_ID) && !hasItemInInventory(ModItems.PEGASUS_BOWGUN.get(), player) && (isValidItem(originalItem, Tags.Items.TOOLS_BOW) || isValidItem(originalItem, Tags.Items.TOOLS_CROSSBOW))) {
                 convertItemTo(player, originalItem, ModItems.PEGASUS_BOWGUN.get());
-            } else if (RiderManager.isSpecificForm(player, KuugaConfig.TITAN_ID) && !hasItemInInventory(ModItems.TITAN_SWORD.get(), player) && isValidItem(originalItem, Tags.Items.MELEE_WEAPON_TOOLS)) {
+            } else if (RideBattleAPI.isSpecificForm(player, KuugaConfig.TITAN_ID) && !hasItemInInventory(ModItems.TITAN_SWORD.get(), player) && isValidItem(originalItem, Tags.Items.MELEE_WEAPON_TOOLS)) {
                 convertItemTo(player, originalItem, ModItems.TITAN_SWORD.get());
-            } else if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID) && !hasItemInInventory(ModItems.RISING_DRAGON_ROD.get(), player) && isValidItem(originalItem, Tags.Items.RODS)) {
+            } else if (RideBattleAPI.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID) && !hasItemInInventory(ModItems.RISING_DRAGON_ROD.get(), player) && isValidItem(originalItem, Tags.Items.RODS)) {
                 convertItemTo(player, originalItem, ModItems.RISING_DRAGON_ROD.get());
-            } else if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_PEGASUS_ID) && !hasItemInInventory(ModItems.RISING_PEGASUS_BOWGUN.get(), player) && (isValidItem(originalItem, Tags.Items.TOOLS_BOW) || isValidItem(originalItem, Tags.Items.TOOLS_CROSSBOW))) {
+            } else if (RideBattleAPI.isSpecificForm(player, KuugaConfig.RISING_PEGASUS_ID) && !hasItemInInventory(ModItems.RISING_PEGASUS_BOWGUN.get(), player) && (isValidItem(originalItem, Tags.Items.TOOLS_BOW) || isValidItem(originalItem, Tags.Items.TOOLS_CROSSBOW))) {
                 convertItemTo(player, originalItem, ModItems.RISING_PEGASUS_BOWGUN.get());
-            } else if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_TITAN_ID) && !hasItemInInventory(ModItems.RISING_TITAN_SWORD.get(), player, 2) && isValidItem(originalItem, Tags.Items.MELEE_WEAPON_TOOLS)) {
+            } else if (RideBattleAPI.isSpecificForm(player, KuugaConfig.RISING_TITAN_ID) && !hasItemInInventory(ModItems.RISING_TITAN_SWORD.get(), player, 2) && isValidItem(originalItem, Tags.Items.MELEE_WEAPON_TOOLS)) {
                 convertItemTo(player, originalItem, ModItems.RISING_TITAN_SWORD.get());
             }
         }

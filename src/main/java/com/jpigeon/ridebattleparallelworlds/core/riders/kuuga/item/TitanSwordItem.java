@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
@@ -17,8 +17,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class TitanSwordItem extends BaseKamenRiderGeoItem {
-    public enum AnimState {IDLE, STAB}
-
     public TitanSwordItem(Properties properties) {
         super("kuuga", "titan_sword", properties.stacksTo(1).durability(0), true);
     }
@@ -44,11 +42,11 @@ public class TitanSwordItem extends BaseKamenRiderGeoItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.TITAN_ID)) {
+        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
+            if (RideBattleAPI.isSpecificForm(player, KuugaConfig.TITAN_ID)) {
                 player.getCooldowns().addCooldown(this, 310);
                 triggerStab();
-                RiderManager.triggerSkill(player, RiderSkills.CALAMITY_TITAN, SkillEvent.SkillTriggerType.WEAPON);
+                RideBattleAPI.triggerSkill(player, RiderSkills.CALAMITY_TITAN, SkillEvent.SkillTriggerType.WEAPON);
             }
         }
         return InteractionResultHolder.success(itemStack);

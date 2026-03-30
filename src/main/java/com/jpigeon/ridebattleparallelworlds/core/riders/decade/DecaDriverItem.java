@@ -4,7 +4,6 @@ import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderAr
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorMaterial;
@@ -17,8 +16,6 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import java.util.List;
 
 public class DecaDriverItem extends BaseKamenRiderArmorItem {
-    public enum AnimState {IDLE, OPEN, CLOSE}
-
     public DecaDriverItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super("decade", "deca_driver", material, type, properties, true);
     }
@@ -37,10 +34,6 @@ public class DecaDriverItem extends BaseKamenRiderArmorItem {
 
     public void triggerClose() {
         setAnimState("close");
-    }
-
-    public void setCurrentState(AnimState state) {
-        setAnimState(state.name().toLowerCase());
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds.core.sound;
 
-import com.jpigeon.ridebattlelib.core.system.form.FormConfig;
+import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;

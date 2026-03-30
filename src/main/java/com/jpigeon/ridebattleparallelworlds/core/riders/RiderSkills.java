@@ -1,6 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders;
 
-import com.jpigeon.ridebattlelib.core.system.skill.SkillSystem;
+import com.jpigeon.ridebattlelib.server.system.SkillSystem;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
@@ -77,7 +77,7 @@ public class SkillHandler {
     @SubscribeEvent
     public static void onCollision(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        if (!RiderManager.isTransformed(player)) return;
+        if (!RideBattleAPI.isTransformed(player)) return;
         if (player.level().isClientSide()) return;
         handleKickCollide(player);
     }
@@ -125,9 +125,9 @@ public class SkillHandler {
     }
 
     private static void animateRiderSkills(Player player, ResourceLocation skillId) {
-        if (KuugaConfig.KUUGA.includesFormId(RiderManager.getCurrentFormId(player))) {
+        if (KuugaConfig.KUUGA.includesFormId(RideBattleAPI.getCurrentFormId(player))) {
             animateKuugaSkills(player, skillId);
-        } else if (AgitoConfig.AGITO.includesFormId(RiderManager.getCurrentFormId(player))) {
+        } else if (AgitoConfig.AGITO.includesFormId(RideBattleAPI.getCurrentFormId(player))) {
             animateAgitoSkills(player, skillId);
         }
     }
@@ -140,7 +140,7 @@ public class SkillHandler {
 
         riderKickJump(player, 1.5);
         riderKickForward(player, 1, 5);
-        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
+        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
     }
 
     private static void mightyKick(Player player) {
@@ -151,7 +151,7 @@ public class SkillHandler {
 
         riderKickJump(player, 1.5);
         riderKickForward(player, 1.5, 10);
-        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
+        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
     }
 
     private static void splashDragon(Player player) {
@@ -167,7 +167,7 @@ public class SkillHandler {
         } else {
             distance = 0;
         }
-        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1.5 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -177,7 +177,7 @@ public class SkillHandler {
     private static void blastPegasus(Player player) {
         addResistance(player, 20);
 
-        RiderManager.scheduleTicks(10, () ->
+        RideBattleAPI.scheduleTicks(10, () ->
                 SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
@@ -197,7 +197,7 @@ public class SkillHandler {
         addResistance(player, 20);
 
         double distance = 1.5;
-        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -212,7 +212,7 @@ public class SkillHandler {
 
         riderKickJump(player, 1.5);
         riderKickForward(player, 2, 10);
-        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
+        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
     }
 
     private static void risingSplashDragon(Player player) {
@@ -228,7 +228,7 @@ public class SkillHandler {
         } else {
             distance = 0;
         }
-        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1.5 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -240,7 +240,7 @@ public class SkillHandler {
 
         addResistance(player, 20);
 
-        RiderManager.scheduleTicks(10, () ->
+        RideBattleAPI.scheduleTicks(10, () ->
                 SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
@@ -260,7 +260,7 @@ public class SkillHandler {
         addResistance(player, 20);
 
         double distance = 2.0;
-        RiderManager.scheduleTicks(10, () -> createExplosion(player,
+        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -275,7 +275,7 @@ public class SkillHandler {
 
         riderKickJump(player, 1.5);
         riderKickForward(player, 2.5, 10);
-        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
+        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
     }
 
     private static void ultimateKick(Player player) {
@@ -286,7 +286,7 @@ public class SkillHandler {
 
         riderKickJump(player, 1.5);
         riderKickForward(player, 2.5, 10);
-        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
+        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
     }
 
     private static void groundKick(Player player) {
@@ -300,12 +300,12 @@ public class SkillHandler {
         addResistance(player, duration);
         if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.triggerOpen();
-            RiderManager.scheduleTicks(duration, agitoGround::setClosed);
+            RideBattleAPI.scheduleTicks(duration, agitoGround::setClosed);
         }
 
-        RiderManager.scheduleTicks(50, () -> riderKickJump(player, 2));
+        RideBattleAPI.scheduleTicks(50, () -> riderKickJump(player, 2));
         riderKickForward(player, 1.5, 70);
-        RiderManager.scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
+        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
     }
 
     private static void flameSaber(Player player) {
@@ -334,7 +334,7 @@ public class SkillHandler {
     private static void handleDamageEntity(Player player, LivingEntity living) {
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-        if (RiderManager.isSpecificForm(player, AgitoConfig.BURNING_ID)) {
+        if (RideBattleAPI.isSpecificForm(player, AgitoConfig.BURNING_ID)) {
             living.igniteForSeconds(3);
         }
 
@@ -372,7 +372,7 @@ public class SkillHandler {
                     if (mainHand.getItem() instanceof ShiningCaliburItem) {
                         hurt(player, living, 60);
                         knockBack(player, living, 2);
-                        RiderManager.scheduleTicks(20, () -> createExplosion(player, living, 4));
+                        RideBattleAPI.scheduleTicks(20, () -> createExplosion(player, living, 4));
                     }
                 }
                 case "skill_mighty_punch" -> {
@@ -384,7 +384,7 @@ public class SkillHandler {
             }
             removeTag(player, skillTag);
 
-            RiderManager.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
+            RideBattleAPI.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
         }
     }
 
@@ -443,8 +443,8 @@ public class SkillHandler {
     }
 
     private static void kickSequence(Player player, int ticks) {
-        RiderManager.scheduleTicks(10, () -> addTag(player, "rider_kicking"));
-        RiderManager.scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
+        RideBattleAPI.scheduleTicks(10, () -> addTag(player, "rider_kicking"));
+        RideBattleAPI.scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
     }
 
     private static int calculateTolerance(int origin) {
@@ -475,7 +475,7 @@ public class SkillHandler {
 
     private static void riderKickForward(Player player, double norm, int ticks) {
         if (player == null) return;
-        RiderManager.scheduleTicks(ticks, () -> {
+        RideBattleAPI.scheduleTicks(ticks, () -> {
                     Vec3 lookVec = player.getLookAngle();
                     Vec3 movement = player.getDeltaMovement();
                     addDeltaMovement(player, new Vec3(
@@ -576,7 +576,7 @@ public class SkillHandler {
     private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
         if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTIMATE_KICK)) {
             playAnimation(player, "kuuga_mighty_kick", 0);
-            RiderManager.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
+            RideBattleAPI.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
             return;
         }
 
@@ -616,7 +616,7 @@ public class SkillHandler {
     private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
         if (skillId.equals(RiderSkills.GROUND_KICK)) {
             playAnimation(player, "agito_kick_prepare", 5);
-            RiderManager.scheduleTicks(45, () -> playAnimation(player, "agito_kick", 2));
+            RideBattleAPI.scheduleTicks(45, () -> playAnimation(player, "agito_kick", 2));
         }
     }
 

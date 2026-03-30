@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.agito.item;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
@@ -18,8 +18,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class ShiningCaliburItem extends BaseKamenRiderGeoItem {
-    public enum AnimState {CLOSED, OPEN, OPENED}
-
     public ShiningCaliburItem(Properties properties) {
         super("agito", "shining_calibur", properties.stacksTo(1).durability(0), true);
     }
@@ -53,8 +51,8 @@ public class ShiningCaliburItem extends BaseKamenRiderGeoItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, AgitoConfig.BURNING_ID)) {
+        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
+            if (RideBattleAPI.isSpecificForm(player, AgitoConfig.BURNING_ID)) {
                 if (Screen.hasShiftDown()) {
                     if (isOpen()) setClose();
                     else triggerOpen();
@@ -63,7 +61,7 @@ public class ShiningCaliburItem extends BaseKamenRiderGeoItem {
 
                 } else if (usedHand.equals(InteractionHand.MAIN_HAND) && isOpen()) {
                     player.getCooldowns().addCooldown(this, 610);
-                    RiderManager.triggerSkill(player, RiderSkills.BURNING_BOMBER, SkillEvent.SkillTriggerType.WEAPON);
+                    RideBattleAPI.triggerSkill(player, RiderSkills.BURNING_BOMBER, SkillEvent.SkillTriggerType.WEAPON);
                 } else {
                     return InteractionResultHolder.pass(itemStack);
                 }

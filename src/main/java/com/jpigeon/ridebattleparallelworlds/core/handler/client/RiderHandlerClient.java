@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.handler.client;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.ItemGrantEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.ItemGrantEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerCombatManItem;
 import com.jpigeon.ridebattleparallelworlds.core.handler.RiderHandler;
@@ -34,25 +34,25 @@ public class RiderHandlerClient {
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         switch (legs.getItem()) {
             case ArcleItem arcle -> {
-                if (!RiderManager.isTransformed(player)) {
+                if (!RideBattleAPI.isTransformed(player)) {
                     arcle.shrinkInBody();
                     return;
                 }
-                ResourceLocation formId = RiderManager.getCurrentFormId(player);
+                ResourceLocation formId = RideBattleAPI.getCurrentFormId(player);
                 if (formId == null) return;
                 RiderHandler.setDriverAnim(legs, formId);
             }
             case AlterRingItem alterRingItem -> {
-                if (!RiderManager.isTransformed(player)) {
+                if (!RideBattleAPI.isTransformed(player)) {
                     alterRingItem.shrinkInBody();
                     return;
                 }
-                ResourceLocation formId = RiderManager.getCurrentFormId(player);
+                ResourceLocation formId = RideBattleAPI.getCurrentFormId(player);
                 if (formId == null) return;
                 RiderHandler.setDriverAnim(legs, formId);
             }
             case DecaDriverItem decaDriver -> {
-                if (!RiderManager.isDriverEmpty(player)) decaDriver.triggerOpen();
+                if (!RideBattleAPI.isDriverEmpty(player)) decaDriver.triggerOpen();
             }
             default -> {
             }
@@ -69,16 +69,16 @@ public class RiderHandlerClient {
             switch (stack.getItem()) {
                 case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
                 case ArcleItem arcle -> {
-                    if (!RiderManager.isTransformed(player)) {
+                    if (!RideBattleAPI.isTransformed(player)) {
                         arcle.shrinkInBody();
                     }
                 }
                 case AlterRingItem alterRing -> {
-                    if (!RiderManager.isTransformed(player)) {
+                    if (!RideBattleAPI.isTransformed(player)) {
                         alterRing.shrinkInBody();
                     }
                 }
-                case ShockerCombatManItem ignored -> RiderManager.transform(player);
+                case ShockerCombatManItem ignored -> RideBattleAPI.transform(player);
                 default -> {
                 }
             }

@@ -18,8 +18,6 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import java.util.List;
 
 public class AlterRingItem extends BaseKamenRiderArmorItem {
-    public enum AnimState {APPEAR, SHRINK, GROUND, FLAME, STORM, TRINITY, BURNING}
-
     public AlterRingItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super("agito", "alter_ring", material, type, properties, true);
     }

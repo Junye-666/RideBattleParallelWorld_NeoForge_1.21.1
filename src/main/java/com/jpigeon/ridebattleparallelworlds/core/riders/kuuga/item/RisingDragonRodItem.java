@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
@@ -17,8 +17,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class RisingDragonRodItem extends BaseKamenRiderGeoItem {
-    public enum AnimState {IDLE, SPIN_MAIN_HAND, SPIN_OFF_HAND}
-
     public RisingDragonRodItem(Properties properties) {
         super("kuuga", "rising_dragon_rod", properties.stacksTo(1).durability(0), true);
     }
@@ -39,10 +37,6 @@ public class RisingDragonRodItem extends BaseKamenRiderGeoItem {
         setAnimState("spin_off");
     }
 
-    public void setCurrentState(DragonRodItem.AnimState state){
-        setAnimState(state.name().toLowerCase());
-    }
-
     @Override
     protected GeoItemRenderer<BaseKamenRiderGeoItem> createRenderer() {
         return new GenericItemRenderer(
@@ -53,13 +47,13 @@ public class RisingDragonRodItem extends BaseKamenRiderGeoItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID)) {
+        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
+            if (RideBattleAPI.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID)) {
                 player.getCooldowns().addCooldown(this, 410);
                 if (usedHand.equals(InteractionHand.MAIN_HAND)) {
                     triggerMainSpin();
                 } else triggerOffSpin();
-                RiderManager.triggerSkill(player, RiderSkills.RISING_SPLASH_DRAGON, SkillEvent.SkillTriggerType.WEAPON);
+                RideBattleAPI.triggerSkill(player, RiderSkills.RISING_SPLASH_DRAGON, SkillEvent.SkillTriggerType.WEAPON);
             }
         }
         return InteractionResultHolder.success(itemStack);

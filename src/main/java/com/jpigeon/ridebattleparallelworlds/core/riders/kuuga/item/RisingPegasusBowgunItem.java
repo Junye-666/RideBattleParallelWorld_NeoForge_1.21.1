@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.item;
 
-import com.jpigeon.ridebattlelib.api.RiderManager;
-import com.jpigeon.ridebattlelib.core.system.event.SkillEvent;
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
@@ -17,7 +17,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class RisingPegasusBowgunItem extends BaseKamenRiderGeoItem {
-    public enum AnimState {IDLE, PULL, RELEASE, SHOOT}
     public RisingPegasusBowgunItem(Properties properties) {
         super("kuuga", "rising_pegasus_bowgun", properties.stacksTo(1).durability(0), true);
     }
@@ -42,9 +41,6 @@ public class RisingPegasusBowgunItem extends BaseKamenRiderGeoItem {
         setAnimState("release");
     }
 
-    public void setCurrentState(PegasusBowgunItem.AnimState state){
-        setAnimState(state.name().toLowerCase());
-    }
     @Override
     protected GeoItemRenderer<BaseKamenRiderGeoItem> createRenderer() {
         return new GenericItemRenderer(
@@ -55,11 +51,11 @@ public class RisingPegasusBowgunItem extends BaseKamenRiderGeoItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RiderManager.isTransformed(player)) {
-            if (RiderManager.isSpecificForm(player, KuugaConfig.RISING_PEGASUS_ID)) {
+        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
+            if (RideBattleAPI.isSpecificForm(player, KuugaConfig.RISING_PEGASUS_ID)) {
                 player.getCooldowns().addCooldown(this, 210);
                 triggerShoot();
-                RiderManager.triggerSkill(player, RiderSkills.RISING_BLAST_PEGASUS, SkillEvent.SkillTriggerType.WEAPON);
+                RideBattleAPI.triggerSkill(player, RiderSkills.RISING_BLAST_PEGASUS, SkillEvent.SkillTriggerType.WEAPON);
             }
         }
         return InteractionResultHolder.success(itemStack);

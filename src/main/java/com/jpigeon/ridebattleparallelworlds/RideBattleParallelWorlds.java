@@ -2,12 +2,12 @@ package com.jpigeon.ridebattleparallelworlds;
 
 import com.jpigeon.ridebattleparallelworlds.core.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.block.ModBlockEntities;
+import com.jpigeon.ridebattleparallelworlds.core.block.ModBlocks;
 import com.jpigeon.ridebattleparallelworlds.core.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.core.debug.PWCommands;
 import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.handler.AbilitiesHandler;
 import com.jpigeon.ridebattleparallelworlds.core.handler.FormWheel;
-import com.jpigeon.ridebattleparallelworlds.core.block.ModBlocks;
 import com.jpigeon.ridebattleparallelworlds.core.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.item.PWCreativeTabs;
 import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
