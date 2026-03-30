@@ -1,13 +1,13 @@
 package com.jpigeon.ridebattleparallelworlds;
 
-import com.jpigeon.ridebattleparallelworlds.core.block.ModBlockEntities;
-import com.jpigeon.ridebattleparallelworlds.core.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.extra.shocker.ShockerConfig;
-import com.jpigeon.ridebattleparallelworlds.core.riders.RiderSkills;
-import com.jpigeon.ridebattleparallelworlds.core.riders.agito.AgitoConfig;
-import com.jpigeon.ridebattleparallelworlds.core.riders.decade.DecadeConfig;
-import com.jpigeon.ridebattleparallelworlds.core.riders.kuuga.KuugaConfig;
-import com.jpigeon.ridebattleparallelworlds.core.sound.ModSounds;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecadeConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.sound.ModSounds;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.block.GenericBlockEntityModel;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.block.GenericBlockEntityRenderer;
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.RiderEffectModel;
@@ -24,7 +24,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
-import static com.jpigeon.ridebattleparallelworlds.core.riders.RiderIds.fromString;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.fromString;
 
 @Mod(value = RideBattleParallelWorlds.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)

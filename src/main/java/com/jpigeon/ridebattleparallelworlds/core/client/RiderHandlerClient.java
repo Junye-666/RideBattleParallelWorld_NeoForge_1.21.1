@@ -1,0 +1,98 @@
+package com.jpigeon.ridebattleparallelworlds.core.client;
+
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
+import com.jpigeon.ridebattlelib.common.event.ItemGrantEvent;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerCombatManItem;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.RiderHandler;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AlterRingItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.FlameSaberItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.ShiningCaliburItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecaDriverItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.ArcleItem;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+
+@EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
+public class RiderHandlerClient {
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        player.displayClientMessage(Component.translatable("message.riderGreet.login"), false);
+        player.displayClientMessage(Component.translatable("message.riderHint.login").withStyle(ChatFormatting.GREEN), false);
+        player.displayClientMessage(Component.translatable("message.fromHint.login").withStyle(ChatFormatting.RED), false);
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        switch (legs.getItem()) {
+            case ArcleItem arcle -> {
+                if (!RideBattleAPI.isTransformed(player)) {
+                    arcle.shrinkInBody();
+                    return;
+                }
+                ResourceLocation formId = RideBattleAPI.getCurrentFormId(player);
+                if (formId == null) return;
+                RiderHandler.setDriverAnim(legs, formId);
+            }
+            case AlterRingItem alterRingItem -> {
+                if (!RideBattleAPI.isTransformed(player)) {
+                    alterRingItem.shrinkInBody();
+                    return;
+                }
+                ResourceLocation formId = RideBattleAPI.getCurrentFormId(player);
+                if (formId == null) return;
+                RiderHandler.setDriverAnim(legs, formId);
+            }
+            case DecaDriverItem decaDriver -> {
+                if (!RideBattleAPI.isDriverEmpty(player)) decaDriver.triggerOpen();
+            }
+            default -> {
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerEquip(LivingEquipmentChangeEvent event) {
+        EquipmentSlot slot = event.getSlot();
+        ItemStack stack = event.getTo();
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (slot.isArmor()) {
+            switch (stack.getItem()) {
+                case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
+                case ArcleItem arcle -> {
+                    if (!RideBattleAPI.isTransformed(player)) {
+                        arcle.shrinkInBody();
+                    }
+                }
+                case AlterRingItem alterRing -> {
+                    if (!RideBattleAPI.isTransformed(player)) {
+                        alterRing.shrinkInBody();
+                    }
+                }
+                case ShockerCombatManItem ignored -> RideBattleAPI.transform(player);
+                default -> {
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onGrantItem(ItemGrantEvent.Post event) {
+        ItemStack stack = event.getStack();
+        if (stack.getItem() instanceof FlameSaberItem flameSaber) {
+            flameSaber.setClose();
+        }
+        if (stack.getItem() instanceof ShiningCaliburItem shiningCalibur) {
+            shiningCalibur.setClose();
+        }
+    }
+}

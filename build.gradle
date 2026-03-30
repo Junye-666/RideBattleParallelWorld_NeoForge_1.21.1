@@ -208,6 +208,6 @@ idea {
 }
 
 jar {
-    exclude("com.jpigeon.ridebattleparallelworlds.core.datagen")
+    exclude("com.jpigeon.ridebattleparallelworlds.core.common.data.datagen")
     from sourceSets.main.output
 }

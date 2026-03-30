@@ -1,10 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds.api;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.attachment.PWAttachments;
-import com.jpigeon.ridebattleparallelworlds.core.attachment.PWData;
-import com.jpigeon.ridebattleparallelworlds.core.network.PWPacketHandler;
-import com.jpigeon.ridebattleparallelworlds.core.network.packet.PWDataSyncPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
+import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWData;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.PWPacketHandler;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -91,9 +91,6 @@ public class ParallelWorldsApi {
         }
 
         PWData data = player.getData(PWAttachments.PW_DATA);
-        if (data == null) {
-            return Collections.emptyList();
-        }
 
         return data.getLockedForms(riderId);
     }

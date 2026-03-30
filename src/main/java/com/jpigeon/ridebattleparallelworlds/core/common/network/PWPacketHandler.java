@@ -1,0 +1,91 @@
+package com.jpigeon.ridebattleparallelworlds.core.common.network;
+
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
+import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWData;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.ClientUtils;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PlayerMovementPacket;
+import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+
+import java.util.Map;
+
+public class PWPacketHandler {
+    public static void register(final RegisterPayloadHandlersEvent event) {
+        event.registrar(RideBattleParallelWorlds.MODID)
+                .versioned("0.0.3")
+                .playToClient(
+                        PWDataSyncPacket.TYPE,
+                        PWDataSyncPacket.STREAM_CODEC,
+                        (payload, context) -> {
+                            Player clientPlayer = context.player();
+
+                            // 只应用给对应玩家
+                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
+
+                            PWData data = clientPlayer.getData(PWAttachments.PW_DATA);
+
+                            // 同步完整的 FormUnlockData
+                            Map<ResourceLocation, Map<ResourceLocation, Boolean>> allUnlockData =
+                                    payload.data().getFormUnlockData().getAllUnlockData();
+
+                            // 清空现有数据并重新设置
+                            data.clearAllFormUnlockData();
+
+                            for (Map.Entry<ResourceLocation, Map<ResourceLocation, Boolean>> riderEntry : allUnlockData.entrySet()) {
+                                ResourceLocation riderId = riderEntry.getKey();
+                                for (Map.Entry<ResourceLocation, Boolean> formEntry : riderEntry.getValue().entrySet()) {
+                                    if (formEntry.getValue()) {
+                                        data.unlockForm(riderId, formEntry.getKey());
+                                    } else {
+                                        data.lockForm(riderId, formEntry.getKey());
+                                    }
+                                }
+                            }
+                        }
+                )
+                .playToClient(
+                        PWAnimationPacket.TYPE,
+                        PWAnimationPacket.STREAM_CODEC,
+                        (payload, context) -> context.enqueueWork(() -> {
+                            Player clientPlayer = context.player();
+
+                            // 只应用给对应玩家
+                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
+
+                            PlayerAnimationHandler.handleAnimation(clientPlayer, payload.animationId(), payload.fadeDuration());
+                        })
+
+                )
+                .playToClient(
+                        PlayerMovementPacket.TYPE,
+                        PlayerMovementPacket.STREAM_CODEC,
+                        (payload, context) -> context.enqueueWork(() -> {
+                            Player clientPlayer = context.player();
+
+                            // 只应用给对应玩家
+                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
+
+                            ClientUtils.deplacePlayer(clientPlayer, payload.x(), payload.y(), payload.z(), payload.operationType());
+                        })
+                )
+        ;
+    }
+
+    public static void sendToServer(CustomPacketPayload packet) {
+        if (Minecraft.getInstance().getConnection() != null) {
+            Minecraft.getInstance().getConnection().send(packet);
+        }
+    }
+
+    public static void sendToClient(ServerPlayer player, CustomPacketPayload packet) {
+        player.connection.send(packet);
+    }
+}
