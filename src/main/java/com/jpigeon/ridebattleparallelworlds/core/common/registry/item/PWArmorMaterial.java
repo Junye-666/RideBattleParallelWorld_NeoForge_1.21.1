@@ -44,6 +44,15 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.BODY, 8);
             }), 8, 1f, 0.2f, ModItems.GROUND_ELEMENT);
 
+    public static final Holder<ArmorMaterial> MIRROR_MATERIAL = register("ryuki",
+            Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
+                attribute.put(ArmorItem.Type.HELMET, 4);
+                attribute.put(ArmorItem.Type.CHESTPLATE, 7);
+                attribute.put(ArmorItem.Type.LEGGINGS, 5);
+                attribute.put(ArmorItem.Type.BOOTS, 4);
+                attribute.put(ArmorItem.Type.BODY, 8);
+            }), 8, 1f, 0.2f, ModItems.MIRROR_FRAGMENT);
+
     public static final Holder<ArmorMaterial> RIDER_MATERIAL = register("rider",
             Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
                 attribute.put(ArmorItem.Type.HELMET, 4);

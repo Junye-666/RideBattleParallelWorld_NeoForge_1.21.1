@@ -4,13 +4,11 @@ import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.AgitoKickEffect;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.SkillUtils;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PlayerMovementPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.AgitoKickEffect;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.armor.AgitoGroundItem;
@@ -22,6 +20,7 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.it
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.PegasusBowgunItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.RisingDragonRodItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.RisingPegasusBowgunItem;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.SkillUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +31,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +45,6 @@ import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +82,6 @@ public class SkillHandler {
     }
 
     private static final Map<ResourceLocation, Consumer<Player>> SKILL_MAP = new HashMap<>();
-    private static final List<ResourceLocation> TAGGED_SKILLS = new ArrayList<>();
 
     static {
         SKILL_MAP.put(RiderSkills.GROWING_KICK, SkillHandler::growingKick);
@@ -102,12 +100,6 @@ public class SkillHandler {
         SKILL_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
         SKILL_MAP.put(RiderSkills.TRINITY_WEAPON, SkillHandler::trinityWeapon);
         SKILL_MAP.put(RiderSkills.SHINING_CALIBUR, SkillHandler::shiningCalibur);
-
-        TAGGED_SKILLS.add(RiderSkills.MIGHTY_PUNCH);
-        TAGGED_SKILLS.add(RiderSkills.SABER_SLASH);
-        TAGGED_SKILLS.add(RiderSkills.HALBERD_SPIN);
-        TAGGED_SKILLS.add(RiderSkills.FIRESTORM_ATTACK);
-        TAGGED_SKILLS.add(RiderSkills.BURNING_BOMBER);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
@@ -138,8 +130,8 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1.5);
-        riderKickForward(player, 1, 5);
+        riderKickJump(player, 1);
+        riderKickForward(player, 1, 10);
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
     }
 
@@ -149,7 +141,7 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1.5);
+        riderKickJump(player, 1.1);
         riderKickForward(player, 1.5, 10);
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
     }
@@ -210,7 +202,7 @@ public class SkillHandler {
         addTag(player, "skill_rising_mighty_kick");
         addResistance(player, duration);
 
-        riderKickJump(player, 1.5);
+        riderKickJump(player, 1.2);
         riderKickForward(player, 2, 10);
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
     }
@@ -273,8 +265,8 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1.5);
-        riderKickForward(player, 2.5, 10);
+        riderKickJump(player, 1.4);
+        riderKickForward(player, 2.5, 15);
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
     }
 
@@ -285,12 +277,12 @@ public class SkillHandler {
         addResistance(player, duration);
 
         riderKickJump(player, 1.5);
-        riderKickForward(player, 2.5, 10);
+        riderKickForward(player, 2.5, 15);
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
     }
 
     private static void groundKick(Player player) {
-        int duration = calculateTolerance(120);
+        int duration = calculateTolerance(70);
         kickSequence(player, duration);
         Level level = player.level();
         AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
@@ -303,8 +295,8 @@ public class SkillHandler {
             RideBattleAPI.scheduleTicks(duration, agitoGround::setClosed);
         }
 
-        RideBattleAPI.scheduleTicks(50, () -> riderKickJump(player, 2));
-        riderKickForward(player, 1.5, 70);
+        riderKickJump(player, 1.3, 30);
+        riderKickForward(player, 1.8, 45);
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
     }
 
@@ -389,7 +381,7 @@ public class SkillHandler {
     }
 
     private static void handleKickCollide(Player player) {
-        if (!player.level().isClientSide && isKicking(player)) {
+        if (!player.level().isClientSide() && isKicking(player)) {
 
             List<String> skillTags = player.getTags().stream()
                     .filter(tag -> tag.startsWith("skill_") && tag.endsWith("_kick"))
@@ -419,7 +411,7 @@ public class SkillHandler {
             if (entities.isEmpty()) return;
 
             for (LivingEntity entity : entities) {
-
+                if (entity.getType().equals(EntityType.ARMOR_STAND)) return;
                 for (String skillTag : skillTags) {
                     switch (skillTag) {
                         case "skill_growing_kick" -> createKickExplosion(player, entity, 2);
@@ -465,12 +457,18 @@ public class SkillHandler {
     }
 
     // 技能逻辑
-    private static void riderKickJump(Player player, double jumpHeight) {
+    private static void riderKickJump(Player player, double jumpHeight, int ticks) {
         if (player == null) return;
-        Vec3 currentMovement = player.getKnownMovement();
-        Vec3 jump = new Vec3(currentMovement.x, currentMovement.y + jumpHeight, currentMovement.z);
-        setDeltaMovement(player, 0, 0, 0);
-        addDeltaMovement(player, jump);
+        RideBattleAPI.scheduleTicks(ticks, () -> {
+                    Vec3 currentMovement = player.getDeltaMovement();
+                    Vec3 jump = new Vec3(currentMovement.x, currentMovement.y + jumpHeight, currentMovement.z);
+                    addDeltaMovement(player, jump);
+                }
+        );
+    }
+
+    private static void riderKickJump(Player player, double jumpHeight) {
+        riderKickJump(player, jumpHeight, 0);
     }
 
     private static void riderKickForward(Player player, double norm, int ticks) {
@@ -478,13 +476,18 @@ public class SkillHandler {
         RideBattleAPI.scheduleTicks(ticks, () -> {
                     Vec3 lookVec = player.getLookAngle();
                     Vec3 movement = player.getDeltaMovement();
-                    addDeltaMovement(player, new Vec3(
+                    Vec3 kick = new Vec3(
                             movement.x + lookVec.x * norm * 1.5,
                             movement.y + lookVec.y * norm,
                             movement.z + lookVec.z * norm * 1.5
-                    ));
+                    );
+                    addDeltaMovement(player, kick);
                 }
         );
+    }
+
+    private static void riderKickForward(Player player, double norm) {
+        riderKickForward(player, norm, 0);
     }
 
     private static void createExplosion(Player player, double x, double y, double z, float damage) {
@@ -544,7 +547,7 @@ public class SkillHandler {
 
     private static void playAnimation(Player player, String animationId, int fadeDuration) {
         if (player instanceof ServerPlayer serverPlayer) {
-            PWPacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
+            PacketDistributor.sendToPlayer(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
         }
     }
 
@@ -616,7 +619,7 @@ public class SkillHandler {
     private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
         if (skillId.equals(RiderSkills.GROUND_KICK)) {
             playAnimation(player, "agito_kick_prepare", 5);
-            RideBattleAPI.scheduleTicks(45, () -> playAnimation(player, "agito_kick", 2));
+            RideBattleAPI.scheduleTicks(35, () -> playAnimation(player, "agito_kick", 2));
         }
     }
 

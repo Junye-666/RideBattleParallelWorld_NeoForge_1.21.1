@@ -12,6 +12,8 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.a
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.armor.*;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.*;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.VBuckleItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.armor.RyukiBaseItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -57,14 +59,21 @@ public class ModItems {
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> BURNING_ELEMENT = ITEMS.register("agito_burning_element", ()
             -> new Item(new Item.Properties()));
-    // TODO
+    // TODO: 闪耀形态
     public static final DeferredItem<Item> SHINING_ELEMENT = ITEMS.register("agito_shining_element", ()
             -> new Item(new Item.Properties()));
+    // TODO: 合成配方
+    public static final DeferredItem<Item> MIRROR_FRAGMENT = ITEMS.register("ryuki_mirror_fragment", ()
+            -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("ryuki_deck", ()
+            -> new Item(new Item.Properties()));
+
 
 
     public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
             -> new Item(new Item.Properties()));
-
+    // TODO: 合成配方
     public static final DeferredItem<Item> DECADE_BLANK_CARD = ITEMS.register("decade_blank_card", ()
             -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> KAMEN_RIDE_DECADE = ITEMS.register("decade_kamen_ride_decade_card", ()
@@ -216,6 +225,17 @@ public class ModItems {
     public static final DeferredItem<ShiningCaliburItem> SHINING_CALIBUR = ITEMS.register("agito_shining_calibur", ()
             -> new ShiningCaliburItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, 0.5f)).rarity(Rarity.RARE)));
 
+    // 龙骑系列
+    public static final DeferredItem<VBuckleItem> V_BUCKLE = ITEMS.register("ryuki_v-buckle", ()
+            -> new VBuckleItem(PWArmorMaterial.MIRROR_MATERIAL, VBuckleItem.Type.LEGGINGS, new Item.Properties()));
+
+    // 盔甲
+    public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_HELMET = ITEMS.register("ryuki_base_helmet", ()
+            -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.HELMET, new Item.Properties()));
+    public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_CHESTPLATE = ITEMS.register("ryuki_base_chestplate", ()
+            -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.CHESTPLATE, new Item.Properties()));
+    public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_BOOTS = ITEMS.register("ryuki_base_boots", ()
+            -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.BOOTS, new Item.Properties()));
 
     // Decade
     // 盔甲

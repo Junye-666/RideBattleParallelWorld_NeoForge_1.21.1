@@ -1,13 +1,13 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.data.attachment;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class PWAttachmentsHandler {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         PWData data = serverPlayer.getData(PWAttachments.PW_DATA);
-        PWPacketHandler.sendToClient(
+        PacketDistributor.sendToPlayer(
                 serverPlayer,
                 new PWDataSyncPacket(serverPlayer.getUUID(), data)
         );
@@ -52,7 +52,7 @@ public class PWAttachmentsHandler {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         PWData data = serverPlayer.getData(PWAttachments.PW_DATA);
-        PWPacketHandler.sendToClient(
+        PacketDistributor.sendToPlayer(
                 serverPlayer,
                 new PWDataSyncPacket(serverPlayer.getUUID(), data)
         );

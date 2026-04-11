@@ -11,7 +11,6 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.D
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.PWPacketHandler;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
@@ -36,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,8 +59,24 @@ public class RiderHandler {
     }
 
     @SubscribeEvent
-    public static void onUnhenshin(UnhenshinEvent.Post event) {
-        ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
+    public static void postHenshin(HenshinEvent.Post event) {
+        Player player = event.getPlayer();
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+        ResourceLocation formId = event.getFormId();
+        setDriverAnim(legs, formId);
+        ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
+        if (head.getItem() instanceof AgitoGroundItem agitoGround) {
+            agitoGround.setCurrentState(AgitoGroundItem.AnimState.IDLE);
+        }
+        if (formId.equals(ShockerConfig.COMBATMAN_ID)) {
+            playAnimation(player, "shocker_greeting");
+        }
+    }
+
+    @SubscribeEvent
+    public static void postUnhenshin(UnhenshinEvent.Post event) {
+        Player player = event.getPlayer();
+        ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         switch (legs.getItem()) {
             case ArcleItem arcle -> arcle.shrinkInBody();
             case AlterRingItem alterRing -> alterRing.shrinkInBody();
@@ -68,7 +84,6 @@ public class RiderHandler {
             default -> {
             }
         }
-        Player player = event.getPlayer();
         if (event.getRiderId().equals(RiderIds.AGITO_ID)) {
             removeAgitoWeapon(player);
         }
@@ -97,20 +112,6 @@ public class RiderHandler {
             handleDecade(event.getPlayer(), newFormId);
         }
 
-    }
-
-    @SubscribeEvent
-    public static void postHenshin(HenshinEvent.Post event) {
-        ItemStack legs = event.getPlayer().getItemBySlot(EquipmentSlot.LEGS);
-        ResourceLocation formId = event.getFormId();
-        setDriverAnim(legs, formId);
-        ItemStack head = event.getPlayer().getItemBySlot(EquipmentSlot.HEAD);
-        if (head.getItem() instanceof AgitoGroundItem agitoGround) {
-            agitoGround.setCurrentState(AgitoGroundItem.AnimState.IDLE);
-        }
-        if (formId.equals(ShockerConfig.COMBATMAN_ID)) {
-            playAnimation(event.getPlayer(), "shocker_greeting");
-        }
     }
 
     @SubscribeEvent
@@ -156,7 +157,7 @@ public class RiderHandler {
 
     private static void playAnimation(Player player, String animationId, int fadeDuration) {
         if (player instanceof ServerPlayer serverPlayer) {
-            PWPacketHandler.sendToClient(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
+            PacketDistributor.sendToPlayer(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
         }
     }
 

@@ -46,7 +46,6 @@ public class DecadeConfig {
                     ModItems.DECADE_CHESTPLATE.get(),
                     null,
                     ModItems.DECADE_BOOTS.get())
-            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
             .addEffect(MobEffects.JUMP, -1, 0, true)
             .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 0, true)

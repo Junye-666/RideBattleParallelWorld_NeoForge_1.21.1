@@ -3,15 +3,12 @@ package com.jpigeon.ridebattleparallelworlds.core.common.network;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWData;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.ClientUtils;
+import com.jpigeon.ridebattleparallelworlds.core.client.ClientUtils;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PlayerMovementPacket;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
@@ -77,15 +74,5 @@ public class PWPacketHandler {
                         })
                 )
         ;
-    }
-
-    public static void sendToServer(CustomPacketPayload packet) {
-        if (Minecraft.getInstance().getConnection() != null) {
-            Minecraft.getInstance().getConnection().send(packet);
-        }
-    }
-
-    public static void sendToClient(ServerPlayer player, CustomPacketPayload packet) {
-        player.connection.send(packet);
     }
 }

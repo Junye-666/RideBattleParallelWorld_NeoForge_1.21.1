@@ -31,7 +31,6 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
         addController(registrar, "flame", createLoopController("flame"));
         addController(registrar, "storm", createLoopController("storm"));
         addController(registrar, "trinity", createLoopController("trinity"));
-
         addController(registrar, "burning", createLoopController("burning"));
     }
 

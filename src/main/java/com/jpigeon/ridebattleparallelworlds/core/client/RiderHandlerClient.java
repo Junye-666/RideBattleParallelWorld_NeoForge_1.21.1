@@ -4,15 +4,16 @@ import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.event.ItemGrantEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerCombatManItem;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.RiderHandler;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.ArcleItem;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.RiderHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +22,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class RiderHandlerClient {
@@ -93,6 +95,18 @@ public class RiderHandlerClient {
         }
         if (stack.getItem() instanceof ShiningCaliburItem shiningCalibur) {
             shiningCalibur.setClose();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
+        Player player = event.getEntity();
+        boolean hasInvisible = player.getActiveEffects().stream().anyMatch(mobEffectInstance -> mobEffectInstance.is(MobEffects.INVISIBILITY));
+        if (hasInvisible) return;
+        if (RideBattleAPI.isTransformed(player) && !player.isInvisible()) {
+            player.setInvisible(true);
+        } else if (!RideBattleAPI.isTransformed(player) && player.isInvisible()) {
+            player.setInvisible(false);
         }
     }
 }

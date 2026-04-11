@@ -2,9 +2,11 @@ package com.jpigeon.ridebattleparallelworlds.core.server.handler.util;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public class ModTags {
     public static class Items{
@@ -13,6 +15,14 @@ public class ModTags {
 
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, name));
+        }
+    }
+
+    public static class Blocks{
+        public static final TagKey<Block> REFLECTIVE_BLOCKS = createTag("reflective_blocks");
+
+        private static TagKey<Block> createTag(String name) {
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, name));
         }
     }
 }
