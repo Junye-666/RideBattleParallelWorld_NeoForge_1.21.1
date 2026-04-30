@@ -1,5 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds;
 
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.RegistryUtils;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
@@ -32,6 +33,6 @@ public class RideBattleParallelWorldsClient {
         DecadeConfig.init();
         ShockerConfig.init();
 
-        ModSounds.registerFormSoundMap();
+        RegistryUtils.registerMaps();
     }
 }

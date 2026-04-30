@@ -87,7 +87,7 @@ public class RiderHandler {
         if (event.getRiderId().equals(RiderIds.AGITO_ID)) {
             removeAgitoWeapon(player);
         }
-        RiderSkills.SKILL_TAGS.values().stream().filter(tag -> tag.startsWith("skill_"))
+        RiderSkills.SKILL_TAGS_MAP.values().stream().filter(tag -> tag.startsWith("skill_"))
                 .forEach(skillTag -> {
                     if (player.getTags().contains(skillTag)) {
                         player.removeTag(skillTag);

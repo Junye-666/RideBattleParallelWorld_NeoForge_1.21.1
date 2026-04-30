@@ -102,7 +102,6 @@ public class ModSounds {
         registerHenshinSound(DecadeConfig.DECADE_AGITO_FLAME, FR_AGITO_FLAME.get(), 70);
         registerHenshinSound(DecadeConfig.DECADE_AGITO_STORM, FR_AGITO_STORM.get(), 70);
         registerHenshinSound(DecadeConfig.DECADE_AGITO_BURNING, FR_AGITO_BURNING.get(), 70);
-
     }
 
 }

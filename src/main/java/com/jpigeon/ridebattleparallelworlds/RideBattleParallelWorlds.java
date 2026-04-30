@@ -1,5 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds;
 
+import com.jpigeon.ridebattleparallelworlds.core.client.RenderHandler;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlocks;
@@ -46,6 +47,7 @@ public class RideBattleParallelWorlds {
 
         NeoForge.EVENT_BUS.register(FormWheel.class);
         NeoForge.EVENT_BUS.register(AbilitiesHandler.class);
+        NeoForge.EVENT_BUS.register(RenderHandler.class);
 
         PWAttachments.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(this::registerCommands);

@@ -38,7 +38,7 @@ public class RiderSkills {
     public static final ResourceLocation BURNING_BOMBER = fromString("burning_bomber");
 
 
-    private static void registerKuugaSkills(){
+    private static void registerKuugaSkills() {
         registerSkill(GROWING_KICK, 10, ChatFormatting.WHITE, true);
         registerSkill(MIGHTY_KICK, 15, ChatFormatting.RED, true);
         registerSkill(MIGHTY_PUNCH, 15, ChatFormatting.RED, true);
@@ -51,7 +51,9 @@ public class RiderSkills {
         registerSkill(RISING_CALAMITY_TITAN, 20);
         registerSkill(AMAZING_MIGHTY_KICK, 25, ChatFormatting.BLACK, true);
         registerSkill(ULTIMATE_KICK, 30, ChatFormatting.BLACK, true);
+    }
 
+    private static void registerAgitoSkills() {
         registerSkill(GROUND_KICK, 15, ChatFormatting.YELLOW, true);
         registerSkill(FLAME_SABER, 15, ChatFormatting.RED);
         registerSkill(SABER_SLASH, 15, true);
@@ -68,7 +70,7 @@ public class RiderSkills {
         SkillSystem.registerSkill(id, Component.translatable("skill." + name).withStyle(chatFormat), cooldown);
         String tag = "skill_" + name;
         RideBattleParallelWorlds.LOGGER.debug(tag);
-        if (needsTag) SKILL_TAGS.put(id, tag);
+        if (needsTag) SKILL_TAGS_MAP.put(id, tag);
     }
 
     private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting chatFormat){
@@ -83,9 +85,10 @@ public class RiderSkills {
         registerSkill(id, cooldown, false);
     }
 
-    public static Map<ResourceLocation, String> SKILL_TAGS = new HashMap<>();
+    public static Map<ResourceLocation, String> SKILL_TAGS_MAP = new HashMap<>();
 
     public static void init(){
         registerKuugaSkills();
+        registerAgitoSkills();
     }
 }

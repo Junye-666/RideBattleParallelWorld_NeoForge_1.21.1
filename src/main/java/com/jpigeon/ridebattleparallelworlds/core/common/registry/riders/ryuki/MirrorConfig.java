@@ -2,6 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki;
 
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.config.TriggerType;
 import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
@@ -22,7 +23,6 @@ public class MirrorConfig {
 
                     ),
                     true, false
-
             );
 
     public static FormConfig RYUKI_BASE = new FormConfig(RYUKI_BASE_ID)
@@ -32,6 +32,7 @@ public class MirrorConfig {
                     null,
                     ModItems.RYUKI_BASE_BOOTS.get()
             )
+            .setTriggerType(TriggerType.AUTO)
             .addRequiredItem(V_DECK, ModItems.RYUKI_DECK.get())
             ;
 

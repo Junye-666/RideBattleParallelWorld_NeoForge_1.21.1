@@ -8,12 +8,15 @@ import com.jpigeon.ridebattleparallelworlds.core.common.data.component.ModDataCo
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -54,6 +57,7 @@ public class AbilitiesHandler {
             removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
         else if (formId.equals(KuugaConfig.RISING_TITAN_ID))
             removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
+        else if (MirrorConfig.MIRROR_SYSTEM.includesFormId(formId)) player.setItemSlot(EquipmentSlot.LEGS, Items.AIR.getDefaultInstance());
     }
 
     @SubscribeEvent

@@ -81,34 +81,34 @@ public class SkillHandler {
         handleKickCollide(player);
     }
 
-    private static final Map<ResourceLocation, Consumer<Player>> SKILL_MAP = new HashMap<>();
+    private static final Map<ResourceLocation, Consumer<Player>> SKILL_METHOD_MAP = new HashMap<>();
 
-    static {
-        SKILL_MAP.put(RiderSkills.GROWING_KICK, SkillHandler::growingKick);
-        SKILL_MAP.put(RiderSkills.MIGHTY_KICK, SkillHandler::mightyKick);
-        SKILL_MAP.put(RiderSkills.SPLASH_DRAGON, SkillHandler::splashDragon);
-        SKILL_MAP.put(RiderSkills.BLAST_PEGASUS, SkillHandler::blastPegasus);
-        SKILL_MAP.put(RiderSkills.CALAMITY_TITAN, SkillHandler::calamityTitan);
-        SKILL_MAP.put(RiderSkills.RISING_MIGHTY_KICK, SkillHandler::risingMightyKick);
-        SKILL_MAP.put(RiderSkills.RISING_SPLASH_DRAGON, SkillHandler::risingSplashDragon);
-        SKILL_MAP.put(RiderSkills.RISING_BLAST_PEGASUS, SkillHandler::risingBlastPegasus);
-        SKILL_MAP.put(RiderSkills.RISING_CALAMITY_TITAN, SkillHandler::risingCalamityTitan);
-        SKILL_MAP.put(RiderSkills.AMAZING_MIGHTY_KICK, SkillHandler::amazingMightyKick);
-        SKILL_MAP.put(RiderSkills.ULTIMATE_KICK, SkillHandler::ultimateKick);
-        SKILL_MAP.put(RiderSkills.GROUND_KICK, SkillHandler::groundKick);
-        SKILL_MAP.put(RiderSkills.FLAME_SABER, SkillHandler::flameSaber);
-        SKILL_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
-        SKILL_MAP.put(RiderSkills.TRINITY_WEAPON, SkillHandler::trinityWeapon);
-        SKILL_MAP.put(RiderSkills.SHINING_CALIBUR, SkillHandler::shiningCalibur);
+    public static void registerSkillMap() {
+        SKILL_METHOD_MAP.put(RiderSkills.GROWING_KICK, SkillHandler::growingKick);
+        SKILL_METHOD_MAP.put(RiderSkills.MIGHTY_KICK, SkillHandler::mightyKick);
+        SKILL_METHOD_MAP.put(RiderSkills.SPLASH_DRAGON, SkillHandler::splashDragon);
+        SKILL_METHOD_MAP.put(RiderSkills.BLAST_PEGASUS, SkillHandler::blastPegasus);
+        SKILL_METHOD_MAP.put(RiderSkills.CALAMITY_TITAN, SkillHandler::calamityTitan);
+        SKILL_METHOD_MAP.put(RiderSkills.RISING_MIGHTY_KICK, SkillHandler::risingMightyKick);
+        SKILL_METHOD_MAP.put(RiderSkills.RISING_SPLASH_DRAGON, SkillHandler::risingSplashDragon);
+        SKILL_METHOD_MAP.put(RiderSkills.RISING_BLAST_PEGASUS, SkillHandler::risingBlastPegasus);
+        SKILL_METHOD_MAP.put(RiderSkills.RISING_CALAMITY_TITAN, SkillHandler::risingCalamityTitan);
+        SKILL_METHOD_MAP.put(RiderSkills.AMAZING_MIGHTY_KICK, SkillHandler::amazingMightyKick);
+        SKILL_METHOD_MAP.put(RiderSkills.ULTIMATE_KICK, SkillHandler::ultimateKick);
+        SKILL_METHOD_MAP.put(RiderSkills.GROUND_KICK, SkillHandler::groundKick);
+        SKILL_METHOD_MAP.put(RiderSkills.FLAME_SABER, SkillHandler::flameSaber);
+        SKILL_METHOD_MAP.put(RiderSkills.STORM_HALBERD, SkillHandler::stormHalberd);
+        SKILL_METHOD_MAP.put(RiderSkills.TRINITY_WEAPON, SkillHandler::trinityWeapon);
+        SKILL_METHOD_MAP.put(RiderSkills.SHINING_CALIBUR, SkillHandler::shiningCalibur);
     }
 
     private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
-        String tag = RiderSkills.SKILL_TAGS.get(skillId);
+        String tag = RiderSkills.SKILL_TAGS_MAP.get(skillId);
         if (tag != null) {
             addTag(serverPlayer, tag);
         }
 
-        Consumer<Player> skillConsumer = SKILL_MAP.get(skillId);
+        Consumer<Player> skillConsumer = SKILL_METHOD_MAP.get(skillId);
         if (skillConsumer != null) {
             skillConsumer.accept(serverPlayer);
             serverPlayer.hurtMarked = true;
@@ -124,6 +124,8 @@ public class SkillHandler {
         }
     }
 
+    // ==========技能逻辑==========
+    // 空我
     private static void growingKick(Player player) {
         int duration = calculateTolerance(40);
         kickSequence(player, duration);
@@ -281,6 +283,7 @@ public class SkillHandler {
         RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
     }
 
+    // 亚极陀
     private static void groundKick(Player player) {
         int duration = calculateTolerance(70);
         kickSequence(player, duration);
@@ -323,6 +326,55 @@ public class SkillHandler {
         }
     }
 
+    // ==========动画逻辑==========
+    private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
+        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTIMATE_KICK)) {
+            playAnimation(player, "kuuga_mighty_kick", 0);
+            RideBattleAPI.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
+            return;
+        }
+
+        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
+        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
+            if (mainHand.getItem() instanceof DragonRodItem) {
+                playAnimation(player, "kuuga_splash_dragon_main");
+            } else if (offHand.getItem() instanceof DragonRodItem) {
+                playAnimation(player, "kuuga_splash_dragon_off");
+            }
+        } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
+            if (mainHand.getItem() instanceof PegasusBowgunItem) {
+                playAnimation(player, "kuuga_blast_pegasus_main");
+            } else if (offHand.getItem() instanceof PegasusBowgunItem) {
+                playAnimation(player, "kuuga_blast_pegasus_off");
+            }
+        } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
+            playAnimation(player, "kuuga_calamity_titan");
+        } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
+            if (mainHand.getItem() instanceof RisingDragonRodItem) {
+                playAnimation(player, "kuuga_splash_dragon_main");
+            } else if (offHand.getItem() instanceof RisingDragonRodItem) {
+                playAnimation(player, "kuuga_splash_dragon_off");
+            }
+        } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
+            if (mainHand.getItem() instanceof RisingPegasusBowgunItem) {
+                playAnimation(player, "kuuga_blast_pegasus_main");
+            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem) {
+                playAnimation(player, "kuuga_blast_pegasus_off");
+            }
+        } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
+            playAnimation(player, "kuuga_calamity_titan");
+        }
+    }
+
+    private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
+        if (skillId.equals(RiderSkills.GROUND_KICK)) {
+            playAnimation(player, "agito_kick_prepare", 5);
+            RideBattleAPI.scheduleTicks(35, () -> playAnimation(player, "agito_kick", 2));
+        }
+    }
+
+    // ==========辅助方法==========
     private static void handleDamageEntity(Player player, LivingEntity living) {
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
         ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
@@ -430,15 +482,6 @@ public class SkillHandler {
         }
     }
 
-    private static boolean isKicking(Player player) {
-        return player.getTags().contains("rider_kicking");
-    }
-
-    private static void kickSequence(Player player, int ticks) {
-        RideBattleAPI.scheduleTicks(10, () -> addTag(player, "rider_kicking"));
-        RideBattleAPI.scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
-    }
-
     private static int calculateTolerance(int origin) {
         return origin + getTolerance();
     }
@@ -447,7 +490,6 @@ public class SkillHandler {
         return Config.SKILL_TOLERANCE_TIME.get() * 20;
     }
 
-    // ===辅助方法===
     public static void addResistance(Player player, int duration) {
         addEffect(player, MobEffects.DAMAGE_RESISTANCE, duration, 4);
     }
@@ -456,7 +498,7 @@ public class SkillHandler {
         player.addEffect(new MobEffectInstance(effect, duration, level, true, false));
     }
 
-    // 技能逻辑
+    // 骑士踢逻辑辅助
     private static void riderKickJump(Player player, double jumpHeight, int ticks) {
         if (player == null) return;
         RideBattleAPI.scheduleTicks(ticks, () -> {
@@ -521,6 +563,7 @@ public class SkillHandler {
         addDeltaMovement(player, back);
     }
 
+    // Tag辅助
     private static void addTag(Player player, String tag) {
         if (!player.getTags().contains(tag)) {
             player.addTag(tag);
@@ -533,6 +576,16 @@ public class SkillHandler {
         }
     }
 
+    private static boolean isKicking(Player player) {
+        return player.getTags().contains("rider_kicking");
+    }
+
+    private static void kickSequence(Player player, int ticks) {
+        RideBattleAPI.scheduleTicks(10, () -> addTag(player, "rider_kicking"));
+        RideBattleAPI.scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
+    }
+
+    // 伤害辅助
     private static void hurt(Player player, LivingEntity target, float amount) {
         if (!target.level().isClientSide() && target.isAlive()) {
             target.hurt(target.damageSources().mobAttack(player), amount);
@@ -545,16 +598,7 @@ public class SkillHandler {
         }
     }
 
-    private static void playAnimation(Player player, String animationId, int fadeDuration) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
-        }
-    }
-
-    private static void playAnimation(Player player, String animationId) {
-        playAnimation(player, animationId, 0);
-    }
-
+    // 玩家移动辅助
     private static void addDeltaMovement(Player player, double x, double y, double z) {
         if (player instanceof ServerPlayer serverPlayer) {
             PacketDistributor.sendToPlayer(serverPlayer, new PlayerMovementPacket(player.getUUID(), x, y, z, "add"));
@@ -575,52 +619,14 @@ public class SkillHandler {
         setDeltaMovement(player, movement.x(), movement.y(), movement.z());
     }
 
-    // 动画逻辑方法
-    private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
-        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTIMATE_KICK)) {
-            playAnimation(player, "kuuga_mighty_kick", 0);
-            RideBattleAPI.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
-            return;
-        }
-
-        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
-            if (mainHand.getItem() instanceof DragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_main");
-            } else if (offHand.getItem() instanceof DragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_off");
-            }
-        } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof PegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_main");
-            } else if (offHand.getItem() instanceof PegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_off");
-            }
-        } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
-            playAnimation(player, "kuuga_calamity_titan");
-        } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
-            if (mainHand.getItem() instanceof RisingDragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_main");
-            } else if (offHand.getItem() instanceof RisingDragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_off");
-            }
-        } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof RisingPegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_main");
-            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_off");
-            }
-        } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
-            playAnimation(player, "kuuga_calamity_titan");
+    // 动画辅助
+    private static void playAnimation(Player player, String animationId, int fadeDuration) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            PacketDistributor.sendToPlayer(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
         }
     }
 
-    private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
-        if (skillId.equals(RiderSkills.GROUND_KICK)) {
-            playAnimation(player, "agito_kick_prepare", 5);
-            RideBattleAPI.scheduleTicks(35, () -> playAnimation(player, "agito_kick", 2));
-        }
+    private static void playAnimation(Player player, String animationId) {
+        playAnimation(player, animationId, 0);
     }
-
 }

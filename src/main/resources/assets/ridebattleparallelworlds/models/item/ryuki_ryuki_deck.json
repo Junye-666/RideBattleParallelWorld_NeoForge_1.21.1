@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "ridebattleparallelworlds:item/ryuki_blank_deck",
   "textures": {
     "layer0": "ridebattleparallelworlds:item/ryuki/deck/ryuki_deck"
   }

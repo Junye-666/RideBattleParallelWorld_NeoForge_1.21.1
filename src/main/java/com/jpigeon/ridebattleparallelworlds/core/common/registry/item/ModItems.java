@@ -14,6 +14,7 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.ar
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.*;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.VBuckleItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.armor.RyukiBaseItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.item.MirrorDeckItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SwordItem;
@@ -66,8 +67,8 @@ public class ModItems {
     public static final DeferredItem<Item> MIRROR_FRAGMENT = ITEMS.register("ryuki_mirror_fragment", ()
             -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("ryuki_deck", ()
-            -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("ryuki_ryuki_deck", ()
+            -> new MirrorDeckItem(new Item.Properties()));
 
 
 
