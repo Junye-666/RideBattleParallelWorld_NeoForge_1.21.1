@@ -6,16 +6,16 @@ import com.jpigeon.ridebattlelib.common.config.TriggerType;
 import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
 public class MirrorConfig {
-    public static final ResourceLocation MIRROR_SYSTEM_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "mirror_system");
     public static final ResourceLocation V_DECK = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "v_deck_slot");
     public static final ResourceLocation RYUKI_BASE_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "ryuki_base");
 
-    public static RiderConfig MIRROR_SYSTEM = new RiderConfig(MIRROR_SYSTEM_ID)
+    public static RiderConfig MIRROR_SYSTEM = new RiderConfig(RiderIds.MIRROR_SYSTEM_ID)
             .setMainDriverItem(ModItems.V_BUCKLE.get())
             .addMainDriverSlot(V_DECK,
                     List.of(

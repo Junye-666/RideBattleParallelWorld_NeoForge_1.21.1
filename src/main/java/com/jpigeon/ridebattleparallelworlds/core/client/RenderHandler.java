@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.client;
 import com.jpigeon.ridebattlelib.client.cache.ClientTransformedCache;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class RenderHandler {
     @SubscribeEvent
     public static void onRenderGeo(GeoRenderEvent.Armor.Post event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (RideBattleAPI.isSpecificRider(player, MirrorConfig.MIRROR_SYSTEM_ID)) {
+        if (RideBattleAPI.isSpecificRider(player, RiderIds.MIRROR_SYSTEM_ID)) {
             handleVBuckleDeckRender(player, event);
         }
     }

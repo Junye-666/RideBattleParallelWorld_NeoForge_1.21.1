@@ -6,12 +6,11 @@ import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.common.event.*;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.DecadeHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.ModTags;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
@@ -22,6 +21,7 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.D
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.sound.ModSounds;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.ModTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,6 +53,8 @@ public class RiderHandler {
             handleKuuga(player, legs, formId);
         } else if (riderId.equals(RiderIds.AGITO_ID)) {
             completeAgito(player, legs, formId);
+        } else if (riderId.equals(RiderIds.MIRROR_SYSTEM_ID)) {
+            handleMirror(player, formId);
         } else if (riderId.equals(RiderIds.DECADE_ID)) {
             handleDecade(player, formId);
         }
@@ -235,6 +237,11 @@ public class RiderHandler {
         playSound(player, ModSounds.AGITO_FINISH.get());
         RideBattleAPI.completeIn(10, player);
         RideBattleAPI.scheduleTicks(10, () -> setDriverAnim(legs, formId));
+    }
+
+    private static void handleMirror(Player player, ResourceLocation formId) {
+        // TODO : 镜系统完善
+        RideBattleAPI.completeIn(40, player);
     }
 
     private static void handleDecade(Player player, ResourceLocation formId) {

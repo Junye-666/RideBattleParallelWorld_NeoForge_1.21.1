@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 public class RiderIds {
     public static final ResourceLocation KUUGA_ID = fromString("kuuga");
     public static final ResourceLocation AGITO_ID = fromString("agito");
-    public static final ResourceLocation RYUKI_ID = fromString("ryuki");
+    public static final ResourceLocation MIRROR_SYSTEM_ID = fromString("mirror");
     public static final ResourceLocation FAIZ_ID = fromString("faiz");
     public static final ResourceLocation BLADE_ID = fromString("blade");
     public static final ResourceLocation HIBIKI_ID = fromString("hibiki");
