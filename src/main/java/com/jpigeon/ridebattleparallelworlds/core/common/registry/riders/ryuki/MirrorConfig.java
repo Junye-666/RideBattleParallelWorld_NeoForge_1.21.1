@@ -19,6 +19,7 @@ public class MirrorConfig {
             .setMainDriverItem(ModItems.V_BUCKLE.get())
             .addMainDriverSlot(V_DECK,
                     List.of(
+                            ModItems.BLANK_DECK.get(),
                             ModItems.RYUKI_DECK.get()
 
                     ),

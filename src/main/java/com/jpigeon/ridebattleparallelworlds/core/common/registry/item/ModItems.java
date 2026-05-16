@@ -67,7 +67,10 @@ public class ModItems {
     public static final DeferredItem<Item> MIRROR_FRAGMENT = ITEMS.register("ryuki_mirror_fragment", ()
             -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("ryuki_ryuki_deck", ()
+    public static final DeferredItem<Item> BLANK_DECK = ITEMS.register("mirror_blank_deck", ()
+            -> new MirrorDeckItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("mirror_ryuki_deck", ()
             -> new MirrorDeckItem(new Item.Properties()));
 
 
@@ -227,7 +230,7 @@ public class ModItems {
             -> new ShiningCaliburItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, 0.5f)).rarity(Rarity.RARE)));
 
     // 龙骑系列
-    public static final DeferredItem<VBuckleItem> V_BUCKLE = ITEMS.register("ryuki_v-buckle", ()
+    public static final DeferredItem<VBuckleItem> V_BUCKLE = ITEMS.register("mirror_v-buckle", ()
             -> new VBuckleItem(PWArmorMaterial.MIRROR_MATERIAL, VBuckleItem.Type.LEGGINGS, new Item.Properties()));
 
     // 盔甲

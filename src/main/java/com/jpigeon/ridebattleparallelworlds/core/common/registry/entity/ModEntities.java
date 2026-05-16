@@ -1,8 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.entity;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.AgitoKickEffect;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.DecadeHenshinEffect;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity.AgitoKickEffect;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.entity.DecadeHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.SkillProjectile;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;

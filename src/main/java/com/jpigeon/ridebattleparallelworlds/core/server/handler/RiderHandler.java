@@ -8,7 +8,7 @@ import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.DecadeHenshinEffect;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.entity.DecadeHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;

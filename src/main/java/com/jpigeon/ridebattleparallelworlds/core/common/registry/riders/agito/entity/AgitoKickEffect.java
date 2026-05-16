@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom;
+package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity;
 
 import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.BaseKamenRiderEffectEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -15,19 +15,19 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class DecadeHenshinEffect extends BaseKamenRiderEffectEntity {
-    private static final int MAX_LIFETIME = 46;
+public class AgitoKickEffect extends BaseKamenRiderEffectEntity {
+    private static final int MAX_LIFETIME = 150;
     private int lifetime = 0;
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(DecadeHenshinEffect.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AgitoKickEffect.class, EntityDataSerializers.OPTIONAL_UUID);
 
 
-    public DecadeHenshinEffect(EntityType<DecadeHenshinEffect> type, Level level) {
-        super(type, level, "decade", "decade_special_effect");
+    public AgitoKickEffect(EntityType<AgitoKickEffect> type, Level level) {
+        super(type, level, "agito", "agito_kick_effect");
     }
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "decade_henshin_controller", createOnceController("decade_henshin"));
+        addController(registrar, "agito_kick_effect_controller", createOnceController("turn"));
     }
 
     @Override

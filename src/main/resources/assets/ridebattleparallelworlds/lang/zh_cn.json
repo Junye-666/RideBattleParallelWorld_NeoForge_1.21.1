@@ -16,6 +16,9 @@
   "item.ridebattleparallelworlds.agito_storm_element": "风暴元素",
   "item.ridebattleparallelworlds.agito_burning_element": "燃烧元素",
 
+  "item.ridebattleparallelworlds.mirror_blank_deck": "空白卡盒",
+  "item.ridebattleparallelworlds.mirror_ryuki_deck": "龙骑卡盒",
+
   "item.ridebattleparallelworlds.decade_worlds_fragment": "世界碎片",
   "item.ridebattleparallelworlds.decade_blank_card": "空白驾驭卡",
   "item.ridebattleparallelworlds.decade_kamen_ride_decade_card": "假面驾驭: Decade",
@@ -76,6 +79,8 @@
   "item.ridebattleparallelworlds.agito_burning_helmet": "亚极陀 燃烧",
   "item.ridebattleparallelworlds.agito_burning_chestplate": "亚极陀 燃烧",
   "item.ridebattleparallelworlds.agito_burning_boots": "亚极陀 燃烧",
+
+  "item.ridebattleparallelworlds.mirror_v-buckle": "V带扣",
 
   "item.ridebattleparallelworlds.decade_deca_driver": "Decade 驱动器",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",
@@ -146,6 +151,7 @@
   "tooltip.arcle.tutorial": "Shift + X 轮转形态, G 变身",
   "tooltip.arcle.description": "请看好了，我的变身！",
   "tooltip.alterRing.description": "为了人类，为了AgitΩ",
+  "tooltip.v-buckle.description": "撒, 塔塔开!",
   "tooltip.decaDriver.description": "只是一个路过的假面骑士~",
 
   "message.riderGreet.login": "欢迎来到骑士战争平行世界的beta版本！",

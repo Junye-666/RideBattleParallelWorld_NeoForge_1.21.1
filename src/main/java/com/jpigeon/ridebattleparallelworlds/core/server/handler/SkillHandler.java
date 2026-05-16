@@ -7,7 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PlayerMovementPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.AgitoKickEffect;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;

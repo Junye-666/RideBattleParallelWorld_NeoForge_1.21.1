@@ -16,6 +16,9 @@
   "item.ridebattleparallelworlds.agito_storm_element": "Storm Element",
   "item.ridebattleparallelworlds.agito_burning_element": "Burning Element",
 
+  "item.ridebattleparallelworlds.mirror_blank_deck": "Blank Card Deck",
+  "item.ridebattleparallelworlds.mirror_ryuki_deck": "Ryuki Card Deck",
+
   "item.ridebattleparallelworlds.decade_worlds_fragment": "Worlds Fragment",
   "item.ridebattleparallelworlds.decade_blank_card": "Blank Ride Card",
   "item.ridebattleparallelworlds.decade_kamen_ride_decade_card": "Kamen Ride: Decade",
@@ -76,6 +79,8 @@
   "item.ridebattleparallelworlds.agito_burning_helmet": "AgitΩ Burning",
   "item.ridebattleparallelworlds.agito_burning_chestplate": "AgitΩ Burning",
   "item.ridebattleparallelworlds.agito_burning_boots": "AgitΩ Burning",
+
+  "item.ridebattleparallelworlds.mirror_v-buckle": "V Buckle",
 
   "item.ridebattleparallelworlds.decade_deca_driver": "Deca Driver",
   "item.ridebattleparallelworlds.decade_base_helmet": "Decade",
@@ -146,7 +151,9 @@
   "tooltip.arcle.tutorial": "Shift + X to switch between forms, G to henshin",
   "tooltip.arcle.description": "Please watch, my Henshin!",
   "tooltip.alterRing.description": "For the mankind, for AgitΩ",
+  "tooltip.v-buckle.description": "Sa, Tatakae!",
   "tooltip.decaDriver.description": "Just a passing-by Kamen Rider~",
+
   "message.riderGreet.login": "Welcome to the ParallelWorlds' beta version!",
   "message.riderHint.login": "use /ridebattleparallelworlds \"riderName\" unlockForm \"formName\" to unlock specific rider Forms!",
   "message.fromHint.login": "\"riderName\" only in lowercases like: kuuga, \"formName\" with the format \"official form name + _form\" such as: mighty_form"
