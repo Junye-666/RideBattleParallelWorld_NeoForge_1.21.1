@@ -2,11 +2,12 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.i
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.event.SkillEvent;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemRenderer;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseKamenRiderGeoItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.GenericItemModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.GenericItemRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +19,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class RisingPegasusBowgunItem extends BaseKamenRiderGeoItem {
     public RisingPegasusBowgunItem(Properties properties) {
-        super("kuuga", "rising_pegasus_bowgun", properties.stacksTo(1).durability(0), true);
+        super(RideBattleParallelWorlds.MODID, "kuuga", "rising_pegasus_bowgun", properties.stacksTo(1).durability(0), true);
     }
 
     @Override

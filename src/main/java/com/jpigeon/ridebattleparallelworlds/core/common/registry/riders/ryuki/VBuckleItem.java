@@ -1,10 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorMaterial;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class VBuckleItem extends BaseKamenRiderArmorItem {
     public VBuckleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("ryuki", "v-buckle", material, type, properties, false);
+        super(RideBattleParallelWorlds.MODID, "ryuki", "v-buckle", material, type, properties, false);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -10,7 +11,7 @@ import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class ShockerCombatManItem extends BaseKamenRiderArmorItem {
     public ShockerCombatManItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("shocker", "combatman", material, type, properties, false);
+        super(RideBattleParallelWorlds.MODID, "shocker", "combatman", material, type, properties, false);
     }
 
     @Override

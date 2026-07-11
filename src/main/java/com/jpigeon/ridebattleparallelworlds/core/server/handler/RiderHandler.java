@@ -173,18 +173,18 @@ public class RiderHandler {
 
     // 变身辅助
     private static void handleKuuga(Player player, ItemStack legs, ResourceLocation formId) {
+        if (!(legs.getItem() instanceof ArcleItem arcleItem)) return;
         if (player.isCrouching()) {
+            arcleItem.triggerAppear();
             RideBattleAPI.completeHenshin(player);
             return;
         }
         SkillHandler.addEffect(player, MobEffects.MOVEMENT_SLOWDOWN, 55, 4);
         SkillHandler.addResistance(player, 120);
         playAnimation(player, "kuuga_henshin");
-        if (legs.getItem() instanceof ArcleItem arcleItem) {
-            playSound(player, ModSounds.ARCLE_APPEAR.get());
-            if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
-                RideBattleAPI.scheduleTicks(5, arcleItem::triggerAppear);
-            }
+        playSound(player, ModSounds.ARCLE_APPEAR.get());
+        if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
+            RideBattleAPI.scheduleTicks(5, arcleItem::triggerAppear);
         }
         FormConfig form = RideBattleAPI.getFormConfig(player, formId);
 

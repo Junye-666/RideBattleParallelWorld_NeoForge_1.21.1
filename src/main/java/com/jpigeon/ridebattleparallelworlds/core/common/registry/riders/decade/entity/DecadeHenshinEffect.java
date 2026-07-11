@@ -1,6 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.entity;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.entity.BaseKamenRiderEffectEntity;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.entity.BaseKamenRiderEffectEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,7 +23,7 @@ public class DecadeHenshinEffect extends BaseKamenRiderEffectEntity {
 
 
     public DecadeHenshinEffect(EntityType<DecadeHenshinEffect> type, Level level) {
-        super(type, level, "decade", "decade_special_effect");
+        super(type, level, RideBattleParallelWorlds.MODID, "decade", "decade_special_effect");
     }
 
     @Override

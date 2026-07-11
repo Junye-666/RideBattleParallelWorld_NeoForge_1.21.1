@@ -1,8 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class ArcleItem extends BaseKamenRiderArmorItem {
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("kuuga", "arcle", material, type, properties, true);
+        super(RideBattleParallelWorlds.MODID, "kuuga", "arcle", material, type, properties, true);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
     }
 
     public void setStateByFormId(ResourceLocation formId) {
-        if (formId.equals(KuugaConfig.MIGHTY_ID)) {
+        if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.GROWING_ID)) {
             setAnimState("mighty");
         } else if (formId.equals(KuugaConfig.DRAGON_ID)) {
             setAnimState("dragon");

@@ -30,7 +30,10 @@ public class AgitoConfig {
                     List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get(), ModItems.TRINITY_ELEMENT.get(), ModItems.BURNING_ELEMENT.get()),
                     true,
                     true
-            );
+            )
+            .addBaseAttribute(ResourceLocation.withDefaultNamespace("generic.jump_strength"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+            .addBaseAttribute(ResourceLocation.withDefaultNamespace("generic.water_movement_efficiency"), 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+            ;
 
     public static final FormConfig AGITO_GROUND_FORM = new FormConfig(GROUND_ID)
             .setArmor(
@@ -44,7 +47,7 @@ public class AgitoConfig {
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
             .addRequiredItem(ALTER_RING_CORE, ModItems.GROUND_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttribute(ResourceLocation.withDefaultNamespace("generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addSkill(RiderSkills.GROUND_KICK)
             ;
 

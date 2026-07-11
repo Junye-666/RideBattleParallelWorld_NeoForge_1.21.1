@@ -1,8 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class AlterRingItem extends BaseKamenRiderArmorItem {
     public AlterRingItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("agito", "alter_ring", material, type, properties, true);
+        super(RideBattleParallelWorlds.MODID, "agito", "alter_ring", material, type, properties, true);
     }
 
     @Override
@@ -49,6 +51,7 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
         else if (formId.equals(AgitoConfig.FLAME_ID)) setAnimState("flame");
         else if (formId.equals(AgitoConfig.STORM_ID)) setAnimState("storm");
         else if (formId.equals(AgitoConfig.TRINITY_ID)) setAnimState("trinity");
+        else if (formId.equals(AgitoConfig.BURNING_ID)) setAnimState("burning");
     }
 
     @Override

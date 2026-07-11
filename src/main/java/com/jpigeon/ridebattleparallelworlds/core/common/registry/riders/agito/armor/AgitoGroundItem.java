@@ -1,8 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.armor;
 
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.armor.GenericArmorRenderer;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -12,7 +13,7 @@ public class AgitoGroundItem extends BaseKamenRiderArmorItem {
     public enum AnimState {IDLE, OPEN, POWERED}
 
     public AgitoGroundItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super("agito", "ground", material, type, properties, true);
+        super(RideBattleParallelWorlds.MODID, "agito", "ground", material, type, properties, true);
     }
 
     @Override

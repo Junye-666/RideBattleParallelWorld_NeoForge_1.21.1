@@ -1,15 +1,16 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.block;
 
 
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.block.BaseRiderGeoBlockEntity;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.block.BaseRiderGeoBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animation.AnimatableManager;
 
 public class KuugaCoffinBlockEntity extends BaseRiderGeoBlockEntity {
     public KuugaCoffinBlockEntity(BlockPos pos, BlockState blockState) {
-        super("kuuga", "kuuga_coffin", ModBlockEntities.KUUGA_COFFIN_BE.get(), pos, blockState, true);
+        super(RideBattleParallelWorlds.MODID, "kuuga", "kuuga_coffin", ModBlockEntities.KUUGA_COFFIN_BE.get(), pos, blockState, true);
     }
 
     @Override

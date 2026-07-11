@@ -2,11 +2,12 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.i
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.event.SkillEvent;
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.BaseKamenRiderGeoItem;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemModel;
-import com.jpigeon.ridebattleparallelworlds.impl.geckoLib.item.GenericItemRenderer;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseKamenRiderGeoItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.GenericItemModel;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.GenericItemRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +19,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class FlameSaberItem extends BaseKamenRiderGeoItem {
     public FlameSaberItem(Properties properties) {
-        super("agito", "flame_saber", properties.stacksTo(1).durability(0), true);
+        super(RideBattleParallelWorlds.MODID, "agito", "flame_saber", properties.stacksTo(1).durability(0), true);
     }
 
     @Override
