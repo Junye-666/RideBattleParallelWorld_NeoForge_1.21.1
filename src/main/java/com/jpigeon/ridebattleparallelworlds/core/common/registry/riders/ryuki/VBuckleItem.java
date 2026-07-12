@@ -27,13 +27,6 @@ public class VBuckleItem extends BaseKamenRiderArmorItem {
     }
 
     @Override
-    protected GeoArmorRenderer<?> createRenderer() {
-        return new GenericArmorRenderer(
-                new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
-        );
-    }
-
-    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
         tooltip.add(Component.translatable("tooltip.v-buckle.description").withStyle(ChatFormatting.RED));

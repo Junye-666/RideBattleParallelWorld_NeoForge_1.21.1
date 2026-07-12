@@ -3,8 +3,6 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -15,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.List;
 
@@ -74,13 +71,6 @@ public class ArcleItem extends BaseKamenRiderArmorItem {
         } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
             setAnimState("ultimate");
         }
-    }
-
-    @Override
-    protected GeoArmorRenderer<?> createRenderer() {
-        return new GenericArmorRenderer(
-                new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
-        );
     }
 
     @Override

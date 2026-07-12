@@ -2,12 +2,9 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.a
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class AgitoGroundItem extends BaseKamenRiderArmorItem {
     public enum AnimState {IDLE, OPEN, POWERED}
@@ -32,12 +29,5 @@ public class AgitoGroundItem extends BaseKamenRiderArmorItem {
 
     public void setCurrentState(AnimState state){
         setAnimState(state.name().toLowerCase());
-    }
-
-    @Override
-    protected GeoArmorRenderer<?> createRenderer() {
-        return new GenericArmorRenderer(
-                new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
-        );
     }
 }

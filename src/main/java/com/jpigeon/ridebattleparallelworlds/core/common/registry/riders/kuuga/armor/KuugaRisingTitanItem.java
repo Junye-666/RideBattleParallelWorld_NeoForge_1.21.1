@@ -2,12 +2,9 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.a
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorMaterial;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class KuugaRisingTitanItem extends BaseKamenRiderArmorItem {
     public KuugaRisingTitanItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
@@ -17,12 +14,5 @@ public class KuugaRisingTitanItem extends BaseKamenRiderArmorItem {
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createLoopController("idle"));
-    }
-
-    @Override
-    protected GeoArmorRenderer<?> createRenderer() {
-        return new GenericArmorRenderer(
-                new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
-        );
     }
 }

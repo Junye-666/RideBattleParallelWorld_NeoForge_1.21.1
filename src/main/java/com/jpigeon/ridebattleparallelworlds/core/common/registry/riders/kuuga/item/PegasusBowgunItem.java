@@ -6,8 +6,6 @@ import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseKamenRiderGeoItem;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.item.GenericItemModel;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.item.GenericItemRenderer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class PegasusBowgunItem extends BaseKamenRiderGeoItem {
     public PegasusBowgunItem(Properties properties) {
@@ -40,13 +37,6 @@ public class PegasusBowgunItem extends BaseKamenRiderGeoItem {
 
     public void triggerRelease() {
         setAnimState("release");
-    }
-
-    @Override
-    protected GeoItemRenderer<BaseKamenRiderGeoItem> createRenderer() {
-        return new GenericItemRenderer(
-                new GenericItemModel(getModelPath(), getTexturePath(), getAnimationPath())
-        );
     }
 
     @Override

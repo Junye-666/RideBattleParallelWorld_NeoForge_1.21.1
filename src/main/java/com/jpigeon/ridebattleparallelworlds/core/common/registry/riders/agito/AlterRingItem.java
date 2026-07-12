@@ -3,8 +3,6 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorModel;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.GenericArmorRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -15,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 import java.util.List;
 
@@ -55,13 +52,6 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
     }
 
     @Override
-    protected GeoArmorRenderer<?> createRenderer() {
-        return new GenericArmorRenderer(
-                new GenericArmorModel(getModelPath(), getTexturePath(), getAnimationPath())
-        );
-    }
-
-    @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
         if (Screen.hasShiftDown()) {
@@ -69,6 +59,5 @@ public class AlterRingItem extends BaseKamenRiderArmorItem {
         } else {
             tooltip.add(Component.translatable("tooltip.alterRing.description").withStyle(ChatFormatting.GOLD));
         }
-
     }
 }
