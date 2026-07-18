@@ -35,6 +35,7 @@ public class MirrorConfig {
             )
             .setTriggerType(TriggerType.AUTO)
             .addRequiredItem(V_DECK, ModItems.RYUKI_DECK.get())
+            .setShouldPause(true)
             ;
 
 

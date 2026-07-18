@@ -1,18 +1,25 @@
 package com.jpigeon.ridebattleparallelworlds;
 
-import com.jpigeon.ridebattleparallelworlds.core.client.RenderHandler;
+import com.jpigeon.ridebattleparallelworlds.core.client.handler.RenderHandler;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlocks;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.core.common.debug.PWCommands;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.PacketHandler;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlocks;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.AbilitiesHandler;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.FormWheel;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.PWCreativeTabs;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.PWPacketHandler;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecadeConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.sound.ModSounds;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.AbilitiesHandler;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.FormWheel;
+import com.jpigeon.ridebattleparallelworlds.core.server.handler.SkillHandler;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -32,7 +39,7 @@ public class RideBattleParallelWorlds {
 
     public RideBattleParallelWorlds(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(PWPacketHandler::register);
+        modEventBus.addListener(PacketHandler::register);
         NeoForge.EVENT_BUS.register(this);
 
         PWCreativeTabs.register(modEventBus);
@@ -56,11 +63,19 @@ public class RideBattleParallelWorlds {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        RiderSkills.init();
+        KuugaConfig.init();
+        AgitoConfig.init();
+        MirrorConfig.init();
+        DecadeConfig.init();
+        ShockerConfig.init();
+
+        SkillHandler.registerSkillMap();
+        ModSounds.registerFormSoundMap();
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-
     }
 
     private void registerCommands(RegisterCommandsEvent event) {

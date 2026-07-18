@@ -4,27 +4,22 @@ import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PlayerMovementPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientStateEventPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.armor.AgitoGroundItem;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.StormHalberdItem;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.DragonRodItem;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.PegasusBowgunItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.RisingDragonRodItem;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.RisingPegasusBowgunItem;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.util.SkillUtils;
+import com.jpigeon.ridebattleparallelworlds.core.server.util.SkillUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -58,11 +53,7 @@ public class SkillHandler {
         Player player = event.getPlayer();
         ResourceLocation skillId = event.getSkillId();
         handleSkill(player, skillId);
-    }
-
-    @SubscribeEvent
-    public static void postSkill(SkillEvent.Post event) {
-        animateRiderSkills(event.getPlayer(), event.getSkillId());
+        sendSkillEventToClient(event.getPlayer(), event.getFormId(), event.getSkillId());
     }
 
     @SubscribeEvent
@@ -113,18 +104,9 @@ public class SkillHandler {
             skillConsumer.accept(serverPlayer);
             serverPlayer.hurtMarked = true;
         }
-
     }
 
-    private static void animateRiderSkills(Player player, ResourceLocation skillId) {
-        if (KuugaConfig.KUUGA.includesFormId(RideBattleAPI.getCurrentFormId(player))) {
-            animateKuugaSkills(player, skillId);
-        } else if (AgitoConfig.AGITO.includesFormId(RideBattleAPI.getCurrentFormId(player))) {
-            animateAgitoSkills(player, skillId);
-        }
-    }
-
-    // ==========技能逻辑==========
+    // ==========技能业务逻辑==========
     // 空我
     private static void growingKick(Player player) {
         int duration = calculateTolerance(40);
@@ -132,9 +114,7 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1);
-        riderKickForward(player, 1, 10);
-        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
+        scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
     }
 
     private static void mightyKick(Player player) {
@@ -143,9 +123,7 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1.1);
-        riderKickForward(player, 1.5, 10);
-        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
+        scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
     }
 
     private static void splashDragon(Player player) {
@@ -161,7 +139,7 @@ public class SkillHandler {
         } else {
             distance = 0;
         }
-        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
+        scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1.5 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -171,7 +149,7 @@ public class SkillHandler {
     private static void blastPegasus(Player player) {
         addResistance(player, 20);
 
-        RideBattleAPI.scheduleTicks(10, () ->
+        scheduleTicks(10, () ->
                 SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
@@ -191,7 +169,7 @@ public class SkillHandler {
         addResistance(player, 20);
 
         double distance = 1.5;
-        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
+        scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -204,9 +182,7 @@ public class SkillHandler {
         addTag(player, "skill_rising_mighty_kick");
         addResistance(player, duration);
 
-        riderKickJump(player, 1.2);
-        riderKickForward(player, 2, 10);
-        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
+        scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
     }
 
     private static void risingSplashDragon(Player player) {
@@ -222,7 +198,7 @@ public class SkillHandler {
         } else {
             distance = 0;
         }
-        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
+        scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1.5 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -234,7 +210,7 @@ public class SkillHandler {
 
         addResistance(player, 20);
 
-        RideBattleAPI.scheduleTicks(10, () ->
+        scheduleTicks(10, () ->
                 SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
@@ -254,7 +230,7 @@ public class SkillHandler {
         addResistance(player, 20);
 
         double distance = 2.0;
-        RideBattleAPI.scheduleTicks(10, () -> createExplosion(player,
+        scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
                 player.getY() + 1 + player.getLookAngle().y * distance,
                 player.getZ() + player.getLookAngle().z * distance,
@@ -267,9 +243,7 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1.4);
-        riderKickForward(player, 2.5, 15);
-        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
+        scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
     }
 
     private static void ultimateKick(Player player) {
@@ -278,9 +252,7 @@ public class SkillHandler {
 
         addResistance(player, duration);
 
-        riderKickJump(player, 1.5);
-        riderKickForward(player, 2.5, 15);
-        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
+        scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
     }
 
     // 亚极陀
@@ -295,12 +267,10 @@ public class SkillHandler {
         addResistance(player, duration);
         if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.triggerOpen();
-            RideBattleAPI.scheduleTicks(duration, agitoGround::setClosed);
+            scheduleTicks(duration, agitoGround::setClosed);
         }
 
-        riderKickJump(player, 1.3, 30);
-        riderKickForward(player, 1.8, 45);
-        RideBattleAPI.scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
+        scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
     }
 
     private static void flameSaber(Player player) {
@@ -320,58 +290,8 @@ public class SkillHandler {
 
     private static void shiningCalibur(Player player) {
         ItemStack shiningCalibur = ModItems.SHINING_CALIBUR.toStack();
-        if (shiningCalibur.getItem() instanceof ShiningCaliburItem calibur) {
-            if (!player.getInventory().add(shiningCalibur)) player.drop(shiningCalibur, false);
-            calibur.setClose();
-        }
-    }
+        if (!player.getInventory().add(shiningCalibur)) player.drop(shiningCalibur, false);
 
-    // ==========动画逻辑==========
-    private static void animateKuugaSkills(Player player, ResourceLocation skillId) {
-        if (skillId.equals(RiderSkills.GROWING_KICK) || skillId.equals(RiderSkills.MIGHTY_KICK) || skillId.equals(RiderSkills.RISING_MIGHTY_KICK) || skillId.equals(RiderSkills.AMAZING_MIGHTY_KICK) || skillId.equals(RiderSkills.ULTIMATE_KICK)) {
-            playAnimation(player, "kuuga_mighty_kick", 0);
-            RideBattleAPI.scheduleTicks(33, () -> playAnimation(player, "player_reset", 5));
-            return;
-        }
-
-        ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-        ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-        if (skillId.equals(RiderSkills.SPLASH_DRAGON)) {
-            if (mainHand.getItem() instanceof DragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_main");
-            } else if (offHand.getItem() instanceof DragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_off");
-            }
-        } else if (skillId.equals(RiderSkills.BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof PegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_main");
-            } else if (offHand.getItem() instanceof PegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_off");
-            }
-        } else if (skillId.equals(RiderSkills.CALAMITY_TITAN)) {
-            playAnimation(player, "kuuga_calamity_titan");
-        } else if (skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
-            if (mainHand.getItem() instanceof RisingDragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_main");
-            } else if (offHand.getItem() instanceof RisingDragonRodItem) {
-                playAnimation(player, "kuuga_splash_dragon_off");
-            }
-        } else if (skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
-            if (mainHand.getItem() instanceof RisingPegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_main");
-            } else if (offHand.getItem() instanceof RisingPegasusBowgunItem) {
-                playAnimation(player, "kuuga_blast_pegasus_off");
-            }
-        } else if (skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {
-            playAnimation(player, "kuuga_calamity_titan");
-        }
-    }
-
-    private static void animateAgitoSkills(Player player, ResourceLocation skillId) {
-        if (skillId.equals(RiderSkills.GROUND_KICK)) {
-            playAnimation(player, "agito_kick_prepare", 5);
-            RideBattleAPI.scheduleTicks(35, () -> playAnimation(player, "agito_kick", 2));
-        }
     }
 
     // ==========辅助方法==========
@@ -416,7 +336,7 @@ public class SkillHandler {
                     if (mainHand.getItem() instanceof ShiningCaliburItem) {
                         hurt(player, living, 60);
                         knockBack(player, living, 2);
-                        RideBattleAPI.scheduleTicks(20, () -> createExplosion(player, living, 4));
+                        scheduleTicks(20, () -> createExplosion(player, living, 4));
                     }
                 }
                 case "skill_mighty_punch" -> {
@@ -498,40 +418,6 @@ public class SkillHandler {
         player.addEffect(new MobEffectInstance(effect, duration, level, true, false));
     }
 
-    // 骑士踢逻辑辅助
-    private static void riderKickJump(Player player, double jumpHeight, int ticks) {
-        if (player == null) return;
-        RideBattleAPI.scheduleTicks(ticks, () -> {
-                    Vec3 currentMovement = player.getDeltaMovement();
-                    Vec3 jump = new Vec3(currentMovement.x, currentMovement.y + jumpHeight, currentMovement.z);
-                    addDeltaMovement(player, jump);
-                }
-        );
-    }
-
-    private static void riderKickJump(Player player, double jumpHeight) {
-        riderKickJump(player, jumpHeight, 0);
-    }
-
-    private static void riderKickForward(Player player, double norm, int ticks) {
-        if (player == null) return;
-        RideBattleAPI.scheduleTicks(ticks, () -> {
-                    Vec3 lookVec = player.getLookAngle();
-                    Vec3 movement = player.getDeltaMovement();
-                    Vec3 kick = new Vec3(
-                            movement.x + lookVec.x * norm * 1.5,
-                            movement.y + lookVec.y * norm,
-                            movement.z + lookVec.z * norm * 1.5
-                    );
-                    addDeltaMovement(player, kick);
-                }
-        );
-    }
-
-    private static void riderKickForward(Player player, double norm) {
-        riderKickForward(player, norm, 0);
-    }
-
     private static void createExplosion(Player player, double x, double y, double z, float damage) {
         Level level = player.level();
 
@@ -555,12 +441,6 @@ public class SkillHandler {
     private static void createKickExplosion(Player player, LivingEntity entity, float damage) {
         BlockPos pos = entity.getOnPos();
         createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), damage);
-
-        Vec3 angle = player.getLookAngle();
-        Vec3 current = player.getKnownMovement();
-        Vec3 back = new Vec3(-(angle.x * current.x), 0.5, -(angle.z * current.z));
-        setDeltaMovement(player, 0, 0, 0);
-        addDeltaMovement(player, back);
     }
 
     // Tag辅助
@@ -581,8 +461,8 @@ public class SkillHandler {
     }
 
     private static void kickSequence(Player player, int ticks) {
-        RideBattleAPI.scheduleTicks(10, () -> addTag(player, "rider_kicking"));
-        RideBattleAPI.scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
+        scheduleTicks(10, () -> addTag(player, "rider_kicking"));
+        scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
     }
 
     // 伤害辅助
@@ -598,35 +478,11 @@ public class SkillHandler {
         }
     }
 
-    // 玩家移动辅助
-    private static void addDeltaMovement(Player player, double x, double y, double z) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, new PlayerMovementPacket(player.getUUID(), x, y, z, "add"));
-        }
+    private static void scheduleTicks(int ticks, Runnable runnable) {
+        RideBattleAPI.scheduleTicks(ticks, runnable);
     }
 
-    private static void addDeltaMovement(Player player, Vec3 movement) {
-        addDeltaMovement(player, movement.x(), movement.y(), movement.z());
-    }
-
-    private static void setDeltaMovement(Player player, double x, double y, double z) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, new PlayerMovementPacket(player.getUUID(), x, y, z, "set"));
-        }
-    }
-
-    private static void setDeltaMovement(Player player, Vec3 movement) {
-        setDeltaMovement(player, movement.x(), movement.y(), movement.z());
-    }
-
-    // 动画辅助
-    private static void playAnimation(Player player, String animationId, int fadeDuration) {
-        if (player instanceof ServerPlayer serverPlayer) {
-            PacketDistributor.sendToPlayer(serverPlayer, new PWAnimationPacket(player.getUUID(), animationId, fadeDuration));
-        }
-    }
-
-    private static void playAnimation(Player player, String animationId) {
-        playAnimation(player, animationId, 0);
+    private static void sendSkillEventToClient(Player player, ResourceLocation formId, ResourceLocation skillId) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new PWClientStateEventPacket("skill", formId, skillId));
     }
 }

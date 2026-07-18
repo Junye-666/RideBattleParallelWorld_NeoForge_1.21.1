@@ -5,7 +5,7 @@ import com.jpigeon.ridebattlelib.common.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseKamenRiderGeoItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseRiderGeoItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 
-public class TitanSwordItem extends BaseKamenRiderGeoItem {
+public class TitanSwordItem extends BaseRiderGeoItem {
     public TitanSwordItem(Properties properties) {
         super(RideBattleParallelWorlds.MODID, "kuuga", "titan_sword", properties.stacksTo(1).durability(0), true);
     }

@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.i
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.VBuckleItem;
+import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,6 +33,9 @@ public class MirrorDeckItem extends Item {
             } else {
                 player.getCooldowns().addCooldown(deck.getItem(), 30);
                 player.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ModItems.V_BUCKLE.get()));
+                if (player.level().isClientSide()) {
+                    PlayerAnimationHandler.handleAnimation(player, "summon_v_buckle", 0);
+                }
                 if (!leg.isEmpty() && !leg.is(Items.AIR)) {
                     if (!player.getInventory().add(leg)) {
                         player.drop(leg, false);

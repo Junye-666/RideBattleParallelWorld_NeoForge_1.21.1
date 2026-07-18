@@ -80,17 +80,17 @@ public class ModSounds {
     }
 
     public static void registerFormSoundMap() {
-        registerHenshinSound(KuugaConfig.KUUGA_GROWING_FORM, KUUGA_MIGHTY.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_MIGHTY_FORM, KUUGA_MIGHTY.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_DRAGON_FORM, KUUGA_DRAGON.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_PEGASUS_FORM, KUUGA_PEGASUS.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_TITAN_FORM, KUUGA_TITAN.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_MIGHTY_FORM, KUUGA_RISING_MIGHTY.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_DRAGON_FORM, KUUGA_RISING_DRAGON.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_PEGASUS_FORM, KUUGA_RISING_PEGASUS.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_TITAN_FORM, KUUGA_RISING_TITAN.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM, KUUGA_AMAZING_MIGHTY.get(), 120);
-        registerHenshinSound(KuugaConfig.KUUGA_ULTIMATE_FORM, KUUGA_ULTIMATE.get(), 120);
+        registerHenshinSound(KuugaConfig.KUUGA_GROWING_FORM, KUUGA_MIGHTY.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_MIGHTY_FORM, KUUGA_MIGHTY.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_DRAGON_FORM, KUUGA_DRAGON.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_PEGASUS_FORM, KUUGA_PEGASUS.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_TITAN_FORM, KUUGA_TITAN.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_MIGHTY_FORM, KUUGA_RISING_MIGHTY.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_DRAGON_FORM, KUUGA_RISING_DRAGON.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_PEGASUS_FORM, KUUGA_RISING_PEGASUS.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_TITAN_FORM, KUUGA_RISING_TITAN.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM, KUUGA_AMAZING_MIGHTY.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_ULTIMATE_FORM, KUUGA_ULTIMATE.get(), 80);
 
         registerHenshinSound(DecadeConfig.DECADE_BASE, KR_DECADE.get(), 65);
         registerHenshinSound(DecadeConfig.DECADE_KUUGA_MIGHTY, KR_KUUGA.get(), 65);

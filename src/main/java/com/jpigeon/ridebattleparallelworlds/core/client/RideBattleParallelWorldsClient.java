@@ -1,13 +1,7 @@
-package com.jpigeon.ridebattleparallelworlds;
+package com.jpigeon.ridebattleparallelworlds.core.client;
 
+import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.RegistryUtils;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecadeConfig;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.sound.ModSounds;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -26,13 +20,6 @@ public class RideBattleParallelWorldsClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-        RiderSkills.init();
-        KuugaConfig.init();
-        AgitoConfig.init();
-        MirrorConfig.init();
-        DecadeConfig.init();
-        ShockerConfig.init();
-
-        RegistryUtils.registerMaps();
+        RegistryUtils.registerClientMaps();
     }
 }

@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.client;
+package com.jpigeon.ridebattleparallelworlds.core.client.handler;
 
 import com.jpigeon.ridebattlelib.client.cache.ClientTransformedCache;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
@@ -41,7 +41,6 @@ public class RenderHandler {
     }
 
     private static void handleVBuckleDeckRender(Player player, GeoRenderEvent.Armor.Post event) {
-
         ResourceLocation formId = ClientTransformedCache.getCurrentFormId(player.getUUID());
         if (formId == null) return;
 
@@ -57,7 +56,7 @@ public class RenderHandler {
 
         poseStack.pushPose();
 
-        // 局部微调（根据你的模型）
+        // 局部微调
         if (player.isCrouching()) poseStack.translate(0, 1.24, 0.152);
         else poseStack.translate(0, 1.086, -0.15);
 
@@ -83,4 +82,3 @@ public class RenderHandler {
         poseStack.popPose();
     }
 }
-

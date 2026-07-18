@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseRiderArmorItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,7 @@ import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
-public class DecaDriverItem extends BaseKamenRiderArmorItem {
+public class DecaDriverItem extends BaseRiderArmorItem {
     public DecaDriverItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(RideBattleParallelWorlds.MODID, "decade", "deca_driver", material, type, properties, true);
     }

@@ -1,9 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.entity;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.SkillProjectile;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.entity.DecadeHenshinEffect;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.SkillProjectile;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.entity.RyukiHenshinEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -39,6 +40,14 @@ public class ModEntities {
                             .clientTrackingRange(32)
                             .updateInterval(10)
                             .build("agito_kick_effect"));
+
+    public static final Supplier<EntityType<RyukiHenshinEffect>> RYUKI_HENSHIN_EFFECT =
+            ENTITY_TYPES.register("ryuki_henshin_effect",
+                    () -> EntityType.Builder.of(RyukiHenshinEffect::new, MobCategory.MISC)
+                            .sized(0.2f, 1.8f)
+                            .clientTrackingRange(32)
+                            .updateInterval(10)
+                            .build("ryuki_henshin_effect"));
 
     public static void register(IEventBus eventBus){
         ENTITY_TYPES.register(eventBus);

@@ -2,7 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga;
 
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseKamenRiderArmorItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseRiderArmorItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -16,7 +16,7 @@ import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
-public class ArcleItem extends BaseKamenRiderArmorItem {
+public class ArcleItem extends BaseRiderArmorItem {
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(RideBattleParallelWorlds.MODID, "kuuga", "arcle", material, type, properties, true);
     }

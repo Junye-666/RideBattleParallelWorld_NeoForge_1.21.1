@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.server.handler.util;
+package com.jpigeon.ridebattleparallelworlds.core.server.util;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom.SkillProjectile;

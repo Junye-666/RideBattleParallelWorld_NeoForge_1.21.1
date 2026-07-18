@@ -16,4 +16,5 @@ public class ClientUtils {
             else if (operationType.equals("set")) localPlayer.setDeltaMovement(movement);
         }
     }
+
 }

@@ -1,13 +1,11 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry;
 
-import com.jpigeon.ridebattleparallelworlds.core.client.RenderHandler;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.sound.ModSounds;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.SkillHandler;
+import com.jpigeon.ridebattleparallelworlds.core.client.handler.RenderHandler;
+import com.jpigeon.ridebattleparallelworlds.core.client.handler.SkillHandlerClient;
 
 public class RegistryUtils {
-    public static void registerMaps() {
-        SkillHandler.registerSkillMap();
-        ModSounds.registerFormSoundMap();
+    public static void registerClientMaps() {
         RenderHandler.registerDeckFormMap();
+        SkillHandlerClient.registerSkillMap();
     }
 }

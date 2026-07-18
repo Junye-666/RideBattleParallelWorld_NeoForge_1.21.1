@@ -3,7 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.core.client.event;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.rideevolutionlib.compat.util.GeoEntityRenderUtil;
+import com.jpigeon.rideevolutionlib.compat.util.GeoRenderRegistryUtil;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -22,15 +22,19 @@ public class ClientModEvents {
         );
         event.registerEntityRenderer(
                 ModEntities.DECADE_SPECIAL_EFFECT.get(),
-                context -> GeoEntityRenderUtil.createEffectRenderer(context, RideBattleParallelWorlds.MODID, "decade", "decade_special_effect")
+                context -> GeoRenderRegistryUtil.createEffectRenderer(context, RideBattleParallelWorlds.MODID, "decade", "decade_special_effect")
         );
         event.registerEntityRenderer(
                 ModEntities.AGITO_KICK_EFFECT.get(),
-                context -> GeoEntityRenderUtil.createEffectRenderer(context, RideBattleParallelWorlds.MODID, "agito", "agito_kick_effect")
+                context -> GeoRenderRegistryUtil.createEffectRenderer(context, RideBattleParallelWorlds.MODID, "agito", "agito_kick_effect")
+        );
+        event.registerEntityRenderer(
+                ModEntities.RYUKI_HENSHIN_EFFECT.get(),
+                context -> GeoRenderRegistryUtil.createEffectRenderer(context, RideBattleParallelWorlds.MODID, "ryuki", "ryuki_henshin_effect")
         );
         event.registerBlockEntityRenderer(
                 ModBlockEntities.KUUGA_COFFIN_BE.get(),
-                context -> GeoEntityRenderUtil.createBlockRenderer(context, RideBattleParallelWorlds.MODID, "kuuga", "kuuga_coffin")
+                context -> GeoRenderRegistryUtil.createBlockRenderer(context, RideBattleParallelWorlds.MODID, "kuuga", "kuuga_coffin")
         );
     }
 }

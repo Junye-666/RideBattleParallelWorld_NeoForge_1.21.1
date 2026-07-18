@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.core.server.handler.util;
+package com.jpigeon.ridebattleparallelworlds.core.server.util;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import net.minecraft.resources.ResourceLocation;

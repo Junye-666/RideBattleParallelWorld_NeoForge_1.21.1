@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.entity;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.entity.BaseKamenRiderEffectEntity;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.entity.BaseRiderEffectEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class AgitoKickEffect extends BaseKamenRiderEffectEntity {
+public class AgitoKickEffect extends BaseRiderEffectEntity {
     private static final int MAX_LIFETIME = 150;
     private int lifetime = 0;
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AgitoKickEffect.class, EntityDataSerializers.OPTIONAL_UUID);

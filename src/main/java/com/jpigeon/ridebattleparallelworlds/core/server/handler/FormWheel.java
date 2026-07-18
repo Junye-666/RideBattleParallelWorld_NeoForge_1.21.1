@@ -1,9 +1,11 @@
 package com.jpigeon.ridebattleparallelworlds.core.server.handler;
 
+import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.common.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.common.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.common.network.packet.InsertItemPacket;
+import com.jpigeon.ridebattlelib.server.system.DriverSystem;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderForms;
@@ -38,9 +40,10 @@ public class FormWheel {
     }
 
     @SubscribeEvent
-    public static void onReturnItem(ReturnItemsEvent.Pre event) {
+    public static void onReturnItem(ReturnItemsEvent.Post event) {
         if (event.isCanceled()) return;
         RiderConfig config = event.getConfig();
+        if (config != RiderConfig.findActiveDriverConfig(event.getPlayer())) return;
         if (config.equals(KuugaConfig.KUUGA) || config.equals(AgitoConfig.AGITO)) {
             Player player = event.getPlayer();
             if (player == null || !player.isCrouching()) return;
@@ -97,9 +100,10 @@ public class FormWheel {
 
             // 更新腰带槽
             setArcleSlot(player, newId);
-            RiderHandler.setDriverAnim(legs, newId);
         } else if (legs.getItem() instanceof AlterRingItem) {
-            Minecraft.getInstance().getSoundManager().stop();
+            if (player.level().isClientSide()) {
+                Minecraft.getInstance().getSoundManager().stop();
+            }
             ResourceLocation agito = RiderIds.AGITO_ID;
             List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, agito);
             if (unlockedForms.isEmpty()) {
@@ -122,7 +126,6 @@ public class FormWheel {
             }
 
             setAlterRingSlot(player, newId);
-            RiderHandler.setDriverAnim(legs, newId);
         }
     }
 
@@ -183,8 +186,8 @@ public class FormWheel {
         }
 
         if (item != null) {
-            PacketDistributor.sendToServer(new InsertItemPacket(player.getUUID(), arcleCore, item.getDefaultInstance()));
-        }
+                DriverSystem.getInstance().insertItem(player, arcleCore, item.getDefaultInstance());
+            }
     }
 
     public static void setAlterRingSlot(Player player, ResourceLocation formId) {
@@ -205,7 +208,11 @@ public class FormWheel {
         }
 
         if (item != null) {
-            PacketDistributor.sendToServer(new InsertItemPacket(player.getUUID(), alterRingCore, item.getDefaultInstance()));
+            if (player.level().isClientSide()) {
+                PacketDistributor.sendToServer(new InsertItemPacket(player.getUUID(), alterRingCore, item.getDefaultInstance()));
+            } else {
+                RideBattleAPI.insertItemToSlot(player, alterRingCore, item.getDefaultInstance());
+            }
         }
     }
 }

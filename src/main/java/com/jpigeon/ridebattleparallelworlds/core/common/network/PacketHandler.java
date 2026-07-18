@@ -1,20 +1,19 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.network;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.core.client.handler.RiderHandlerClient;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWData;
-import com.jpigeon.ridebattleparallelworlds.core.client.ClientUtils;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWAnimationPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientItemEventPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientStateEventPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PlayerMovementPacket;
-import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 import java.util.Map;
 
-public class PWPacketHandler {
+public class PacketHandler {
     public static void register(final RegisterPayloadHandlersEvent event) {
         event.registrar(RideBattleParallelWorlds.MODID)
                 .versioned("0.0.3")
@@ -49,28 +48,19 @@ public class PWPacketHandler {
                         }
                 )
                 .playToClient(
-                        PWAnimationPacket.TYPE,
-                        PWAnimationPacket.STREAM_CODEC,
+                        PWClientStateEventPacket.TYPE,
+                        PWClientStateEventPacket.STREAM_CODEC,
                         (payload, context) -> context.enqueueWork(() -> {
                             Player clientPlayer = context.player();
-
-                            // 只应用给对应玩家
-                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
-
-                            PlayerAnimationHandler.handleAnimation(clientPlayer, payload.animationId(), payload.fadeDuration());
+                            RiderHandlerClient.handleStateEventClient(clientPlayer, payload.eventType(), payload.riderId(), payload.formId());
                         })
-
                 )
                 .playToClient(
-                        PlayerMovementPacket.TYPE,
-                        PlayerMovementPacket.STREAM_CODEC,
+                        PWClientItemEventPacket.TYPE,
+                        PWClientItemEventPacket.STREAM_CODEC,
                         (payload, context) -> context.enqueueWork(() -> {
                             Player clientPlayer = context.player();
-
-                            // 只应用给对应玩家
-                            if (!clientPlayer.getUUID().equals(payload.playerId())) return;
-
-                            ClientUtils.deplacePlayer(clientPlayer, payload.x(), payload.y(), payload.z(), payload.operationType());
+                            RiderHandlerClient.handleItemEventClient(clientPlayer, payload.eventType(), payload.stack());
                         })
                 )
         ;
