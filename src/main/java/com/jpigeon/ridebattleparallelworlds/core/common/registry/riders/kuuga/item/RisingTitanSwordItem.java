@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.common.event.SkillEvent;
+import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;

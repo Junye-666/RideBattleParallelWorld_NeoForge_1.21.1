@@ -11,9 +11,9 @@ public class ClientUtils {
     public static void deplacePlayer(Player player, double x, double y, double z, String operationType) {
         if (player instanceof LocalPlayer localPlayer && player.level().isClientSide()) {
             Vec3 movement = new Vec3(x, y, z);
-            player.hurtMarked = true;
             if (operationType.equals("add")) localPlayer.addDeltaMovement(movement);
             else if (operationType.equals("set")) localPlayer.setDeltaMovement(movement);
+            player.hurtMarked = true;
         }
     }
 

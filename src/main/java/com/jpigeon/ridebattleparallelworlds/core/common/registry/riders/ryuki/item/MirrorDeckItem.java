@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 // 镜系统的卡盒Item
 public class MirrorDeckItem extends Item {
@@ -21,12 +22,12 @@ public class MirrorDeckItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack deck = player.getItemInHand(usedHand);
         if (!usedHand.equals(InteractionHand.OFF_HAND)) return InteractionResultHolder.fail(deck);
 
         // 仅当玩家未变身
-        if (!player.level().isClientSide() && !RideBattleAPI.isTransformed(player)) {
+        if (!RideBattleAPI.isTransformed(player)) {
             ItemStack leg = player.getItemBySlot(EquipmentSlot.LEGS);
             if (leg.getItem() instanceof VBuckleItem) {
                 return InteractionResultHolder.success(deck);

@@ -4,8 +4,7 @@ import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.client.handler.RiderHandlerClient;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWData;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientItemEventPacket;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientStateEventPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientSkillPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class PacketHandler {
     public static void register(final RegisterPayloadHandlersEvent event) {
         event.registrar(RideBattleParallelWorlds.MODID)
-                .versioned("0.0.3")
+                .versioned("0.0.3").optional()
                 .playToClient(
                         PWDataSyncPacket.TYPE,
                         PWDataSyncPacket.STREAM_CODEC,
@@ -48,19 +47,11 @@ public class PacketHandler {
                         }
                 )
                 .playToClient(
-                        PWClientStateEventPacket.TYPE,
-                        PWClientStateEventPacket.STREAM_CODEC,
+                        PWClientSkillPacket.TYPE,
+                        PWClientSkillPacket.STREAM_CODEC,
                         (payload, context) -> context.enqueueWork(() -> {
                             Player clientPlayer = context.player();
-                            RiderHandlerClient.handleStateEventClient(clientPlayer, payload.eventType(), payload.riderId(), payload.formId());
-                        })
-                )
-                .playToClient(
-                        PWClientItemEventPacket.TYPE,
-                        PWClientItemEventPacket.STREAM_CODEC,
-                        (payload, context) -> context.enqueueWork(() -> {
-                            Player clientPlayer = context.player();
-                            RiderHandlerClient.handleItemEventClient(clientPlayer, payload.eventType(), payload.stack());
+                            RiderHandlerClient.handleClientSkillEvent(clientPlayer, payload.skillId());
                         })
                 )
         ;

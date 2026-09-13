@@ -2,9 +2,9 @@ package com.jpigeon.ridebattleparallelworlds.core.server.handler;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
-import com.jpigeon.ridebattlelib.common.event.ReturnItemsEvent;
-import com.jpigeon.ridebattlelib.common.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.common.network.packet.InsertItemPacket;
+import com.jpigeon.ridebattlelib.server.event.ReturnItemsEvent;
+import com.jpigeon.ridebattlelib.server.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.server.system.DriverSystem;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
@@ -186,8 +186,8 @@ public class FormWheel {
         }
 
         if (item != null) {
-                DriverSystem.getInstance().insertItem(player, arcleCore, item.getDefaultInstance());
-            }
+            DriverSystem.getInstance().insertItem(player, arcleCore, item.getDefaultInstance());
+        }
     }
 
     public static void setAlterRingSlot(Player player, ResourceLocation formId) {

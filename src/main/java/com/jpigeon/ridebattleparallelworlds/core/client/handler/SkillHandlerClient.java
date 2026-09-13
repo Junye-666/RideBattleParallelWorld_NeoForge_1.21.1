@@ -36,7 +36,7 @@ public class SkillHandlerClient {
         SKILL_CLIENT_MAP.put(RiderSkills.GROUND_KICK, SkillHandlerClient::groundKick);
     }
 
-    public static void handleSkillClient(Player player, ItemStack driver, ResourceLocation formId, ResourceLocation skillId) {
+    public static void handleSkillClient(Player player, ItemStack driver, ResourceLocation skillId) {
         Consumer<Player> skillConsumer = SKILL_CLIENT_MAP.get(skillId);
         if (skillConsumer != null) {
             skillConsumer.accept(player);

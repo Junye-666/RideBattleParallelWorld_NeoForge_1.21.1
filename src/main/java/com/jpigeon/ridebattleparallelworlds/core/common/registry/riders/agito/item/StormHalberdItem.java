@@ -1,20 +1,22 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.common.event.SkillEvent;
+import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseKamenRiderGeoItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseRiderGeoItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 
-public class StormHalberdItem extends BaseKamenRiderGeoItem {
+public class StormHalberdItem extends BaseRiderGeoItem {
     public StormHalberdItem(Properties properties) {
         super(RideBattleParallelWorlds.MODID, "agito", "storm_halberd", properties.stacksTo(1).durability(0), true);
     }
@@ -25,26 +27,32 @@ public class StormHalberdItem extends BaseKamenRiderGeoItem {
         addController(registrar, "open", createHoldController("open"));
     }
 
-    public void triggerOpen(){
+    public void triggerOpen() {
         setAnimState("open");
     }
-    public void setClose(){
+
+    public void setClose() {
         setAnimState("idle");
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
-        ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
-            if (RideBattleAPI.isSpecificForm(player, AgitoConfig.STORM_ID) || RideBattleAPI.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
-                if (usedHand.equals(InteractionHand.MAIN_HAND)) {
-                    player.getCooldowns().addCooldown(this, 310);
-                    triggerOpen();
-                    RideBattleAPI.triggerSkill(player, RiderSkills.HALBERD_SPIN, SkillEvent.SkillTriggerType.WEAPON);
-                } else {
-                    return InteractionResultHolder.pass(itemStack);
-                }
+    public @Nullable Entity createEntity(Level level, @NotNull Entity location, @NotNull ItemStack stack) {
+        if (level.isClientSide()) setClose();
+        return super.createEntity(level, location, stack);
+    }
 
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
+        ItemStack itemStack = player.getItemInHand(usedHand);
+        if (!RideBattleAPI.isTransformed(player)) return InteractionResultHolder.pass(itemStack);
+
+        if (RideBattleAPI.isSpecificForm(player, AgitoConfig.STORM_ID) || RideBattleAPI.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
+            if (usedHand.equals(InteractionHand.MAIN_HAND)) {
+                player.getCooldowns().addCooldown(this, 310);
+                if (level.isClientSide()) triggerOpen();
+                RideBattleAPI.triggerSkill(player, RiderSkills.HALBERD_SPIN, SkillEvent.SkillTriggerType.WEAPON);
+            } else {
+                return InteractionResultHolder.pass(itemStack);
             }
         }
         return InteractionResultHolder.success(itemStack);

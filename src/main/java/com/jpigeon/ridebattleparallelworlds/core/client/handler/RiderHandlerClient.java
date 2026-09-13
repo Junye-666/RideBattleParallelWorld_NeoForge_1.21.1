@@ -1,8 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.core.client.handler;
 
+import com.jpigeon.ridebattlelib.client.event.ClientRiderEvents;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
-import com.jpigeon.ridebattlelib.common.event.ItemGrantEvent;
+import com.jpigeon.ridebattlelib.server.event.ItemGrantEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerCombatManItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.extra.shocker.ShockerConfig;
@@ -15,6 +16,7 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.it
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.VBuckleItem;
 import com.jpigeon.ridebattleparallelworlds.impl.playerAnimator.PlayerAnimationHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -28,6 +30,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+
+import java.util.Map;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class RiderHandlerClient {
@@ -61,6 +65,7 @@ public class RiderHandlerClient {
             case DecaDriverItem decaDriver -> {
                 if (!RideBattleAPI.isDriverEmpty(player)) decaDriver.triggerOpen();
             }
+            case VBuckleItem vBuckle -> vBuckle.setIdle();
             default -> {
             }
         }
@@ -78,6 +83,7 @@ public class RiderHandlerClient {
                     case DecaDriverItem decaDriver -> decaDriver.triggerOpen();
                     case ArcleItem arcle -> arcle.shrinkInBody();
                     case AlterRingItem alterRing -> alterRing.shrinkInBody();
+                    case VBuckleItem vBuckle -> vBuckle.triggerAppear();
                     case ShockerCombatManItem ignored -> RideBattleAPI.transform(player);
                     default -> {
                     }
@@ -97,42 +103,55 @@ public class RiderHandlerClient {
     }
 
     // 接收网络包，根据具体情况分发
-    public static void handleStateEventClient(Player player, String eventType, ResourceLocation riderId, ResourceLocation formId) {
+
+    @SubscribeEvent
+    public static void handleClientStateEvent(ClientRiderEvents.HenshinStateChanged event) {
+        Player player = event.getPlayer();
         RiderConfig config = RiderConfig.findActiveDriverConfig(player);
         if (config == null) return;
         ItemStack driver = player.getItemBySlot(config.getDriverSlot());
-        switch (eventType) {
-            case "henshin" -> handleHenshinClient(player, driver, riderId, formId);
-            case "unhenshin" -> handleUnHenshinClient(player, driver, riderId, formId);
-            case "switch" -> handleSwitchClient(player, driver, riderId, formId);
-            case "skill" -> SkillHandlerClient.handleSkillClient(player, driver, riderId, formId);
+        ResourceLocation riderId = event.getRiderId();
+        ResourceLocation formId = event.getPendingFormId();
+        ClientRiderEvents.HenshinStateChanged.ChangeType changeType = event.getChangeType();
+
+        switch (changeType) {
+            case PENDING -> handleHenshinClient(player, driver, riderId, formId, isTransformed(player));
+            case UNHENSHIN -> handleUnHenshinClient(player, driver, riderId, formId);
         }
     }
 
-    public static void handleItemEventClient(Player player, String eventType, ItemStack stack) {
+    @SubscribeEvent
+    public static void handleClientDriverEvent(ClientRiderEvents.DriverDataChanged event) {
+        Player player = event.getPlayer();
         RiderConfig config = RiderConfig.findActiveDriverConfig(player);
         if (config == null) return;
         ItemStack driver = player.getItemBySlot(config.getDriverSlot());
-        switch (eventType) {
-            case "insert" -> handleInsertClient(player, driver, stack);
-            case "extract" -> handleExtractClient(player, driver, stack);
-        }
+        Map<ResourceLocation, ItemStack> CHANGES = event.getChanges();
+        CHANGES.forEach(
+                (slotId, stack) -> handleDriverChangeClient(player, driver, stack)
+        );
+    }
+
+    public static void handleClientSkillEvent(Player player, ResourceLocation skillId) {
+        RiderConfig config = RiderConfig.findActiveDriverConfig(player);
+        if (config == null) return;
+        ItemStack driver = player.getItemBySlot(config.getDriverSlot());
+        SkillHandlerClient.handleSkillClient(player, driver, skillId);
     }
 
     // 处理变身
-    private static void handleHenshinClient(Player player, ItemStack driver, ResourceLocation riderId, ResourceLocation formId) {
+    private static void handleHenshinClient(Player player, ItemStack driver, ResourceLocation riderId, ResourceLocation formId, boolean isTransformed) {
         // TODO: RiderHandler中所有动画逻辑搬到这里
-
         if (riderId.equals(RiderIds.KUUGA_ID)) {
-            henshinKuugaClient(player, driver, formId);
+            handleKuugaClient(player, driver, formId, isTransformed);
         } else if (riderId.equals(RiderIds.AGITO_ID)) {
             completeAgitoClient(player, driver, formId);
         } else if (riderId.equals(RiderIds.MIRROR_SYSTEM_ID)) {
-            henshinMirrorClient(player, driver, formId);
+            handleMirrorClient(player, driver, formId);
         } else if (riderId.equals(RiderIds.DECADE_ID)) {
-            henshinDecadeClient(player, driver, formId);
+            handleDecadeClient(player, driver, formId, isTransformed);
         } else {
-            henshinMisc(player, driver, formId);
+            handleMisc(player, driver, formId);
         }
     }
 
@@ -147,27 +166,21 @@ public class RiderHandlerClient {
         }
     }
 
-    // 处理切换
-    private static void handleSwitchClient(Player player, ItemStack driver, ResourceLocation riderId, ResourceLocation formId) {
-        if (riderId.equals(RiderIds.KUUGA_ID)) {
-            switchKuugaClient(player, driver, formId);
-        } else if (riderId.equals(RiderIds.AGITO_ID)) {
-            completeAgitoClient(player, driver, formId);
-        } else if (riderId.equals(RiderIds.MIRROR_SYSTEM_ID)) {
-            switchMirrorClient(player, driver, formId);
-        } else if (riderId.equals(RiderIds.DECADE_ID)) {
-            switchDecadeClient(player, driver, formId);
-        }
-    }
-
     //处理物品
-    private static void handleInsertClient(Player player, ItemStack driver, ItemStack stack) {
+    private static void handleDriverChangeClient(Player player, ItemStack driver, ItemStack stack) {
         // 处理Decade
         switch (driver.getItem()) {
-            case DecaDriverItem decaDriver -> scheduleTicks(5, decaDriver::triggerClose);
+            case DecaDriverItem decaDriver -> {
+                if (stack != ItemStack.EMPTY) {
+                    scheduleTicks(5, decaDriver::triggerClose);
+                } else {
+                    decaDriver.triggerOpen();
+                }
+            }
 
             // 处理Agito
             case AlterRingItem alterRing -> {
+                if (stack == ItemStack.EMPTY) return;
                 if (stack.is(ModItems.BURNING_ELEMENT.get()) || stack.is(ModItems.SHINING_ELEMENT.get()))
                     playAnimation(player, "agito_prepare_b");
                 else playAnimation(player, "agito_prepare");
@@ -181,43 +194,44 @@ public class RiderHandlerClient {
         }
     }
 
-    private static void handleExtractClient(Player player, ItemStack driver, ItemStack stack) {
-        // 处理Decade
-        if (driver.getItem() instanceof DecaDriverItem decaDriver) {
-            decaDriver.triggerOpen();
-        }
-    }
-
-    private static void henshinKuugaClient(Player player, ItemStack driver, ResourceLocation formId) {
+    private static void handleKuugaClient(Player player, ItemStack driver, ResourceLocation formId, boolean isTransformed) {
         if (!(driver.getItem() instanceof ArcleItem arcleItem)) return;
-        if (player.isCrouching()) {
-            arcleItem.triggerAppear();
-            return;
+        if (!isTransformed) {
+            if (player.isCrouching()) {
+                setDriverAnim(driver, formId);
+                return;
+            }
+            playAnimation(player, "kuuga_henshin");
+            if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
+                scheduleTicks(5, arcleItem::triggerAppear);
+            }
+        } else {
+            if (player.isCrouching()) {
+                setDriverAnim(driver, formId);
+                return;
+            }
+            playAnimation(player, "kuuga_switch");
         }
-        playAnimation(player, "kuuga_henshin");
-
-        if (arcleItem.getCurrentAnimState().equals("inBody") || arcleItem.getCurrentAnimState().equals("shrink")) {
-            scheduleTicks(5, arcleItem::triggerAppear);
-        }
+        setDriverAnim(driver, formId);
     }
 
     private static void completeAgitoClient(Player player, ItemStack driver, ResourceLocation formId) {
-        playAnimation(player, "agito_henshin");
+        if (formId != null) {playAnimation(player, "agito_henshin");}
         scheduleTicks(10, () -> setDriverAnim(driver, formId));
         Minecraft.getInstance().getSoundManager().stop();
     }
 
-    private static void henshinMirrorClient(Player player, ItemStack driver, ResourceLocation formId) {
+    private static void handleMirrorClient(Player player, ItemStack driver, ResourceLocation formId) {
         if (formId.equals(MirrorConfig.RYUKI_BASE_ID)) {
             playAnimation(player, "ryuki_henshin");
         }
     }
 
-    private static void henshinDecadeClient(Player player, ItemStack driver, ResourceLocation formId) {
+    private static void handleDecadeClient(Player player, ItemStack driver, ResourceLocation formId, boolean isTransformed) {
         playAnimation(player, "decade_insert");
     }
 
-    private static void henshinMisc(Player player, ItemStack driver, ResourceLocation formId) {
+    private static void handleMisc(Player player, ItemStack driver, ResourceLocation formId) {
         ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
         if (head.getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.setCurrentState(AgitoGroundItem.AnimState.IDLE);
@@ -226,23 +240,6 @@ public class RiderHandlerClient {
             playAnimation(player, "shocker_greeting");
         }
 
-    }
-
-    private static void switchKuugaClient(Player player, ItemStack driver, ResourceLocation formId) {
-        if (player.isCrouching()) {
-            setDriverAnim(driver, formId);
-            return;
-        }
-        playAnimation(player, "kuuga_switch");
-        scheduleTicks(10, () -> setDriverAnim(driver, formId));
-    }
-
-    private static void switchMirrorClient(Player player, ItemStack driver, ResourceLocation formId) {
-
-    }
-
-    private static void switchDecadeClient(Player player, ItemStack driver, ResourceLocation formId) {
-        playAnimation(player, "decade_insert");
     }
 
     public static void setDriverAnim(ItemStack driver, ResourceLocation formId) {

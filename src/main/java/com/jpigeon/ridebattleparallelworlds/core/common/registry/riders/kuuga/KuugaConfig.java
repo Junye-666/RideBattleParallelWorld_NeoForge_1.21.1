@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
@@ -32,10 +33,12 @@ public class KuugaConfig {
     public static final ResourceLocation AMAZING_MIGHTY_ID = fromString("amazing_mighty_form");
     public static final ResourceLocation ULTIMATE_ID = fromString("ultimate_form");
 
+    public static final List<Item> KUUGA_ITEMS = List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get(), ModItems.RISING_MIGHTY_ELEMENT.get(), ModItems.RISING_DRAGON_ELEMENT.get(), ModItems.RISING_PEGASUS_ELEMENT.get(), ModItems.RISING_TITAN_ELEMENT.get(), ModItems.AMAZING_MIGHTY_ELEMENT.get(), ModItems.ULTIMATE_ELEMENT.get());
+
     public static final RiderConfig KUUGA = new RiderConfig(RiderIds.KUUGA_ID)
             .setMainDriverItem(ModItems.ARCLE.get(), EquipmentSlot.LEGS)
             .addMainDriverSlot(ARCLE_CORE,
-                    List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get(), ModItems.RISING_MIGHTY_ELEMENT.get(), ModItems.RISING_DRAGON_ELEMENT.get(),ModItems.RISING_PEGASUS_ELEMENT.get(), ModItems.RISING_TITAN_ELEMENT.get(), ModItems.AMAZING_MIGHTY_ELEMENT.get(), ModItems.ULTIMATE_ELEMENT.get()),
+                    KUUGA_ITEMS,
                     true,
                     true
             );
@@ -52,8 +55,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addSkill(RiderSkills.GROWING_KICK)
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_MIGHTY_FORM = new FormConfig(MIGHTY_ID)
             .setArmor(
@@ -69,8 +71,7 @@ public class KuugaConfig {
             .addRequiredItem(ARCLE_CORE, ModItems.MIGHTY_ELEMENT.get())
             .addSkill(RiderSkills.MIGHTY_KICK)
             .addSkill(RiderSkills.MIGHTY_PUNCH)
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_DRAGON_FORM = new FormConfig(DRAGON_ID)
             .setArmor(
@@ -85,8 +86,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1, AttributeModifier.Operation.ADD_VALUE)
             .addRequiredItem(ARCLE_CORE, ModItems.DRAGON_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_PEGASUS_FORM = new FormConfig(PEGASUS_ID)
             .setArmor(
@@ -100,8 +100,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.NIGHT_VISION, -1, 1, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 0, true)
             .addRequiredItem(ARCLE_CORE, ModItems.PEGASUS_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_TITAN_FORM = new FormConfig(TITAN_ID)
             .setArmor(
@@ -115,8 +114,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SLOWDOWN, -1, 0, true)
             .addRequiredItem(ARCLE_CORE, ModItems.TITAN_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_RISING_MIGHTY_FORM = new FormConfig(RISING_MIGHTY_ID)
             .setArmor(
@@ -131,8 +129,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 2, true)
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_MIGHTY_ELEMENT.get())
             .addSkill(RiderSkills.RISING_MIGHTY_KICK)
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_RISING_DRAGON_FORM = new FormConfig(RISING_DRAGON_ID)
             .setArmor(
@@ -147,8 +144,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 3, true)
             .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.attack_damage"), 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_DRAGON_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_RISING_PEGASUS_FORM = new FormConfig(RISING_PEGASUS_ID)
             .setArmor(
@@ -162,8 +158,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.NIGHT_VISION, -1, 1, true)
             .addEffect(MobEffects.MOVEMENT_SPEED, -1, 1, true)
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_PEGASUS_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 1.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_RISING_TITAN_FORM = new FormConfig(RISING_TITAN_ID)
             .setArmor(
@@ -178,8 +173,7 @@ public class KuugaConfig {
             .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
             .addEffect(MobEffects.MOVEMENT_SLOWDOWN, -1, 0, true)
             .addRequiredItem(ARCLE_CORE, ModItems.RISING_TITAN_ELEMENT.get())
-            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            ;
+            .addAttribute(ResourceLocation.fromNamespaceAndPath("minecraft", "generic.max_health"), 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final FormConfig KUUGA_AMAZING_MIGHTY_FORM = new FormConfig(AMAZING_MIGHTY_ID)
             .setArmor(

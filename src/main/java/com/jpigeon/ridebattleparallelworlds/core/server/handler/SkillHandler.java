@@ -1,10 +1,10 @@
 package com.jpigeon.ridebattleparallelworlds.core.server.handler;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.common.event.SkillEvent;
+import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientStateEventPacket;
+import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientSkillPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
@@ -53,7 +53,7 @@ public class SkillHandler {
         Player player = event.getPlayer();
         ResourceLocation skillId = event.getSkillId();
         handleSkill(player, skillId);
-        sendSkillEventToClient(event.getPlayer(), event.getFormId(), event.getSkillId());
+        sendSkillEventToClient(player, skillId);
     }
 
     @SubscribeEvent
@@ -418,29 +418,29 @@ public class SkillHandler {
         player.addEffect(new MobEffectInstance(effect, duration, level, true, false));
     }
 
-    private static void createExplosion(Player player, double x, double y, double z, float damage) {
+    private static void createExplosion(Player player, double x, double y, double z, float radius) {
         Level level = player.level();
-
+        if (level.isClientSide) return;
         // 创建爆炸
         level.explode(
                 player,                              // 爆炸源
                 x,                                   // X坐标
                 y,                                   // Y坐标
                 z,                                   // Z坐标
-                damage,                              // 爆炸威力
+                radius,                              // 爆炸半径
                 false,
                 Config.SKILL_EXPLODE_GRIEF.get() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE     // 爆炸类型
         );
     }
 
-    private static void createExplosion(Player player, LivingEntity entity, float damage) {
+    private static void createExplosion(Player player, LivingEntity entity, float radius) {
         BlockPos pos = entity.getOnPos();
-        createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), damage);
+        createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), radius);
     }
 
-    private static void createKickExplosion(Player player, LivingEntity entity, float damage) {
+    private static void createKickExplosion(Player player, LivingEntity entity, float radius) {
         BlockPos pos = entity.getOnPos();
-        createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), damage);
+        createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), radius);
     }
 
     // Tag辅助
@@ -482,7 +482,7 @@ public class SkillHandler {
         RideBattleAPI.scheduleTicks(ticks, runnable);
     }
 
-    private static void sendSkillEventToClient(Player player, ResourceLocation formId, ResourceLocation skillId) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new PWClientStateEventPacket("skill", formId, skillId));
+    private static void sendSkillEventToClient(Player player, ResourceLocation skillId) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new PWClientSkillPacket(skillId));
     }
 }

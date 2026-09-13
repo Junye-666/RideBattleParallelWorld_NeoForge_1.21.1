@@ -3,11 +3,12 @@ package com.jpigeon.ridebattleparallelworlds.core.server.handler;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
-import com.jpigeon.ridebattlelib.common.event.*;
+import com.jpigeon.ridebattlelib.server.event.FormSwitchEvent;
+import com.jpigeon.ridebattlelib.server.event.HenshinEvent;
+import com.jpigeon.ridebattlelib.server.event.ItemInsertionEvent;
+import com.jpigeon.ridebattlelib.server.event.UnhenshinEvent;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientItemEventPacket;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientStateEventPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
@@ -34,7 +35,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,6 @@ public class RiderHandler {
         ResourceLocation formId = event.getFormId();
         ResourceLocation riderId = event.getRiderId();
 
-        sendStateEventToClient(player, "henshin", riderId, formId);
         // 按riderId处理
         if (riderId.equals(RiderIds.KUUGA_ID)) {
             henshinKuuga(player, legs, formId);
@@ -68,8 +67,6 @@ public class RiderHandler {
     @SubscribeEvent
     public static void postUnhenshin(UnhenshinEvent.Post event) {
         Player player = event.getPlayer();
-
-        sendStateEventToClient(player, "unhenshin", event.getRiderId(), event.getFormId());
 
         if (event.getRiderId().equals(RiderIds.AGITO_ID)) {
             removeAgitoWeapon(player);
@@ -90,7 +87,6 @@ public class RiderHandler {
         ResourceLocation newFormId = event.getNewFormId();
 
         RiderConfig config = RiderConfig.findActiveDriverConfig(player);
-        sendStateEventToClient(player, "switch", config.getRiderId(), newFormId);
 
         // 按config处理
         if (config == KuugaConfig.KUUGA) {
@@ -119,13 +115,6 @@ public class RiderHandler {
         } else if (legs.getItem() instanceof AlterRingItem) {
             prepareAgito(player);
         }
-
-        sendItemEventToClient(player, "insert", event.getConfig().getRiderId(), stack);
-    }
-
-    @SubscribeEvent
-    public static void onExtract(SlotExtractionEvent.Post event) {
-        sendItemEventToClient(event.getPlayer(), "extract", event.getConfig().getRiderId(), event.getExtractedStack());
     }
 
     // 变身辅助
@@ -165,7 +154,7 @@ public class RiderHandler {
 
     private static void completeAgito(Player player, ItemStack legs, ResourceLocation formId) {
         // TODO : 燃烧/闪耀相关音效
-        playSound(player, ModSounds.AGITO_FINISH.get());
+        scheduleTicks(1, () -> playSound(player, ModSounds.AGITO_FINISH.get()));
         completeIn(10, player);
     }
 
@@ -182,8 +171,7 @@ public class RiderHandler {
 
     private static void henshinMirror(Player player, ResourceLocation formId) {
         // TODO : 镜系统完善
-        FormConfig form = RideBattleAPI.getFormConfig(player, formId);
-        // TODO playHenshinSound(player, form);
+        playSound(player, ModSounds.MIRROR_HENSHIN.get());
         Level level = player.level();
 
         if (formId.equals(MirrorConfig.RYUKI_BASE_ID)) {
@@ -233,14 +221,6 @@ public class RiderHandler {
 
     private static boolean isValidItem(ItemStack itemStack, TagKey<Item> tagKey) {
         return itemStack.is(tagKey);
-    }
-
-    private static void sendStateEventToClient(Player player, String eventType, ResourceLocation riderId, ResourceLocation formId) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new PWClientStateEventPacket(eventType, riderId, formId));
-    }
-
-    private static void sendItemEventToClient(Player player, String eventType, ResourceLocation riderId, ItemStack stack) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new PWClientItemEventPacket(eventType, stack));
     }
 
     private static void scheduleTicks(int ticks, Runnable runnable) {

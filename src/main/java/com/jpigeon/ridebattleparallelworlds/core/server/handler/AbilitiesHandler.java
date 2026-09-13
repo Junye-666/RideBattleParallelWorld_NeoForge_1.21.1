@@ -1,15 +1,20 @@
 package com.jpigeon.ridebattleparallelworlds.core.server.handler;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.common.event.FormSwitchEvent;
-import com.jpigeon.ridebattlelib.common.event.UnhenshinEvent;
+import com.jpigeon.ridebattlelib.server.event.FormSwitchEvent;
+import com.jpigeon.ridebattlelib.server.event.ItemInsertionEvent;
+import com.jpigeon.ridebattlelib.server.event.UnhenshinEvent;
+import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.component.ItemData;
 import com.jpigeon.ridebattleparallelworlds.core.common.data.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.util.ItemFormUtils;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -45,6 +50,25 @@ public class AbilitiesHandler {
     }
 
     @SubscribeEvent
+    public static void onItemInsert(ItemInsertionEvent.Post event) {
+        ResourceLocation slotId = event.getSlotId();
+        Player player = event.getPlayer();
+        ItemStack stack = event.getStack();
+        ResourceLocation formId = ItemFormUtils.RIDER_ITEM_FORM_MAP.get(stack.getItem());
+        if (formId == null) return;
+        ResourceLocation riderId;
+
+        if (slotId.equals(KuugaConfig.ARCLE_CORE)) {
+            riderId = RiderIds.KUUGA_ID;
+            unlockFormIfLocked(player, riderId, formId);
+        } else if (slotId.equals(AgitoConfig.ALTER_RING_CORE)) {
+            riderId = RiderIds.AGITO_ID;
+            unlockFormIfLocked(player, riderId, formId);
+        }
+
+    }
+
+    @SubscribeEvent
     public static void onUnhenshin(UnhenshinEvent.Post event) {
         Player player = event.getPlayer();
         ResourceLocation formId = event.getFormId();
@@ -57,7 +81,8 @@ public class AbilitiesHandler {
             removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
         else if (formId.equals(KuugaConfig.RISING_TITAN_ID))
             removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
-        else if (MirrorConfig.MIRROR_SYSTEM.includesFormId(formId)) player.setItemSlot(EquipmentSlot.LEGS, Items.AIR.getDefaultInstance());
+        else if (MirrorConfig.MIRROR_SYSTEM.includesFormId(formId))
+            player.setItemSlot(EquipmentSlot.LEGS, Items.AIR.getDefaultInstance());
     }
 
     @SubscribeEvent
@@ -85,11 +110,15 @@ public class AbilitiesHandler {
             }
         } else {
             if (oldFormId.equals(KuugaConfig.DRAGON_ID)) removeItemFromPlayer(ModItems.DRAGON_ROD.get(), player);
-            else if (oldFormId.equals(KuugaConfig.PEGASUS_ID)) removeItemFromPlayer(ModItems.PEGASUS_BOWGUN.get(), player);
+            else if (oldFormId.equals(KuugaConfig.PEGASUS_ID))
+                removeItemFromPlayer(ModItems.PEGASUS_BOWGUN.get(), player);
             else if (oldFormId.equals(KuugaConfig.TITAN_ID)) removeItemFromPlayer(ModItems.TITAN_SWORD.get(), player);
-            else if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID)) removeItemFromPlayer(ModItems.RISING_DRAGON_ROD.get(), player);
-            else if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID)) removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
-            else if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID)) removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
+            else if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID))
+                removeItemFromPlayer(ModItems.RISING_DRAGON_ROD.get(), player);
+            else if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID))
+                removeItemFromPlayer(ModItems.RISING_PEGASUS_BOWGUN.get(), player);
+            else if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID))
+                removeItemFromPlayer(ModItems.RISING_TITAN_SWORD.get(), player);
         }
     }
 
@@ -119,7 +148,7 @@ public class AbilitiesHandler {
 
                 ItemStack restoredStack = toRestoredItem(stack);
 
-                // 移除龙杖
+                // 移除
                 if (restoredStack != null) {
                     inventory.setItem(i, restoredStack);
                 }
@@ -213,5 +242,13 @@ public class AbilitiesHandler {
         ItemData originData = originItem.get(ModDataComponents.ORIGIN_ITEM_DATA.get());
         targetItem.set(ModDataComponents.ORIGIN_ITEM_DATA.get(), originData);
         replaceItemStackWith(originItem, targetItem, player);
+    }
+
+    private static void unlockFormIfLocked(Player player, ResourceLocation riderId, ResourceLocation formId) {
+        if (!ParallelWorldsApi.isFormUnlocked(player, riderId, formId)) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                ParallelWorldsApi.unlockForm(serverPlayer, riderId, formId);
+            }
+        }
     }
 }

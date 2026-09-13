@@ -83,6 +83,17 @@
       "ridebattleparallelworlds:agito/agito_finish"
     ]
   },
+  "mirror_henshin": {
+    "subtitle": "sounds.ridebattleparallelworlds.mirror_henshin",
+    "sounds": [
+      "ridebattleparallelworlds:ryuki/mirror_henshin"
+    ]
+  },"summon_v_buckle": {
+    "subtitle": "sounds.ridebattleparallelworlds.summon_v_buckle",
+    "sounds": [
+      "ridebattleparallelworlds:ryuki/summon_v_buckle"
+    ]
+  },
   "decade_insert": {
     "subtitle": "sounds.ridebattleparallelworlds.decade_insert",
     "sounds": [

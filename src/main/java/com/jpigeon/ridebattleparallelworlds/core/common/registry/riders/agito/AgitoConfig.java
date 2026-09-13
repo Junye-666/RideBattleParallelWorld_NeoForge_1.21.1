@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 
 import java.util.List;
 
@@ -23,11 +24,14 @@ public class AgitoConfig {
     public static final ResourceLocation STORM_ID = fromString("storm_form");
     public static final ResourceLocation TRINITY_ID = fromString("trinity_form");
     public static final ResourceLocation BURNING_ID = fromString("burning_form");
+    public static final ResourceLocation SHINING_ID = fromString("shining_form");
+
+    public static final List<Item> AGITO_ITEMS = List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get(), ModItems.TRINITY_ELEMENT.get(), ModItems.BURNING_ELEMENT.get());
 
     public static final RiderConfig AGITO = new RiderConfig(RiderIds.AGITO_ID)
             .setMainDriverItem(ModItems.ALTER_RING.get(), EquipmentSlot.LEGS)
             .addMainDriverSlot(ALTER_RING_CORE,
-                    List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get(), ModItems.TRINITY_ELEMENT.get(), ModItems.BURNING_ELEMENT.get()),
+                    AGITO_ITEMS,
                     true,
                     true
             )

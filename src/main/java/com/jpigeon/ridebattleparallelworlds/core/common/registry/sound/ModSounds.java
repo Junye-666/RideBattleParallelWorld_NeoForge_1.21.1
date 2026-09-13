@@ -34,6 +34,9 @@ public class ModSounds {
     public static final Supplier<SoundEvent> AGITO_STEADY = registerSoundEvent("agito_steady");
     public static final Supplier<SoundEvent> AGITO_FINISH = registerSoundEvent("agito_finish");
 
+    public static final Supplier<SoundEvent> SUMMON_V_BUCKLE = registerSoundEvent("summon_v_buckle");
+    public static final Supplier<SoundEvent> MIRROR_HENSHIN = registerSoundEvent("mirror_henshin");
+
     public static final Supplier<SoundEvent> DECADE_INSERT = registerSoundEvent("decade_insert");
     public static final Supplier<SoundEvent> KAMEN_RIDE = registerSoundEvent("kamen_ride");
     public static final Supplier<SoundEvent> KR_DECADE = registerSoundEvent("kr_decade");
@@ -80,17 +83,17 @@ public class ModSounds {
     }
 
     public static void registerFormSoundMap() {
-        registerHenshinSound(KuugaConfig.KUUGA_GROWING_FORM, KUUGA_MIGHTY.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_MIGHTY_FORM, KUUGA_MIGHTY.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_DRAGON_FORM, KUUGA_DRAGON.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_PEGASUS_FORM, KUUGA_PEGASUS.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_TITAN_FORM, KUUGA_TITAN.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_MIGHTY_FORM, KUUGA_RISING_MIGHTY.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_DRAGON_FORM, KUUGA_RISING_DRAGON.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_PEGASUS_FORM, KUUGA_RISING_PEGASUS.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_TITAN_FORM, KUUGA_RISING_TITAN.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM, KUUGA_AMAZING_MIGHTY.get(), 80);
-        registerHenshinSound(KuugaConfig.KUUGA_ULTIMATE_FORM, KUUGA_ULTIMATE.get(), 80);
+        registerHenshinSound(KuugaConfig.KUUGA_GROWING_FORM, KUUGA_MIGHTY.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_MIGHTY_FORM, KUUGA_MIGHTY.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_DRAGON_FORM, KUUGA_DRAGON.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_PEGASUS_FORM, KUUGA_PEGASUS.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_TITAN_FORM, KUUGA_TITAN.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_MIGHTY_FORM, KUUGA_RISING_MIGHTY.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_DRAGON_FORM, KUUGA_RISING_DRAGON.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_PEGASUS_FORM, KUUGA_RISING_PEGASUS.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_RISING_TITAN_FORM, KUUGA_RISING_TITAN.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM, KUUGA_AMAZING_MIGHTY.get(), 75);
+        registerHenshinSound(KuugaConfig.KUUGA_ULTIMATE_FORM, KUUGA_ULTIMATE.get(), 75);
 
         registerHenshinSound(DecadeConfig.DECADE_BASE, KR_DECADE.get(), 65);
         registerHenshinSound(DecadeConfig.DECADE_KUUGA_MIGHTY, KR_KUUGA.get(), 65);

@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.common.event.SkillEvent;
+import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
@@ -42,7 +42,7 @@ public class FlameSaberItem extends BaseRiderGeoItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (!RideBattleAPI.isTransformed(player)) return InteractionResultHolder.pass(itemStack);
         if (RideBattleAPI.isSpecificForm(player, AgitoConfig.FLAME_ID) || RideBattleAPI.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
