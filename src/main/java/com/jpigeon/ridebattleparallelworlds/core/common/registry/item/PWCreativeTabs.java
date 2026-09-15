@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 
-import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.fromString;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.id;
 
 public class PWCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
@@ -38,7 +38,7 @@ public class PWCreativeTabs {
     public static final Supplier<CreativeModeTab> AGITO_ITEMS_TAB = CREATIVE_MODE_TAB.register("agito_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GROUND_HELMET.get()))
                     .title(Component.translatable("creativeTab.ridebattleparallelworlds.agito_items"))
-                    .withTabsBefore(fromString("kuuga_items_tab"))
+                    .withTabsBefore(id("kuuga_items_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.ALTER_RING);
                         output.accept(ModItems.GROUND_ELEMENT);
@@ -54,7 +54,7 @@ public class PWCreativeTabs {
     public static final Supplier<CreativeModeTab> DECADE_ITEMS_TAB = CREATIVE_MODE_TAB.register("decade_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.DECADE_HELMET.get()))
                     .title(Component.translatable("creativeTab.ridebattleparallelworlds.decade_items"))
-                    .withTabsBefore(fromString("agito_items_tab"))
+                    .withTabsBefore(id("agito_items_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.DECA_DRIVER);
                         output.accept(ModItems.WORLDS_FRAGMENT);

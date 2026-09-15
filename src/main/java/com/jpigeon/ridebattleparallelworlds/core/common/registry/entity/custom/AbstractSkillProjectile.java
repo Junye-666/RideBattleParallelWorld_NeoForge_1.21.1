@@ -1,9 +1,11 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.custom;
 
 import com.jpigeon.ridebattleparallelworlds.Config;
+import com.jpigeon.rideevolutionlib.util.SkillUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -167,27 +169,10 @@ public abstract class AbstractSkillProjectile extends ThrowableItemProjectile {
     }
 
     protected void createExplosion() {
-        if (this.getOwner() != null) {
-            this.level().explode(
-                    this.getOwner(),
-                    this.getX(),
-                    this.getY(),
-                    this.getZ(),
-                    explosionPower,
-                    causesFire,
-                    destroyBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE
-            );
-        } else {
-            this.level().explode(
-                    this,
-                    this.getX(),
-                    this.getY(),
-                    this.getZ(),
-                    explosionPower,
-                    causesFire,
-                    destroyBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE
-            );
-        }
+        Player ownerPlayer = (this.getOwner() instanceof Player p) ? p : null;
+        SkillUtils.explode(ownerPlayer, this.level(),
+                this.getX(), this.getY(), this.getZ(),
+                explosionPower, explosionPower * 3.0f);
     }
 
     // ===== 配置方法 =====

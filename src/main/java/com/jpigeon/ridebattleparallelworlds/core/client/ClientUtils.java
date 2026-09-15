@@ -16,5 +16,4 @@ public class ClientUtils {
             player.hurtMarked = true;
         }
     }
-
 }

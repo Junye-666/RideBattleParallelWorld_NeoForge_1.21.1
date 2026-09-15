@@ -41,9 +41,8 @@ public class DragonRodItem extends BaseRiderGeoItem {
         if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
             if (RideBattleAPI.isSpecificForm(player, KuugaConfig.DRAGON_ID)) {
                 player.getCooldowns().addCooldown(this, 310);
-                if (usedHand.equals(InteractionHand.MAIN_HAND)) {
-                    triggerMainSpin();
-                } else triggerOffSpin();
+                if (usedHand.equals(InteractionHand.MAIN_HAND)) triggerMainSpin();
+                else triggerOffSpin();
                 RideBattleAPI.triggerSkill(player, RiderSkills.SPLASH_DRAGON, SkillEvent.SkillTriggerType.WEAPON);
             }
         }

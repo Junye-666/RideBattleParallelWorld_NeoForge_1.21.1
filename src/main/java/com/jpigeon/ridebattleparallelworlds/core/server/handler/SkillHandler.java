@@ -7,6 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWClientSkillPacket;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkillFlags;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.armor.AgitoGroundItem;
@@ -16,7 +17,9 @@ import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.it
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.item.StormHalberdItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.DragonRodItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.item.RisingDragonRodItem;
-import com.jpigeon.ridebattleparallelworlds.core.server.util.SkillUtils;
+import com.jpigeon.ridebattleparallelworlds.core.server.util.ProjectileUtils;
+import com.jpigeon.rideevolutionlib.util.SkillUtils;
+import com.jpigeon.rideevolutionlib.util.state.StateFlagManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -93,37 +96,29 @@ public class SkillHandler {
         SKILL_METHOD_MAP.put(RiderSkills.SHINING_CALIBUR, SkillHandler::shiningCalibur);
     }
 
-    private static void handleSkill(Player serverPlayer, ResourceLocation skillId) {
-        String tag = RiderSkills.SKILL_TAGS_MAP.get(skillId);
-        if (tag != null) {
-            addTag(serverPlayer, tag);
-        }
-
-        Consumer<Player> skillConsumer = SKILL_METHOD_MAP.get(skillId);
-        if (skillConsumer != null) {
-            skillConsumer.accept(serverPlayer);
-            serverPlayer.hurtMarked = true;
-        }
+    private static void handleSkill(Player player, ResourceLocation skillId) {
+        Consumer<Player> consumer = SKILL_METHOD_MAP.get(skillId);
+        if (consumer == null) return;
+        consumer.accept(player);
+        player.hurtMarked = true;
     }
 
     // ==========技能业务逻辑==========
     // 空我
     private static void growingKick(Player player) {
         int duration = calculateTolerance(40);
-        kickSequence(player, duration);
 
         addResistance(player, duration);
 
-        scheduleTicks(duration, () -> removeTag(player, "skill_growing_kick"));
+        kickSequence(player, RiderSkillFlags.GROWING_KICK, duration);
     }
 
     private static void mightyKick(Player player) {
         int duration = calculateTolerance(40);
-        kickSequence(player, duration);
 
         addResistance(player, duration);
 
-        scheduleTicks(duration, () -> removeTag(player, "skill_mighty_kick"));
+        kickSequence(player, RiderSkillFlags.MIGHTY_KICK, duration);
     }
 
     private static void splashDragon(Player player) {
@@ -150,7 +145,7 @@ public class SkillHandler {
         addResistance(player, 20);
 
         scheduleTicks(10, () ->
-                SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
+                ProjectileUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
                                 .setExplosionPower(3)
@@ -178,11 +173,10 @@ public class SkillHandler {
 
     private static void risingMightyKick(Player player) {
         int duration = calculateTolerance(40);
-        kickSequence(player, duration);
-        addTag(player, "skill_rising_mighty_kick");
+
         addResistance(player, duration);
 
-        scheduleTicks(duration, () -> removeTag(player, "skill_rising_mighty_kick"));
+        kickSequence(player, RiderSkillFlags.RISING_MIGHTY_KICK, duration);
     }
 
     private static void risingSplashDragon(Player player) {
@@ -211,7 +205,7 @@ public class SkillHandler {
         addResistance(player, 20);
 
         scheduleTicks(10, () ->
-                SkillUtils.launchCustom(player, 3.0F, skillProjectile ->
+                ProjectileUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(ModItems.PEGASUS_ELEMENT.get())
                                 .setBaseDamage(2)
                                 .setExplosionPower(4)
@@ -239,26 +233,23 @@ public class SkillHandler {
 
     private static void amazingMightyKick(Player player) {
         int duration = calculateTolerance(40);
-        kickSequence(player, duration);
 
         addResistance(player, duration);
 
-        scheduleTicks(duration, () -> removeTag(player, "skill_amazing_mighty_kick"));
+        kickSequence(player, RiderSkillFlags.AMAZING_MIGHTY_KICK, duration);
     }
 
     private static void ultimateKick(Player player) {
         int duration = calculateTolerance(40);
-        kickSequence(player, duration);
 
         addResistance(player, duration);
 
-        scheduleTicks(duration, () -> removeTag(player, "skill_ultimate_kick"));
+        kickSequence(player, RiderSkillFlags.ULTIMATE_KICK, duration);
     }
 
     // 亚极陀
     private static void groundKick(Player player) {
         int duration = calculateTolerance(70);
-        kickSequence(player, duration);
         Level level = player.level();
         AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
         effect.setOwner(player);
@@ -270,7 +261,7 @@ public class SkillHandler {
             scheduleTicks(duration, agitoGround::setClosed);
         }
 
-        scheduleTicks(duration, () -> removeTag(player, "skill_ground_kick"));
+        kickSequence(player, RiderSkillFlags.GROUND_KICK, duration);
     }
 
     private static void flameSaber(Player player) {
@@ -302,104 +293,81 @@ public class SkillHandler {
             living.igniteForSeconds(3);
         }
 
-        handleBufferedDamage(player, living, mainHand, offHand);
+        if (!StateFlagManager.activeFlags(player).isEmpty()) {
+            handleBufferedDamage(player, living, mainHand, offHand);
+        }
     }
 
-    private static void handleBufferedDamage(Player player, LivingEntity living, ItemStack mainHand, ItemStack offHand) {
-        List<String> skillTags = player.getTags().stream()
-                .filter(tag -> tag.startsWith("skill_"))
-                .toList();
-
-        for (String skillTag : skillTags) {
-            switch (skillTag) {
-                case "skill_saber_slash" -> {
-                    if (mainHand.getItem() instanceof FlameSaberItem flameSaber) {
-                        hurt(player, living, 30);
-                        flameSaber.setClose();
-                    }
-                }
-                case "skill_halberd_spin" -> {
-                    if (mainHand.getItem() instanceof StormHalberdItem stormHalberd) {
-                        hurt(player, living, 35);
-                        stormHalberd.setClose();
-                    }
-                }
-                case "skill_firestorm_attack" -> {
-                    if (mainHand.getItem() instanceof FlameSaberItem flameSaber
-                            && offHand.getItem() instanceof StormHalberdItem stormHalberd) {
-                        hurt(player, living, 70);
-                        flameSaber.setClose();
-                        stormHalberd.setClose();
-                    }
-                }
-                case "skill_burning_bomber" -> {
-                    if (mainHand.getItem() instanceof ShiningCaliburItem) {
-                        hurt(player, living, 60);
-                        knockBack(player, living, 2);
-                        scheduleTicks(20, () -> createExplosion(player, living, 4));
-                    }
-                }
-                case "skill_mighty_punch" -> {
-                    hurt(player, living, 15);
-                    knockBack(player, living, 2);
-                }
-                default -> {
-                }
-            }
-            removeTag(player, skillTag);
-
-            RideBattleAPI.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
+    private static void handleBufferedDamage(Player player, LivingEntity living,
+                                             ItemStack mainHand, ItemStack offHand) {
+        if (RiderSkillFlags.isActive(player, RiderSkillFlags.SABER_SLASH)
+                && mainHand.getItem() instanceof FlameSaberItem saber) {
+            hurt(player, living, 30);
+            saber.setClose();
+            RiderSkillFlags.remove(player, RiderSkillFlags.SABER_SLASH);
+        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.HALBERD_SPIN)
+                && mainHand.getItem() instanceof StormHalberdItem halberd) {
+            hurt(player, living, 35);
+            halberd.setClose();
+            RiderSkillFlags.remove(player, RiderSkillFlags.HALBERD_SPIN);
+        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.FIRESTORM_ATTACK)
+                && mainHand.getItem() instanceof FlameSaberItem saber
+                && offHand.getItem() instanceof StormHalberdItem halberd) {
+            hurt(player, living, 70);
+            saber.setClose();
+            halberd.setClose();
+            RiderSkillFlags.remove(player, RiderSkillFlags.FIRESTORM_ATTACK);
+        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.BURNING_BOMBER)
+                && mainHand.getItem() instanceof ShiningCaliburItem) {
+            hurt(player, living, 60);
+            knockBack(player, living, 2);
+            RideBattleAPI.scheduleTicks(20, () -> createExplosion(player, living, 4));
+            RiderSkillFlags.remove(player, RiderSkillFlags.BURNING_BOMBER);
+        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.MIGHTY_PUNCH)) {
+            hurt(player, living, 15);
+            knockBack(player, living, 2);
+            RiderSkillFlags.remove(player, RiderSkillFlags.MIGHTY_PUNCH);
         }
+
+        RideBattleAPI.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
     }
 
     private static void handleKickCollide(Player player) {
-        if (!player.level().isClientSide() && isKicking(player)) {
+        if (!RiderSkillFlags.isActive(player, RiderSkillFlags.KICKING)) return;
 
-            List<String> skillTags = player.getTags().stream()
-                    .filter(tag -> tag.startsWith("skill_") && tag.endsWith("_kick"))
-                    .toList();
-            if (skillTags.isEmpty()) return;
 
-            Level level = player.level();
 
-            // 水平方向（避免踢到天上）
-            Vec3 look = player.getLookAngle();
-            Vec3 horizontalLook = new Vec3(look.x, 0, look.z).normalize();
+        // 水平方向（避免踢到天上）
+        Vec3 look = player.getLookAngle();
+        Vec3 horizontalLook = new Vec3(look.x, 0, look.z).normalize();
 
-            // 前方扩展距离（飞踢前伸）
-            double forwardDistance = 0.8;
+        // 扩展玩家碰撞盒
+        AABB kickBox = player.getBoundingBox()
+                .expandTowards(horizontalLook.scale(0.8))
+                .inflate(0.3);
 
-            // 扩展玩家碰撞盒
-            AABB kickBox = player.getBoundingBox()
-                    .expandTowards(horizontalLook.scale(forwardDistance))
-                    .inflate(0.3); // 稍微加点宽度
+        List<LivingEntity> entities = player.level().getEntitiesOfClass(
+                LivingEntity.class,
+                kickBox,
+                e -> e != player && e.isAlive()
+        );
 
-            List<LivingEntity> entities = level.getEntitiesOfClass(
-                    LivingEntity.class,
-                    kickBox,
-                    e -> e != player && e.isAlive()
-            );
+        if (entities.isEmpty()) return;
 
-            if (entities.isEmpty()) return;
+        ResourceLocation kickFlag = RiderSkillFlags.currentKickFlag(player);
+        if (kickFlag == null) return;
+        Float radius = RiderSkillFlags.KICK_RADIUS.get(kickFlag);
+        if (radius == null) return;
 
-            for (LivingEntity entity : entities) {
-                if (entity.getType().equals(EntityType.ARMOR_STAND)) return;
-                for (String skillTag : skillTags) {
-                    switch (skillTag) {
-                        case "skill_growing_kick" -> createKickExplosion(player, entity, 2);
-                        case "skill_mighty_kick", "skill_ground_kick" -> createKickExplosion(player, entity, 3);
-                        case "skill_rising_mighty_kick" -> createKickExplosion(player, entity, 4);
-                        case "skill_amazing_mighty_kick" -> createKickExplosion(player, entity, 5);
-                        case "skill_ultimate_kick" -> createKickExplosion(player, entity, 7);
-                    }
-
-                    removeTag(player, skillTag);
-                    removeTag(player, "rider_kicking");
-                }
-
-                break;
-            }
+        for (LivingEntity entity : entities) {
+            if (entity.getType().equals(EntityType.ARMOR_STAND)) continue;
+            createKickExplosion(player, entity, radius);
+            break;   // 一帧只消耗一次
         }
+
+        // 消费：清 KICKING + 具体 kick flag
+        RiderSkillFlags.remove(player, RiderSkillFlags.KICKING);
+        RiderSkillFlags.remove(player, kickFlag);
     }
 
     private static int calculateTolerance(int origin) {
@@ -419,18 +387,7 @@ public class SkillHandler {
     }
 
     private static void createExplosion(Player player, double x, double y, double z, float radius) {
-        Level level = player.level();
-        if (level.isClientSide) return;
-        // 创建爆炸
-        level.explode(
-                player,                              // 爆炸源
-                x,                                   // X坐标
-                y,                                   // Y坐标
-                z,                                   // Z坐标
-                radius,                              // 爆炸半径
-                false,
-                Config.SKILL_EXPLODE_GRIEF.get() ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE     // 爆炸类型
-        );
+        SkillUtils.explode(player, player.level(), x, y, z, radius, radius * 4.0f);
     }
 
     private static void createExplosion(Player player, LivingEntity entity, float radius) {
@@ -440,7 +397,9 @@ public class SkillHandler {
 
     private static void createKickExplosion(Player player, LivingEntity entity, float radius) {
         BlockPos pos = entity.getOnPos();
-        createExplosion(player, pos.getX(), pos.getY() + 1.5, pos.getZ(), radius);
+        // 骑士踢中心偏高（击中躯干）
+        SkillUtils.explode(player, player.level(),
+                pos.getX(), pos.getY() + 1.5, pos.getZ(), radius, radius * 4.0f);
     }
 
     // Tag辅助
@@ -456,19 +415,19 @@ public class SkillHandler {
         }
     }
 
-    private static boolean isKicking(Player player) {
-        return player.getTags().contains("rider_kicking");
+    private static void flagKick(Player player, int ticks) {
+        scheduleTicks(10, () -> StateFlagManager.apply(player, RiderSkillFlags.KICKING, ticks));
     }
 
-    private static void kickSequence(Player player, int ticks) {
-        scheduleTicks(10, () -> addTag(player, "rider_kicking"));
-        scheduleTicks(ticks, () -> removeTag(player, "rider_kicking"));
+    private static void kickSequence(Player player, ResourceLocation flag, int duration) {
+        flagKick(player, duration);
+        RiderSkillFlags.apply(player, flag, duration);
     }
 
     // 伤害辅助
     private static void hurt(Player player, LivingEntity target, float amount) {
         if (!target.level().isClientSide() && target.isAlive()) {
-            target.hurt(target.damageSources().mobAttack(player), amount);
+            target.hurt(player.damageSources().playerAttack(player), amount);
         }
     }
 

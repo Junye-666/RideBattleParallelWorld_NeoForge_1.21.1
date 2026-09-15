@@ -12,12 +12,12 @@ import net.minecraft.world.item.Items;
 
 import java.util.List;
 
-import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.fromString;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.id;
 
 public class ShockerConfig {
-    public static final ResourceLocation SHOCKER_ID = fromString("shocker");
-    public static final ResourceLocation SHOCKER_SLOT = fromString("shocker_slot");
-    public static final ResourceLocation COMBATMAN_ID = fromString("combatman");
+    public static final ResourceLocation SHOCKER_ID = id("shocker");
+    public static final ResourceLocation SHOCKER_SLOT = id("shocker_slot");
+    public static final ResourceLocation COMBATMAN_ID = id("combatman");
 
     public static RiderConfig SHOCKER = new RiderConfig(SHOCKER_ID)
             .setMainDriverItem(ModItems.SHOCKER_HELMET.get(), EquipmentSlot.HEAD)

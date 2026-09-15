@@ -15,23 +15,23 @@ import net.minecraft.world.item.Items;
 
 import java.util.List;
 
-import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.fromString;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.id;
 
 public class KuugaConfig {
     // 形态
-    public static final ResourceLocation ARCLE_CORE = fromString("arcle_core");
+    public static final ResourceLocation ARCLE_CORE = id("arcle_core");
 
-    public static final ResourceLocation GROWING_ID = fromString("growing_form");
-    public static final ResourceLocation MIGHTY_ID = fromString("mighty_form");
-    public static final ResourceLocation DRAGON_ID = fromString("dragon_form");
-    public static final ResourceLocation PEGASUS_ID = fromString("pegasus_form");
-    public static final ResourceLocation TITAN_ID = fromString("titan_form");
-    public static final ResourceLocation RISING_MIGHTY_ID = fromString("rising_mighty_form");
-    public static final ResourceLocation RISING_DRAGON_ID = fromString("rising_dragon_form");
-    public static final ResourceLocation RISING_PEGASUS_ID = fromString("rising_pegasus_form");
-    public static final ResourceLocation RISING_TITAN_ID = fromString("rising_titan_form");
-    public static final ResourceLocation AMAZING_MIGHTY_ID = fromString("amazing_mighty_form");
-    public static final ResourceLocation ULTIMATE_ID = fromString("ultimate_form");
+    public static final ResourceLocation GROWING_ID = id("growing_form");
+    public static final ResourceLocation MIGHTY_ID = id("mighty_form");
+    public static final ResourceLocation DRAGON_ID = id("dragon_form");
+    public static final ResourceLocation PEGASUS_ID = id("pegasus_form");
+    public static final ResourceLocation TITAN_ID = id("titan_form");
+    public static final ResourceLocation RISING_MIGHTY_ID = id("rising_mighty_form");
+    public static final ResourceLocation RISING_DRAGON_ID = id("rising_dragon_form");
+    public static final ResourceLocation RISING_PEGASUS_ID = id("rising_pegasus_form");
+    public static final ResourceLocation RISING_TITAN_ID = id("rising_titan_form");
+    public static final ResourceLocation AMAZING_MIGHTY_ID = id("amazing_mighty_form");
+    public static final ResourceLocation ULTIMATE_ID = id("ultimate_form");
 
     public static final List<Item> KUUGA_ITEMS = List.of(ModItems.MIGHTY_ELEMENT.get(), ModItems.DRAGON_ELEMENT.get(), ModItems.PEGASUS_ELEMENT.get(), ModItems.TITAN_ELEMENT.get(), ModItems.RISING_MIGHTY_ELEMENT.get(), ModItems.RISING_DRAGON_ELEMENT.get(), ModItems.RISING_PEGASUS_ELEMENT.get(), ModItems.RISING_TITAN_ELEMENT.get(), ModItems.AMAZING_MIGHTY_ELEMENT.get(), ModItems.ULTIMATE_ELEMENT.get());
 

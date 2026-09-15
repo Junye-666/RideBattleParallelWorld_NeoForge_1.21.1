@@ -112,14 +112,8 @@ public record ItemData(
         if (!itemId.equals(id)) return false;
         if (!customName.equals(name)) return false;
 
-        // 比较 enchantmentsTag
-        if (enchantments.isPresent() && enchantments1.isPresent()) {
-            return enchantments.get().equals(enchantments1.get());
-        } else if (enchantments.isPresent() || enchantments1.isPresent()) {
-            return false;
-        }
-
-        return false;
+        // 两个都 empty 应该相等
+        return enchantments.equals(enchantments1);
     }
 
     @Override

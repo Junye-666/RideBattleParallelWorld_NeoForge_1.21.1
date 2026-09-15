@@ -16,8 +16,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
-;
-
 public class AlterRingItem extends BaseRiderArmorItem {
     public AlterRingItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(RideBattleParallelWorlds.MODID, "agito", "alter_ring", material, type, properties, true);

@@ -64,6 +64,17 @@ public class PWData {
         );
     }
 
+    public void replaceAllUnlockData(Map<ResourceLocation, Map<ResourceLocation, Boolean>> all) {
+        clearAllFormUnlockData();
+        for (var riderEntry : all.entrySet()) {
+            for (var formEntry : riderEntry.getValue().entrySet()) {
+                if (formEntry.getValue()) {
+                    formUnlockData.unlockForm(riderEntry.getKey(), formEntry.getKey());
+                }
+            }
+        }
+    }
+
     public boolean isFormUnlocked(ResourceLocation riderId, ResourceLocation formId) {
         return formUnlockData.isFormUnlocked(riderId, formId);
     }

@@ -1,7 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds.core.client.handler;
 
 import com.jpigeon.ridebattlelib.client.cache.ClientTransformedCache;
-import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.MirrorConfig;
@@ -35,9 +34,10 @@ public class RenderHandler {
     @SubscribeEvent
     public static void onRenderGeo(GeoRenderEvent.Armor.Post event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (RideBattleAPI.isSpecificRider(player, RiderIds.MIRROR_SYSTEM_ID)) {
-            handleVBuckleDeckRender(player, event);
-        }
+
+        // 走缓存，避免遍历注册表
+        ResourceLocation riderId = ClientTransformedCache.getRiderId(player.getUUID());
+        if (RiderIds.MIRROR_SYSTEM_ID.equals(riderId)) handleVBuckleDeckRender(player, event);
     }
 
     private static void handleVBuckleDeckRender(Player player, GeoRenderEvent.Armor.Post event) {

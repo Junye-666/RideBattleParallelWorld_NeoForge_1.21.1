@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 /**
  * 弹射物发射器工具类
  */
-public class SkillUtils {
+public class ProjectileUtils {
 
     /**
      * 创建并发射一个标准弹射物

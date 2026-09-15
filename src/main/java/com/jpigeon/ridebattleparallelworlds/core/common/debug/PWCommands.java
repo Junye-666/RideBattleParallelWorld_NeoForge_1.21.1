@@ -15,7 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Map;
 
-import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.fromString;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.id;
 
 public class PWCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -45,8 +45,8 @@ public class PWCommands {
         ServerPlayer player = source.getPlayer();
         if (player == null) return 0;
 
-        ResourceLocation riderId = fromString(riderName);
-        ResourceLocation formId = fromString(formName);
+        ResourceLocation riderId = id(riderName);
+        ResourceLocation formId = id(formName);
 
         // 解锁前状态
         PWData dataBefore = player.getData(PWAttachments.PW_DATA);

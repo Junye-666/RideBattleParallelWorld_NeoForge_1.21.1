@@ -8,7 +8,6 @@ import com.jpigeon.ridebattlelib.server.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.server.system.DriverSystem;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderForms;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AlterRingItem;
@@ -25,23 +24,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FormWheel {
-    private static final Map<List<ResourceLocation>, Integer> currentIndex = new HashMap<>();
-
-    static {
-        currentIndex.put(RiderForms.KUUGA_FORMS, 0);
-        currentIndex.put(RiderForms.AGITO_FORMS, 0);
-    }
+    private static final Map<UUID, Map<ResourceLocation, Integer>> currentIndex = new ConcurrentHashMap<>();
 
     @SubscribeEvent
     public static void onReturnItem(ReturnItemsEvent.Post event) {
-        if (event.isCanceled()) return;
         RiderConfig config = event.getConfig();
         if (config != RiderConfig.findActiveDriverConfig(event.getPlayer())) return;
         if (config.equals(KuugaConfig.KUUGA) || config.equals(AgitoConfig.AGITO)) {
@@ -59,74 +54,76 @@ public class FormWheel {
         }
     }
 
-    public static int getCurrentIndex(List<ResourceLocation> list) {
-        return currentIndex.getOrDefault(list, 0);
+    public static int getCurrentIndex(UUID playerId, ResourceLocation riderId) {
+        return currentIndex
+                .computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
+                .getOrDefault(riderId, 0);
     }
 
-    private static void setCurrentIndex(List<ResourceLocation> list, int index) {
-        currentIndex.put(list, index);
+    private static void setCurrentIndex(UUID playerId, ResourceLocation riderId, int index) {
+        currentIndex
+                .computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
+                .put(riderId, index);
     }
 
     public static void handleRotate(Player player) {
+        UUID playerId = player.getUUID();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         if (legs.getItem() instanceof ArcleItem) {
-            ResourceLocation kuuga = RiderIds.KUUGA_ID;
-
             // 获取所有已解锁形态
-            List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, kuuga);
+            List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, RiderIds.KUUGA_ID);
 
             if (unlockedForms.isEmpty()) {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.displayClientMessage(
-                            Component.literal("没有可用的解锁形态").withStyle(ChatFormatting.RED),
-                            true
-                    );
+                            Component.literal("没有可用的解锁形态").withStyle(ChatFormatting.RED), true);
                 }
                 return;
             }
 
             // 只在已解锁形态中循环
-            int currentIdx = getCurrentIndex(unlockedForms);
+            int currentIdx = getCurrentIndex(playerId, RiderIds.KUUGA_ID);
             int nextIndex = (currentIdx + 1) % unlockedForms.size();
-            setCurrentIndex(unlockedForms, nextIndex);
+            setCurrentIndex(playerId, RiderIds.KUUGA_ID, nextIndex);
 
             ResourceLocation newId = unlockedForms.get(nextIndex);
-
             // 显示形态名称
-            Component displayName = getDisplayName(newId);
             if (player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.displayClientMessage(displayName, true);
+                serverPlayer.displayClientMessage(getDisplayName(newId), true);
             }
-
             // 更新腰带槽
             setArcleSlot(player, newId);
+
         } else if (legs.getItem() instanceof AlterRingItem) {
             if (player.level().isClientSide()) {
                 Minecraft.getInstance().getSoundManager().stop();
             }
-            ResourceLocation agito = RiderIds.AGITO_ID;
-            List<ResourceLocation> unlockedForms = ParallelWorldsApi.getUnlockedForms(player, agito);
+            List<ResourceLocation> unlockedForms =
+                    ParallelWorldsApi.getUnlockedForms(player, RiderIds.AGITO_ID);
+
             if (unlockedForms.isEmpty()) {
                 if (player instanceof ServerPlayer serverPlayer) {
                     serverPlayer.displayClientMessage(
-                            Component.literal("没有可用的解锁形态").withStyle(ChatFormatting.RED),
-                            true
-                    );
+                            Component.literal("没有可用的解锁形态").withStyle(ChatFormatting.RED), true);
                 }
                 return;
             }
-            int currentIdx = getCurrentIndex(unlockedForms);
+
+            int currentIdx = getCurrentIndex(playerId, RiderIds.AGITO_ID);
             int nextIndex = (currentIdx + 1) % unlockedForms.size();
-            setCurrentIndex(unlockedForms, nextIndex);
+            setCurrentIndex(playerId, RiderIds.AGITO_ID, nextIndex);
+
             ResourceLocation newId = unlockedForms.get(nextIndex);
-
-            Component displayName = getDisplayName(newId);
             if (player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.displayClientMessage(displayName, true);
+                serverPlayer.displayClientMessage(getDisplayName(newId), true);
             }
-
             setAlterRingSlot(player, newId);
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        currentIndex.remove(event.getEntity().getUUID());
     }
 
     private static Component getDisplayName(ResourceLocation newId) {
@@ -209,7 +206,7 @@ public class FormWheel {
 
         if (item != null) {
             if (player.level().isClientSide()) {
-                PacketDistributor.sendToServer(new InsertItemPacket(player.getUUID(), alterRingCore, item.getDefaultInstance()));
+                PacketDistributor.sendToServer(new InsertItemPacket(alterRingCore, item.getDefaultInstance()));
             } else {
                 RideBattleAPI.insertItemToSlot(player, alterRingCore, item.getDefaultInstance());
             }

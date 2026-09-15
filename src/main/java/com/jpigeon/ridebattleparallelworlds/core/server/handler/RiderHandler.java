@@ -12,7 +12,7 @@ import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderSkillFlags;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecaDriverItem;
@@ -71,12 +71,7 @@ public class RiderHandler {
         if (event.getRiderId().equals(RiderIds.AGITO_ID)) {
             removeAgitoWeapon(player);
         }
-        RiderSkills.SKILL_TAGS_MAP.values().stream().filter(tag -> tag.startsWith("skill_"))
-                .forEach(skillTag -> {
-                    if (player.getTags().contains(skillTag)) {
-                        player.removeTag(skillTag);
-                    }
-                });
+        RiderSkillFlags.clearAll(player);   // 一行搞定
     }
 
     @SubscribeEvent

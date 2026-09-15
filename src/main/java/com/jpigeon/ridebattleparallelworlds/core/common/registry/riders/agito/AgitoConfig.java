@@ -14,17 +14,17 @@ import net.minecraft.world.item.Item;
 
 import java.util.List;
 
-import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.fromString;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds.id;
 
 public class AgitoConfig {
-    public static final ResourceLocation ALTER_RING_CORE = fromString("alter_ring_core");
+    public static final ResourceLocation ALTER_RING_CORE = id("alter_ring_core");
 
-    public static final ResourceLocation GROUND_ID = fromString("ground_form");
-    public static final ResourceLocation FLAME_ID = fromString("flame_form");
-    public static final ResourceLocation STORM_ID = fromString("storm_form");
-    public static final ResourceLocation TRINITY_ID = fromString("trinity_form");
-    public static final ResourceLocation BURNING_ID = fromString("burning_form");
-    public static final ResourceLocation SHINING_ID = fromString("shining_form");
+    public static final ResourceLocation GROUND_ID = id("ground_form");
+    public static final ResourceLocation FLAME_ID = id("flame_form");
+    public static final ResourceLocation STORM_ID = id("storm_form");
+    public static final ResourceLocation TRINITY_ID = id("trinity_form");
+    public static final ResourceLocation BURNING_ID = id("burning_form");
+    public static final ResourceLocation SHINING_ID = id("shining_form");
 
     public static final List<Item> AGITO_ITEMS = List.of(ModItems.GROUND_ELEMENT.get(), ModItems.FLAME_ELEMENT.get(), ModItems.STORM_ELEMENT.get(), ModItems.TRINITY_ELEMENT.get(), ModItems.BURNING_ELEMENT.get());
 
