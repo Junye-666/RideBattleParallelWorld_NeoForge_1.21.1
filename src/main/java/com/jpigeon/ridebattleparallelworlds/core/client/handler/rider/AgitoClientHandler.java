@@ -53,7 +53,7 @@ public final class AgitoClientHandler implements IRiderClientHandler {
     }
 
     @Override
-    public void onUnhenshin(ClientRiderContext ctx) {
+    public void postUnhenshin(ClientRiderContext ctx) {
         if (ctx.driverStack().getItem() instanceof AlterRingItem alterRing) {
             alterRing.shrinkInBody();
         }

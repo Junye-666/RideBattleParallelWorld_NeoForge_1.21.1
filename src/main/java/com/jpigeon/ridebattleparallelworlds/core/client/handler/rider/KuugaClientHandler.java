@@ -60,7 +60,7 @@ public final class KuugaClientHandler implements IRiderClientHandler {
     }
 
     @Override
-    public void onUnhenshin(ClientRiderContext ctx) {
+    public void postUnhenshin(ClientRiderContext ctx) {
         if (ctx.driverStack().getItem() instanceof ArcleItem arcle) {
             arcle.shrinkInBody();
         }
