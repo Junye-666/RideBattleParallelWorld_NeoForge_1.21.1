@@ -6,8 +6,10 @@ import com.jpigeon.ridebattlelib.common.api.client.IRiderClientHandler;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.client.anim.rider.DecadeAnimations;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecaDriverItem;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,6 +33,22 @@ public final class DecadeClientHandler implements IRiderClientHandler {
     public void onPending(@NotNull ClientRiderContext ctx) {
         LocalPlayer player = ctx.player();
         DecadeAnimations.INSERT_CARD.play(player);
+    }
+
+    @Override
+    public void onDriverItemInserted(@NotNull ClientRiderContext ctx) {
+        ItemStack driver = ctx.driverStack();
+        if (driver.getItem() instanceof DecaDriverItem decaDriver) {
+            decaDriver.triggerOpen();
+        }
+    }
+
+    @Override
+    public void onDriverItemExtracted(@NotNull ClientRiderContext ctx) {
+        ItemStack driver = ctx.driverStack();
+        if (driver.getItem() instanceof DecaDriverItem decaDriver) {
+            decaDriver.triggerClose();
+        }
     }
 
     @Override

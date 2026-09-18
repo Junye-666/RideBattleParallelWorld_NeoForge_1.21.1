@@ -94,7 +94,7 @@ public final class AgitoClientHandler implements IRiderClientHandler {
     }
 
     @Override
-    public void onDriverChanged(@NotNull ClientRiderContext ctx) {
+    public void onDriverItemInserted(@NotNull ClientRiderContext ctx) {
         ItemStack stack = ctx.driverStack();
         LocalPlayer player = ctx.player();
         if (stack.is(ModItems.BURNING_ELEMENT.get())) AgitoAnimations.PREP_B.play(player);

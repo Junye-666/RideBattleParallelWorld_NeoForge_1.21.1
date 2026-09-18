@@ -20,7 +20,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import org.jetbrains.annotations.NotNull;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public final class KuugaClientHandler implements IRiderClientHandler {
@@ -135,10 +134,6 @@ public final class KuugaClientHandler implements IRiderClientHandler {
     private static void ultimateKick(Player player) {
         SkillMovementUtils.riderKickJump(player, 1.5);
         SkillMovementUtils.riderKickForward(player, 2.5, 15);
-    }
-
-    @Override
-    public void onDriverChanged(@NotNull ClientRiderContext ctx) {
     }
 
     private static void setDriverAnim(ItemStack driver, ResourceLocation formId) {
