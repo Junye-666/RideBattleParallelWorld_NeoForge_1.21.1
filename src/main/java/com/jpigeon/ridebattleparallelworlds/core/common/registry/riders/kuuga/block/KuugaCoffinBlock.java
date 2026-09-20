@@ -77,7 +77,7 @@ public class KuugaCoffinBlock extends BaseEntityBlock{
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (movedByPiston) return;
         if (!level.isClientSide() && state != newState) {
-            level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), ModItems.ARCLE.toStack()));
+            level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), ModItems.Kuuga.ARCLE.toStack()));
             level.updateNeighbourForOutputSignal(pos, this);
         }
     }

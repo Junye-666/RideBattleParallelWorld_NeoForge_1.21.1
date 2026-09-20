@@ -33,46 +33,16 @@ public class RiderSkills {
     public static final ResourceLocation FIRESTORM_ATTACK = id("firestorm_attack");
     public static final ResourceLocation BURNING_BOMBER = id("burning_bomber");
 
-    private static void registerKuugaSkills() {
-        registerSkill(GROWING_KICK, 10, ChatFormatting.WHITE);
-        registerSkill(MIGHTY_KICK, 15, ChatFormatting.RED);
-        registerSkill(MIGHTY_PUNCH, 15, ChatFormatting.RED);
-        registerSkill(SPLASH_DRAGON, 15);
-        registerSkill(BLAST_PEGASUS, 5);
-        registerSkill(CALAMITY_TITAN, 15);
-        registerSkill(RISING_MIGHTY_KICK, 20, ChatFormatting.GOLD);
-        registerSkill(RISING_SPLASH_DRAGON, 20);
-        registerSkill(RISING_BLAST_PEGASUS, 10);
-        registerSkill(RISING_CALAMITY_TITAN, 20);
-        registerSkill(AMAZING_MIGHTY_KICK, 25, ChatFormatting.BLACK);
-        registerSkill(ULTIMATE_KICK, 30, ChatFormatting.BLACK);
-    }
-
-    private static void registerAgitoSkills() {
-        registerSkill(GROUND_KICK, 15, ChatFormatting.YELLOW);
-        registerSkill(FLAME_SABER, 15, ChatFormatting.RED);
-        registerSkill(SABER_SLASH, 15);
-        registerSkill(STORM_HALBERD, 15, ChatFormatting.BLUE);
-        registerSkill(HALBERD_SPIN, 15);
-        registerSkill(TRINITY_WEAPON, 15, ChatFormatting.GOLD);
-        registerSkill(FIRESTORM_ATTACK, 20);
-        registerSkill(SHINING_CALIBUR, 15);
-        registerSkill(BURNING_BOMBER, 30);
-    }
-
-    private static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting color) {
+    public static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting color) {
         String name = id.getPath();
-        SkillSystem.registerSkill(id,
+        SkillSystem.registerSkill(
+                id,
                 Component.translatable("skill." + name).withStyle(color),
-                cooldown);
+                cooldown
+        );
     }
 
-    private static void registerSkill(ResourceLocation id, int cooldown) {
+    public static void registerSkill(ResourceLocation id, int cooldown) {
         registerSkill(id, cooldown, ChatFormatting.WHITE);
-    }
-
-    public static void init() {
-        registerKuugaSkills();
-        registerAgitoSkills();
     }
 }

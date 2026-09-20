@@ -1,7 +1,6 @@
 package com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.entity;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.entity.DecadeHenshinEffect;
 import com.jpigeon.rideevolutionlib.util.entity.AbstractOwnerFollowEffect;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.entity.EntityType;
@@ -12,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class RyukiHenshinEffect extends AbstractOwnerFollowEffect {
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = createOwnerAccessor(DecadeHenshinEffect.class);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = createOwnerAccessor(RyukiHenshinEffect.class);
 
     public RyukiHenshinEffect(EntityType<RyukiHenshinEffect> type, Level level) {
         super(type, level, RideBattleParallelWorlds.MODID, "ryuki", "ryuki_henshin_effect", 15);

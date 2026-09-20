@@ -11,7 +11,6 @@ public class AnimId {
         this.defaultFadeTicks = defaultFadeTime;
     }
 
-
     public static AnimId of(String path, int defaultFadeTime) {
         return new AnimId(path, defaultFadeTime);
     }

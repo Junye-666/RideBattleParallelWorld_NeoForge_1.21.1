@@ -2,9 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.core.client.handler.rider;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.common.api.client.ClientRiderContext;
-import com.jpigeon.ridebattlelib.common.api.client.ClientRiderDispatcher;
 import com.jpigeon.ridebattlelib.common.api.client.IRiderClientHandler;
-import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.core.client.anim.rider.KuugaAnimations;
 import com.jpigeon.ridebattleparallelworlds.core.client.handler.util.SkillMovementUtils;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
@@ -16,19 +14,8 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
-@EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public final class KuugaClientHandler implements IRiderClientHandler {
-
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        ClientRiderDispatcher.register(new KuugaClientHandler());
-    }
-
     @Override
     public ResourceLocation riderId() {
         return RiderIds.KUUGA_ID;

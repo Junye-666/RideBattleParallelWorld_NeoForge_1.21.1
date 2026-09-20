@@ -34,7 +34,7 @@ public class MirrorDeckItem extends Item {
                 return InteractionResultHolder.success(deck);
             } else {
                 player.getCooldowns().addCooldown(deck.getItem(), 30);
-                player.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ModItems.V_BUCKLE.get()));
+                player.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ModItems.Ryuki.V_BUCKLE.get()));
                 if (player instanceof LocalPlayer p) {
                     MirrorAnimations.V_BUCKLE.play(p);
                 }

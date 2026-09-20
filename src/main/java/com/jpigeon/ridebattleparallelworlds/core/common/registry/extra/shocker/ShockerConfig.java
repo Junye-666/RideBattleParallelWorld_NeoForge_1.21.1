@@ -20,15 +20,15 @@ public class ShockerConfig {
     public static final ResourceLocation COMBATMAN_ID = id("combatman");
 
     public static RiderConfig SHOCKER = new RiderConfig(SHOCKER_ID)
-            .setMainDriverItem(ModItems.SHOCKER_HELMET.get(), EquipmentSlot.HEAD)
+            .setMainDriverItem(ModItems.Misc.SHOCKER_HELMET.get(), EquipmentSlot.HEAD)
             .addMainDriverSlot(SHOCKER_SLOT, List.of(Items.AIR), true, true);
 
     public static FormConfig SHOCKER_COMBATMAN = new FormConfig(COMBATMAN_ID)
             .setArmor(
-                    ModItems.SHOCKER_HELMET.get(),
-                    ModItems.SHOCKER_CHESTPLATE.get(),
-                    ModItems.SHOCKER_LEGGINGS.get(),
-                    ModItems.SHOCKER_BOOTS.get()
+                    ModItems.Misc.SHOCKER_HELMET.get(),
+                    ModItems.Misc.SHOCKER_CHESTPLATE.get(),
+                    ModItems.Misc.SHOCKER_LEGGINGS.get(),
+                    ModItems.Misc.SHOCKER_BOOTS.get()
             )
             .addRequiredItem(SHOCKER_SLOT, Items.AIR)
             .addEffect(MobEffects.INVISIBILITY, -1, 0, true)

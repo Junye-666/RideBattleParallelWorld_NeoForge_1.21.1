@@ -29,242 +29,279 @@ public class ModItems {
     public static final DeferredItem<Item> RIDER_INGOT = ITEMS.register("rider_ingot", ()
             -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> MIGHTY_ELEMENT = ITEMS.register("kuuga_mighty_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> DRAGON_ELEMENT = ITEMS.register("kuuga_dragon_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> PEGASUS_ELEMENT = ITEMS.register("kuuga_pegasus_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> TITAN_ELEMENT = ITEMS.register("kuuga_titan_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> RISING_MIGHTY_ELEMENT = ITEMS.register("kuuga_rising_mighty_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> RISING_DRAGON_ELEMENT = ITEMS.register("kuuga_rising_dragon_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> RISING_PEGASUS_ELEMENT = ITEMS.register("kuuga_rising_pegasus_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> RISING_TITAN_ELEMENT = ITEMS.register("kuuga_rising_titan_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> AMAZING_MIGHTY_ELEMENT = ITEMS.register("kuuga_amazing_mighty_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> ULTIMATE_ELEMENT = ITEMS.register("kuuga_ultimate_element", ()
-            -> new Item(new Item.Properties()));
+    public static class Kuuga {
+        private Kuuga() {
+        }
 
-    public static final DeferredItem<Item> GROUND_ELEMENT = ITEMS.register("agito_ground_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FLAME_ELEMENT = ITEMS.register("agito_flame_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> STORM_ELEMENT = ITEMS.register("agito_storm_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> TRINITY_ELEMENT = ITEMS.register("agito_trinity_element", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> BURNING_ELEMENT = ITEMS.register("agito_burning_element", ()
-            -> new Item(new Item.Properties()));
-    // TODO: 闪耀形态
-    public static final DeferredItem<Item> SHINING_ELEMENT = ITEMS.register("agito_shining_element", ()
-            -> new Item(new Item.Properties()));
-    // TODO: 合成配方
-    public static final DeferredItem<Item> MIRROR_FRAGMENT = ITEMS.register("ryuki_mirror_fragment", ()
-            -> new Item(new Item.Properties()));
+        // 物品
+        public static final DeferredItem<Item> MIGHTY_ELEMENT = ITEMS.register("kuuga_mighty_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> DRAGON_ELEMENT = ITEMS.register("kuuga_dragon_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> PEGASUS_ELEMENT = ITEMS.register("kuuga_pegasus_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> TITAN_ELEMENT = ITEMS.register("kuuga_titan_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> RISING_MIGHTY_ELEMENT = ITEMS.register("kuuga_rising_mighty_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> RISING_DRAGON_ELEMENT = ITEMS.register("kuuga_rising_dragon_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> RISING_PEGASUS_ELEMENT = ITEMS.register("kuuga_rising_pegasus_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> RISING_TITAN_ELEMENT = ITEMS.register("kuuga_rising_titan_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> AMAZING_MIGHTY_ELEMENT = ITEMS.register("kuuga_amazing_mighty_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> ULTIMATE_ELEMENT = ITEMS.register("kuuga_ultimate_element", ()
+                -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> BLANK_DECK = ITEMS.register("mirror_blank_deck", ()
-            -> new MirrorDeckItem(new Item.Properties()));
+        // 盔甲
+        public static final DeferredItem<ArcleItem> ARCLE = ITEMS.register("kuuga_arcle", ()
+                -> new ArcleItem(PWArmorMaterial.KUUGA_MATERIAL, ArcleItem.Type.LEGGINGS, new Item.Properties()));
 
-    public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("mirror_ryuki_deck", ()
-            -> new MirrorDeckItem(new Item.Properties()));
+        public static final DeferredItem<KuugaGrowingItem> GROWING_HELMET = ITEMS.register("kuuga_growing_helmet", ()
+                -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaGrowingItem> GROWING_CHESTPLATE = ITEMS.register("kuuga_growing_chestplate", ()
+                -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaGrowingItem> GROWING_BOOTS = ITEMS.register("kuuga_growing_boots", ()
+                -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaMightyItem> MIGHTY_HELMET = ITEMS.register("kuuga_mighty_helmet", ()
+                -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaMightyItem> MIGHTY_CHESTPLATE = ITEMS.register("kuuga_mighty_chestplate", ()
+                -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaMightyItem> MIGHTY_BOOTS = ITEMS.register("kuuga_mighty_boots", ()
+                -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaDragonItem> DRAGON_HELMET = ITEMS.register("kuuga_dragon_helmet", ()
+                -> new KuugaDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaDragonItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaDragonItem> DRAGON_CHESTPLATE = ITEMS.register("kuuga_dragon_chestplate", ()
+                -> new KuugaDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaDragonItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaDragonItem> DRAGON_BOOTS = ITEMS.register("kuuga_dragon_boots", ()
+                -> new KuugaDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaDragonItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaPegasusItem> PEGASUS_HELMET = ITEMS.register("kuuga_pegasus_helmet", ()
+                -> new KuugaPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaPegasusItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaPegasusItem> PEGASUS_CHESTPLATE = ITEMS.register("kuuga_pegasus_chestplate", ()
+                -> new KuugaPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaPegasusItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaPegasusItem> PEGASUS_BOOTS = ITEMS.register("kuuga_pegasus_boots", ()
+                -> new KuugaPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaPegasusItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaTitanItem> TITAN_HELMET = ITEMS.register("kuuga_titan_helmet", ()
+                -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaTitanItem> TITAN_CHESTPLATE = ITEMS.register("kuuga_titan_chestplate", ()
+                -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaTitanItem> TITAN_BOOTS = ITEMS.register("kuuga_titan_boots", ()
+                -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_HELMET = ITEMS.register("kuuga_rising_mighty_helmet", ()
+                -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_CHESTPLATE = ITEMS.register("kuuga_rising_mighty_chestplate", ()
+                -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_BOOTS = ITEMS.register("kuuga_rising_mighty_boots", ()
+                -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_HELMET = ITEMS.register("kuuga_rising_dragon_helmet", ()
+                -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_CHESTPLATE = ITEMS.register("kuuga_rising_dragon_chestplate", ()
+                -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_BOOTS = ITEMS.register("kuuga_rising_dragon_boots", ()
+                -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingPegasusItem> RISING_PEGASUS_HELMET = ITEMS.register("kuuga_rising_pegasus_helmet", ()
+                -> new KuugaRisingPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingPegasusItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingPegasusItem> RISING_PEGASUS_CHESTPLATE = ITEMS.register("kuuga_rising_pegasus_chestplate", ()
+                -> new KuugaRisingPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingPegasusItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingPegasusItem> RISING_PEGASUS_BOOTS = ITEMS.register("kuuga_rising_pegasus_boots", ()
+                -> new KuugaRisingPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingPegasusItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_HELMET = ITEMS.register("kuuga_rising_titan_helmet", ()
+                -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_CHESTPLATE = ITEMS.register("kuuga_rising_titan_chestplate", ()
+                -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_BOOTS = ITEMS.register("kuuga_rising_titan_boots", ()
+                -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_HELMET = ITEMS.register("kuuga_amazing_mighty_helmet", ()
+                -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_CHESTPLATE = ITEMS.register("kuuga_amazing_mighty_chestplate", ()
+                -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_BOOTS = ITEMS.register("kuuga_amazing_mighty_boots", ()
+                -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<KuugaUltimateItem> ULTIMATE_HELMET = ITEMS.register("kuuga_ultimate_helmet", ()
+                -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<KuugaUltimateItem> ULTIMATE_CHESTPLATE = ITEMS.register("kuuga_ultimate_chestplate", ()
+                -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<KuugaUltimateItem> ULTIMATE_BOOTS = ITEMS.register("kuuga_ultimate_boots", ()
+                -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.BOOTS, new Item.Properties()));
 
+        // 武器
+        public static final DeferredItem<DragonRodItem> DRAGON_ROD = ITEMS.register("kuuga_dragon_rod", ()
+                -> new DragonRodItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2)).rarity(Rarity.RARE)));
+        public static final DeferredItem<PegasusBowgunItem> PEGASUS_BOWGUN = ITEMS.register("kuuga_pegasus_bowgun", ()
+                -> new PegasusBowgunItem(new Item.Properties().rarity(Rarity.RARE)));
+        public static final DeferredItem<TitanSwordItem> TITAN_SWORD = ITEMS.register("kuuga_titan_sword", ()
+                -> new TitanSwordItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, 0)).rarity(Rarity.RARE)));
+        public static final DeferredItem<RisingDragonRodItem> RISING_DRAGON_ROD = ITEMS.register("kuuga_rising_dragon_rod", ()
+                -> new RisingDragonRodItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2)).rarity(Rarity.EPIC)));
+        public static final DeferredItem<RisingPegasusBowgunItem> RISING_PEGASUS_BOWGUN = ITEMS.register("kuuga_rising_pegasus_bowgun", ()
+                -> new RisingPegasusBowgunItem(new Item.Properties().rarity(Rarity.EPIC)));
+        public static final DeferredItem<RisingTitanSwordItem> RISING_TITAN_SWORD = ITEMS.register("kuuga_rising_titan_sword", ()
+                -> new RisingTitanSwordItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, 0)).rarity((Rarity.EPIC))));
+    }
 
+    public static class Agito {
+        private Agito() {
+        }
 
-    public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
-            -> new Item(new Item.Properties()));
-    // TODO: 合成配方
-    public static final DeferredItem<Item> DECADE_BLANK_CARD = ITEMS.register("decade_blank_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> KAMEN_RIDE_DECADE = ITEMS.register("decade_kamen_ride_decade_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> KAMEN_RIDE_KUUGA = ITEMS.register("decade_kamen_ride_kuuga_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FORM_RIDE_KUUGA_DRAGON = ITEMS.register("decade_form_ride_kuuga_dragon_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FORM_RIDE_KUUGA_PEGASUS = ITEMS.register("decade_form_ride_kuuga_pegasus_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FORM_RIDE_KUUGA_TITAN = ITEMS.register("decade_form_ride_kuuga_titan_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> KAMEN_RIDE_AGITO = ITEMS.register("decade_kamen_ride_agito_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FORM_RIDE_AGITO_FLAME = ITEMS.register("decade_form_ride_agito_flame_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FORM_RIDE_AGITO_STORM = ITEMS.register("decade_form_ride_agito_storm_card", ()
-            -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> FORM_RIDE_AGITO_BURNING = ITEMS.register("decade_form_ride_agito_burning_card", ()
-            -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> GROUND_ELEMENT = ITEMS.register("agito_ground_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FLAME_ELEMENT = ITEMS.register("agito_flame_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> STORM_ELEMENT = ITEMS.register("agito_storm_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> TRINITY_ELEMENT = ITEMS.register("agito_trinity_element", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> BURNING_ELEMENT = ITEMS.register("agito_burning_element", ()
+                -> new Item(new Item.Properties()));
+        // TODO: 闪耀形态
+        public static final DeferredItem<Item> SHINING_ELEMENT = ITEMS.register("agito_shining_element", ()
+                -> new Item(new Item.Properties()));
 
-    // 空我
-    // 盔甲注册
-    // 需要注意: 腰带注册时不能沿用盔甲物品
-    public static final DeferredItem<ArcleItem> ARCLE = ITEMS.register("kuuga_arcle", ()
-            -> new ArcleItem(PWArmorMaterial.KUUGA_MATERIAL, ArcleItem.Type.LEGGINGS, new Item.Properties()));
+        // 盔甲
+        public static final DeferredItem<AlterRingItem> ALTER_RING = ITEMS.register("agito_alter_ring", ()
+                -> new AlterRingItem(PWArmorMaterial.AGITO_MATERIAL, AlterRingItem.Type.LEGGINGS, new Item.Properties()));
 
-    public static final DeferredItem<KuugaGrowingItem> GROWING_HELMET = ITEMS.register("kuuga_growing_helmet", ()
-            -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaGrowingItem> GROWING_CHESTPLATE = ITEMS.register("kuuga_growing_chestplate", ()
-            -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaGrowingItem> GROWING_BOOTS = ITEMS.register("kuuga_growing_boots", ()
-            -> new KuugaGrowingItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaGrowingItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaMightyItem> MIGHTY_HELMET = ITEMS.register("kuuga_mighty_helmet", ()
-            -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaMightyItem> MIGHTY_CHESTPLATE = ITEMS.register("kuuga_mighty_chestplate", ()
-            -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaMightyItem> MIGHTY_BOOTS = ITEMS.register("kuuga_mighty_boots", ()
-            -> new KuugaMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaMightyItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaDragonItem> DRAGON_HELMET = ITEMS.register("kuuga_dragon_helmet", ()
-            -> new KuugaDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaDragonItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaDragonItem> DRAGON_CHESTPLATE = ITEMS.register("kuuga_dragon_chestplate", ()
-            -> new KuugaDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaDragonItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaDragonItem> DRAGON_BOOTS = ITEMS.register("kuuga_dragon_boots", ()
-            -> new KuugaDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaDragonItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaPegasusItem> PEGASUS_HELMET = ITEMS.register("kuuga_pegasus_helmet", ()
-            -> new KuugaPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaPegasusItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaPegasusItem> PEGASUS_CHESTPLATE = ITEMS.register("kuuga_pegasus_chestplate", ()
-            -> new KuugaPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaPegasusItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaPegasusItem> PEGASUS_BOOTS = ITEMS.register("kuuga_pegasus_boots", ()
-            -> new KuugaPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaPegasusItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaTitanItem> TITAN_HELMET = ITEMS.register("kuuga_titan_helmet", ()
-            -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaTitanItem> TITAN_CHESTPLATE = ITEMS.register("kuuga_titan_chestplate", ()
-            -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaTitanItem> TITAN_BOOTS = ITEMS.register("kuuga_titan_boots", ()
-            -> new KuugaTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaTitanItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_HELMET = ITEMS.register("kuuga_rising_mighty_helmet", ()
-            -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_CHESTPLATE = ITEMS.register("kuuga_rising_mighty_chestplate", ()
-            -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingMightyItem> RISING_MIGHTY_BOOTS = ITEMS.register("kuuga_rising_mighty_boots", ()
-            -> new KuugaRisingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingMightyItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_HELMET = ITEMS.register("kuuga_rising_dragon_helmet", ()
-            -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_CHESTPLATE = ITEMS.register("kuuga_rising_dragon_chestplate", ()
-            -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingDragonItem> RISING_DRAGON_BOOTS = ITEMS.register("kuuga_rising_dragon_boots", ()
-            -> new KuugaRisingDragonItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingDragonItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingPegasusItem> RISING_PEGASUS_HELMET = ITEMS.register("kuuga_rising_pegasus_helmet", ()
-            -> new KuugaRisingPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingPegasusItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingPegasusItem> RISING_PEGASUS_CHESTPLATE = ITEMS.register("kuuga_rising_pegasus_chestplate", ()
-            -> new KuugaRisingPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingPegasusItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingPegasusItem> RISING_PEGASUS_BOOTS = ITEMS.register("kuuga_rising_pegasus_boots", ()
-            -> new KuugaRisingPegasusItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingPegasusItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_HELMET = ITEMS.register("kuuga_rising_titan_helmet", ()
-            -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_CHESTPLATE = ITEMS.register("kuuga_rising_titan_chestplate", ()
-            -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaRisingTitanItem> RISING_TITAN_BOOTS = ITEMS.register("kuuga_rising_titan_boots", ()
-            -> new KuugaRisingTitanItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaRisingTitanItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_HELMET = ITEMS.register("kuuga_amazing_mighty_helmet", ()
-            -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_CHESTPLATE = ITEMS.register("kuuga_amazing_mighty_chestplate", ()
-            -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaAmazingMightyItem> AMAZING_MIGHTY_BOOTS = ITEMS.register("kuuga_amazing_mighty_boots", ()
-            -> new KuugaAmazingMightyItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaAmazingMightyItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<KuugaUltimateItem> ULTIMATE_HELMET = ITEMS.register("kuuga_ultimate_helmet", ()
-            -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<KuugaUltimateItem> ULTIMATE_CHESTPLATE = ITEMS.register("kuuga_ultimate_chestplate", ()
-            -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<KuugaUltimateItem> ULTIMATE_BOOTS = ITEMS.register("kuuga_ultimate_boots", ()
-            -> new KuugaUltimateItem(PWArmorMaterial.KUUGA_MATERIAL, KuugaUltimateItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<AgitoGroundItem> GROUND_HELMET = ITEMS.register("agito_ground_helmet", ()
+                -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<AgitoGroundItem> GROUND_CHESTPLATE = ITEMS.register("agito_ground_chestplate", ()
+                -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<AgitoGroundItem> GROUND_BOOTS = ITEMS.register("agito_ground_boots", ()
+                -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<AgitoFlameItem> FLAME_HELMET = ITEMS.register("agito_flame_helmet", ()
+                -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<AgitoFlameItem> FLAME_CHESTPLATE = ITEMS.register("agito_flame_chestplate", ()
+                -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<AgitoFlameItem> FLAME_BOOTS = ITEMS.register("agito_flame_boots", ()
+                -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<AgitoStormItem> STORM_HELMET = ITEMS.register("agito_storm_helmet", ()
+                -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<AgitoStormItem> STORM_CHESTPLATE = ITEMS.register("agito_storm_chestplate", ()
+                -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<AgitoStormItem> STORM_BOOTS = ITEMS.register("agito_storm_boots", ()
+                -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<AgitoTrinityItem> TRINITY_HELMET = ITEMS.register("agito_trinity_helmet", ()
+                -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<AgitoTrinityItem> TRINITY_CHESTPLATE = ITEMS.register("agito_trinity_chestplate", ()
+                -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<AgitoTrinityItem> TRINITY_BOOTS = ITEMS.register("agito_trinity_boots", ()
+                -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<AgitoBurningItem> BURNING_HELMET = ITEMS.register("agito_burning_helmet", ()
+                -> new AgitoBurningItem(PWArmorMaterial.AGITO_MATERIAL, AgitoBurningItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<AgitoBurningItem> BURNING_CHESTPLATE = ITEMS.register("agito_burning_chestplate", ()
+                -> new AgitoBurningItem(PWArmorMaterial.AGITO_MATERIAL, AgitoBurningItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<AgitoBurningItem> BURNING_BOOTS = ITEMS.register("agito_burning_boots", ()
+                -> new AgitoBurningItem(PWArmorMaterial.AGITO_MATERIAL, AgitoBurningItem.Type.BOOTS, new Item.Properties()));
 
-    // 武器注册
-    public static final DeferredItem<DragonRodItem> DRAGON_ROD = ITEMS.register("kuuga_dragon_rod", ()
-            -> new DragonRodItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2)).rarity(Rarity.RARE)));
-    public static final DeferredItem<PegasusBowgunItem> PEGASUS_BOWGUN = ITEMS.register("kuuga_pegasus_bowgun", ()
-            -> new PegasusBowgunItem(new Item.Properties().rarity(Rarity.RARE)));
-    public static final DeferredItem<TitanSwordItem> TITAN_SWORD = ITEMS.register("kuuga_titan_sword", ()
-            -> new TitanSwordItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, 0)).rarity(Rarity.RARE)));
-    public static final DeferredItem<RisingDragonRodItem> RISING_DRAGON_ROD = ITEMS.register("kuuga_rising_dragon_rod", ()
-            -> new RisingDragonRodItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, -2)).rarity(Rarity.EPIC)));
-    public static final DeferredItem<RisingPegasusBowgunItem> RISING_PEGASUS_BOWGUN = ITEMS.register("kuuga_rising_pegasus_bowgun", ()
-            -> new RisingPegasusBowgunItem(new Item.Properties().rarity(Rarity.EPIC)));
-    public static final DeferredItem<RisingTitanSwordItem> RISING_TITAN_SWORD = ITEMS.register("kuuga_rising_titan_sword", ()
-            -> new RisingTitanSwordItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 6, 0)).rarity((Rarity.EPIC))));
+        // 武器
+        public static final DeferredItem<FlameSaberItem> FLAME_SABER = ITEMS.register("agito_flame_saber", ()
+                -> new FlameSaberItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 3, 0)).rarity(Rarity.RARE)));
+        public static final DeferredItem<StormHalberdItem> STORM_HALBERD = ITEMS.register("agito_storm_halberd", ()
+                -> new StormHalberdItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 2, -0.5f)).rarity(Rarity.RARE)));
+        public static final DeferredItem<ShiningCaliburItem> SHINING_CALIBUR = ITEMS.register("agito_shining_calibur", ()
+                -> new ShiningCaliburItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, 0.5f)).rarity(Rarity.RARE)));
+    }
 
-    // 亚极陀
-    // 盔甲
-    public static final DeferredItem<AlterRingItem> ALTER_RING = ITEMS.register("agito_alter_ring", ()
-            -> new AlterRingItem(PWArmorMaterial.AGITO_MATERIAL, AlterRingItem.Type.LEGGINGS, new Item.Properties()));
+    public static class Ryuki {
+        private Ryuki() {
+        }
 
-    public static final DeferredItem<AgitoGroundItem> GROUND_HELMET = ITEMS.register("agito_ground_helmet", ()
-            -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<AgitoGroundItem> GROUND_CHESTPLATE = ITEMS.register("agito_ground_chestplate", ()
-            -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<AgitoGroundItem> GROUND_BOOTS = ITEMS.register("agito_ground_boots", ()
-            -> new AgitoGroundItem(PWArmorMaterial.AGITO_MATERIAL, AgitoGroundItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<AgitoFlameItem> FLAME_HELMET = ITEMS.register("agito_flame_helmet", ()
-            -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<AgitoFlameItem> FLAME_CHESTPLATE = ITEMS.register("agito_flame_chestplate", ()
-            -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<AgitoFlameItem> FLAME_BOOTS = ITEMS.register("agito_flame_boots", ()
-            -> new AgitoFlameItem(PWArmorMaterial.AGITO_MATERIAL, AgitoFlameItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<AgitoStormItem> STORM_HELMET = ITEMS.register("agito_storm_helmet", ()
-            -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<AgitoStormItem> STORM_CHESTPLATE = ITEMS.register("agito_storm_chestplate", ()
-            -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<AgitoStormItem> STORM_BOOTS = ITEMS.register("agito_storm_boots", ()
-            -> new AgitoStormItem(PWArmorMaterial.AGITO_MATERIAL, AgitoStormItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<AgitoTrinityItem> TRINITY_HELMET = ITEMS.register("agito_trinity_helmet", ()
-            -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<AgitoTrinityItem> TRINITY_CHESTPLATE = ITEMS.register("agito_trinity_chestplate", ()
-            -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<AgitoTrinityItem> TRINITY_BOOTS = ITEMS.register("agito_trinity_boots", ()
-            -> new AgitoTrinityItem(PWArmorMaterial.AGITO_MATERIAL, AgitoTrinityItem.Type.BOOTS, new Item.Properties()));
-    public static final DeferredItem<AgitoBurningItem> BURNING_HELMET = ITEMS.register("agito_burning_helmet", ()
-            -> new AgitoBurningItem(PWArmorMaterial.AGITO_MATERIAL, AgitoBurningItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<AgitoBurningItem> BURNING_CHESTPLATE = ITEMS.register("agito_burning_chestplate", ()
-            -> new AgitoBurningItem(PWArmorMaterial.AGITO_MATERIAL, AgitoBurningItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<AgitoBurningItem> BURNING_BOOTS = ITEMS.register("agito_burning_boots", ()
-            -> new AgitoBurningItem(PWArmorMaterial.AGITO_MATERIAL, AgitoBurningItem.Type.BOOTS, new Item.Properties()));
+        // TODO: 合成配方
+        public static final DeferredItem<Item> MIRROR_FRAGMENT = ITEMS.register("mirror_fragment", ()
+                -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<FlameSaberItem> FLAME_SABER = ITEMS.register("agito_flame_saber", ()
-            -> new FlameSaberItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 3, 0)).rarity(Rarity.RARE)));
-    public static final DeferredItem<StormHalberdItem> STORM_HALBERD = ITEMS.register("agito_storm_halberd", ()
-            -> new StormHalberdItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 2, -0.5f)).rarity(Rarity.RARE)));
-    public static final DeferredItem<ShiningCaliburItem> SHINING_CALIBUR = ITEMS.register("agito_shining_calibur", ()
-            -> new ShiningCaliburItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 4, 0.5f)).rarity(Rarity.RARE)));
+        public static final DeferredItem<Item> BLANK_DECK = ITEMS.register("mirror_blank_deck", ()
+                -> new MirrorDeckItem(new Item.Properties()));
 
-    // 龙骑系列
-    public static final DeferredItem<VBuckleItem> V_BUCKLE = ITEMS.register("mirror_v-buckle", ()
-            -> new VBuckleItem(PWArmorMaterial.MIRROR_MATERIAL, VBuckleItem.Type.LEGGINGS, new Item.Properties()));
+        public static final DeferredItem<Item> RYUKI_DECK = ITEMS.register("mirror_ryuki_deck", ()
+                -> new MirrorDeckItem(new Item.Properties()));
 
-    // 盔甲
-    public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_HELMET = ITEMS.register("ryuki_base_helmet", ()
-            -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_CHESTPLATE = ITEMS.register("ryuki_base_chestplate", ()
-            -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_BOOTS = ITEMS.register("ryuki_base_boots", ()
-            -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.BOOTS, new Item.Properties()));
+        public static final DeferredItem<VBuckleItem> V_BUCKLE = ITEMS.register("mirror_v-buckle", ()
+                -> new VBuckleItem(PWArmorMaterial.MIRROR_MATERIAL, VBuckleItem.Type.LEGGINGS, new Item.Properties()));
 
-    // Decade
-    // 盔甲
-    public static final DeferredItem<DecaDriverItem> DECA_DRIVER = ITEMS.register("decade_deca_driver", ()
-            -> new DecaDriverItem(PWArmorMaterial.DECADE_MATERIAL, DecaDriverItem.Type.LEGGINGS, new Item.Properties()));
+        // 盔甲
+        public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_HELMET = ITEMS.register("ryuki_base_helmet", ()
+                -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_CHESTPLATE = ITEMS.register("ryuki_base_chestplate", ()
+                -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<RyukiBaseItem> RYUKI_BASE_BOOTS = ITEMS.register("ryuki_base_boots", ()
+                -> new RyukiBaseItem(PWArmorMaterial.MIRROR_MATERIAL, RyukiBaseItem.Type.BOOTS, new Item.Properties()));
 
-    public static final DeferredItem<DecadeBaseArmorItem> DECADE_HELMET = ITEMS.register("decade_base_helmet", ()
-            -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<DecadeBaseArmorItem> DECADE_CHESTPLATE = ITEMS.register("decade_base_chestplate", ()
-            -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<DecadeBaseArmorItem> DECADE_BOOTS = ITEMS.register("decade_base_boots", ()
-            -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.BOOTS, new Item.Properties()));
+    }
 
-    // 修卡
-    public static final DeferredItem<ShockerCombatManItem> SHOCKER_HELMET = ITEMS.register("shocker_combatman_helmet", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.HELMET, new Item.Properties()));
-    public static final DeferredItem<ShockerCombatManItem> SHOCKER_CHESTPLATE = ITEMS.register("shocker_combatman_chestplate", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.CHESTPLATE, new Item.Properties()));
-    public static final DeferredItem<ShockerCombatManItem> SHOCKER_LEGGINGS = ITEMS.register("shocker_combatman_leggings", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.LEGGINGS, new Item.Properties()));
-    public static final DeferredItem<ShockerCombatManItem> SHOCKER_BOOTS = ITEMS.register("shocker_combatman_boots", ()
-            -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.BOOTS, new Item.Properties()));
+    public static class Decade {
+        private Decade() {
+        }
 
+        public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
+                -> new Item(new Item.Properties()));
+        // TODO: 合成配方
+        public static final DeferredItem<Item> DECADE_BLANK_CARD = ITEMS.register("decade_blank_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> KAMEN_RIDE_DECADE = ITEMS.register("decade_kamen_ride_decade_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> KAMEN_RIDE_KUUGA = ITEMS.register("decade_kamen_ride_kuuga_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FORM_RIDE_KUUGA_DRAGON = ITEMS.register("decade_form_ride_kuuga_dragon_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FORM_RIDE_KUUGA_PEGASUS = ITEMS.register("decade_form_ride_kuuga_pegasus_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FORM_RIDE_KUUGA_TITAN = ITEMS.register("decade_form_ride_kuuga_titan_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> KAMEN_RIDE_AGITO = ITEMS.register("decade_kamen_ride_agito_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_FLAME = ITEMS.register("decade_form_ride_agito_flame_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_STORM = ITEMS.register("decade_form_ride_agito_storm_card", ()
+                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_BURNING = ITEMS.register("decade_form_ride_agito_burning_card", ()
+                -> new Item(new Item.Properties()));
+
+        // 盔甲
+        public static final DeferredItem<DecaDriverItem> DECA_DRIVER = ITEMS.register("decade_deca_driver", ()
+                -> new DecaDriverItem(PWArmorMaterial.DECADE_MATERIAL, DecaDriverItem.Type.LEGGINGS, new Item.Properties()));
+
+        public static final DeferredItem<DecadeBaseArmorItem> DECADE_HELMET = ITEMS.register("decade_base_helmet", ()
+                -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<DecadeBaseArmorItem> DECADE_CHESTPLATE = ITEMS.register("decade_base_chestplate", ()
+                -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<DecadeBaseArmorItem> DECADE_BOOTS = ITEMS.register("decade_base_boots", ()
+                -> new DecadeBaseArmorItem(PWArmorMaterial.DECADE_MATERIAL, DecadeBaseArmorItem.Type.BOOTS, new Item.Properties()));
+    }
+
+    public static class Misc {
+        private Misc() {
+        }
+
+        // 修卡
+        public static final DeferredItem<ShockerCombatManItem> SHOCKER_HELMET = ITEMS.register("shocker_combatman_helmet", ()
+                -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.HELMET, new Item.Properties()));
+        public static final DeferredItem<ShockerCombatManItem> SHOCKER_CHESTPLATE = ITEMS.register("shocker_combatman_chestplate", ()
+                -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.CHESTPLATE, new Item.Properties()));
+        public static final DeferredItem<ShockerCombatManItem> SHOCKER_LEGGINGS = ITEMS.register("shocker_combatman_leggings", ()
+                -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.LEGGINGS, new Item.Properties()));
+        public static final DeferredItem<ShockerCombatManItem> SHOCKER_BOOTS = ITEMS.register("shocker_combatman_boots", ()
+                -> new ShockerCombatManItem(PWArmorMaterial.RIDER_MATERIAL, ShockerCombatManItem.Type.BOOTS, new Item.Properties()));
+    }
 
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
+    }
+
+    /**
+     * 触发所有分组类的 <clinit>，确保所有 DeferredItem 在 RegisterEvent 之前完成注册。
+     */
+    public static void forceInit() {
+        ClassLoader cl = ModItems.class.getClassLoader();
+        for (Class<?> c : new Class<?>[]{
+                Kuuga.class, Agito.class, Ryuki.class, Decade.class, Misc.class
+        }) {
+            try {
+                Class.forName(c.getName(), true, cl);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalStateException("ModItems 分组类初始化失败: " + c.getName(), e);
+            }
+        }
     }
 }

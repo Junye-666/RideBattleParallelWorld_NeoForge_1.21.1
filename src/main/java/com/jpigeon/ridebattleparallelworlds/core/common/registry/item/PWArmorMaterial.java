@@ -24,7 +24,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.CHESTPLATE, 8);
                 attribute.put(ArmorItem.Type.HELMET, 3);
                 attribute.put(ArmorItem.Type.BODY, 7);
-            }), 16, 2f, 0.1f, ModItems.WORLDS_FRAGMENT);
+            }), 16, 2f, 0.1f, ModItems.Decade.WORLDS_FRAGMENT);
 
     public static final Holder<ArmorMaterial> KUUGA_MATERIAL = register("kuuga",
             Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
@@ -33,7 +33,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.LEGGINGS, 6);
                 attribute.put(ArmorItem.Type.BOOTS, 3);
                 attribute.put(ArmorItem.Type.BODY, 7);
-                    }), 8, 1f, 0.2f, ModItems.MIGHTY_ELEMENT);
+                    }), 8, 1f, 0.2f, ModItems.Kuuga.MIGHTY_ELEMENT);
 
     public static final Holder<ArmorMaterial> AGITO_MATERIAL = register("agito",
             Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
@@ -42,7 +42,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.LEGGINGS, 5);
                 attribute.put(ArmorItem.Type.BOOTS, 4);
                 attribute.put(ArmorItem.Type.BODY, 8);
-            }), 8, 1f, 0.2f, ModItems.GROUND_ELEMENT);
+            }), 8, 1f, 0.2f, ModItems.Agito.GROUND_ELEMENT);
 
     public static final Holder<ArmorMaterial> MIRROR_MATERIAL = register("ryuki",
             Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {
@@ -51,7 +51,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.LEGGINGS, 5);
                 attribute.put(ArmorItem.Type.BOOTS, 4);
                 attribute.put(ArmorItem.Type.BODY, 8);
-            }), 8, 1f, 0.2f, ModItems.MIRROR_FRAGMENT);
+            }), 8, 1f, 0.2f, ModItems.Ryuki.MIRROR_FRAGMENT);
 
     public static final Holder<ArmorMaterial> RIDER_MATERIAL = register("rider",
             Util.make(new EnumMap<>(ArmorItem.Type.class), attribute -> {

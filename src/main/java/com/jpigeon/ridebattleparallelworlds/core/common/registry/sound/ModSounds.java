@@ -2,8 +2,6 @@ package com.jpigeon.ridebattleparallelworlds.core.common.registry.sound;
 
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.DecadeConfig;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.KuugaConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -52,59 +50,37 @@ public class ModSounds {
     public static final Supplier<SoundEvent> FR_AGITO_BURNING = registerSoundEvent("fr_agito_burning");
 
 
-    private static Supplier<SoundEvent> registerSoundEvent(String name){
+    private static Supplier<SoundEvent> registerSoundEvent(String name) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, name);
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
 
-    public static void register(IEventBus eventBus){
+    public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
     }
 
     private static final Map<FormConfig, SoundEvent> RIDER_HENSHIN_SOUNDS = new HashMap<>();
     private static final Map<SoundEvent, Integer> SOUNDS_LENGTH = new HashMap<>();
 
-    public static void registerHenshinSound(FormConfig form, SoundEvent sound, int length) {
-        RIDER_HENSHIN_SOUNDS.put(form, sound);
-        SOUNDS_LENGTH.put(sound, length);
+    /**
+     * 供 Pack 调用：注册一批变身音效
+     */
+    public static void registerHenshinSounds(Map<FormConfig, SoundMeta> sounds) {
+        sounds.forEach((form, meta) -> {
+            RIDER_HENSHIN_SOUNDS.put(form, meta.sound());
+            SOUNDS_LENGTH.put(meta.sound(), meta.length());
+        });
+    }
+
+    public record SoundMeta(SoundEvent sound, int length) {
     }
 
     public static Optional<SoundEvent> getHenshinSound(FormConfig form) {
         return Optional.ofNullable(RIDER_HENSHIN_SOUNDS.get(form));
     }
 
-    public static Optional<Integer> getSoundLength(SoundEvent sound) {
-        return Optional.ofNullable(SOUNDS_LENGTH.get(sound));
-    }
-
     public static Optional<Integer> getSoundLength(FormConfig form) {
-        SoundEvent sound = getHenshinSound(form).isPresent() ? getHenshinSound(form).get() : null;
-        return getSoundLength(sound);
-    }
-
-    public static void registerFormSoundMap() {
-        registerHenshinSound(KuugaConfig.KUUGA_GROWING_FORM, KUUGA_MIGHTY.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_MIGHTY_FORM, KUUGA_MIGHTY.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_DRAGON_FORM, KUUGA_DRAGON.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_PEGASUS_FORM, KUUGA_PEGASUS.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_TITAN_FORM, KUUGA_TITAN.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_MIGHTY_FORM, KUUGA_RISING_MIGHTY.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_DRAGON_FORM, KUUGA_RISING_DRAGON.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_PEGASUS_FORM, KUUGA_RISING_PEGASUS.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_RISING_TITAN_FORM, KUUGA_RISING_TITAN.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_AMAZING_MIGHTY_FORM, KUUGA_AMAZING_MIGHTY.get(), 75);
-        registerHenshinSound(KuugaConfig.KUUGA_ULTIMATE_FORM, KUUGA_ULTIMATE.get(), 75);
-
-        registerHenshinSound(DecadeConfig.DECADE_BASE, KR_DECADE.get(), 65);
-        registerHenshinSound(DecadeConfig.DECADE_KUUGA_MIGHTY, KR_KUUGA.get(), 65);
-        registerHenshinSound(DecadeConfig.DECADE_KUUGA_DRAGON, FR_KUUGA_DRAGON.get(), 90);
-        registerHenshinSound(DecadeConfig.DECADE_KUUGA_PEGASUS, FR_KUUGA_PEGASUS.get(), 90);
-        registerHenshinSound(DecadeConfig.DECADE_KUUGA_TITAN, FR_KUUGA_TITAN.get(), 90);
-
-        registerHenshinSound(DecadeConfig.DECADE_AGITO_GROUND, KR_AGITO.get(), 65);
-        registerHenshinSound(DecadeConfig.DECADE_AGITO_FLAME, FR_AGITO_FLAME.get(), 70);
-        registerHenshinSound(DecadeConfig.DECADE_AGITO_STORM, FR_AGITO_STORM.get(), 70);
-        registerHenshinSound(DecadeConfig.DECADE_AGITO_BURNING, FR_AGITO_BURNING.get(), 70);
+        return getHenshinSound(form).flatMap(s -> Optional.ofNullable(SOUNDS_LENGTH.get(s)));
     }
 
 }

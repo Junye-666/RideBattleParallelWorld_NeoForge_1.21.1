@@ -24,7 +24,7 @@ public class RenderHandler {
     private static final Map<ResourceLocation, ItemStack> DECK_FORM_MAP = new HashMap<>();
 
     public static void registerDeckFormMap() {
-        DECK_FORM_MAP.put(MirrorConfig.RYUKI_BASE_ID, ModItems.RYUKI_DECK.toStack());
+        DECK_FORM_MAP.put(MirrorConfig.RYUKI_BASE_ID, ModItems.Ryuki.RYUKI_DECK.toStack());
     }
 
     private static ItemStack getItemToRender(ResourceLocation formId) {

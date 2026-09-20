@@ -12,7 +12,7 @@ import java.util.*;
  * 形态解锁数据管理器
  * 支持多个骑士的形态解锁状态管理
  */
-public class FormUnlockData {
+public class    FormUnlockData {
     // 使用 Table<RiderId, FormId, Boolean> 存储解锁状态
     // 第一层：骑士ID，第二层：形态ID，值：是否解锁
     private final Table<ResourceLocation, ResourceLocation, Boolean> unlockTable;

@@ -7,7 +7,6 @@ import com.jpigeon.ridebattlelib.server.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.server.event.SlotExtractionEvent;
 import com.jpigeon.ridebattlelib.server.system.DriverSystem;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.AlterRingItem;
@@ -31,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems.Agito.*;
+import static com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems.Kuuga.*;
 
 public class FormWheel {
     private static final Map<UUID, Map<ResourceLocation, Integer>> currentIndex = new ConcurrentHashMap<>();
@@ -161,25 +163,25 @@ public class FormWheel {
         Item item = null;
 
         if (formId.equals(KuugaConfig.MIGHTY_ID)) {
-            item = ModItems.MIGHTY_ELEMENT.get();
+            item = MIGHTY_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.DRAGON_ID)) {
-            item = ModItems.DRAGON_ELEMENT.get();
+            item = DRAGON_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.PEGASUS_ID)) {
-            item = ModItems.PEGASUS_ELEMENT.get();
+            item = PEGASUS_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.TITAN_ID)) {
-            item = ModItems.TITAN_ELEMENT.get();
+            item = TITAN_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) {
-            item = ModItems.RISING_MIGHTY_ELEMENT.get();
+            item = RISING_MIGHTY_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) {
-            item = ModItems.RISING_DRAGON_ELEMENT.get();
+            item = RISING_DRAGON_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
-            item = ModItems.RISING_PEGASUS_ELEMENT.get();
+            item = RISING_PEGASUS_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) {
-            item = ModItems.RISING_TITAN_ELEMENT.get();
+            item = RISING_TITAN_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) {
-            item = ModItems.AMAZING_MIGHTY_ELEMENT.get();
+            item = AMAZING_MIGHTY_ELEMENT.get();
         } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
-            item = ModItems.ULTIMATE_ELEMENT.get();
+            item = ULTIMATE_ELEMENT.get();
         }
 
         if (item != null) {
@@ -193,15 +195,15 @@ public class FormWheel {
         ResourceLocation alterRingCore = AgitoConfig.ALTER_RING_CORE;
         Item item = null;
         if (formId.equals(AgitoConfig.GROUND_ID)) {
-            item = ModItems.GROUND_ELEMENT.get();
+            item = GROUND_ELEMENT.get();
         } else if (formId.equals(AgitoConfig.FLAME_ID)) {
-            item = ModItems.FLAME_ELEMENT.get();
+            item = FLAME_ELEMENT.get();
         } else if (formId.equals(AgitoConfig.STORM_ID)) {
-            item = ModItems.STORM_ELEMENT.get();
+            item = STORM_ELEMENT.get();
         } else if (formId.equals(AgitoConfig.TRINITY_ID)) {
-            item = ModItems.TRINITY_ELEMENT.get();
+            item = TRINITY_ELEMENT.get();
         } else if (formId.equals(AgitoConfig.BURNING_ID)) {
-            item = ModItems.BURNING_ELEMENT.get();
+            item = BURNING_ELEMENT.get();
         }
 
         if (item != null) {

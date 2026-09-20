@@ -16,7 +16,9 @@ public class DecadeHenshinEffect extends AbstractOwnerFollowEffect {
     public DecadeHenshinEffect(EntityType<DecadeHenshinEffect> type, Level level) {
         super(type, level, RideBattleParallelWorlds.MODID, "decade", "decade_special_effect", 46);
     }
-
+    static {
+        System.out.println("OWNER_UUID id = " + OWNER_UUID);
+    }
     @Override
     protected EntityDataAccessor<Optional<UUID>> ownerAccessor() {
         return OWNER_UUID;
