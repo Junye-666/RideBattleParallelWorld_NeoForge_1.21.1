@@ -1,6 +1,6 @@
 {
   "parent": "ridebattleparallelworlds:item/mirror_blank_deck",
   "textures": {
-    "layer0": "ridebattleparallelworlds:item/ryuki/deck/ryuki_deck"
+    "layer0": "ridebattleparallelworlds:item/mirror/deck/mirror_ryuki_deck"
   }
 }

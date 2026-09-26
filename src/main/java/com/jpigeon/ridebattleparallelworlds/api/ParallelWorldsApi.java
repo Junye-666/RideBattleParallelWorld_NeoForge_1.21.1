@@ -1,9 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.api;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
-import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWData;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.packet.PWDataSyncPacket;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWAttachments;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWData;
+import com.jpigeon.ridebattleparallelworlds.common.network.packet.FormDataSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -112,6 +112,6 @@ public class ParallelWorldsApi {
      */
     public static void syncPlayerData(ServerPlayer player) {
         PWData data = player.getData(PWAttachments.PW_DATA);
-        PacketDistributor.sendToPlayer(player, new PWDataSyncPacket(player.getUUID(), data));
+        PacketDistributor.sendToPlayer(player, new FormDataSyncPacket(player.getUUID(), data));
     }
 }

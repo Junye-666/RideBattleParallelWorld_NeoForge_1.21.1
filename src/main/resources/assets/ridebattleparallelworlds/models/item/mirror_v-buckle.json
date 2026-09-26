@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ridebattleparallelworlds:item/ryuki/v-buckle"
+    "layer0": "ridebattleparallelworlds:item/mirror/v-buckle"
   }
 }

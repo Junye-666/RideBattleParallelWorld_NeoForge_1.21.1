@@ -2,22 +2,16 @@ package com.jpigeon.ridebattleparallelworlds;
 
 import com.jpigeon.ridebattlelib.common.api.registry.IRiderPack;
 import com.jpigeon.ridebattlelib.common.api.registry.RiderPackRegistry;
-import com.jpigeon.ridebattleparallelworlds.core.client.handler.RenderHandler;
-import com.jpigeon.ridebattleparallelworlds.core.common.data.attachment.PWAttachments;
-import com.jpigeon.ridebattleparallelworlds.core.common.data.component.ModDataComponents;
-import com.jpigeon.ridebattleparallelworlds.core.common.debug.PWCommands;
-import com.jpigeon.ridebattleparallelworlds.core.common.network.PacketHandler;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlockEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.block.ModBlocks;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.entity.ModEntities;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.ModItems;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.item.PWCreativeTabs;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.agito.pack.AgitoPack;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.decade.pack.DecadePack;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.kuuga.pack.KuugaPack;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.riders.ryuki.pack.MirrorPack;
-import com.jpigeon.ridebattleparallelworlds.core.common.registry.sound.ModSounds;
-import com.jpigeon.ridebattleparallelworlds.core.server.handler.FormWheel;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWAttachments;
+import com.jpigeon.ridebattleparallelworlds.common.data.component.ModDataComponents;
+import com.jpigeon.ridebattleparallelworlds.common.debug.PWCommands;
+import com.jpigeon.ridebattleparallelworlds.common.network.PacketHandler;
+import com.jpigeon.ridebattleparallelworlds.common.registry.*;
+import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoPack;
+import com.jpigeon.ridebattleparallelworlds.common.rider.decade.pack.DecadePack;
+import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaPack;
+import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.MirrorPack;
+import com.jpigeon.ridebattleparallelworlds.server.handler.FormWheel;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -40,7 +34,6 @@ public class RideBattleParallelWorlds {
         PWCreativeTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
-        ModItems.forceInit();
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModSounds.register(modEventBus);
@@ -49,7 +42,6 @@ public class RideBattleParallelWorlds {
         ModDataComponents.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(FormWheel.class);
-        NeoForge.EVENT_BUS.register(RenderHandler.class);
 
         PWAttachments.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(this::registerCommands);
@@ -60,11 +52,6 @@ public class RideBattleParallelWorlds {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-//        MirrorConfig.init();
-//        ShockerConfig.init();
-//
-//        SkillHandler.registerSkillMap();
-//        ModSounds.registerFormSoundMap();
     }
 
     private void registerPacks() {

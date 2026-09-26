@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ridebattleparallelworlds:item/ryuki/deck/blank_deck"
+    "layer0": "ridebattleparallelworlds:item/mirror/deck/mirror_blank_deck"
   },
   "display": {
     "thirdperson_righthand": {

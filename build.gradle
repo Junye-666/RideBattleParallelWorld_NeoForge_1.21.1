@@ -145,8 +145,8 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    implementation files("libs/ridebattlelib-1.3.1.jar")
-    implementation files("libs/rideevolutionlib-0.2.1-1.3.1.jar")
+    implementation files("libs/ridebattlelib-1.3.2.jar")
+    implementation files("libs/rideevolutionlib-0.2.2-1.3.2.jar")
     implementation "curse.maven:playeranimator-658587:7389814"
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     runtimeOnly ("curse.maven:mmmmmmmmmmmm-225738:7943676") // Mmm
@@ -210,6 +210,6 @@ idea {
 }
 
 jar {
-    exclude("com.jpigeon.ridebattleparallelworlds.core.common.data.datagen")
+    exclude("com.jpigeon.ridebattleparallelworlds.common.data.datagen")
     from sourceSets.main.output
 }
