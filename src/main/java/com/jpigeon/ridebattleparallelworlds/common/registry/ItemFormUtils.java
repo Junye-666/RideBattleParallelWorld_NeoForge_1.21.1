@@ -5,6 +5,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Kuug
 
 public class ItemFormUtils {
     public static final Map<Item, ResourceLocation> RIDER_ITEM_FORM_MAP = new HashMap<>();
+    private static final Map<ResourceLocation, Item> FORM_TO_ITEM = new HashMap<>();
 
     static {
         RIDER_ITEM_FORM_MAP.put(MIGHTY_ELEMENT.get(), KuugaConfig.MIGHTY_ID);
@@ -32,5 +34,15 @@ public class ItemFormUtils {
         RIDER_ITEM_FORM_MAP.put(TRINITY_ELEMENT.get(), AgitoConfig.TRINITY_ID);
         RIDER_ITEM_FORM_MAP.put(BURNING_ELEMENT.get(), AgitoConfig.BURNING_ID);
         RIDER_ITEM_FORM_MAP.put(SHINING_ELEMENT.get(), AgitoConfig.SHINING_ID);
+
+        // 反向构建
+        RIDER_ITEM_FORM_MAP.forEach((item, form) -> FORM_TO_ITEM.put(form, item));
+    }
+
+    /**
+     * 通过形态ID反查对应元素道具（未注册返回 null）。
+     */
+    public static @Nullable Item getItemForForm(ResourceLocation formId) {
+        return FORM_TO_ITEM.get(formId);
     }
 }

@@ -1,7 +1,10 @@
-package com.jpigeon.ridebattleparallelworlds.common.data.attachment;
+package com.jpigeon.ridebattleparallelworlds.common.data.attachment.holder;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWUnlockRegistry;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -17,29 +20,97 @@ public class FormUnlockData {
     // 第一层：骑士ID，第二层：形态ID，值：是否解锁
     private final Table<ResourceLocation, ResourceLocation, Boolean> unlockTable;
 
-    // 骑士默认解锁的形态配置
-    private final Map<ResourceLocation, Set<ResourceLocation>> defaultUnlockedForms;
-
     public FormUnlockData() {
         this.unlockTable = HashBasedTable.create();
-        this.defaultUnlockedForms = new HashMap<>();
     }
 
     public FormUnlockData(Map<ResourceLocation, Map<ResourceLocation, Boolean>> existingData) {
         this.unlockTable = HashBasedTable.create();
-        this.defaultUnlockedForms = new HashMap<>();
-
         if (existingData != null) {
-            for (Map.Entry<ResourceLocation, Map<ResourceLocation, Boolean>> riderEntry : existingData.entrySet()) {
-                ResourceLocation riderId = riderEntry.getKey();
-                for (Map.Entry<ResourceLocation, Boolean> formEntry : riderEntry.getValue().entrySet()) {
-                    unlockTable.put(riderId, formEntry.getKey(), formEntry.getValue());
+            for (var riderEntry : existingData.entrySet()) {
+                for (var formEntry : riderEntry.getValue().entrySet()) {
+                    unlockTable.put(riderEntry.getKey(), formEntry.getKey(), formEntry.getValue());
                 }
             }
         }
     }
 
-    // ==================== 注册方法 ====================
+    // ==================== 注册表同步 ====================
+
+    /**
+     * 按当前 PWUnlockRegistry + RiderRegistry 初始化。
+     * 仅对尚未收录的骑士填入，已存在的骑士保持原样。
+     * <p>
+     * 由 PWData 在构造时调用一次。
+     */
+    public void initFromRegistry() {
+        for (ResourceLocation riderId : PWUnlockRegistry.getAllUnlockRiders()) {
+            if (containsRider(riderId)) continue;
+            RiderConfig config = RiderRegistry.getRider(riderId);
+            if (config == null) continue;
+            registerFromConfig(riderId, config,
+                    PWUnlockRegistry.getDefaultUnlocked(riderId));
+        }
+    }
+
+    /**
+     * 按最新注册表刷新形态列表，保留玩家当前的解锁状态。
+     * 只处理声明了 unlock 系统的骑士。
+     */
+    public void refreshFromRegistry() {
+        // 1. 快照当前已解锁集合
+        Map<ResourceLocation, Set<ResourceLocation>> snapshot = new HashMap<>();
+        for (var riderEntry : getAllUnlockData().entrySet()) {
+            Set<ResourceLocation> unlocked = new HashSet<>();
+            for (var formEntry : riderEntry.getValue().entrySet()) {
+                if (formEntry.getValue()) unlocked.add(formEntry.getKey());
+            }
+            snapshot.put(riderEntry.getKey(), unlocked);
+        }
+
+        // 2. 全部置为锁定
+        clearAll();
+
+        // 3. 从注册表重新写入，保留快照里的解锁状态
+        for (ResourceLocation riderId : PWUnlockRegistry.getAllUnlockRiders()) {
+            RiderConfig config = RiderRegistry.getRider(riderId);
+            if (config == null) continue;
+            Set<ResourceLocation> keep = snapshot.getOrDefault(
+                    riderId, PWUnlockRegistry.getDefaultUnlocked(riderId));
+            registerFromConfig(riderId, config, keep);
+        }
+    }
+
+    /**
+     * 用外部快照替换全部数据。用于玩家克隆（死亡重生）等场景。
+     */
+    public void replaceAll(Map<ResourceLocation, Map<ResourceLocation, Boolean>> all) {
+        clearAll();
+        for (var riderEntry : all.entrySet()) {
+            for (var formEntry : riderEntry.getValue().entrySet()) {
+                if (formEntry.getValue()) {
+                    unlockForm(riderEntry.getKey(), formEntry.getKey());
+                }
+            }
+        }
+    }
+
+    /**
+     * 把所有已注册骑士的形态置为锁定（不删除表结构）。
+     */
+    public void clearAll() {
+        for (ResourceLocation riderId : getAllUnlockData().keySet()) {
+            lockAllRiderForms(riderId);
+        }
+    }
+
+    // ==================== 内部辅助 ====================
+
+    private void registerFromConfig(ResourceLocation riderId, RiderConfig config,
+                                    Collection<ResourceLocation> defaultUnlocked) {
+        List<ResourceLocation> allForms = new ArrayList<>(config.getForms().keySet());
+        registerRiderForms(riderId, allForms, new ArrayList<>(defaultUnlocked));
+    }
 
     /**
      * 注册骑士的形态列表
@@ -52,15 +123,10 @@ public class FormUnlockData {
                                    List<ResourceLocation> allForms,
                                    List<ResourceLocation> defaultUnlocked) {
         if (riderId == null || allForms == null) return;
-
-        // 设置默认解锁状态
-        Set<ResourceLocation> defaultSet = new HashSet<>(defaultUnlocked != null ? defaultUnlocked : List.of());
-        defaultUnlockedForms.put(riderId, defaultSet);
-
-        // 初始化解锁表
+        Set<ResourceLocation> defaultSet = new HashSet<>(
+                defaultUnlocked != null ? defaultUnlocked : List.of());
         for (ResourceLocation formId : allForms) {
-            boolean isDefaultUnlocked = defaultSet.contains(formId);
-            unlockTable.put(riderId, formId, isDefaultUnlocked);
+            unlockTable.put(riderId, formId, defaultSet.contains(formId));
         }
     }
 
@@ -185,6 +251,26 @@ public class FormUnlockData {
      */
     public Map<ResourceLocation, Map<ResourceLocation, Boolean>> getAllUnlockData() {
         return Collections.unmodifiableMap(unlockTable.rowMap());
+    }
+
+    /**
+     * 把某骑士的所有形态恢复到 PWUnlockRegistry 声明的默认解锁状态。
+     * 未知骑士不做任何事。
+     */
+    public void resetToDefaults(ResourceLocation riderId) {
+        if (!PWUnlockRegistry.usesUnlock(riderId)) return;
+        RiderConfig config = RiderRegistry.getRider(riderId);
+        if (config == null) return;
+        registerFromConfig(riderId, config, PWUnlockRegistry.getDefaultUnlocked(riderId));
+    }
+
+    /**
+     * 把所有启用 unlock 的骑士重置到默认状态。
+     */
+    public void resetAllToDefaults() {
+        for (ResourceLocation riderId : PWUnlockRegistry.getAllUnlockRiders()) {
+            resetToDefaults(riderId);
+        }
     }
 
     // ==================== 序列化 ====================

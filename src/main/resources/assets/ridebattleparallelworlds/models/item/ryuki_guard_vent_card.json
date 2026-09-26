@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ridebattleparallelworlds:item/mirror/card/ryuki_guard_vent_card"
+  }
+}

@@ -8,13 +8,12 @@ import com.jpigeon.ridebattleparallelworlds.client.handler.SkillMovementUtils;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.armor.ArcleItem;
-import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item.DragonRodItem;
-import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item.PegasusBowgunItem;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Kuuga.*;
 import static com.jpigeon.rideevolutionlib.util.api.DriverItemStateUtil.setDriverAnim;
 
 public final class KuugaClientHandler implements IRiderClientHandler {
@@ -83,11 +82,11 @@ public final class KuugaClientHandler implements IRiderClientHandler {
             return;
         }
         if (skillId.equals(RiderSkills.SPLASH_DRAGON) || skillId.equals(RiderSkills.RISING_SPLASH_DRAGON)) {
-            boolean mainHand = (mainItem.getItem() instanceof PegasusBowgunItem);
+            boolean mainHand = (mainItem.is(DRAGON_ROD) || mainItem.is(RISING_DRAGON_ROD));
             if (mainHand) KuugaAnimations.SPLASH_MAIN.play(player);
             else KuugaAnimations.SPLASH_OFF.play(player);
         } else if (skillId.equals(RiderSkills.BLAST_PEGASUS) || skillId.equals(RiderSkills.RISING_BLAST_PEGASUS)) {
-            boolean mainHand = mainItem.getItem() instanceof DragonRodItem;
+            boolean mainHand = (mainItem.is(PEGASUS_BOWGUN) || mainItem.is(RISING_PEGASUS_BOWGUN));
             if (mainHand) KuugaAnimations.BLAST_MAIN.play(player);
             else KuugaAnimations.BLAST_OFF.play(player);
         } else if (skillId.equals(RiderSkills.CALAMITY_TITAN) || skillId.equals(RiderSkills.RISING_CALAMITY_TITAN)) {

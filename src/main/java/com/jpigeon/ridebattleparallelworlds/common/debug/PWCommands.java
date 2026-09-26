@@ -38,6 +38,8 @@ public class PWCommands {
                 .then(Commands.literal("checkData")
                         .executes(context -> checkData(context.getSource()))
                 )
+                .then(Commands.literal("resetUnlockDefaults")
+                        .executes(context -> resetData(context.getSource())))
         );
     }
 
@@ -109,6 +111,18 @@ public class PWCommands {
                 Component.literal("=== 重置所有变身数据 ===")
                         .withStyle(ChatFormatting.BOLD), false);
         data.refreshRegisteredForms();
+        return 1;
+    }
+
+    private static int resetData(CommandSourceStack source) {
+        ServerPlayer player = source.getPlayer();
+        if (player == null) return 0;
+        PWData data = player.getData(PWAttachments.PW_DATA);
+        data.resetFormUnlocksToDefaults();
+        player.setData(PWAttachments.PW_DATA, data);
+        source.sendSuccess(
+                () -> Component.literal("已重置形态解锁到默认状态")
+                        .withStyle(ChatFormatting.GREEN), false);
         return 1;
     }
 }

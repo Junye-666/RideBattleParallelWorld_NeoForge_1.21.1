@@ -7,6 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item.RisingDragon
 import com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils;
 import com.jpigeon.ridebattleparallelworlds.server.util.ProjectileUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -55,19 +56,11 @@ public class KuugaSkills {
     }
 
     private static void growingKick(Player player) {
-        int duration = calculateTolerance(40);
-
-        addResistance(player, duration);
-
-        kickSequence(player, RiderSkillFlags.GROWING_KICK, duration);
+        kuugaKick(player, RiderSkillFlags.GROWING_KICK);
     }
 
     private static void mightyKick(Player player) {
-        int duration = calculateTolerance(40);
-
-        addResistance(player, duration);
-
-        kickSequence(player, RiderSkillFlags.MIGHTY_KICK, duration);
+        kuugaKick(player, RiderSkillFlags.MIGHTY_KICK);
     }
 
     private static void splashDragon(Player player) {
@@ -121,11 +114,7 @@ public class KuugaSkills {
     }
 
     private static void risingMightyKick(Player player) {
-        int duration = calculateTolerance(40);
-
-        addResistance(player, duration);
-
-        kickSequence(player, RiderSkillFlags.RISING_MIGHTY_KICK, duration);
+        kuugaKick(player, RiderSkillFlags.RISING_MIGHTY_KICK);
     }
 
     private static void risingSplashDragon(Player player) {
@@ -181,18 +170,14 @@ public class KuugaSkills {
     }
 
     private static void amazingMightyKick(Player player) {
-        int duration = calculateTolerance(40);
-
-        addResistance(player, duration);
-
-        kickSequence(player, RiderSkillFlags.AMAZING_MIGHTY_KICK, duration);
+        kuugaKick(player, RiderSkillFlags.AMAZING_MIGHTY_KICK);
     }
 
     private static void ultimateKick(Player player) {
-        int duration = calculateTolerance(40);
+        kuugaKick(player, RiderSkillFlags.ULTIMATE_KICK);
+    }
 
-        addResistance(player, duration);
-
-        kickSequence(player, RiderSkillFlags.ULTIMATE_KICK, duration);
+    private static int kuugaKick(Player player, ResourceLocation flag) {
+        return performRiderKick(player, flag, 40);
     }
 }

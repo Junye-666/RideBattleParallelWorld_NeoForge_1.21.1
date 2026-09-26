@@ -16,7 +16,6 @@ import java.util.Map;
 
 import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.scheduleTicks;
 import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Agito.*;
-import static com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils.*;
 
 public class AgitoSkills {
     private AgitoSkills() {
@@ -44,19 +43,16 @@ public class AgitoSkills {
     }
 
     private static void groundKick(Player player) {
-        int duration = calculateTolerance(70);
         Level level = player.level();
         AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
         effect.setOwner(player);
         level.addFreshEntity(effect);
 
-        addResistance(player, duration);
+        int duration = PWSkillUtils.performRiderKick(player, RiderSkillFlags.GROUND_KICK, 70);
         if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
             agitoGround.triggerOpen();
             scheduleTicks(duration, agitoGround::setClosed);
         }
-
-        kickSequence(player, RiderSkillFlags.GROUND_KICK, duration);
     }
 
     private static void flameSaber(Player player) {

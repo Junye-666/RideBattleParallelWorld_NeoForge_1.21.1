@@ -5,6 +5,7 @@ import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.server.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.server.event.SlotExtractionEvent;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
+import com.jpigeon.ridebattleparallelworlds.common.registry.ItemFormUtils;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AlterRingItem;
@@ -26,9 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Agito.*;
-import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Kuuga.*;
 
 public class FormWheel {
     private static final Map<UUID, Map<ResourceLocation, Integer>> currentIndex = new ConcurrentHashMap<>();
@@ -153,41 +151,18 @@ public class FormWheel {
     }
 
     public static void setArcleSlot(Player player, ResourceLocation formId) {
-        if (formId == null || player == null) return;
-
-        ResourceLocation arcleCore = KuugaConfig.ARCLE_CORE;
-        Item item = switch (formId.getPath()) {
-            case "mighty_form" -> MIGHTY_ELEMENT.get();
-            case "dragon_form" -> DRAGON_ELEMENT.get();
-            case "pegasus_form" -> PEGASUS_ELEMENT.get();
-            case "titan_form" -> TITAN_ELEMENT.get();
-            case "rising_mighty_form" -> RISING_MIGHTY_ELEMENT.get();
-            case "rising_dragon_form" -> RISING_DRAGON_ELEMENT.get();
-            case "rising_pegasus_form" -> RISING_PEGASUS_ELEMENT.get();
-            case "rising_titan_form" -> RISING_TITAN_ELEMENT.get();
-            case "amazing_mighty_form" -> AMAZING_MIGHTY_ELEMENT.get();
-            case "ultimate_form" -> ULTIMATE_ELEMENT.get();
-            default -> null;
-        };
-        if (item == null) return;
-        RideBattleAPI.insertItemToSlot(player, arcleCore, item.getDefaultInstance());
-
+        setDriverSlotFor(player, KuugaConfig.ARCLE_CORE, formId);
     }
 
     public static void setAlterRingSlot(Player player, ResourceLocation formId) {
-        if (formId == null || player == null) return;
+        setDriverSlotFor(player, AgitoConfig.ALTER_RING_CORE, formId);
+    }
 
-        ResourceLocation alterRingCore = AgitoConfig.ALTER_RING_CORE;
-        Item item = switch (formId.getPath()) {
-            case "ground_form" -> GROUND_ELEMENT.get();
-            case "flame_form" -> FLAME_ELEMENT.get();
-            case "storm_form" -> STORM_ELEMENT.get();
-            case "trinity_form" -> TRINITY_ELEMENT.get();
-            case "burning_form" -> BURNING_ELEMENT.get();
-            default -> null;
-        };
+    private static void setDriverSlotFor(Player player, ResourceLocation coreSlotId, ResourceLocation formId) {
+        if (player == null || formId == null) return;
+        Item item = ItemFormUtils.getItemForForm(formId);
         if (item == null) return;
-        RideBattleAPI.insertItemToSlot(player, alterRingCore, item.getDefaultInstance());
+        RideBattleAPI.insertItemToSlot(player, coreSlotId, item.getDefaultInstance());
     }
 }
 

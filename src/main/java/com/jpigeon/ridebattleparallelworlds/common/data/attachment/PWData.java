@@ -1,115 +1,64 @@
 package com.jpigeon.ridebattleparallelworlds.common.data.attachment;
 
-import com.jpigeon.ridebattleparallelworlds.common.rider.RiderForms;
-import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
-import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
-import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.holder.FormUnlockData;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.holder.card.CardData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
- * 平行世界玩家数据
- * 整合了所有骑士的形态解锁数据
+ * 平行世界玩家数据（主入口）。
+ * <p>
+ * 下分两块：
+ * <ul>
+ *     <li>{@link FormUnlockData} —— 形态解锁（仅对声明了 unlock 的骑士生效）</li>
+ *     <li>{@link CardData} —— 卡牌顺序 / 抽卡（龙骑系）</li>
+ * </ul>
+ * <p>
+ * 本类只负责：dirty 追踪、对外 API 委托、序列化。
+ * 具体数据结构与注册表同步逻辑由子数据类自己承担。
  */
 public class PWData {
-    private final FormUnlockData formUnlockData;
 
-    // 添加一个标记，用于追踪数据是否被修改
+    private final FormUnlockData formUnlockData;
+    private final CardData cardData;
+
     private transient boolean isDirty = false;
 
-    public PWData() {
-        this(new FormUnlockData());
-    }
-
-    public PWData(FormUnlockData formUnlockData) {
+    public PWData(FormUnlockData formUnlockData, CardData cardData) {
         this.formUnlockData = formUnlockData != null ? formUnlockData : new FormUnlockData();
-        initializeRiderForms();
+        this.cardData = cardData != null ? cardData : new CardData();
+        // 构造时对齐一次注册表（首次创建 / 反序列化后）
+        this.formUnlockData.initFromRegistry();
     }
 
-    private void initializeRiderForms() {
-        if (!formUnlockData.containsRider(RiderIds.KUUGA_ID)) {
-            formUnlockData.registerRiderForms(
-                    RiderIds.KUUGA_ID,
-                    RiderForms.KUUGA_FORMS,
-                    List.of(KuugaConfig.GROWING_ID)
-            );
-        }
-        if (!formUnlockData.containsRider(RiderIds.AGITO_ID)) {
-            formUnlockData.registerRiderForms(
-                    RiderIds.AGITO_ID,
-                    RiderForms.AGITO_FORMS,
-                    List.of(AgitoConfig.GROUND_ID)
-            );
-        }
+    // ==================== Dirty 追踪 ====================
+
+    public void markDirty() {
+        this.isDirty = true;
     }
 
-    /**
-     * 按最新注册表刷新形态列表，保留玩家当前的解锁状态。
-     * <p>不改变玩家已解锁/锁定的选择，只补齐新增形态。
-     */
-    public void refreshRegisteredForms() {
-        Map<ResourceLocation, Set<ResourceLocation>> snapshot = new HashMap<>();
-        for (var riderEntry : formUnlockData.getAllUnlockData().entrySet()) {
-            Set<ResourceLocation> unlocked = new HashSet<>();
-            for (var formEntry : riderEntry.getValue().entrySet()) {
-                if (formEntry.getValue()) unlocked.add(formEntry.getKey());
-            }
-            snapshot.put(riderEntry.getKey(), unlocked);
-        }
-
-        clearAllFormUnlockData();
-
-        formUnlockData.registerRiderForms(
-                RiderIds.KUUGA_ID,
-                RiderForms.KUUGA_FORMS,
-                new ArrayList<>(snapshot.getOrDefault(
-                        RiderIds.KUUGA_ID, Set.of(KuugaConfig.GROWING_ID)))
-        );
-        formUnlockData.registerRiderForms(
-                RiderIds.AGITO_ID,
-                RiderForms.AGITO_FORMS,
-                new ArrayList<>(snapshot.getOrDefault(
-                        RiderIds.AGITO_ID, Set.of(AgitoConfig.GROUND_ID)))
-        );
+    public void clearDirty() {
+        this.isDirty = false;
     }
 
-    public void reloadFormUnlockData() {
-        List<ResourceLocation> KUUGA_FORMS = formUnlockData.getUnlockedForms(RiderIds.KUUGA_ID);
-        List<ResourceLocation> AGITO_FORMS = formUnlockData.getUnlockedForms(RiderIds.AGITO_ID);
-        clearAllFormUnlockData();
-        formUnlockData.registerRiderForms(
-                RiderIds.KUUGA_ID,
-                RiderForms.KUUGA_FORMS,
-                KUUGA_FORMS
-        );
-        formUnlockData.registerRiderForms(
-                RiderIds.AGITO_ID,
-                RiderForms.AGITO_FORMS,
-                AGITO_FORMS
-        );
+    public boolean isDirty() {
+        return isDirty;
     }
 
-    public void replaceAllUnlockData(Map<ResourceLocation, Map<ResourceLocation, Boolean>> all) {
-        clearAllFormUnlockData();
-        for (var riderEntry : all.entrySet()) {
-            for (var formEntry : riderEntry.getValue().entrySet()) {
-                if (formEntry.getValue()) {
-                    formUnlockData.unlockForm(riderEntry.getKey(), formEntry.getKey());
-                }
-            }
-        }
-    }
+    // ==================== 形态解锁 ====================
 
     public boolean isFormUnlocked(ResourceLocation riderId, ResourceLocation formId) {
         return formUnlockData.isFormUnlocked(riderId, formId);
     }
 
     public boolean unlockForm(ResourceLocation riderId, ResourceLocation formId) {
-        // 只有在状态改变时才标记为脏
-        if (!isFormUnlocked(riderId, formId)) {
+        if (!formUnlockData.isFormUnlocked(riderId, formId)) {
             formUnlockData.unlockForm(riderId, formId);
             markDirty();
             return true;
@@ -118,70 +67,93 @@ public class PWData {
     }
 
     public void lockForm(ResourceLocation riderId, ResourceLocation formId) {
-        if (isFormUnlocked(riderId, formId)) {
+        if (formUnlockData.isFormUnlocked(riderId, formId)) {
             formUnlockData.lockForm(riderId, formId);
             markDirty();
         }
     }
 
-    // 标记数据为脏，需要保存
-    public void markDirty() {
-        this.isDirty = true;
-    }
-
-    // 清除脏标记
-    public void clearDirty() {
-        this.isDirty = false;
-    }
-
-    // 检查是否需要保存
-    public boolean isDirty() {
-        return isDirty;
-    }
-
-    /**
-     * 获取骑士已解锁的形态列表
-     */
     public List<ResourceLocation> getUnlockedForms(ResourceLocation riderId) {
         return formUnlockData.getUnlockedForms(riderId);
     }
 
-    /**
-     * 获取骑士未解锁的形态列表
-     */
     public List<ResourceLocation> getLockedForms(ResourceLocation riderId) {
         return formUnlockData.getLockedForms(riderId);
     }
 
-    /**
-     * 获取骑士的解锁状态映射
-     */
     public Map<ResourceLocation, Boolean> getRiderUnlockStatus(ResourceLocation riderId) {
         return formUnlockData.getRiderUnlockStatus(riderId);
     }
 
-    // 获取 FormUnlockData
+    /**
+     * 直接暴露子数据（供 FormWheel / PWCommands 等只读场景使用）。
+     */
     public FormUnlockData getFormUnlockData() {
         return formUnlockData;
     }
 
-    // 清空所有解锁数据
-    public void clearAllFormUnlockData() {
-        // 获取所有已注册的骑士
-        Map<ResourceLocation, Map<ResourceLocation, Boolean>> allData = formUnlockData.getAllUnlockData();
-        for (ResourceLocation riderId : allData.keySet()) {
-            formUnlockData.lockAllRiderForms(riderId);
-        }
+    /**
+     * 从注册表刷新：委托 + dirty。
+     */
+    public void refreshRegisteredForms() {
+        formUnlockData.refreshFromRegistry();
+        markDirty();
     }
 
+    public void resetFormUnlocksToDefaults() {
+        formUnlockData.resetAllToDefaults();
+        markDirty();
+    }
 
+    // ==================== 卡牌 ====================
+
+    public CardData getCardData() {
+        return cardData;
+    }
+
+    public void ensureCardOrderInitialized(ResourceLocation riderId) {
+        if (cardData.ensureInitialized(riderId)) markDirty();
+    }
+
+    public void setCardOrder(ResourceLocation riderId, List<ResourceLocation> newOrder) {
+        cardData.setOrder(riderId, newOrder);
+        markDirty();
+    }
+
+    public List<ResourceLocation> getCardOrder(ResourceLocation riderId) {
+        return cardData.getOrder(riderId);
+    }
+
+    public Set<ResourceLocation> getDrawnCards(ResourceLocation riderId) {
+        return cardData.getDrawn(riderId);
+    }
+
+    /**
+     * @return 抽到卡牌 id，或 {@code null} 表示已抽空。
+     */
+    public ResourceLocation drawNextCard(ResourceLocation riderId) {
+        ResourceLocation next = cardData.peekNextCard(riderId);
+        if (next == null) return null;
+        if (!cardData.markDrawn(riderId, next)) return null;
+        // 抽卡不持久化，无需 markDirty
+        return next;
+    }
+
+    public void resetDrawnCards(ResourceLocation riderId) {
+        cardData.resetDrawn(riderId);
+        // drawn 不持久化
+    }
 
     // ==================== 序列化 ====================
 
     public static final Codec<PWData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    FormUnlockData.CODEC.optionalFieldOf("formUnlockData", new FormUnlockData())
-                            .forGetter(data -> data.formUnlockData)
-            ).apply(instance, PWData::new)
+                    FormUnlockData.CODEC.optionalFieldOf("formUnlockData")
+                            .forGetter(d -> Optional.of(d.formUnlockData)),
+                    CardData.CODEC.optionalFieldOf("cardData")
+                            .forGetter(d -> Optional.of(d.cardData))
+            ).apply(instance, (formOpt, cardOpt) -> new PWData(
+                    formOpt.orElseGet(FormUnlockData::new),
+                    cardOpt.orElseGet(CardData::new)))
     );
 }

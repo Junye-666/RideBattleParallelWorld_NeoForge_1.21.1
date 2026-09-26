@@ -60,7 +60,7 @@ public class PWArmorMaterial {
                 attribute.put(ArmorItem.Type.LEGGINGS, 5);
                 attribute.put(ArmorItem.Type.BOOTS, 4);
                 attribute.put(ArmorItem.Type.BODY, 8);
-            }), 8, 1f, 0.2f, ModItems.RIDER_INGOT);
+            }), 8, 1f, 0.2f, ModItems.Misc.RIDER_INGOT);
 
     private static Holder<ArmorMaterial> register(String name, EnumMap<ArmorItem.Type, Integer> typeProtection,
                                                   int enchantability, float toughness, float knockbackResistance,

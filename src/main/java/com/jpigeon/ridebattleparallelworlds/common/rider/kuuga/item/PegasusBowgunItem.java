@@ -1,22 +1,37 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item;
 
-import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseRiderGeoItem;
+import com.jpigeon.ridebattleparallelworlds.common.rider.weapon.RiderWeaponItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 
-public class PegasusBowgunItem extends BaseRiderGeoItem {
+public class PegasusBowgunItem extends RiderWeaponItem {
     public PegasusBowgunItem(Properties properties) {
-        super(RideBattleParallelWorlds.MODID, "kuuga", "pegasus_bowgun", properties.stacksTo(1).durability(0), true);
+        super(RideBattleParallelWorlds.MODID, "kuuga", "pegasus_bowgun", properties.stacksTo(1).durability(0));
+    }
+
+    @Override
+    protected ResourceLocation requiredForm() {
+        return KuugaConfig.PEGASUS_ID;
+    }
+
+    @Override
+    protected ResourceLocation skill() {
+        return RiderSkills.BLAST_PEGASUS;
+    }
+
+    @Override
+    protected int cooldownTicks() {
+        return 110;
+    }
+
+    @Override
+    protected void onUse(Player player, InteractionHand hand) {
+        setAnimState("shoot");
     }
 
     @Override
@@ -25,30 +40,5 @@ public class PegasusBowgunItem extends BaseRiderGeoItem {
         addController(registrar, "pull", createLoopController("pull"));
         addController(registrar, "release", createLoopController("release"));
         addController(registrar, "shoot", createOnceController("shoot"));
-    }
-
-    public void triggerShoot() {
-        setAnimState("shoot");
-    }
-
-    public void triggerPull() {
-        setAnimState("pull");
-    }
-
-    public void triggerRelease() {
-        setAnimState("release");
-    }
-
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
-        ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
-            if (RideBattleAPI.isSpecificForm(player, KuugaConfig.PEGASUS_ID)) {
-                player.getCooldowns().addCooldown(this, 110);
-                triggerShoot();
-                RideBattleAPI.triggerSkill(player, RiderSkills.BLAST_PEGASUS, SkillEvent.SkillTriggerType.WEAPON);
-            }
-        }
-        return InteractionResultHolder.success(itemStack);
     }
 }

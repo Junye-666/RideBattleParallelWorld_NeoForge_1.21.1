@@ -1,6 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.common.data.attachment;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.holder.FormUnlockData;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.holder.card.CardData;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -15,7 +17,7 @@ public class PWAttachments {
     public static final Supplier<AttachmentType<PWData>> PW_DATA =
             ATTACHMENTS.register("pw_data",
                     () -> AttachmentType.builder(
-                                    () -> new PWData(new FormUnlockData())
+                                    () -> new PWData(new FormUnlockData(), new CardData())
                             )
                             .serialize(PWData.CODEC)
                             .copyOnDeath()

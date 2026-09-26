@@ -1,6 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.server.util;
 
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWUnlockRegistry;
 import com.jpigeon.ridebattleparallelworlds.common.data.component.ItemData;
 import com.jpigeon.ridebattleparallelworlds.common.data.component.ModDataComponents;
 import net.minecraft.resources.ResourceLocation;
@@ -135,6 +136,7 @@ public class AbilitiesUtils {
     }
 
     public static void unlockFormIfLocked(Player player, ResourceLocation riderId, ResourceLocation formId) {
+        if (!PWUnlockRegistry.usesUnlock(riderId)) return;
         if (!ParallelWorldsApi.isFormUnlocked(player, riderId, formId)) {
             if (player instanceof ServerPlayer serverPlayer) {
                 ParallelWorldsApi.unlockForm(serverPlayer, riderId, formId);

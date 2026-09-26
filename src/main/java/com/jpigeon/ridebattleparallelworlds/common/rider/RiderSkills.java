@@ -33,6 +33,13 @@ public class RiderSkills {
     public static final ResourceLocation FIRESTORM_ATTACK = id("firestorm_attack");
     public static final ResourceLocation BURNING_BOMBER = id("burning_bomber");
 
+    // 龙骑
+    public static final ResourceLocation RYUKI_SWORD_VENT   = id("ryuki_sword_vent");
+    public static final ResourceLocation RYUKI_STRIKE_VENT  = id("ryuki_strike_vent");
+    public static final ResourceLocation RYUKI_GUARD_VENT   = id("ryuki_guard_vent");
+    public static final ResourceLocation RYUKI_ADVENT       = id("ryuki_advent");
+    public static final ResourceLocation RYUKI_FINAL_VENT   = id("ryuki_final_vent");
+
     public static void registerSkill(ResourceLocation id, int cooldown, ChatFormatting color) {
         String name = id.getPath();
         SkillSystem.registerSkill(

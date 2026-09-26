@@ -2,14 +2,11 @@ package com.jpigeon.ridebattleparallelworlds.common.data.attachment;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.network.packet.FormDataSyncPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-
-import java.util.Map;
 
 public class PWAttachmentsHandler {
     @SubscribeEvent
@@ -18,6 +15,10 @@ public class PWAttachmentsHandler {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         PWData data = serverPlayer.getData(PWAttachments.PW_DATA);
+        // 登录时对齐一次注册表
+        data.getFormUnlockData().initFromRegistry();
+        serverPlayer.setData(PWAttachments.PW_DATA, data);
+
         PacketDistributor.sendToPlayer(
                 serverPlayer,
                 new FormDataSyncPacket(serverPlayer.getUUID(), data)
@@ -33,17 +34,14 @@ public class PWAttachmentsHandler {
         PWData oldData = original.getData(PWAttachments.PW_DATA);
         PWData newData = newPlayer.getData(PWAttachments.PW_DATA);
 
-        Map<ResourceLocation, Map<ResourceLocation, Boolean>> allUnlockData =
-                oldData.getFormUnlockData().getAllUnlockData();
+        // 形态解锁
+        newData.getFormUnlockData().replaceAll(
+                oldData.getFormUnlockData().getAllUnlockData());
 
-        for (Map.Entry<ResourceLocation, Map<ResourceLocation, Boolean>> riderEntry : allUnlockData.entrySet()) {
-            ResourceLocation riderId = riderEntry.getKey();
-            for (Map.Entry<ResourceLocation, Boolean> formEntry : riderEntry.getValue().entrySet()) {
-                if (formEntry.getValue()) {
-                    newData.unlockForm(riderId, formEntry.getKey());
-                }
-            }
-        }
+        // 卡牌顺序
+        newData.getCardData().copyFrom(oldData.getCardData());
+
+        newPlayer.setData(PWAttachments.PW_DATA, newData);
     }
 
     @SubscribeEvent
@@ -52,6 +50,9 @@ public class PWAttachmentsHandler {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         PWData data = serverPlayer.getData(PWAttachments.PW_DATA);
+        data.getFormUnlockData().initFromRegistry();
+        serverPlayer.setData(PWAttachments.PW_DATA, data);
+
         PacketDistributor.sendToPlayer(
                 serverPlayer,
                 new FormDataSyncPacket(serverPlayer.getUUID(), data)

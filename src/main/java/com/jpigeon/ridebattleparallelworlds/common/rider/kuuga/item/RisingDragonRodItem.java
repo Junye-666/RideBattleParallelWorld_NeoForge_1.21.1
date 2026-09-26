@@ -1,22 +1,37 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item;
 
-import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
-import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseRiderGeoItem;
+import com.jpigeon.ridebattleparallelworlds.common.rider.weapon.RiderWeaponItem;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 
-public class RisingDragonRodItem extends BaseRiderGeoItem {
+public class RisingDragonRodItem extends RiderWeaponItem {
     public RisingDragonRodItem(Properties properties) {
-        super(RideBattleParallelWorlds.MODID, "kuuga", "rising_dragon_rod", properties.stacksTo(1).durability(0), true);
+        super(RideBattleParallelWorlds.MODID, "kuuga", "rising_dragon_rod", properties.stacksTo(1).durability(0));
+    }
+
+    @Override
+    protected ResourceLocation requiredForm() {
+        return KuugaConfig.RISING_DRAGON_ID;
+    }
+
+    @Override
+    protected ResourceLocation skill() {
+        return RiderSkills.RISING_SPLASH_DRAGON;
+    }
+
+    @Override
+    protected int cooldownTicks() {
+        return 410;
+    }
+
+    @Override
+    protected void onUse(Player player, InteractionHand hand) {
+        setAnimState(hand.equals(InteractionHand.MAIN_HAND) ? "spin_main" : "spin_off");
     }
 
     @Override
@@ -25,28 +40,5 @@ public class RisingDragonRodItem extends BaseRiderGeoItem {
         addController(registrar, "spin_main", createOnceController("spin_main"));
         addController(registrar, "spin_off", createOnceController("spin_off"));
 
-    }
-
-    public void triggerMainSpin() {
-        setAnimState("spin_main");
-    }
-
-    public void triggerOffSpin() {
-        setAnimState("spin_off");
-    }
-
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
-        ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!level.isClientSide() && RideBattleAPI.isTransformed(player)) {
-            if (RideBattleAPI.isSpecificForm(player, KuugaConfig.RISING_DRAGON_ID)) {
-                player.getCooldowns().addCooldown(this, 410);
-                if (usedHand.equals(InteractionHand.MAIN_HAND)) {
-                    triggerMainSpin();
-                } else triggerOffSpin();
-                RideBattleAPI.triggerSkill(player, RiderSkills.RISING_SPLASH_DRAGON, SkillEvent.SkillTriggerType.WEAPON);
-            }
-        }
-        return InteractionResultHolder.success(itemStack);
     }
 }

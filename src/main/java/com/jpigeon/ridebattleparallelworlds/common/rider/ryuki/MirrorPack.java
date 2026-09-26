@@ -7,6 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.client.handler.rider.MirrorClientHan
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.server.handler.rider.MirrorServerHandler;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class MirrorPack implements IRiderPack {
     @Override
@@ -19,8 +20,9 @@ public class MirrorPack implements IRiderPack {
         MirrorConfig.init();
         // TODO: Mirror sounds
 
-        // TODO: Mirror skills
+        MirrorSkills.register();
 
+        NeoForge.EVENT_BUS.addListener(MirrorServerHandler::onExtractPre);
         ServerRiderDispatcher.register(new MirrorServerHandler());
     }
 

@@ -31,6 +31,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Kuuga.*;
+import static com.jpigeon.ridebattleparallelworlds.server.util.AbilitiesUtils.*;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
 public final class KuugaServerHandler implements IRiderServerHandler {
@@ -116,7 +117,7 @@ public final class KuugaServerHandler implements IRiderServerHandler {
             ItemStack pegasusBowGun = searchForItemFromPlayer(PEGASUS_BOWGUN.get(), player);
             if (pegasusBowGun != null) {
                 ItemStack rising = RISING_PEGASUS_BOWGUN.toStack();
-                AbilitiesUtils.transferData(pegasusBowGun, rising, player);
+                transferData(pegasusBowGun, rising, player);
             }
         } else if (oldFormId.equals(KuugaConfig.TITAN_ID) && newFormId.equals(KuugaConfig.RISING_TITAN_ID)) {
             ItemStack titanSword = searchForItemFromPlayer(TITAN_SWORD.get(), player);
@@ -183,20 +184,8 @@ public final class KuugaServerHandler implements IRiderServerHandler {
         AbilitiesUtils.convertItemTo(player, originStack, targetItem);
     }
 
-    private void transferData(ItemStack origin, ItemStack target, Player player) {
-        AbilitiesUtils.transferData(origin, target, player);
-    }
-
-    private void removeItemFromPlayer(Item toRemove, Player player) {
-        AbilitiesUtils.removeItemFromPlayer(toRemove, player);
-    }
-
     private static boolean hasItemInInventory(Item item, Player player) {
         return AbilitiesUtils.hasItemInInventory(item, player);
-    }
-
-    private ItemStack searchForItemFromPlayer(Item item, Player player) {
-        return AbilitiesUtils.searchForItemFromPlayer(item, player);
     }
 
     private static void scheduleTicks(int ticks, Runnable callback) {

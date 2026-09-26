@@ -214,6 +214,17 @@ public class PWSkillUtils {
                 pos.getX(), pos.getY() + 1.5, pos.getZ(), radius, radius * 4.0f);
     }
 
+    /**
+     * 通用骑士踢辅助：算容错时长 + 加抗性 + 打 flag。
+     * @return 最终持续 tick（含容错）
+     */
+    public static int performRiderKick(Player player, ResourceLocation flag, int baseTolerance) {
+        int duration = calculateTolerance(baseTolerance);
+        addResistance(player, duration);
+        kickSequence(player, flag, duration);
+        return duration;
+    }
+
     private static void scheduleTicks(int ticks, Runnable callback) {
         RideBattleAPI.scheduleTicks(ticks, callback);
     }
