@@ -13,10 +13,7 @@ public final class KuugaSounds {
 
     public static final Map<FormConfig, ModSounds.SoundMeta> HENSHIN_MAP = new HashMap<>();
 
-    /**
-     * 由 KuugaPack.registerCommon 调用（在 KuugaConfig.init 之后）
-     */
-    public static void init() {
+    static {
         put(KuugaConfig.KUUGA_GROWING_FORM, ModSounds.KUUGA_MIGHTY.get());
         put(KuugaConfig.KUUGA_MIGHTY_FORM, ModSounds.KUUGA_MIGHTY.get());
         put(KuugaConfig.KUUGA_DRAGON_FORM, ModSounds.KUUGA_DRAGON.get());

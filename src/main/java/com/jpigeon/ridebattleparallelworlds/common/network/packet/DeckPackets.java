@@ -15,6 +15,7 @@ import java.util.Set;
  * 龙骑系卡牌系统的全部网络包。
  * <p>
  * C→S：OpenDeckPacket / SaveDeckOrderPacket / DrawCardPacket
+ * <p>
  * S→C：DeckSyncPacket
  * <p>
  * 抽卡记录（drawn）不走 S→C 同步，客户端仅用于 UI 置灰展示，

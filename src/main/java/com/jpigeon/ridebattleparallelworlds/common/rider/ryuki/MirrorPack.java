@@ -1,33 +1,39 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.ryuki;
 
-import com.jpigeon.ridebattlelib.common.api.client.ClientRiderDispatcher;
-import com.jpigeon.ridebattlelib.common.api.registry.IRiderPack;
-import com.jpigeon.ridebattlelib.common.api.server.ServerRiderDispatcher;
-import com.jpigeon.ridebattleparallelworlds.client.handler.rider.MirrorClientHandler;
+import com.jpigeon.ridebattlelib.common.api.client.IRiderClientHandler;
+import com.jpigeon.ridebattlelib.common.api.server.IRiderServerHandler;
+import com.jpigeon.ridebattleparallelworlds.common.rider.AbstractRiderPack;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
-import com.jpigeon.ridebattleparallelworlds.server.handler.rider.MirrorServerHandler;
+import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.handler.MirrorClientHandler;
+import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.handler.MirrorServerHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.NeoForge;
 
-public class MirrorPack implements IRiderPack {
+public class MirrorPack extends AbstractRiderPack {
     @Override
     public ResourceLocation riderId() {
         return RiderIds.MIRROR_SYSTEM_ID;
     }
 
     @Override
-    public void registerCommon() {
+    protected void initConfig() {
         MirrorConfig.init();
-        // TODO: Mirror sounds
-
-        MirrorSkills.register();
-
-        NeoForge.EVENT_BUS.addListener(MirrorServerHandler::onExtractPre);
-        ServerRiderDispatcher.register(new MirrorServerHandler());
     }
 
     @Override
-    public void registerClient() {
-        ClientRiderDispatcher.register(new MirrorClientHandler());
+    protected void registerSkills() {
+        MirrorSkills.register();
+    }
+
+    @Override
+    protected IRiderServerHandler serverHandler() {
+        NeoForge.EVENT_BUS.addListener(MirrorServerHandler::onExtractPre);
+
+        return new MirrorServerHandler();
+    }
+
+    @Override
+    protected IRiderClientHandler clientHandler() {
+        return new MirrorClientHandler();
     }
 }

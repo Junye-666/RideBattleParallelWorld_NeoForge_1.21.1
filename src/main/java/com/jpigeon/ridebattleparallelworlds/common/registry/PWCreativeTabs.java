@@ -51,10 +51,22 @@ public class PWCreativeTabs {
                     })
                     .build());
 
+    public static final Supplier<CreativeModeTab> MIRROR_ITEMS_TAP = CREATIVE_MODE_TAB.register("mirror_items_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.Ryuki.RYUKI_DECK.get()))
+                    .title(Component.translatable("creativeTab.ridebattleparallelworlds.mirror_items"))
+                    .withTabsBefore(id("agito_items_tab"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ModItems.Ryuki.MIRROR_FRAGMENT);
+                        output.accept(ModItems.Ryuki.V_BUCKLE);
+                        output.accept(ModItems.Ryuki.BLANK_DECK);
+                        output.accept(ModItems.Ryuki.RYUKI_DECK);
+                    })
+                    .build());
+
     public static final Supplier<CreativeModeTab> DECADE_ITEMS_TAB = CREATIVE_MODE_TAB.register("decade_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.Decade.DECADE_HELMET.get()))
                     .title(Component.translatable("creativeTab.ridebattleparallelworlds.decade_items"))
-                    .withTabsBefore(id("agito_items_tab"))
+                    .withTabsBefore(id("mirror_items_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.Decade.DECA_DRIVER);
                         output.accept(ModItems.Decade.WORLDS_FRAGMENT);

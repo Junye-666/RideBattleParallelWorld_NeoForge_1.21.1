@@ -2,7 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.client;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.client.render.RenderHandler;
-import com.jpigeon.ridebattleparallelworlds.common.registry.RegistryUtils;
+import com.jpigeon.ridebattleparallelworlds.common.registry.util.RegistryUtils;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;

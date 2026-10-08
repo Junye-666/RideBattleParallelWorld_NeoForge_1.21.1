@@ -32,9 +32,12 @@ import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.scheduleTicks;
 
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID)
 public class PWSkillUtils {
@@ -75,6 +78,75 @@ public class PWSkillUtils {
         player.hurtMarked = true;
     }
 
+    /**
+     * 缓存伤害处理器。
+     * <p>
+     * {@code tryApply} 返回 {@code true} 表示该次攻击被消费，
+     * 遍历会立刻停止并清除对应的 flag。
+     * <p>
+     * 实现应保证：<b>不修改 mainHand/offHand</b> 本体（保持只读），
+     * 命中逻辑里自己调 {@code player.getCooldowns().addCooldown} 或 {@code setClose}。
+     */
+    @FunctionalInterface
+    public interface BufferedDamageHandler {
+        boolean tryApply(Player player, LivingEntity target,
+                         ItemStack mainHand, ItemStack offHand);
+    }
+
+    /**
+     * flag → handler。用 flagId 而不是 skillId，因为同一个 skill 可能在
+     * 不同武器组合下走不同分支（比如 FIRESTORM_ATTACK 需要双手武器）。
+     */
+    private static final Map<ResourceLocation, BufferedDamageHandler> BUFFERED_HANDLERS = new LinkedHashMap<>();
+
+    public static void registerBufferedDamage(ResourceLocation flag, BufferedDamageHandler handler) {
+        BUFFERED_HANDLERS.put(flag, handler);
+    }
+
+    static {
+        // 亚极陀 — 火焰军刀单刀
+        registerBufferedDamage(RiderSkillFlags.SABER_SLASH, (player, target, main, off) -> {
+            if (!(main.getItem() instanceof FlameSaberItem saber)) return false;
+            hurt(player, target, 30);
+            saber.setClose();
+            return true;
+        });
+
+        // 亚极陀 — 暴风战戟单持
+        registerBufferedDamage(RiderSkillFlags.HALBERD_SPIN, (player, target, main, off) -> {
+            if (!(main.getItem() instanceof StormHalberdItem halberd)) return false;
+            hurt(player, target, 35);
+            halberd.setClose();
+            return true;
+        });
+
+        // 亚极陀 — 火焰军刀 + 暴风战戟（双持合击）
+        registerBufferedDamage(RiderSkillFlags.FIRESTORM_ATTACK, (player, target, main, off) -> {
+            if (!(main.getItem() instanceof FlameSaberItem saber)) return false;
+            if (!(off.getItem() instanceof StormHalberdItem halberd)) return false;
+            hurt(player, target, 70);
+            saber.setClose();
+            halberd.setClose();
+            return true;
+        });
+
+        // 亚极陀 — 燃烧形态的燃烧炸弹
+        registerBufferedDamage(RiderSkillFlags.BURNING_BOMBER, (player, target, main, off) -> {
+            if (!(main.getItem() instanceof ShiningCaliburItem)) return false;
+            hurt(player, target, 60);
+            knockBack(player, target, 2);
+            scheduleTicks(20, () -> createExplosion(player, target, 4));
+            return true;
+        });
+
+        // 空我 — 强力拳（无武器要求）
+        registerBufferedDamage(RiderSkillFlags.MIGHTY_PUNCH, (player, target, main, off) -> {
+            hurt(player, target, 15);
+            knockBack(player, target, 2);
+            return true;
+        });
+    }
+
     // ==========辅助方法==========
     private static void handleDamageEntity(Player player, LivingEntity living) {
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -88,38 +160,18 @@ public class PWSkillUtils {
         }
     }
 
-    private static void handleBufferedDamage(Player player, LivingEntity living,
+    private static void handleBufferedDamage(Player player, LivingEntity target,
                                              ItemStack mainHand, ItemStack offHand) {
-        if (RiderSkillFlags.isActive(player, RiderSkillFlags.SABER_SLASH)
-                && mainHand.getItem() instanceof FlameSaberItem saber) {
-            hurt(player, living, 30);
-            saber.setClose();
-            RiderSkillFlags.remove(player, RiderSkillFlags.SABER_SLASH);
-        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.HALBERD_SPIN)
-                && mainHand.getItem() instanceof StormHalberdItem halberd) {
-            hurt(player, living, 35);
-            halberd.setClose();
-            RiderSkillFlags.remove(player, RiderSkillFlags.HALBERD_SPIN);
-        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.FIRESTORM_ATTACK)
-                && mainHand.getItem() instanceof FlameSaberItem saber
-                && offHand.getItem() instanceof StormHalberdItem halberd) {
-            hurt(player, living, 70);
-            saber.setClose();
-            halberd.setClose();
-            RiderSkillFlags.remove(player, RiderSkillFlags.FIRESTORM_ATTACK);
-        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.BURNING_BOMBER)
-                && mainHand.getItem() instanceof ShiningCaliburItem) {
-            hurt(player, living, 60);
-            knockBack(player, living, 2);
-            RideBattleAPI.scheduleTicks(20, () -> createExplosion(player, living, 4));
-            RiderSkillFlags.remove(player, RiderSkillFlags.BURNING_BOMBER);
-        } else if (RiderSkillFlags.isActive(player, RiderSkillFlags.MIGHTY_PUNCH)) {
-            hurt(player, living, 15);
-            knockBack(player, living, 2);
-            RiderSkillFlags.remove(player, RiderSkillFlags.MIGHTY_PUNCH);
-        }
+        for (var entry : BUFFERED_HANDLERS.entrySet()) {
+            ResourceLocation flag = entry.getKey();
+            if (!RiderSkillFlags.isActive(player, flag)) continue;
 
-        RideBattleAPI.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
+            if (entry.getValue().tryApply(player, target, mainHand, offHand)) {
+                RiderSkillFlags.remove(player, flag);
+                RideBattleAPI.playPublicSound(player, SoundEvents.PLAYER_ATTACK_CRIT);
+                return;
+            }
+        }
     }
 
     private static void handleKickCollide(Player player) {
@@ -162,11 +214,11 @@ public class PWSkillUtils {
         addEffect(player, MobEffects.DAMAGE_RESISTANCE, duration, 4);
     }
 
-    public static void addSaturation(Player player, int duration){
+    public static void addSaturation(Player player, int duration) {
         addEffect(player, MobEffects.SATURATION, duration, 3);
     }
 
-    public static void addRegeneration(Player player, int duration){
+    public static void addRegeneration(Player player, int duration) {
         addEffect(player, MobEffects.REGENERATION, duration, 5);
     }
 
@@ -216,6 +268,7 @@ public class PWSkillUtils {
 
     /**
      * 通用骑士踢辅助：算容错时长 + 加抗性 + 打 flag。
+     *
      * @return 最终持续 tick（含容错）
      */
     public static int performRiderKick(Player player, ResourceLocation flag, int baseTolerance) {
@@ -223,9 +276,5 @@ public class PWSkillUtils {
         addResistance(player, duration);
         kickSequence(player, flag, duration);
         return duration;
-    }
-
-    private static void scheduleTicks(int ticks, Runnable callback) {
-        RideBattleAPI.scheduleTicks(ticks, callback);
     }
 }

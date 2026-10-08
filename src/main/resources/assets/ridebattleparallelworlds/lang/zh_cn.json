@@ -115,6 +115,7 @@
   "creativeTab.ridebattleparallelworlds.kuuga_items": "空我",
   "creativeTab.ridebattleparallelworlds.agito_items": "亚极陀",
   "creativeTab.ridebattleparallelworlds.decade_items": "Decade",
+  "creativeTab.ridebattleparallelworlds.mirror_items": "镜世界",
 
   "entity.ridebattleparallelworlds.decade_special_effect": "Decade变身特效",
 
@@ -126,10 +127,11 @@
   "tooltip.arcle.description": "请看好了，我的变身！",
   "tooltip.alterRing.description": "为了人类，为了AgitΩ",
   "tooltip.v-buckle.description": "撒, 塔塔开!",
-  "tooltip.decadriver.description": "只是一个路过的假面骑士~",
-  "tooltip.mirrordeck.tutorial": "Shift + 右键以调试卡组",
+  "tooltip.decaDriver.description": "只是一个路过的假面骑士~",
+  "tooltip.mirrorDeck.tutorial": "Shift + 右键以调试卡组",
+  "tooltip.ventCard.owner": "原主：",
 
-  "screen.ridebattleparallelworlds.mirro_deck": "镜卡盒",
+  "screen.ridebattleparallelworlds.mirror_deck": "镜卡盒",
 
   "message.ridebattleparallelworlds.deck_empty": "你没有牌了！",
   "message.riderGreet.login": "欢迎来到骑士战争平行世界的beta版本！",

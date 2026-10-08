@@ -1,8 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.agito.item;
 
-import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseRiderGeoItem;
@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
+
+import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.*;
 
 public class FlameSaberItem extends BaseRiderGeoItem {
     public FlameSaberItem(Properties properties) {
@@ -44,8 +46,8 @@ public class FlameSaberItem extends BaseRiderGeoItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        if (!RideBattleAPI.isTransformed(player)) return InteractionResultHolder.pass(itemStack);
-        if (RideBattleAPI.isSpecificForm(player, AgitoConfig.FLAME_ID) || RideBattleAPI.isSpecificForm(player, AgitoConfig.TRINITY_ID)) {
+        if (!isTransformed(player)) return InteractionResultHolder.pass(itemStack);
+        if (canUse(player)) {
 
             if (usedHand.equals(InteractionHand.MAIN_HAND)) {
                 if (level.isClientSide()) triggerOpen();
@@ -54,11 +56,11 @@ public class FlameSaberItem extends BaseRiderGeoItem {
 
                     player.getCooldowns().addCooldown(this, 410);
                     player.getCooldowns().addCooldown(stormHalberd, 410);
-                    RideBattleAPI.triggerSkill(player, RiderSkills.FIRESTORM_ATTACK, SkillEvent.SkillTriggerType.WEAPON);
+                    triggerSkill(player, RiderSkills.FIRESTORM_ATTACK, SkillEvent.SkillTriggerType.WEAPON);
                     return InteractionResultHolder.success(itemStack);
                 } else {
                     player.getCooldowns().addCooldown(this, 310);
-                    RideBattleAPI.triggerSkill(player, RiderSkills.SABER_SLASH, SkillEvent.SkillTriggerType.WEAPON);
+                    triggerSkill(player, RiderSkills.SABER_SLASH, SkillEvent.SkillTriggerType.WEAPON);
                 }
             } else {
                 return InteractionResultHolder.pass(itemStack);
@@ -66,5 +68,9 @@ public class FlameSaberItem extends BaseRiderGeoItem {
         }
 
         return InteractionResultHolder.success(itemStack);
+    }
+
+    private boolean canUse(Player player) {
+        return isSpecificRider(player, RiderIds.DECADE_ID) || isSpecificForm(player, AgitoConfig.FLAME_ID) || isSpecificForm(player, AgitoConfig.TRINITY_ID);
     }
 }

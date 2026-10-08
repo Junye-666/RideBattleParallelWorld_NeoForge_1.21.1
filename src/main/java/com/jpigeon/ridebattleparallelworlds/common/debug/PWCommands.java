@@ -1,36 +1,40 @@
 package com.jpigeon.ridebattleparallelworlds.common.debug;
 
+import com.jpigeon.ridebattlelib.common.config.RiderConfig;
+import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.Config;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
 import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWData;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Map;
 
-import static com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds.id;
-
 public class PWCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("ridebattleparallelworlds")
                 .requires(source -> source.hasPermission(1))
-                .then(Commands.argument("riderName", StringArgumentType.string())
+                .then(Commands.argument("riderId", ResourceLocationArgument.id())
+                        .suggests((ctx, builder) -> SharedSuggestionProvider.suggestResource(
+                                RiderRegistry.getRegisteredRiders().stream()
+                                        .map(RiderConfig::getRiderId)
+                                        .toList(),
+                                builder))
                         .then(Commands.literal("unlockForm")
-                                .then(Commands.argument("formName", StringArgumentType.string())
+                                .then(Commands.argument("formId", ResourceLocationArgument.id())
                                         .executes(context -> unlockForm(
                                                 context.getSource(),
-                                                StringArgumentType.getString(context, "riderName"),
-                                                StringArgumentType.getString(context, "formName")
-                                        ))
-                                )
-                        )
+                                                ResourceLocationArgument.getId(context, "riderId"),
+                                                ResourceLocationArgument.getId(context, "formId")
+                                        ))))
                 )
                 .then(Commands.literal("reloadData")
                         .executes(context -> reloadData(context.getSource()))
@@ -43,12 +47,10 @@ public class PWCommands {
         );
     }
 
-    private static int unlockForm(CommandSourceStack source, String riderName, String formName) {
+    private static int unlockForm(CommandSourceStack source, ResourceLocation riderId, ResourceLocation formId) {
+        // 方法体保持原样（只是参数类型变了）
         ServerPlayer player = source.getPlayer();
         if (player == null) return 0;
-
-        ResourceLocation riderId = id(riderName);
-        ResourceLocation formId = id(formName);
 
         // 解锁前状态
         PWData dataBefore = player.getData(PWAttachments.PW_DATA);

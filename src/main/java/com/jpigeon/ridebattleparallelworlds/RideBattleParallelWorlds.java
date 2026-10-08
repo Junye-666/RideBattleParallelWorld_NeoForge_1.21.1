@@ -8,7 +8,7 @@ import com.jpigeon.ridebattleparallelworlds.common.debug.PWCommands;
 import com.jpigeon.ridebattleparallelworlds.common.network.PacketHandler;
 import com.jpigeon.ridebattleparallelworlds.common.registry.*;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoPack;
-import com.jpigeon.ridebattleparallelworlds.common.rider.decade.pack.DecadePack;
+import com.jpigeon.ridebattleparallelworlds.common.rider.decade.DecadePack;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaPack;
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.MirrorPack;
 import com.jpigeon.ridebattleparallelworlds.server.handler.FormWheel;
@@ -33,6 +33,7 @@ public class RideBattleParallelWorlds {
 
         PWCreativeTabs.register(modEventBus);
 
+        PWArmorMaterial.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);

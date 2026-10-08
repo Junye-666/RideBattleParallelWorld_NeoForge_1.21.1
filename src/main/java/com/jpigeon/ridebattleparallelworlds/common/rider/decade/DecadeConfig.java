@@ -1,5 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.decade;
 
+import com.jpigeon.ridebattlelib.common.api.builder.FormBuilder;
+import com.jpigeon.ridebattlelib.common.api.builder.RiderBuilder;
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.common.config.TriggerType;
@@ -38,26 +40,19 @@ public class DecadeConfig {
                 .toList();
     }
 
-    public static final RiderConfig DECADE = new RiderConfig(RiderIds.DECADE_ID)
-            .setMainDriverItem(DECA_DRIVER.get())
-            .addMainDriverSlot(
-                    DECA_CARD,
-                    getRideCards(),
-                    true,
-                    true
-            );
-
-    public static final FormConfig DECADE_BASE = new FormConfig(DECADE_BASE_ID)
-            .setArmor(DECADE_HELMET.get(),
+    public static final FormConfig DECADE_BASE = FormBuilder.create(DECADE_BASE_ID)
+            .armor(
+                    DECADE_HELMET.get(),
                     DECADE_CHESTPLATE.get(),
                     null,
                     DECADE_BOOTS.get())
-            .addEffect(MobEffects.JUMP, -1, 0, true)
-            .addEffect(MobEffects.DAMAGE_BOOST, -1, 0, true)
-            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 0, true)
-            .addRequiredItem(DECA_CARD, KAMEN_RIDE_DECADE.get())
-            .setShouldPause(true)
-            .setTriggerType(TriggerType.AUTO);
+            .effect(MobEffects.JUMP, -1, 0, true)
+            .effect(MobEffects.DAMAGE_BOOST, -1, 0, true)
+            .effect(MobEffects.MOVEMENT_SPEED, -1, 0, true)
+            .requiredItem(DECA_CARD, KAMEN_RIDE_DECADE.get())
+            .shouldPause(true)
+            .triggerType(TriggerType.AUTO)
+            .build();
 
     public static final FormConfig DECADE_KUUGA_MIGHTY = KuugaConfig.KUUGA_MIGHTY_FORM.copyWithoutItemsAndSkills(ride(KuugaConfig.MIGHTY_ID))
             .addRequiredItem(DECA_CARD, KAMEN_RIDE_KUUGA.get())
@@ -105,24 +100,30 @@ public class DecadeConfig {
             .setTriggerType(TriggerType.AUTO);
 
 
-    private static void registerDecade() {
-        DECADE.addForm(DECADE_BASE);
+    public static final RiderConfig DECADE = RiderBuilder.create(RiderIds.DECADE_ID)
+            .driver(DECA_DRIVER.get())
+            .slot(
+                    DECA_CARD,
+                    getRideCards(),
+                    true,
+                    true
+            )
+            .form(DECADE_BASE)
 
-        DECADE.addForm(DECADE_KUUGA_MIGHTY);
-        DECADE.addForm(DECADE_KUUGA_DRAGON);
-        DECADE.addForm(DECADE_KUUGA_PEGASUS);
-        DECADE.addForm(DECADE_KUUGA_TITAN);
+            .form(DECADE_KUUGA_MIGHTY)
+            .form(DECADE_KUUGA_DRAGON)
+            .form(DECADE_KUUGA_PEGASUS)
+            .form(DECADE_KUUGA_TITAN)
 
-        DECADE.addForm(DECADE_AGITO_GROUND);
-        DECADE.addForm(DECADE_AGITO_FLAME);
-        DECADE.addForm(DECADE_AGITO_STORM);
-        DECADE.addForm(DECADE_AGITO_BURNING);
+            .form(DECADE_AGITO_GROUND)
+            .form(DECADE_AGITO_FLAME)
+            .form(DECADE_AGITO_STORM)
+            .form(DECADE_AGITO_BURNING)
 
-        RiderRegistry.registerRider(DECADE);
-    }
-
+            .baseForm(DECADE_BASE.getFormId())
+            .build();
 
     public static void init() {
-        registerDecade();
+        RiderRegistry.registerRider(DECADE);
     }
 }

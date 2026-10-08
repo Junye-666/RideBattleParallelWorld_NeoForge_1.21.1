@@ -1,6 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.shocker;
 
 
+import com.jpigeon.ridebattlelib.common.api.builder.FormBuilder;
+import com.jpigeon.ridebattlelib.common.api.builder.RiderBuilder;
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
@@ -19,32 +21,29 @@ public class ShockerConfig {
     public static final ResourceLocation SHOCKER_SLOT = id("shocker_slot");
     public static final ResourceLocation COMBATMAN_ID = id("combatman");
 
-    public static RiderConfig SHOCKER = new RiderConfig(SHOCKER_ID)
-            .setMainDriverItem(ModItems.Misc.SHOCKER_HELMET.get(), EquipmentSlot.HEAD)
-            .addMainDriverSlot(SHOCKER_SLOT, List.of(Items.AIR), true, true);
-
-    public static FormConfig SHOCKER_COMBATMAN = new FormConfig(COMBATMAN_ID)
-            .setArmor(
+    public static FormConfig SHOCKER_COMBATMAN = FormBuilder.create(COMBATMAN_ID)
+            .armor(
                     ModItems.Misc.SHOCKER_HELMET.get(),
                     ModItems.Misc.SHOCKER_CHESTPLATE.get(),
                     ModItems.Misc.SHOCKER_LEGGINGS.get(),
                     ModItems.Misc.SHOCKER_BOOTS.get()
             )
-            .addRequiredItem(SHOCKER_SLOT, Items.AIR)
-            .addEffect(MobEffects.INVISIBILITY, -1, 0, true)
-            .addEffect(MobEffects.JUMP, -1, 0, true)
-            .addEffect(MobEffects.NIGHT_VISION, -1, 0, true)
-            .addEffect(MobEffects.MOVEMENT_SPEED, -1, 0, true);
+            .requiredItem(SHOCKER_SLOT, Items.AIR)
+            .effect(MobEffects.INVISIBILITY, 0)
+            .effect(MobEffects.JUMP, 0)
+            .effect(MobEffects.NIGHT_VISION, 0)
+            .effect(MobEffects.MOVEMENT_SPEED, 0)
+            .allowsEmptyDriver(true)
+            .build();
 
-    private static void registerShocker() {
-        SHOCKER.addForm(SHOCKER_COMBATMAN);
-        SHOCKER.setBaseForm(SHOCKER_COMBATMAN.getFormId());
-        SHOCKER_COMBATMAN.setAllowsEmptyDriver(true);
-
-        RiderRegistry.registerRider(SHOCKER);
-    }
+    public static RiderConfig SHOCKER = RiderBuilder.create(SHOCKER_ID)
+            .driver(ModItems.Misc.SHOCKER_HELMET.get(), EquipmentSlot.HEAD)
+            .slot(SHOCKER_SLOT, List.of(Items.AIR), true, true)
+            .form(SHOCKER_COMBATMAN)
+            .baseForm(SHOCKER_COMBATMAN.getFormId())
+            .build();
 
     public static void init() {
-        registerShocker();
+        RiderRegistry.registerRider(SHOCKER);
     }
 }

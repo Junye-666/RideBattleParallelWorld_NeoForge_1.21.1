@@ -1,9 +1,9 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.item;
 
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
-import com.jpigeon.ridebattleparallelworlds.client.anim.rider.MirrorAnimations;
 import com.jpigeon.ridebattleparallelworlds.common.network.packet.DeckPackets;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModItems;
+import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.MirrorAnimations;
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.armor.VBuckleItem;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
@@ -90,10 +90,10 @@ public class MirrorDeckItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
         if (Screen.hasShiftDown()) {
-            tooltip.add(Component.translatable("tooltip.mirrordeck.tutorial"));
+            tooltip.add(Component.translatable("tooltip.mirrorDeck.tutorial"));
         }
     }
 }

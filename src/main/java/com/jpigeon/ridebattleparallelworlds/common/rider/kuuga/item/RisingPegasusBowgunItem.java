@@ -2,6 +2,7 @@ package com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
+import com.jpigeon.ridebattleparallelworlds.common.rider.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.weapon.RiderWeaponItem;
 import net.minecraft.resources.ResourceLocation;
@@ -9,14 +10,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import software.bernie.geckolib.animation.AnimatableManager;
 
+import java.util.List;
+
 public class RisingPegasusBowgunItem extends RiderWeaponItem {
     public RisingPegasusBowgunItem(Properties properties) {
         super(RideBattleParallelWorlds.MODID, "kuuga", "rising_pegasus_bowgun", properties.stacksTo(1).durability(0));
     }
 
     @Override
-    protected ResourceLocation requiredForm() {
-        return KuugaConfig.RISING_PEGASUS_ID;
+    protected List<ResourceLocation> requiredForms() {
+        return List.of(KuugaConfig.RISING_PEGASUS_ID, DecadeConfig.DECADE_BASE_ID);
     }
 
     @Override

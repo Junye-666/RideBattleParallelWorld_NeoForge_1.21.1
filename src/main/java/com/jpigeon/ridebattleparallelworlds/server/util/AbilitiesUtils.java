@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 public class AbilitiesUtils {
     public static void convertItemTo(Player player, ItemStack originStack, Item targetItem) {
         ItemStack targetStack = targetItem.getDefaultInstance();
-        copyItemStackData(originStack, targetStack);
+        copyItemStackData(originStack, targetStack, player);
         originStack.shrink(1);
         if (!player.getInventory().add(targetStack)) {
             player.drop(targetStack, false);
@@ -37,7 +37,7 @@ public class AbilitiesUtils {
             if (!stack.isEmpty() && stack.getItem() == toRemove) {
                 found = true;
 
-                ItemStack restoredStack = toRestoredItem(stack);
+                ItemStack restoredStack = toRestoredItem(stack, player);
 
                 // 移除
                 if (restoredStack != null) {
@@ -82,23 +82,19 @@ public class AbilitiesUtils {
         return 0;
     }
 
-    private static ItemStack toRestoredItem(ItemStack itemStack) {
+    private static ItemStack toRestoredItem(ItemStack itemStack, Player player) {
         if (itemStack.isEmpty()) return null;
         ItemData originData = itemStack.get(ModDataComponents.ORIGIN_ITEM_DATA.get());
-        if (originData == null) return null;
-        return originData.toItemStack();
+        if (originData == null || originData.tag().isEmpty()) return null;
+        return originData.toItemStack(player.registryAccess());
     }
 
     /**
      * 保存物品数据到目标物品
      */
-    public static void copyItemStackData(ItemStack source, ItemStack target) {
+    public static void copyItemStackData(ItemStack source, ItemStack target, Player player) {
         if (source.isEmpty()) return;
-
-        ItemStack singleSource = source.copy();
-        singleSource.setCount(1);
-
-        ItemData data = ItemData.fromItemStack(singleSource);
+        ItemData data = ItemData.fromItemStack(source, player.registryAccess());
         target.set(ModDataComponents.ORIGIN_ITEM_DATA.get(), data);
     }
 

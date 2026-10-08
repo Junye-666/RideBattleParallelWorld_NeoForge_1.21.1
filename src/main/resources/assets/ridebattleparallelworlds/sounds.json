@@ -86,12 +86,127 @@
   "mirror_henshin": {
     "subtitle": "sounds.ridebattleparallelworlds.mirror_henshin",
     "sounds": [
-      "ridebattleparallelworlds:ryuki/mirror_henshin"
+      "ridebattleparallelworlds:mirror/mirror_henshin"
     ]
-  },"summon_v_buckle": {
+  },
+  "summon_v_buckle": {
     "subtitle": "sounds.ridebattleparallelworlds.summon_v_buckle",
     "sounds": [
-      "ridebattleparallelworlds:ryuki/summon_v_buckle"
+      "ridebattleparallelworlds:mirror/summon_v_buckle"
+    ]
+  },
+  "mirror_draw": {
+    "subtitle": "sounds.ridebattleparallelworlds.mirror_draw",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/mirror_draw"
+    ]
+  },
+  "mirror_read": {
+    "subtitle": "sounds.ridebattleparallelworlds.mirror_read",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/mirror_read"
+    ]
+  },
+  "advent": {
+    "subtitle": "sounds.ridebattleparallelworlds.advent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/advent"
+    ]
+  },
+  "sword_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.sword_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/sword_vent"
+    ]
+  },
+  "strike_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.strike_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/strike_vent"
+    ]
+  },
+  "guard_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.guard_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/guard_vent"
+    ]
+  },
+  "clear_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.clear_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/clear_vent"
+    ]
+  },
+  "confine_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.confine_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/confine_vent"
+    ]
+  },
+  "copy_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.copy_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/copy_vent"
+    ]
+  },
+  "freeze_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.freeze_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/freeze_vent"
+    ]
+  },
+  "hold_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.hold_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/hold_vent"
+    ]
+  },
+  "nasty_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.nasty_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/nasty_vent"
+    ]
+  },
+  "spin_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.spin_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/spin_vent"
+    ]
+  },
+  "steal_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.steal_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/steal_vent"
+    ]
+  },
+  "swing_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.swing_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/swing_vent"
+    ]
+  },
+  "time_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.time_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/time_vent"
+    ]
+  },
+  "trick_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.trick_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/trick_vent"
+    ]
+  },
+  "unite_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.unite_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/unite_vent"
+    ]
+  },
+  "final_vent": {
+    "subtitle": "sounds.ridebattleparallelworlds.final_vent",
+    "sounds": [
+      "ridebattleparallelworlds:mirror/vent/final_vent"
     ]
   },
   "decade_insert": {

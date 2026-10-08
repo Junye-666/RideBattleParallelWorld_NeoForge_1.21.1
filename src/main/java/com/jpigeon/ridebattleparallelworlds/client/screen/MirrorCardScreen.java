@@ -31,10 +31,8 @@ public class MirrorCardScreen extends Screen {
     private final List<ResourceLocation> original;
     private boolean dirty;
 
-    public MirrorCardScreen(ResourceLocation riderId,
-                            List<ResourceLocation> order,
-                            Set<ResourceLocation> drawn) {
-        super(Component.translatable("screen.ridebattleparallelworlds.mirro_deck"));
+    public MirrorCardScreen(ResourceLocation riderId, List<ResourceLocation> order, Set<ResourceLocation> drawn) {
+        super(Component.translatable("screen.ridebattleparallelworlds.mirror_deck"));
         this.riderId = riderId;
         this.order = new ArrayList<>(order);
         this.original = new ArrayList<>(order);

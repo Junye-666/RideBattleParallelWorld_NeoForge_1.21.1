@@ -5,7 +5,7 @@ import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.server.event.ReturnItemsEvent;
 import com.jpigeon.ridebattlelib.server.event.SlotExtractionEvent;
 import com.jpigeon.ridebattleparallelworlds.api.ParallelWorldsApi;
-import com.jpigeon.ridebattleparallelworlds.common.registry.ItemFormUtils;
+import com.jpigeon.ridebattleparallelworlds.common.registry.ItemFormRegistry;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AlterRingItem;
@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -92,7 +93,10 @@ public class FormWheel {
 
         } else if (legs.getItem() instanceof AlterRingItem) {
             if (player.level().isClientSide()) {
-                Minecraft.getInstance().getSoundManager().stop();
+                Minecraft.getInstance().getSoundManager().stop(
+                        null,
+                        SoundSource.PLAYERS
+                );
             }
             List<ResourceLocation> unlockedForms =
                     ParallelWorldsApi.getUnlockedForms(player, RiderIds.AGITO_ID);
@@ -160,7 +164,7 @@ public class FormWheel {
 
     private static void setDriverSlotFor(Player player, ResourceLocation coreSlotId, ResourceLocation formId) {
         if (player == null || formId == null) return;
-        Item item = ItemFormUtils.getItemForForm(formId);
+        Item item = ItemFormRegistry.getItemForForm(formId);
         if (item == null) return;
         RideBattleAPI.insertItemToSlot(player, coreSlotId, item.getDefaultInstance());
     }

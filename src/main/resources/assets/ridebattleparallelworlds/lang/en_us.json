@@ -115,6 +115,7 @@
   "creativeTab.ridebattleparallelworlds.kuuga_items": "Kuuga",
   "creativeTab.ridebattleparallelworlds.agito_items": "Agito",
   "creativeTab.ridebattleparallelworlds.decade_items": "Decade",
+  "creativeTab.ridebattleparallelworlds.mirror_items": "Mirror World",
 
   "entity.ridebattleparallelworlds.decade_special_effect": "Decade Henshin Effect",
 
@@ -126,10 +127,11 @@
   "tooltip.arcle.description": "Please watch, my Henshin!",
   "tooltip.alterRing.description": "For the mankind, for AgitΩ",
   "tooltip.v-buckle.description": "Sa, Tatakae!",
-  "tooltip.decadriver.description": "Just a passing-by Kamen Rider~",
-  "tooltip.mirrordeck.tutorial": "Shift + Right Click to configure deck",
+  "tooltip.decaDriver.description": "Just a passing-by Kamen Rider~",
+  "tooltip.mirrorDeck.tutorial": "Shift + Right Click to configure deck",
+  "tooltip.ventCard.owner": "Original Owner: ",
 
-  "screen.ridebattleparallelworlds.mirro_deck": "Mirror Deck",
+  "screen.ridebattleparallelworlds.mirror_deck": "Mirror Deck",
 
   "message.ridebattleparallelworlds.deck_empty": "You ran out of cards!",
   "message.riderGreet.login": "Welcome to the ParallelWorlds' beta version!",

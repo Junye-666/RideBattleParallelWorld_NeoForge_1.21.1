@@ -1,30 +1,37 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.agito;
 
-import com.jpigeon.ridebattlelib.common.api.client.ClientRiderDispatcher;
-import com.jpigeon.ridebattlelib.common.api.registry.IRiderPack;
-import com.jpigeon.ridebattlelib.common.api.server.ServerRiderDispatcher;
-import com.jpigeon.ridebattleparallelworlds.client.handler.rider.AgitoClientHandler;
+import com.jpigeon.ridebattlelib.common.api.client.IRiderClientHandler;
+import com.jpigeon.ridebattlelib.common.api.server.IRiderServerHandler;
+import com.jpigeon.ridebattleparallelworlds.common.rider.AbstractRiderPack;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
-import com.jpigeon.ridebattleparallelworlds.server.handler.rider.AgitoServerHandler;
+import com.jpigeon.ridebattleparallelworlds.common.rider.agito.handler.AgitoClientHandler;
+import com.jpigeon.ridebattleparallelworlds.common.rider.agito.handler.AgitoServerHandler;
 import net.minecraft.resources.ResourceLocation;
 
-public class AgitoPack implements IRiderPack {
+public class AgitoPack extends AbstractRiderPack {
     @Override
     public ResourceLocation riderId() {
         return RiderIds.AGITO_ID;
     }
 
     @Override
-    public void registerCommon() {
+    protected void initConfig() {
         AgitoConfig.init();
-
-        AgitoSkills.register();
-
-        ServerRiderDispatcher.register(new AgitoServerHandler());
     }
 
     @Override
-    public void registerClient() {
-        ClientRiderDispatcher.register(new AgitoClientHandler());
+    protected void registerSkills() {
+        AgitoSkills.register();
+    }
+
+    @Override
+    protected IRiderServerHandler serverHandler() {
+        return new AgitoServerHandler();
+    }
+
+    @Override
+    protected IRiderClientHandler clientHandler() {
+        return new AgitoClientHandler();
+
     }
 }

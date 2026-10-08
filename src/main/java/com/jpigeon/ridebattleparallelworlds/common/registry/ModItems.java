@@ -1,6 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.common.registry;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.common.registry.util.ArmorFactory;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.FlameSaberItem;
@@ -25,19 +26,12 @@ public class ModItems {
         private Kuuga() {
         }
 
-        private static final String MOD = RideBattleParallelWorlds.MODID;
-
         /**
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            String name = "kuuga_" + form + "_" + type.getName();
-            return ITEMS.register(name, () ->
-                    new ParallelRiderArmor(
-                            MOD, "kuuga", form,
-                            PWArmorMaterial.KUUGA_MATERIAL,
-                            type,
-                            new Item.Properties(), false));
+            return ArmorFactory.create(ITEMS, "kuuga", form,
+                    () -> PWArmorMaterial.KUUGA_MATERIAL, type);
         }
 
         // 物品
@@ -132,19 +126,12 @@ public class ModItems {
         private Agito() {
         }
 
-        private static final String MOD = RideBattleParallelWorlds.MODID;
-
         /**
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            String name = "agito_" + form + "_" + type.getName();
-            return ITEMS.register(name, () ->
-                    new ParallelRiderArmor(
-                            MOD, "agito", form,
-                            PWArmorMaterial.AGITO_MATERIAL,
-                            type,
-                            new Item.Properties(), false));
+            return ArmorFactory.create(ITEMS, "agito", form,
+                    () -> PWArmorMaterial.AGITO_MATERIAL, type);
         }
 
         public static final DeferredItem<Item> GROUND_ELEMENT = ITEMS.register("agito_ground_element", ()
@@ -204,19 +191,12 @@ public class ModItems {
         private Ryuki() {
         }
 
-        private static final String MOD = RideBattleParallelWorlds.MODID;
-
         /**
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            String name = "mirror_" + form + "_" + type.getName();
-            return ITEMS.register(name, () ->
-                    new ParallelRiderArmor(
-                            MOD, "mirror", form,
-                            PWArmorMaterial.DECADE_MATERIAL,
-                            type,
-                            new Item.Properties(), false));
+            return ArmorFactory.create(ITEMS, "mirror", form,
+                    () -> PWArmorMaterial.MIRROR_MATERIAL, type);
         }
 
         // TODO: 合成配方
@@ -237,17 +217,23 @@ public class ModItems {
         public static final DeferredItem<ParallelRiderArmor> RYUKI_BASE_CHESTPLATE = armor("ryuki", ArmorItem.Type.CHESTPLATE);
         public static final DeferredItem<ParallelRiderArmor> RYUKI_BASE_BOOTS = armor("ryuki", ArmorItem.Type.BOOTS);
 
-        // 降临卡（贴图用的物品本体，玩家通过抽卡获得，右键使用）
+        // 降临卡
         public static final DeferredItem<VentCardItem> RYUKI_ADVENT_CARD = ITEMS.register("ryuki_advent_card",
-                () -> new VentCardItem("ad", new Item.Properties()));
+                () -> new VentCardItem("advent", new Item.Properties()));
         public static final DeferredItem<VentCardItem> RYUKI_SWORD_VENT_CARD = ITEMS.register("ryuki_sword_vent_card",
-                () -> new VentCardItem("sword", new Item.Properties()));
+                () -> new VentCardItem("sword_vent", new Item.Properties()));
         public static final DeferredItem<VentCardItem> RYUKI_STRIKE_VENT_CARD = ITEMS.register("ryuki_strike_vent_card",
-                () -> new VentCardItem("strike", new Item.Properties()));
+                () -> new VentCardItem("strike_vent", new Item.Properties()));
         public static final DeferredItem<VentCardItem> RYUKI_GUARD_VENT_CARD = ITEMS.register("ryuki_guard_vent_card",
-                () -> new VentCardItem("guard", new Item.Properties()));
+                () -> new VentCardItem("guard_vent", new Item.Properties()));
         public static final DeferredItem<VentCardItem> RYUKI_FINAL_VENT_CARD = ITEMS.register("ryuki_final_vent_card",
-                () -> new VentCardItem("final", new Item.Properties()));
+                () -> new VentCardItem("final_vent", new Item.Properties()));
+
+        // 武器
+        public static final DeferredItem<SwordItem> RYUKI_DRAG_SABER = ITEMS.register("ryuki_drag_saber",
+                () -> new SwordItem(Tiers.DIAMOND,
+                        new Item.Properties().durability(0).attributes(SwordItem.createAttributes(Tiers.DIAMOND, 3, -2))));
+
 
         public static void init() {
         }
@@ -257,19 +243,12 @@ public class ModItems {
         private Decade() {
         }
 
-        private static final String MOD = RideBattleParallelWorlds.MODID;
-
         /**
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            String name = "decade_" + form + "_" + type.getName();
-            return ITEMS.register(name, () ->
-                    new ParallelRiderArmor(
-                            MOD, "decade", form,
-                            PWArmorMaterial.DECADE_MATERIAL,
-                            type,
-                            new Item.Properties(), false));
+            return ArmorFactory.create(ITEMS, "decade", form,
+                    () -> PWArmorMaterial.DECADE_MATERIAL, type);
         }
 
         public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
@@ -312,19 +291,17 @@ public class ModItems {
         private Misc() {
         }
 
-        private static final String MOD = RideBattleParallelWorlds.MODID;
-
         /**
          * 通用形态盔甲三件套工厂
          */
+        private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
+            return ArmorFactory.create(ITEMS, "misc", form,
+                    () -> PWArmorMaterial.RIDER_MATERIAL, type);
+        }
+
         private static DeferredItem<ParallelRiderArmor> armor(String id, String form, ArmorItem.Type type) {
-            String name = id + "_" + form + "_" + type.getName();
-            return ITEMS.register(name, () ->
-                    new ParallelRiderArmor(
-                            MOD, id, form,
-                            PWArmorMaterial.RIDER_MATERIAL,
-                            type,
-                            new Item.Properties(), false));
+            return ArmorFactory.create(ITEMS, id, form,
+                    () -> PWArmorMaterial.RIDER_MATERIAL, type);
         }
 
         public static final DeferredItem<Item> RIDER_INGOT = ITEMS.register("rider_ingot", ()

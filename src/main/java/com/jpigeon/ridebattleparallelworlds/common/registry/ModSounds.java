@@ -34,6 +34,25 @@ public class ModSounds {
 
     public static final Supplier<SoundEvent> SUMMON_V_BUCKLE = registerSoundEvent("summon_v_buckle");
     public static final Supplier<SoundEvent> MIRROR_HENSHIN = registerSoundEvent("mirror_henshin");
+    public static final Supplier<SoundEvent> MIRROR_DRAW = registerSoundEvent("mirror_draw");
+    public static final Supplier<SoundEvent> MIRROR_READ = registerSoundEvent("mirror_read");
+    public static final Supplier<SoundEvent> ADVENT = registerSoundEvent("advent");
+    public static final Supplier<SoundEvent> SWORD_VENT = registerSoundEvent("sword_vent");
+    public static final Supplier<SoundEvent> STRIKE_VENT = registerSoundEvent("strike_vent");
+    public static final Supplier<SoundEvent> GUARD_VENT = registerSoundEvent("guard_vent");
+    public static final Supplier<SoundEvent> CLEAR_VENT = registerSoundEvent("clear_vent");
+    public static final Supplier<SoundEvent> CONFINE_VENT = registerSoundEvent("confine_vent");
+    public static final Supplier<SoundEvent> COPY_VENT = registerSoundEvent("copy_vent");
+    public static final Supplier<SoundEvent> FREEZE_VENT = registerSoundEvent("freeze_vent");
+    public static final Supplier<SoundEvent> HOLD_VENT = registerSoundEvent("hold_vent");
+    public static final Supplier<SoundEvent> NASTY_VENT = registerSoundEvent("nasty_vent");
+    public static final Supplier<SoundEvent> SPIN_VENT = registerSoundEvent("spin_vent");
+    public static final Supplier<SoundEvent> STEAL_VENT = registerSoundEvent("steal_vent");
+    public static final Supplier<SoundEvent> SWING_VENT = registerSoundEvent("swing_vent");
+    public static final Supplier<SoundEvent> TIME_VENT = registerSoundEvent("time_vent");
+    public static final Supplier<SoundEvent> TRICK_VENT = registerSoundEvent("trick_vent");
+    public static final Supplier<SoundEvent> UNITE_VENT = registerSoundEvent("unite_vent");
+    public static final Supplier<SoundEvent> FINAL_VENT = registerSoundEvent("final_vent");
 
     public static final Supplier<SoundEvent> DECADE_INSERT = registerSoundEvent("decade_insert");
     public static final Supplier<SoundEvent> KAMEN_RIDE = registerSoundEvent("kamen_ride");
@@ -59,7 +78,7 @@ public class ModSounds {
         SOUND_EVENTS.register(eventBus);
     }
 
-    private static final Map<FormConfig, SoundEvent> RIDER_HENSHIN_SOUNDS = new HashMap<>();
+    private static final Map<ResourceLocation, SoundEvent> FORM_HENSHIN_SOUNDS = new HashMap<>();
     private static final Map<SoundEvent, Integer> SOUNDS_LENGTH = new HashMap<>();
 
     /**
@@ -67,7 +86,7 @@ public class ModSounds {
      */
     public static void registerHenshinSounds(Map<FormConfig, SoundMeta> sounds) {
         sounds.forEach((form, meta) -> {
-            RIDER_HENSHIN_SOUNDS.put(form, meta.sound());
+            FORM_HENSHIN_SOUNDS.put(form.getFormId(), meta.sound());
             SOUNDS_LENGTH.put(meta.sound(), meta.length());
         });
     }
@@ -76,7 +95,9 @@ public class ModSounds {
     }
 
     public static Optional<SoundEvent> getHenshinSound(FormConfig form) {
-        return Optional.ofNullable(RIDER_HENSHIN_SOUNDS.get(form));
+        return form == null
+                ? Optional.empty()
+                : Optional.ofNullable(FORM_HENSHIN_SOUNDS.get(form.getFormId()));
     }
 
     public static Optional<Integer> getSoundLength(FormConfig form) {

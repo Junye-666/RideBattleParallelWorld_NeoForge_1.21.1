@@ -11,8 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
+import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.isSpecificForm;
+import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.isSpecificRider;
+
 /**
- * Kuuga 系列武器通用基类：
+ * 武器通用基类：
  * 统一处理 客户端跳过 / 变身检查 / 形态校验 / 冷却 / 技能触发。
  * 子类只需声明 requiredForm / skill / cooldownTicks 及动画。
  */
@@ -22,23 +27,33 @@ public abstract class RiderWeaponItem extends BaseRiderGeoItem {
         super(modId, rider, item, props.stacksTo(1).durability(0), true);
     }
 
-    /** 使用该武器必须变身的形态ID。 */
-    protected abstract ResourceLocation requiredForm();
+    /**
+     * 使用该武器必须变身的形态ID。
+     */
+    protected abstract List<ResourceLocation> requiredForms();
 
-    /** 使用后触发的技能ID。 */
+    /**
+     * 使用后触发的技能ID。
+     */
     protected abstract ResourceLocation skill();
 
-    /** 冷却 tick 数，默认 300。 */
+    /**
+     * 冷却 tick 数，默认 300。
+     */
     protected int cooldownTicks() {
         return 300;
     }
 
-    /** 技能触发类型，默认 WEAPON。 */
+    /**
+     * 技能触发类型，默认 WEAPON。
+     */
     protected SkillEvent.SkillTriggerType triggerType() {
         return SkillEvent.SkillTriggerType.WEAPON;
     }
 
-    /** 客户端与服务端都会调用；只有非客户端、非变身、非目标形态才会跳过。 */
+    /**
+     * 客户端与服务端都会调用；只有非客户端、非变身、非目标形态才会跳过。
+     */
     protected void onUse(Player player, InteractionHand hand) {
     }
 
@@ -48,7 +63,7 @@ public abstract class RiderWeaponItem extends BaseRiderGeoItem {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide()) return InteractionResultHolder.success(stack);
         if (!RideBattleAPI.isTransformed(player)) return InteractionResultHolder.success(stack);
-        if (!RideBattleAPI.isSpecificForm(player, requiredForm())) {
+        if (!canUse(player)) {
             return InteractionResultHolder.success(stack);
         }
 
@@ -56,5 +71,12 @@ public abstract class RiderWeaponItem extends BaseRiderGeoItem {
         onUse(player, hand);
         RideBattleAPI.triggerSkill(player, skill(), triggerType());
         return InteractionResultHolder.success(stack);
+    }
+
+    private boolean canUse(Player player) {
+        for (ResourceLocation id : requiredForms()) {
+            if (isSpecificRider(player, id) || isSpecificForm(player, id)) return true;
+        }
+        return false;
     }
 }

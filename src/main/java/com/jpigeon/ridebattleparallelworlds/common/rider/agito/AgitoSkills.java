@@ -6,10 +6,10 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.entity.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils;
+import com.jpigeon.rideevolutionlib.util.item.TempItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import java.util.Map;
@@ -56,13 +56,11 @@ public class AgitoSkills {
     }
 
     private static void flameSaber(Player player) {
-        ItemStack flameSaber = FLAME_SABER.toStack();
-        if (!player.getInventory().add(flameSaber)) player.drop(flameSaber, false);
+        TempItemUtils.give(player, FLAME_SABER.get(), TempItemUtils.Scope.FORM);
     }
 
     private static void stormHalberd(Player player) {
-        ItemStack stormHalberd = STORM_HALBERD.toStack();
-        if (!player.getInventory().add(stormHalberd)) player.drop(stormHalberd, false);
+        TempItemUtils.give(player, STORM_HALBERD.get(), TempItemUtils.Scope.FORM);
     }
 
     private static void trinityWeapon(Player player) {
@@ -71,8 +69,6 @@ public class AgitoSkills {
     }
 
     private static void shiningCalibur(Player player) {
-        ItemStack shiningCalibur = SHINING_CALIBUR.toStack();
-        if (!player.getInventory().add(shiningCalibur)) player.drop(shiningCalibur, false);
-
+        TempItemUtils.give(player, SHINING_CALIBUR.get(), TempItemUtils.Scope.FORM);
     }
 }
