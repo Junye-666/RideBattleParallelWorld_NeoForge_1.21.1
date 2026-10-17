@@ -12,6 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.function.Predicate;
+
 public class AbilitiesUtils {
     public static void convertItemTo(Player player, ItemStack originStack, Item targetItem) {
         ItemStack targetStack = targetItem.getDefaultInstance();
@@ -29,57 +31,50 @@ public class AbilitiesUtils {
 
     public static void removeItemFromPlayer(Item toRemove, Player player) {
         Inventory inventory = player.getInventory();
-        boolean found = false;
-
+        boolean changed = false;
         for (int i = 0; i < inventory.getContainerSize(); i++) {
             ItemStack stack = inventory.getItem(i);
+            if (stack.isEmpty() || !stack.is(toRemove)) continue;
 
-            if (!stack.isEmpty() && stack.getItem() == toRemove) {
-                found = true;
-
-                ItemStack restoredStack = toRestoredItem(stack, player);
-
-                // 移除
-                if (restoredStack != null) {
-                    inventory.setItem(i, restoredStack);
-                }
+            ItemStack restored = toRestoredItem(stack, player);
+            if (restored != null) {
+                inventory.setItem(i, restored);
+                changed = true;
             }
         }
+        if (changed) inventory.setChanged();
+    }
 
-        if (found) {
-            inventory.setChanged();
+    private static int findSlot(Player player, Predicate<ItemStack> predicate) {
+        Inventory inv = player.getInventory();
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (!stack.isEmpty() && predicate.test(stack)) return i;
         }
+        return -1;
+    }
+
+    private static int countSlots(Player player, Predicate<ItemStack> predicate) {
+        Inventory inv = player.getInventory();
+        int count = 0;
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (!stack.isEmpty() && predicate.test(stack)) count++;
+        }
+        return count;
     }
 
     private static void replaceItemStackWith(ItemStack original, ItemStack target, Player player) {
-        int i = getInventoryIndex(original.getItem(), player);
+        int i = findSlot(player, s -> s.is(original.getItem()));
+        if (i < 0) return;
         Inventory inventory = player.getInventory();
         inventory.setItem(i, target);
         inventory.setChanged();
     }
 
     public static ItemStack searchForItemFromPlayer(Item item, Player player) {
-        Inventory inventory = player.getInventory();
-
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == item) {
-                return stack;
-            }
-        }
-        return null;
-    }
-
-    private static int getInventoryIndex(Item item, Player player) {
-        Inventory inventory = player.getInventory();
-
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == item) {
-                return i;
-            }
-        }
-        return 0;
+        int idx = findSlot(player, s -> s.is(item));
+        return idx >= 0 ? player.getInventory().getItem(idx) : null;
     }
 
     private static ItemStack toRestoredItem(ItemStack itemStack, Player player) {
@@ -99,27 +94,11 @@ public class AbilitiesUtils {
     }
 
     public static boolean hasItemInInventory(Item item, Player player) {
-        Inventory inventory = player.getInventory();
-
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == item) {
-                return true;
-            }
-        }
-        return false;
+        return findSlot(player, s -> s.is(item)) >= 0;
     }
 
     public static boolean hasItemInInventory(Item item, Player player, int count) {
-        Inventory inventory = player.getInventory();
-        int stacks = 0;
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == item) {
-                stacks++;
-            }
-        }
-        return stacks == count;
+        return countSlots(player, s -> s.is(item)) == count;
     }
 
     public static void transferData(ItemStack originItem, ItemStack targetItem, Player player) {

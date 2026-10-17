@@ -19,47 +19,42 @@ public class ProjectileUtils {
      * 创建并发射一个标准弹射物
      */
     public static SkillProjectile launchStandard(LivingEntity shooter, float speed, float damage) {
-        Level level = shooter.level();
-        if (level.isClientSide) return null;
-
-        SkillProjectile projectile = new SkillProjectile(shooter, level);
-        configureStandard(projectile, damage);
-        launchProjectile(projectile, shooter, speed);
-
-        return projectile;
+        return launchCustom(shooter, speed, p -> p
+                .setDisplayItem(Items.SNOWBALL)
+                .setBaseDamage(damage)
+                .setExplosionPower(0)
+                .setCausesFire(false)
+                .setLifeTime(60)
+                .setGravity(0.03f));
     }
 
     /**
      * 创建并发射爆炸弹射物
      */
-    public static SkillProjectile launchExplosive(LivingEntity shooter, float speed, float damage, float explosionPower) {
-        Level level = shooter.level();
-        if (level.isClientSide) return null;
-
-        SkillProjectile projectile = new SkillProjectile(shooter, level);
-        configureExplosive(projectile, damage, explosionPower);
-        launchProjectile(projectile, shooter, speed);
-
-        return projectile;
+    public static SkillProjectile launchExplosive(LivingEntity shooter, float speed, float damage, float power) {
+        return launchCustom(shooter, speed, p -> p
+                .setDisplayItem(Items.FIRE_CHARGE)
+                .setBaseDamage(damage)
+                .setExplosionPower(power)
+                .setCausesFire(false)
+                .setLifeTime(40)
+                .setGravity(0.02f));
     }
 
     /**
      * 创建并发射火焰弹射物
      */
-    public static SkillProjectile launchFireball(LivingEntity shooter, float speed, float damage, float explosionPower) {
-        Level level = shooter.level();
-        if (level.isClientSide) return null;
-
-        SkillProjectile projectile = new SkillProjectile(shooter, level);
-        configureFireball(projectile, damage, explosionPower);
-        launchProjectile(projectile, shooter, speed);
-
-        return projectile;
+    public static SkillProjectile launchFireball(LivingEntity shooter, float speed, float damage, float power) {
+        return launchCustom(shooter, speed, p -> p
+                .setDisplayItem(Items.FIRE_CHARGE)
+                .setBaseDamage(damage * 0.5f)
+                .setExplosionPower(power)
+                .setCausesFire(true)
+                .setLifeTime(50)
+                .setGravity(0.01f)
+                .onHitEntity((proj, target) -> target.setRemainingFireTicks(100)));
     }
 
-    /**
-     * 自定义弹射物
-     */
     /**
      * 自定义弹射物
      */
@@ -79,8 +74,7 @@ public class ProjectileUtils {
             try {
                 configurator.accept(projectile);
             } catch (Exception e) {
-                RideBattleParallelWorlds.LOGGER.error("Error configuring projectile: {}", e.getMessage());
-                e.printStackTrace();
+                RideBattleParallelWorlds.LOGGER.error("Error configuring projectile", e);
             }
         }
 

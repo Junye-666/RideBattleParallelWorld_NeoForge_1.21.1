@@ -11,52 +11,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class PWAttachmentsHandler {
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getEntity();
-        if (!(player instanceof ServerPlayer serverPlayer)) return;
-
-        PWData data = serverPlayer.getData(PWAttachments.PW_DATA);
-        // 登录时对齐一次注册表
-        data.getFormUnlockData().initFromRegistry();
-        serverPlayer.setData(PWAttachments.PW_DATA, data);
-
-        PacketDistributor.sendToPlayer(
-                serverPlayer,
-                new FormDataSyncPacket(serverPlayer.getUUID(), data)
-        );
-    }
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        if (!event.isWasDeath()) return;
-
-        Player original = event.getOriginal();
-        Player newPlayer = event.getEntity();
-        PWData oldData = original.getData(PWAttachments.PW_DATA);
-        PWData newData = newPlayer.getData(PWAttachments.PW_DATA);
-
-        // 形态解锁
-        newData.getFormUnlockData().replaceAll(
-                oldData.getFormUnlockData().getAllUnlockData());
-
-        // 卡牌顺序
-        newData.getCardData().copyFrom(oldData.getCardData());
-
-        newPlayer.setData(PWAttachments.PW_DATA, newData);
+        if (event.getEntity() instanceof ServerPlayer sp) refreshAndSync(sp);
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        Player player = event.getEntity();
-        if (!(player instanceof ServerPlayer serverPlayer)) return;
-
-        PWData data = serverPlayer.getData(PWAttachments.PW_DATA);
-        data.getFormUnlockData().initFromRegistry();
-        serverPlayer.setData(PWAttachments.PW_DATA, data);
-
-        PacketDistributor.sendToPlayer(
-                serverPlayer,
-                new FormDataSyncPacket(serverPlayer.getUUID(), data)
-        );
+        if (event.getEntity() instanceof ServerPlayer sp) refreshAndSync(sp);
     }
 
     @SubscribeEvent
@@ -85,5 +45,13 @@ public class PWAttachmentsHandler {
                     player.getName().getString(),
                     data.getFormUnlockData().getAllUnlockData());
         }
+    }
+
+    private static void refreshAndSync(ServerPlayer player) {
+        PWData data = player.getData(PWAttachments.PW_DATA);
+        data.getFormUnlockData().initFromRegistry();
+        player.setData(PWAttachments.PW_DATA, data);
+        PacketDistributor.sendToPlayer(
+                player, new FormDataSyncPacket(player.getUUID(), data));
     }
 }

@@ -19,17 +19,21 @@ public class SkillProjectile extends AbstractSkillProjectile {
 
     public SkillProjectile(EntityType<? extends SkillProjectile> type, Level level) {
         super(type, level);
-        this.safeSetDisplayItem(Items.SNOWBALL);
+        initDefaultDisplay();
     }
-
     public SkillProjectile(LivingEntity shooter, Level level) {
         super(ModEntities.SKILL_PROJECTILE.get(), shooter, level);
-        this.safeSetDisplayItem(Items.SNOWBALL);
+        initDefaultDisplay();
     }
-
     public SkillProjectile(Level level, double x, double y, double z) {
         super(ModEntities.SKILL_PROJECTILE.get(), x, y, z, level);
-        this.safeSetDisplayItem(Items.SNOWBALL);
+        initDefaultDisplay();
+    }
+
+    private void initDefaultDisplay() {
+        if (!this.level().isClientSide) {
+            this.setItem(new ItemStack(this.displayItem));
+        }
     }
 
     @Override

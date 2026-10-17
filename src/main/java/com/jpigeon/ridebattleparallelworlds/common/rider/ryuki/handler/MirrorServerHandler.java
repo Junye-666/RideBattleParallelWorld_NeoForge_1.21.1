@@ -95,6 +95,7 @@ public class MirrorServerHandler implements IRiderServerHandler {
         }
         if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof VBuckleItem) {
             player.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+            RideBattleAPI.getArmorManager().syncEquipment(player);
         }
     }
 

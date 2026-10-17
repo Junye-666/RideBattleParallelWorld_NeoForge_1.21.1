@@ -97,8 +97,8 @@ public class DecadeConfig {
     public static final FormConfig DECADE_AGITO_BURNING = AgitoConfig.AGITO_BURNING_FORM.copyWithoutItemsAndSkills(ride(AgitoConfig.BURNING_ID))
             .addRequiredItem(DECA_CARD, FORM_RIDE_AGITO_BURNING.get())
             .setShouldPause(true)
-            .setTriggerType(TriggerType.AUTO);
-
+            .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(Agito.SHINING_CALIBUR.get());
 
     public static final RiderConfig DECADE = RiderBuilder.create(RiderIds.DECADE_ID)
             .driver(DECA_DRIVER.get())

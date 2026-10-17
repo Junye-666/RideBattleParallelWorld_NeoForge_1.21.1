@@ -17,10 +17,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -103,11 +103,12 @@ public class VentCardItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         if (Screen.hasShiftDown()) {
             tooltipComponents.add(Component.translatable("tooltip.ventCard.owner"));
-            Level level = Minecraft.getInstance().level;
-            if (level != null) {
-                tooltipComponents.add(Objects.requireNonNull(level.getPlayerByUUID(ownerId)).getName());
-            } else {
-                tooltipComponents.add(Component.literal("None"));
+            if (FMLEnvironment.dist.isClient()) {
+                Level level = Minecraft.getInstance().level;
+                Player owner = (level != null && ownerId != null) ? level.getPlayerByUUID(ownerId) : null;
+                tooltipComponents.add(owner != null
+                        ? owner.getName()
+                        : Component.literal("None"));
             }
         }
     }

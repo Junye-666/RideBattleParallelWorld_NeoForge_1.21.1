@@ -106,51 +106,33 @@ public final class KuugaServerHandler implements IRiderServerHandler {
         Player player = event.getPlayer();
         ResourceLocation oldFormId = event.getOldFormId();
         ResourceLocation newFormId = event.getNewFormId();
+
         if (oldFormId.equals(KuugaConfig.DRAGON_ID) && newFormId.equals(KuugaConfig.RISING_DRAGON_ID)) {
             ItemStack dragonRod = searchForItemFromPlayer(DRAGON_ROD.get(), player);
-            if (dragonRod != null) {
-                ItemStack rising = RISING_DRAGON_ROD.toStack();
-                transferData(dragonRod, rising, player);
-            }
+            if (dragonRod != null) transferData(dragonRod, RISING_DRAGON_ROD.toStack(), player);
         } else if (oldFormId.equals(KuugaConfig.PEGASUS_ID) && newFormId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
-            ItemStack pegasusBowGun = searchForItemFromPlayer(PEGASUS_BOWGUN.get(), player);
-            if (pegasusBowGun != null) {
-                ItemStack rising = RISING_PEGASUS_BOWGUN.toStack();
-                transferData(pegasusBowGun, rising, player);
-            }
+            ItemStack gun = searchForItemFromPlayer(PEGASUS_BOWGUN.get(), player);
+            if (gun != null) transferData(gun, RISING_PEGASUS_BOWGUN.toStack(), player);
         } else if (oldFormId.equals(KuugaConfig.TITAN_ID) && newFormId.equals(KuugaConfig.RISING_TITAN_ID)) {
-            ItemStack titanSword = searchForItemFromPlayer(TITAN_SWORD.get(), player);
-            if (titanSword != null) {
-                ItemStack rising = RISING_TITAN_SWORD.toStack();
-                transferData(titanSword, rising, player);
-            }
+            ItemStack sword = searchForItemFromPlayer(TITAN_SWORD.get(), player);
+            if (sword != null) transferData(sword, RISING_TITAN_SWORD.toStack(), player);
         } else {
-            if (oldFormId.equals(KuugaConfig.DRAGON_ID)) removeItemFromPlayer(DRAGON_ROD.get(), player);
-            else if (oldFormId.equals(KuugaConfig.PEGASUS_ID))
-                removeItemFromPlayer(PEGASUS_BOWGUN.get(), player);
-            else if (oldFormId.equals(KuugaConfig.TITAN_ID)) removeItemFromPlayer(TITAN_SWORD.get(), player);
-            else if (oldFormId.equals(KuugaConfig.RISING_DRAGON_ID))
-                removeItemFromPlayer(RISING_DRAGON_ROD.get(), player);
-            else if (oldFormId.equals(KuugaConfig.RISING_PEGASUS_ID))
-                removeItemFromPlayer(RISING_PEGASUS_BOWGUN.get(), player);
-            else if (oldFormId.equals(KuugaConfig.RISING_TITAN_ID))
-                removeItemFromPlayer(RISING_TITAN_SWORD.get(), player);
+            removeKuugaWeaponForForm(player, oldFormId);
         }
     }
 
     @Override
     public void onUnhenshinPost(UnhenshinEvent.@NotNull Post event) {
-        Player player = event.getPlayer();
-        ResourceLocation formId = event.getFormId();
-        if (formId.equals(KuugaConfig.DRAGON_ID)) removeItemFromPlayer(DRAGON_ROD.get(), player);
-        else if (formId.equals(KuugaConfig.PEGASUS_ID)) removeItemFromPlayer(PEGASUS_BOWGUN.get(), player);
-        else if (formId.equals(KuugaConfig.TITAN_ID)) removeItemFromPlayer(TITAN_SWORD.get(), player);
-        else if (formId.equals(KuugaConfig.RISING_DRAGON_ID))
-            removeItemFromPlayer(RISING_DRAGON_ROD.get(), player);
-        else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID))
-            removeItemFromPlayer(RISING_PEGASUS_BOWGUN.get(), player);
-        else if (formId.equals(KuugaConfig.RISING_TITAN_ID))
-            removeItemFromPlayer(RISING_TITAN_SWORD.get(), player);
+        removeKuugaWeaponForForm(event.getPlayer(), event.getFormId());
+    }
+
+    private static void removeKuugaWeaponForForm(Player player, ResourceLocation formId) {
+        if (formId.equals(KuugaConfig.DRAGON_ID))                removeItemFromPlayer(DRAGON_ROD.get(), player);
+        else if (formId.equals(KuugaConfig.PEGASUS_ID))          removeItemFromPlayer(PEGASUS_BOWGUN.get(), player);
+        else if (formId.equals(KuugaConfig.TITAN_ID))            removeItemFromPlayer(TITAN_SWORD.get(), player);
+        else if (formId.equals(KuugaConfig.RISING_DRAGON_ID))    removeItemFromPlayer(RISING_DRAGON_ROD.get(), player);
+        else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID))   removeItemFromPlayer(RISING_PEGASUS_BOWGUN.get(), player);
+        else if (formId.equals(KuugaConfig.RISING_TITAN_ID))     removeItemFromPlayer(RISING_TITAN_SWORD.get(), player);
     }
 
     @SubscribeEvent

@@ -51,7 +51,7 @@ public class PWCreativeTabs {
                     })
                     .build());
 
-    public static final Supplier<CreativeModeTab> MIRROR_ITEMS_TAP = CREATIVE_MODE_TAB.register("mirror_items_tab",
+    public static final Supplier<CreativeModeTab> MIRROR_ITEMS_TAB = CREATIVE_MODE_TAB.register("mirror_items_tab",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.Ryuki.RYUKI_DECK.get()))
                     .title(Component.translatable("creativeTab.ridebattleparallelworlds.mirror_items"))
                     .withTabsBefore(id("agito_items_tab"))

@@ -64,7 +64,6 @@ public class KuugaSkills {
     }
 
     private static void splashDragon(Player player) {
-        addResistance(player, 30);
         double distance;
 
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -84,8 +83,6 @@ public class KuugaSkills {
     }
 
     private static void blastPegasus(Player player) {
-        addResistance(player, 20);
-
         scheduleTicks(10, () ->
                 ProjectileUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(PEGASUS_ELEMENT.get())
@@ -103,8 +100,6 @@ public class KuugaSkills {
     }
 
     private static void calamityTitan(Player player) {
-        addResistance(player, 20);
-
         double distance = 1.5;
         scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,
@@ -118,7 +113,6 @@ public class KuugaSkills {
     }
 
     private static void risingSplashDragon(Player player) {
-        addResistance(player, 30);
         double distance;
 
         ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -138,10 +132,6 @@ public class KuugaSkills {
     }
 
     private static void risingBlastPegasus(Player player) {
-        addResistance(player, 30);
-
-        addResistance(player, 20);
-
         scheduleTicks(10, () ->
                 ProjectileUtils.launchCustom(player, 3.0F, skillProjectile ->
                         skillProjectile.setDisplayItem(PEGASUS_ELEMENT.get())
@@ -159,8 +149,6 @@ public class KuugaSkills {
     }
 
     private static void risingCalamityTitan(Player player) {
-        addResistance(player, 20);
-
         double distance = 2.0;
         scheduleTicks(10, () -> createExplosion(player,
                 player.getX() + player.getLookAngle().x * distance,

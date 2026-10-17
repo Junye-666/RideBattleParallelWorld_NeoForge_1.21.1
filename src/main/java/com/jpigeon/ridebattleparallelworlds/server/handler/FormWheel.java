@@ -35,8 +35,12 @@ public class FormWheel {
     @SubscribeEvent
     public static void onReturnItem(ReturnItemsEvent.Post event) {
         RiderConfig config = event.getConfig();
-        if (config != RiderConfig.findActiveDriverConfig(event.getPlayer())) return;
-        if (config.equals(KuugaConfig.KUUGA) || config.equals(AgitoConfig.AGITO)) {
+        RiderConfig active = RiderConfig.findActiveDriverConfig(event.getPlayer());
+
+        if (active == null || !config.getRiderId().equals(active.getRiderId())) return;
+
+        ResourceLocation rid = config.getRiderId();
+        if (RiderIds.KUUGA_ID.equals(rid) || RiderIds.AGITO_ID.equals(rid)) {
             Player player = event.getPlayer();
             if (player == null || !player.isCrouching()) return;
             handleRotate(player);
