@@ -5,11 +5,15 @@ import com.jpigeon.ridebattlelib.common.api.server.IRiderServerHandler;
 import com.jpigeon.ridebattlelib.server.event.FormSwitchEvent;
 import com.jpigeon.ridebattlelib.server.event.HenshinEvent;
 import com.jpigeon.ridebattlelib.server.event.ItemInsertionEvent;
+import com.jpigeon.ridebattleparallelworlds.common.registry.ItemFormRegistry;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModSounds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.server.util.AbilitiesUtils;
 import com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.completeIn;
@@ -25,6 +29,17 @@ public class AgitoServerHandler implements IRiderServerHandler {
     @Override
     public void onInsert(ItemInsertionEvent.Post event) {
         Player player = event.getPlayer();
+
+        ResourceLocation slotId = event.getSlotId();
+        ItemStack stack = event.getStack();
+        ResourceLocation formId = ItemFormRegistry.getFormForItem(stack.getItem());
+        if (formId == null) return;
+        ResourceLocation riderId;
+
+        if (slotId.equals(AgitoConfig.ALTER_RING_CORE)) {
+            riderId = RiderIds.AGITO_ID;
+            AbilitiesUtils.unlockFormIfLocked(player, riderId, formId);
+        }
 
         prepareAgito(player);
     }

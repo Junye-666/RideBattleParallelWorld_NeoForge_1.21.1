@@ -120,7 +120,10 @@
   "entity.ridebattleparallelworlds.decade_special_effect": "Decade变身特效",
 
   "ridebattleparallelworlds.configuration.skillExplosionGrief": "技能破坏方块",
+  "ridebattleparallelworlds.configuration.skillToleranceTime": "技能防呆时间",
   "ridebattleparallelworlds.configuration.riderSoundsVolume": "音效音量",
+  "ridebattleparallelworlds.configuration.mirrorYBottom": "镜世界限低",
+  "ridebattleparallelworlds.configuration.mirrorScanRadius": "镜世界生成半径",
   "ridebattleparallelworlds.configuration.debugMode": "Debug模式",
 
   "tooltip.arcle.tutorial": "Shift + X 轮转形态, G 变身",
@@ -136,5 +139,6 @@
   "message.ridebattleparallelworlds.deck_empty": "你没有牌了！",
   "message.riderGreet.login": "欢迎来到骑士战争平行世界的beta版本！",
   "message.riderHint.login": "请用 /ridebattleparallelworlds \"骑士名\" unlockForm \"形态名\" 以解锁骑士形态",
-  "message.fromHint.login": "\"骑士名\" 必须小写，示例kuuga, \"形态名\" 按照\"官方名 + _form\"的格式: mighty_form"
+  "message.fromHint.login": "\"骑士名\" 必须小写，示例kuuga, \"形态名\" 按照\"官方名 + _form\"的格式: mighty_form",
+  "message.ridebattleparallelworlds.mirror_too_deep": "镜子过低！请在Config中按需求调整最高限度！"
 }

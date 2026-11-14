@@ -6,7 +6,6 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.item.BaseRiderGeoItem;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -40,7 +39,8 @@ public class ShiningCaliburItem extends BaseRiderGeoItem {
     }
 
     private boolean isOpen() {
-        return !this.getCurrentAnimState().equals("closed");
+        return this.getCurrentAnimState().equals("open")
+                || this.getCurrentAnimState().equals("opened");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ShiningCaliburItem extends BaseRiderGeoItem {
         if (!isTransformed(player)) return InteractionResultHolder.pass(itemStack);
 
         if (canUse(player)) {
-            if (Screen.hasShiftDown()) {
+            if (player.isShiftKeyDown()) {
                 if (level.isClientSide()) {
                     if (isOpen()) setClose();
                     else triggerOpen();

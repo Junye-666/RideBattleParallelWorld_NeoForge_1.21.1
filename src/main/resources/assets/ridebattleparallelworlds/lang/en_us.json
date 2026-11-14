@@ -120,7 +120,10 @@
   "entity.ridebattleparallelworlds.decade_special_effect": "Decade Henshin Effect",
 
   "ridebattleparallelworlds.configuration.skillExplosionGrief": "Skill Explosion Grief",
+  "ridebattleparallelworlds.configuration.skillToleranceTime": "Skill Tolerance time",
   "ridebattleparallelworlds.configuration.riderSoundsVolume": "Sounds Volume",
+  "ridebattleparallelworlds.configuration.mirrorYBottom": "MirrorWorld Y Bottom",
+  "ridebattleparallelworlds.configuration.mirrorScanRadius": "Mirror Scan Radius",
   "ridebattleparallelworlds.configuration.debugMode": "Debug Mode",
 
   "tooltip.arcle.tutorial": "Shift + X to switch between forms, G to henshin",
@@ -136,5 +139,6 @@
   "message.ridebattleparallelworlds.deck_empty": "You ran out of cards!",
   "message.riderGreet.login": "Welcome to the ParallelWorlds' beta version!",
   "message.riderHint.login": "use /ridebattleparallelworlds \"riderName\" unlockForm \"formName\" to unlock specific rider Forms!",
-  "message.fromHint.login": "\"riderName\" only in lowercases like: kuuga, \"formName\" with the format \"official form name + _form\" such as: mighty_form"
+  "message.fromHint.login": "\"riderName\" only in lowercases like: kuuga, \"formName\" with the format \"official form name + _form\" such as: mighty_form",
+  "message.ridebattleparallelworlds.mirror_too_deep": "Your Mirror is below the restricted height! Change it trough Config if you wish"
 }

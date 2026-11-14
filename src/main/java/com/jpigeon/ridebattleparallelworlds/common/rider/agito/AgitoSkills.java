@@ -27,7 +27,17 @@ public class AgitoSkills {
                 Map.entry(RiderSkills.FLAME_SABER, AgitoSkills::flameSaber),
                 Map.entry(RiderSkills.STORM_HALBERD, AgitoSkills::stormHalberd),
                 Map.entry(RiderSkills.TRINITY_WEAPON, AgitoSkills::trinityWeapon),
-                Map.entry(RiderSkills.SHINING_CALIBUR, AgitoSkills::shiningCalibur)
+                Map.entry(RiderSkills.SHINING_CALIBUR, AgitoSkills::shiningCalibur),
+
+                // 武器触发的 buffered damage
+                Map.entry(RiderSkills.SABER_SLASH,
+                        player -> RiderSkillFlags.apply(player, RiderSkillFlags.SABER_SLASH, 310)),
+                Map.entry(RiderSkills.HALBERD_SPIN,
+                        player -> RiderSkillFlags.apply(player, RiderSkillFlags.HALBERD_SPIN, 310)),
+                Map.entry(RiderSkills.FIRESTORM_ATTACK,
+                        player -> RiderSkillFlags.apply(player, RiderSkillFlags.FIRESTORM_ATTACK, 410)),
+                Map.entry(RiderSkills.BURNING_BOMBER,
+                        player -> RiderSkillFlags.apply(player, RiderSkillFlags.BURNING_BOMBER, 610))
         ));
 
         // 技能注册（冷却 + 颜色）

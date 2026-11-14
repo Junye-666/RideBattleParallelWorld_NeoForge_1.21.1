@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.item;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.common.data.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -26,17 +27,11 @@ import java.util.UUID;
 /**
  * 降临卡基类。
  * <p>
- * 卡牌物品 id 形如 {@code ryuki_sword_vent_card}，
- * 对应 skillId 就是去掉 {@code _card} 后缀：
- * {@code ridebattleparallelworlds:ryuki_sword_vent}。
- * <p>
  * 玩家右键使用后自动分发 skill；skill 成功触发则消耗该卡。
- * 卡本身没有耐久 / 无堆叠上限 = 1。
  */
 public class VentCardItem extends Item {
     private static final String CARD_SUFFIX = "_card";
     private final String ventPath;
-    private UUID ownerId;
 
     /**
      * @param ventPath 共享翻译键的短名，例如 "final_vent"。
@@ -77,8 +72,11 @@ public class VentCardItem extends Item {
 
         // TODO: 召唤器检查
         ResourceLocation skillId = resolveSkillId();
-        Player owner = level.getPlayerByUUID(ownerId);
+
+        UUID ownerId = stack.get(ModDataComponents.ITEM_OWNER.get());
+        Player owner = ownerId != null ? level.getPlayerByUUID(ownerId) : null;
         if (owner == null) owner = player;
+
         boolean triggered = RideBattleAPI.triggerSkill(owner, skillId, SkillEvent.SkillTriggerType.ITEM);
 
         if (triggered) {
@@ -94,10 +92,6 @@ public class VentCardItem extends Item {
         return InteractionResultHolder.success(stack);
     }
 
-    public void setOwnerId(UUID ownerId) {
-        this.ownerId = ownerId;
-    }
-
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
@@ -105,6 +99,7 @@ public class VentCardItem extends Item {
             tooltipComponents.add(Component.translatable("tooltip.ventCard.owner"));
             if (FMLEnvironment.dist.isClient()) {
                 Level level = Minecraft.getInstance().level;
+                UUID ownerId = stack.get(ModDataComponents.ITEM_OWNER.get());
                 Player owner = (level != null && ownerId != null) ? level.getPlayerByUUID(ownerId) : null;
                 tooltipComponents.add(owner != null
                         ? owner.getName()

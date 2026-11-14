@@ -49,7 +49,7 @@ public class PWAttachmentsHandler {
 
     private static void refreshAndSync(ServerPlayer player) {
         PWData data = player.getData(PWAttachments.PW_DATA);
-        data.getFormUnlockData().initFromRegistry();
+        data.refreshRegisteredForms();
         player.setData(PWAttachments.PW_DATA, data);
         PacketDistributor.sendToPlayer(
                 player, new FormDataSyncPacket(player.getUUID(), data));

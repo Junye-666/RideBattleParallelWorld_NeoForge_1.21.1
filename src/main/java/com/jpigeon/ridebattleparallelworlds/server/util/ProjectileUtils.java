@@ -83,39 +83,6 @@ public class ProjectileUtils {
         return projectile;
     }
 
-    // ===== 配置预设 =====
-
-    private static void configureStandard(SkillProjectile projectile, float damage) {
-        projectile.setDisplayItem(Items.SNOWBALL)
-                .setBaseDamage(damage)
-                .setExplosionPower(0)
-                .setCausesFire(false)
-                .setLifeTime(60)
-                .setGravity(0.03f)
-                ;
-    }
-
-    private static void configureExplosive(SkillProjectile projectile, float damage, float explosionPower) {
-        projectile.setDisplayItem(Items.FIRE_CHARGE)
-                .setBaseDamage(damage)
-                .setExplosionPower(explosionPower)
-                .setCausesFire(false)
-                .setLifeTime(40)
-                .setGravity(0.02f)
-                ;
-    }
-
-    private static void configureFireball(SkillProjectile projectile, float damage, float explosionPower) {
-        projectile.setDisplayItem(Items.FIRE_CHARGE)
-                .setBaseDamage(damage * 0.5f) // 减少直接伤害
-                .setExplosionPower(explosionPower)
-                .setCausesFire(true)
-                .setLifeTime(50)
-                .setGravity(0.01f)
-
-                .onHitEntity((proj, target) -> target.setRemainingFireTicks(100));
-    }
-
     // ===== 发射逻辑 =====
 
     private static void launchProjectile(SkillProjectile projectile, LivingEntity shooter, float speed) {

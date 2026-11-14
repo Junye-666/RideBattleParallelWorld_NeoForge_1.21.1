@@ -93,12 +93,9 @@ public class AbilitiesUtils {
         target.set(ModDataComponents.ORIGIN_ITEM_DATA.get(), data);
     }
 
-    public static boolean hasItemInInventory(Item item, Player player) {
-        return findSlot(player, s -> s.is(item)) >= 0;
-    }
-
-    public static boolean hasItemInInventory(Item item, Player player, int count) {
-        return countSlots(player, s -> s.is(item)) == count;
+    /** 统计背包里该物品的总格数（忽略每格 count）。 */
+    public static int countItemInInventory(Item item, Player player) {
+        return countSlots(player, s -> s.is(item));
     }
 
     public static void transferData(ItemStack originItem, ItemStack targetItem, Player player) {

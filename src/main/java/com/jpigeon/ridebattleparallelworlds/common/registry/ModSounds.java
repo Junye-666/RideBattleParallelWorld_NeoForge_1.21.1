@@ -78,29 +78,25 @@ public class ModSounds {
         SOUND_EVENTS.register(eventBus);
     }
 
-    private static final Map<ResourceLocation, SoundEvent> FORM_HENSHIN_SOUNDS = new HashMap<>();
-    private static final Map<SoundEvent, Integer> SOUNDS_LENGTH = new HashMap<>();
+    private static final Map<ResourceLocation, SoundMeta> HENSHIN_SOUNDS = new HashMap<>();
 
     /**
      * 供 Pack 调用：注册一批变身音效
      */
     public static void registerHenshinSounds(Map<FormConfig, SoundMeta> sounds) {
-        sounds.forEach((form, meta) -> {
-            FORM_HENSHIN_SOUNDS.put(form.getFormId(), meta.sound());
-            SOUNDS_LENGTH.put(meta.sound(), meta.length());
-        });
+        sounds.forEach((form, meta) -> HENSHIN_SOUNDS.put(form.getFormId(), meta));
     }
 
     public record SoundMeta(SoundEvent sound, int length) {
     }
 
     public static Optional<SoundEvent> getHenshinSound(FormConfig form) {
-        return form == null
-                ? Optional.empty()
-                : Optional.ofNullable(FORM_HENSHIN_SOUNDS.get(form.getFormId()));
+        return Optional.ofNullable(form).map(f -> HENSHIN_SOUNDS.get(f.getFormId()))
+                .map(SoundMeta::sound);
     }
 
     public static Optional<Integer> getSoundLength(FormConfig form) {
-        return getHenshinSound(form).flatMap(s -> Optional.ofNullable(SOUNDS_LENGTH.get(s)));
+        return Optional.ofNullable(form).map(f -> HENSHIN_SOUNDS.get(f.getFormId()))
+                .map(SoundMeta::length);
     }
 }

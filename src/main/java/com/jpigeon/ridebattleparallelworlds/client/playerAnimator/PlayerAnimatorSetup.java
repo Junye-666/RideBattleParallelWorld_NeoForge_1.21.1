@@ -14,10 +14,12 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 @EventBusSubscriber(modid = RideBattleParallelWorlds.MODID, value = Dist.CLIENT)
 public class PlayerAnimatorSetup {
 
+    private static final ResourceLocation ANIMATION_ID = ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "animation");
+
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(
-                ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "animation"),
+                ANIMATION_ID,
                 1000,
                 PlayerAnimatorSetup::registerPlayerAnimation
         );

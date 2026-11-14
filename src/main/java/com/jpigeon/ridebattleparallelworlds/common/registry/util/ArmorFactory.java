@@ -46,4 +46,11 @@ public final class ArmorFactory {
 
         return create(items, riderName, formName, materialSupplier, type, false);
     }
+
+    public static DeferredItem<ParallelRiderArmor> create(
+            DeferredRegister.Items items,
+            String riderName, String formName,
+            Holder<ArmorMaterial> material, ArmorItem.Type type) {
+        return create(items, riderName, formName, () -> material, type, false);
+    }
 }

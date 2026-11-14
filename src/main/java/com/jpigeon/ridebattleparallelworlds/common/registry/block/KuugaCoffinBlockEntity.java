@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.block;
+package com.jpigeon.ridebattleparallelworlds.common.registry.block;
 
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;

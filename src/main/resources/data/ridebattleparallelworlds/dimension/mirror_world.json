@@ -1,0 +1,11 @@
+{
+  "type": "ridebattleparallelworlds:mirror_world",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:the_void",
+      "layers": [],
+      "structure_overrides": []
+    }
+  }
+}

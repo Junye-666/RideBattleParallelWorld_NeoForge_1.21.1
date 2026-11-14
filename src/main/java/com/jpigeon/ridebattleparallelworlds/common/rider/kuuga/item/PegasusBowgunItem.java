@@ -1,8 +1,8 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
-import com.jpigeon.ridebattleparallelworlds.common.rider.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.weapon.RiderWeaponItem;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ public class PegasusBowgunItem extends RiderWeaponItem {
 
     @Override
     protected List<ResourceLocation> requiredForms() {
-        return List.of(KuugaConfig.PEGASUS_ID, DecadeConfig.DECADE_BASE_ID);
+        return List.of(KuugaConfig.PEGASUS_ID, RiderIds.DECADE_ID);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.jpigeon.ridebattleparallelworlds.client.handler;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattlelib.server.event.ItemGrantEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.jpigeon.ridebattleparallelworlds.client.render.ClientMirrorColorCache;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AlterRingItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.ShiningCaliburItem;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
@@ -90,6 +92,11 @@ public class RiderHandlerClient {
         if (stack.getItem() instanceof ShiningCaliburItem shiningCalibur) {
             shiningCalibur.setClose();
         }
+    }
+
+    @SubscribeEvent
+    public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        ClientMirrorColorCache.clear();
     }
 
     private static boolean isTransformed(Player player) {

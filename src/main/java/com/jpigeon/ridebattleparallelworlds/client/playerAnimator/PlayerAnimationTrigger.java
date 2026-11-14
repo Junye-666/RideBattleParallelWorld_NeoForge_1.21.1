@@ -15,6 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class PlayerAnimationTrigger {
+    private static final ResourceLocation LAYER_ID =
+            ResourceLocation.fromNamespaceAndPath(RideBattleParallelWorlds.MODID, "animation");
+
     /**
      * 在任何需要的地方触发动画
      *
@@ -29,15 +32,9 @@ public class PlayerAnimationTrigger {
             int fadeDuration,
             Ease easeType) {
 
-        ResourceLocation layerId =
-                ResourceLocation.fromNamespaceAndPath(
-                        RideBattleParallelWorlds.MODID,
-                        "animation"
-                );
-
         var animationData = PlayerAnimationAccess.getPlayerAssociatedData(player);
 
-        IAnimation rawLayer = animationData.get(layerId);
+        IAnimation rawLayer = animationData.get(LAYER_ID);
         if (!(rawLayer instanceof ModifierLayer<?> modifierLayer)) {
             return;
         }

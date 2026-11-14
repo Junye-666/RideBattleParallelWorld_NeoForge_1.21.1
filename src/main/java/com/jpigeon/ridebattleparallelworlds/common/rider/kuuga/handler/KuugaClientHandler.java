@@ -5,6 +5,7 @@ import com.jpigeon.ridebattlelib.common.api.client.ClientRiderContext;
 import com.jpigeon.ridebattlelib.common.api.client.IRiderClientHandler;
 import com.jpigeon.ridebattleparallelworlds.client.handler.SkillMovementUtils;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
+import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkillFlags;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaAnimations;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.armor.ArcleItem;
@@ -95,7 +96,7 @@ public final class KuugaClientHandler implements IRiderClientHandler {
     }
 
     private static boolean isKuugaKick(ResourceLocation skillId) {
-        return skillId.getPath().contains("_kick");
+        return RiderSkillFlags.KICK_RADIUS.containsKey(skillId);
     }
 
     // 空我

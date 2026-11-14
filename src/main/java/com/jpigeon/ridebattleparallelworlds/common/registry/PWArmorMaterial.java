@@ -23,7 +23,7 @@ public class PWArmorMaterial {
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> DECADE_MATERIAL =
             register("decade",
-                    UtilMap(map -> {
+                    protectionMap(map -> {
                         map.put(ArmorItem.Type.BOOTS, 3);
                         map.put(ArmorItem.Type.LEGGINGS, 6);
                         map.put(ArmorItem.Type.CHESTPLATE, 8);
@@ -31,11 +31,11 @@ public class PWArmorMaterial {
                         map.put(ArmorItem.Type.BODY, 7);
                     }),
                     16, 2f, 0.1f,
-                    ModItems.Decade.WORLDS_FRAGMENT);
+                    () -> ModItems.Decade.WORLDS_FRAGMENT.get());
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> KUUGA_MATERIAL =
             register("kuuga",
-                    UtilMap(map -> {
+                    protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 3);
                         map.put(ArmorItem.Type.CHESTPLATE, 8);
                         map.put(ArmorItem.Type.LEGGINGS, 6);
@@ -43,11 +43,11 @@ public class PWArmorMaterial {
                         map.put(ArmorItem.Type.BODY, 7);
                     }),
                     8, 1f, 0.2f,
-                    ModItems.Kuuga.MIGHTY_ELEMENT);
+                    () -> ModItems.Kuuga.MIGHTY_ELEMENT.get());
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> AGITO_MATERIAL =
             register("agito",
-                    UtilMap(map -> {
+                    protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 4);
                         map.put(ArmorItem.Type.CHESTPLATE, 7);
                         map.put(ArmorItem.Type.LEGGINGS, 5);
@@ -55,11 +55,11 @@ public class PWArmorMaterial {
                         map.put(ArmorItem.Type.BODY, 8);
                     }),
                     8, 1f, 0.2f,
-                    ModItems.Agito.GROUND_ELEMENT);
+                    () -> ModItems.Agito.GROUND_ELEMENT.get());
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> MIRROR_MATERIAL =
             register("ryuki",
-                    UtilMap(map -> {
+                    protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 4);
                         map.put(ArmorItem.Type.CHESTPLATE, 7);
                         map.put(ArmorItem.Type.LEGGINGS, 5);
@@ -67,11 +67,11 @@ public class PWArmorMaterial {
                         map.put(ArmorItem.Type.BODY, 8);
                     }),
                     8, 1f, 0.2f,
-                    ModItems.Ryuki.MIRROR_FRAGMENT);
+                    () -> ModItems.Ryuki.MIRROR_FRAGMENT.get());
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> RIDER_MATERIAL =
             register("rider",
-                    UtilMap(map -> {
+                    protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 4);
                         map.put(ArmorItem.Type.CHESTPLATE, 7);
                         map.put(ArmorItem.Type.LEGGINGS, 5);
@@ -79,21 +79,15 @@ public class PWArmorMaterial {
                         map.put(ArmorItem.Type.BODY, 8);
                     }),
                     8, 1f, 0.2f,
-                    ModItems.Misc.RIDER_INGOT);
+                    () -> ModItems.Misc.RIDER_INGOT.get());
 
-    /**
-     * 供主类调用：{@code PWArmorMaterial.register(modEventBus)}。
-     */
     public static void register(IEventBus bus) {
         ARMOR_MATERIALS.register(bus);
     }
 
     // ==================== 内部 ====================
 
-    /**
-     * 用 lambda 填 EnumMap，避免每个调用点重复 {@code Util.make(new EnumMap<>(...), ...)}。
-     */
-    private static EnumMap<ArmorItem.Type, Integer> UtilMap(
+    private static EnumMap<ArmorItem.Type, Integer> protectionMap(
             java.util.function.Consumer<EnumMap<ArmorItem.Type, Integer>> filler) {
         EnumMap<ArmorItem.Type, Integer> map = new EnumMap<>(ArmorItem.Type.class);
         filler.accept(map);

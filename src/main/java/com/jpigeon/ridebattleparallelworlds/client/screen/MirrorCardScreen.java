@@ -97,7 +97,7 @@ public class MirrorCardScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (dirty && !order.equals(original)) {
+        if (!order.equals(original)) {
             PacketDistributor.sendToServer(
                     new DeckPackets.SaveDeckOrderPacket(riderId, order));
         }

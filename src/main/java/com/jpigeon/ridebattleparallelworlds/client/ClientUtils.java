@@ -13,7 +13,7 @@ public class ClientUtils {
             Vec3 movement = new Vec3(x, y, z);
             if (operationType.equals("add")) localPlayer.addDeltaMovement(movement);
             else if (operationType.equals("set")) localPlayer.setDeltaMovement(movement);
-            player.hurtMarked = true;
+            localPlayer.hurtMarked = true;
         }
     }
 }

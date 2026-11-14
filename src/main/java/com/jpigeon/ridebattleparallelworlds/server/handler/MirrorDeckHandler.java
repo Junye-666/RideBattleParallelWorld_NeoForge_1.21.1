@@ -5,6 +5,7 @@ import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWAttachments;
 import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWData;
 import com.jpigeon.ridebattleparallelworlds.common.data.attachment.holder.card.CardDeckRegistry;
+import com.jpigeon.ridebattleparallelworlds.common.data.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.common.event.CardDrawnEvent;
 import com.jpigeon.ridebattleparallelworlds.common.network.packet.DeckPackets;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModSounds;
@@ -83,9 +84,11 @@ public final class MirrorDeckHandler {
             RideBattleParallelWorlds.LOGGER.warn("抽到未注册的卡牌物品: {}", drawn);
             return;
         }
+
         if (!(cardItem instanceof VentCardItem ventCard)) return;
-        ventCard.setOwnerId(player.getUUID());
         ItemStack stack = new ItemStack(ventCard);
+        stack.set(ModDataComponents.ITEM_OWNER.get(), player.getUUID());
+
         RideBattleAPI.playPublicSound(player, ModSounds.MIRROR_DRAW.get());
         if (!player.getInventory().add(stack)) {
             player.drop(stack, false);

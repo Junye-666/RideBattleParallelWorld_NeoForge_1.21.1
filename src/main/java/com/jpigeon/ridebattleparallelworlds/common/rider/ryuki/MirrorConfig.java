@@ -57,11 +57,11 @@ public class MirrorConfig {
     private static void registerCards() {
         // 卡池 key 用 RYUKI_BASE_ID（formId），与 RiderIds.MIRROR_SYSTEM_ID 区分开
         registerCards(RYUKI_BASE_ID, List.of(
-                id("ryuki_sword_vent_card"),
-                id("ryuki_strike_vent_card"),
-                id("ryuki_guard_vent_card"),
-                id("ryuki_advent_card"),
-                id("ryuki_final_vent_card")
+                RYUKI_SWORD_VENT_CARD.getId(),
+                RYUKI_STRIKE_VENT_CARD.getId(),
+                RYUKI_GUARD_VENT_CARD.getId(),
+                RYUKI_ADVENT_CARD.getId(),
+                RYUKI_FINAL_VENT_CARD.getId()
         ));
 
     }

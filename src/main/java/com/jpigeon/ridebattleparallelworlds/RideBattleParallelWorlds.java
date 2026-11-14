@@ -38,6 +38,7 @@ public class RideBattleParallelWorlds {
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModSounds.register(modEventBus);
+        ModEffects.register(modEventBus);
 
         ModEntities.register(modEventBus);
         ModDataComponents.register(modEventBus);

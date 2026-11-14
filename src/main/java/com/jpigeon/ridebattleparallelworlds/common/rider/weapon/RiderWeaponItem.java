@@ -61,14 +61,14 @@ public abstract class RiderWeaponItem extends BaseRiderGeoItem {
     public final @NotNull InteractionResultHolder<ItemStack> use(
             @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (level.isClientSide()) return InteractionResultHolder.success(stack);
         if (!RideBattleAPI.isTransformed(player)) return InteractionResultHolder.success(stack);
-        if (!canUse(player)) {
-            return InteractionResultHolder.success(stack);
-        }
+        if (!canUse(player)) return InteractionResultHolder.success(stack);
+
+        onUse(player, hand);
+
+        if (level.isClientSide()) return InteractionResultHolder.success(stack);
 
         player.getCooldowns().addCooldown(this, cooldownTicks());
-        onUse(player, hand);
         RideBattleAPI.triggerSkill(player, skill(), triggerType());
         return InteractionResultHolder.success(stack);
     }

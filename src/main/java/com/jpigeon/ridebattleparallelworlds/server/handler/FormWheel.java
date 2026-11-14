@@ -22,16 +22,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class FormWheel {
-    private static final Map<UUID, Map<ResourceLocation, Integer>> currentIndex = new ConcurrentHashMap<>();
-
     @SubscribeEvent
     public static void onReturnItem(ReturnItemsEvent.Post event) {
         RiderConfig config = event.getConfig();
@@ -55,20 +49,7 @@ public class FormWheel {
         }
     }
 
-    public static int getCurrentIndex(UUID playerId, ResourceLocation riderId) {
-        return currentIndex
-                .computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .getOrDefault(riderId, 0);
-    }
-
-    private static void setCurrentIndex(UUID playerId, ResourceLocation riderId, int index) {
-        currentIndex
-                .computeIfAbsent(playerId, k -> new ConcurrentHashMap<>())
-                .put(riderId, index);
-    }
-
     public static void handleRotate(Player player) {
-        UUID playerId = player.getUUID();
         ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
         if (legs.getItem() instanceof ArcleItem) {
             // 获取所有已解锁形态
@@ -83,11 +64,12 @@ public class FormWheel {
             }
 
             // 只在已解锁形态中循环
-            int currentIdx = getCurrentIndex(playerId, RiderIds.KUUGA_ID);
+            ResourceLocation currentForm = RideBattleAPI.getCurrentFormId(player);
+            int currentIdx = currentForm == null ? -1 : unlockedForms.indexOf(currentForm);
             int nextIndex = (currentIdx + 1) % unlockedForms.size();
-            setCurrentIndex(playerId, RiderIds.KUUGA_ID, nextIndex);
 
             ResourceLocation newId = unlockedForms.get(nextIndex);
+
             // 显示形态名称
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.displayClientMessage(getDisplayName(newId), true);
@@ -113,9 +95,9 @@ public class FormWheel {
                 return;
             }
 
-            int currentIdx = getCurrentIndex(playerId, RiderIds.AGITO_ID);
+            ResourceLocation currentForm = RideBattleAPI.getCurrentFormId(player);
+            int currentIdx = currentForm == null ? -1 : unlockedForms.indexOf(currentForm);
             int nextIndex = (currentIdx + 1) % unlockedForms.size();
-            setCurrentIndex(playerId, RiderIds.AGITO_ID, nextIndex);
 
             ResourceLocation newId = unlockedForms.get(nextIndex);
             if (player instanceof ServerPlayer serverPlayer) {
@@ -123,11 +105,6 @@ public class FormWheel {
             }
             setAlterRingSlot(player, newId);
         }
-    }
-
-    @SubscribeEvent
-    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        currentIndex.remove(event.getEntity().getUUID());
     }
 
     private static Component getDisplayName(ResourceLocation newId) {

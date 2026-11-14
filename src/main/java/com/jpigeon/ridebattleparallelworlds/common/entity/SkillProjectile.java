@@ -21,10 +21,12 @@ public class SkillProjectile extends AbstractSkillProjectile {
         super(type, level);
         initDefaultDisplay();
     }
+
     public SkillProjectile(LivingEntity shooter, Level level) {
         super(ModEntities.SKILL_PROJECTILE.get(), shooter, level);
         initDefaultDisplay();
     }
+
     public SkillProjectile(Level level, double x, double y, double z) {
         super(ModEntities.SKILL_PROJECTILE.get(), x, y, z, level);
         initDefaultDisplay();

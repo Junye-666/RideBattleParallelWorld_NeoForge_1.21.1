@@ -42,7 +42,6 @@ public class ArcleItem extends BaseRiderArmorItem implements FormIdAnimatable {
         addController(registrar, "ultimate", createLoopController("ultimate"));
     }
 
-    // 变身方法
     public void triggerAppear() {
         setAnimState("appear");
     }
@@ -53,31 +52,22 @@ public class ArcleItem extends BaseRiderArmorItem implements FormIdAnimatable {
 
     @Override
     public void setStateByFormId(ResourceLocation formId) {
-        if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.GROWING_ID)) {
-            setAnimState("mighty");
-        } else if (formId.equals(KuugaConfig.DRAGON_ID)) {
-            setAnimState("dragon");
-        } else if (formId.equals(KuugaConfig.PEGASUS_ID)) {
-            setAnimState("pegasus");
-        } else if (formId.equals(KuugaConfig.TITAN_ID)) {
-            setAnimState("titan");
-        } else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) {
-            setAnimState("rising_mighty");
-        } else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) {
-            setAnimState("rising_dragon");
-        } else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
-            setAnimState("rising_pegasus");
-        } else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) {
-            setAnimState("rising_titan");
-        } else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) {
-            setAnimState("amazing_mighty");
-        } else if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
-            setAnimState("ultimate");
-        }
+        if (formId == null) return;
+        if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.GROWING_ID)) setAnimState("mighty");
+        else if (formId.equals(KuugaConfig.DRAGON_ID)) setAnimState("dragon");
+        else if (formId.equals(KuugaConfig.PEGASUS_ID)) setAnimState("pegasus");
+        else if (formId.equals(KuugaConfig.TITAN_ID)) setAnimState("titan");
+        else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) setAnimState("rising_mighty");
+        else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) setAnimState("rising_dragon");
+        else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) setAnimState("rising_pegasus");
+        else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) setAnimState("rising_titan");
+        else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) setAnimState("amazing_mighty");
+        else if (formId.equals(KuugaConfig.ULTIMATE_ID)) setAnimState("ultimate");
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext
+            context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("tooltip.arcle.tutorial"));

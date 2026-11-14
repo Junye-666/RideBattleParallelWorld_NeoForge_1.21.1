@@ -30,8 +30,7 @@ public class ModItems {
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "kuuga", form,
-                    () -> PWArmorMaterial.KUUGA_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "kuuga", form, PWArmorMaterial.KUUGA_MATERIAL, type);
         }
 
         // 物品
@@ -130,8 +129,7 @@ public class ModItems {
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "agito", form,
-                    () -> PWArmorMaterial.AGITO_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "agito", form, PWArmorMaterial.AGITO_MATERIAL, type);
         }
 
         public static final DeferredItem<Item> GROUND_ELEMENT = ITEMS.register("agito_ground_element", ()
@@ -195,8 +193,7 @@ public class ModItems {
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "mirror", form,
-                    () -> PWArmorMaterial.MIRROR_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "mirror", form, PWArmorMaterial.MIRROR_MATERIAL, type);
         }
 
         // TODO: 合成配方
@@ -247,8 +244,7 @@ public class ModItems {
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "decade", form,
-                    () -> PWArmorMaterial.DECADE_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "decade", form, PWArmorMaterial.DECADE_MATERIAL, type);
         }
 
         public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
@@ -295,13 +291,11 @@ public class ModItems {
          * 通用形态盔甲三件套工厂
          */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "misc", form,
-                    () -> PWArmorMaterial.RIDER_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "misc", form, PWArmorMaterial.RIDER_MATERIAL, type);
         }
 
         private static DeferredItem<ParallelRiderArmor> armor(String id, String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, id, form,
-                    () -> PWArmorMaterial.RIDER_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, id, form, PWArmorMaterial.RIDER_MATERIAL, type);
         }
 
         public static final DeferredItem<Item> RIDER_INGOT = ITEMS.register("rider_ingot", ()

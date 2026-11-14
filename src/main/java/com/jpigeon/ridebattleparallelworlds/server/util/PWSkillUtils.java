@@ -31,10 +31,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.scheduleTicks;
@@ -100,10 +97,21 @@ public class PWSkillUtils {
     private static final Map<ResourceLocation, BufferedDamageHandler> BUFFERED_HANDLERS = new LinkedHashMap<>();
 
     public static void registerBufferedDamage(ResourceLocation flag, BufferedDamageHandler handler) {
-        BUFFERED_HANDLERS.put(flag, handler);
+        if (BUFFERED_HANDLERS.putIfAbsent(flag, handler) != null) {
+            if (Config.DEBUG_MODE.get()) {
+                RideBattleParallelWorlds.LOGGER.warn("重复注册 buffered damage flag: {}（后注册的被忽略）", flag);
+            }
+        }
     }
 
     static {
+        // 空我 — 强力拳（无武器要求）
+        registerBufferedDamage(RiderSkillFlags.MIGHTY_PUNCH, (player, target, main, off) -> {
+            hurt(player, target, 15);
+            knockBack(player, target, 2);
+            return true;
+        });
+
         // 亚极陀 — 火焰军刀单刀
         registerBufferedDamage(RiderSkillFlags.SABER_SLASH, (player, target, main, off) -> {
             if (!(main.getItem() instanceof FlameSaberItem saber)) return false;
@@ -138,13 +146,6 @@ public class PWSkillUtils {
             scheduleTicks(20, () -> createExplosion(player, target, 4));
             return true;
         });
-
-        // 空我 — 强力拳（无武器要求）
-        registerBufferedDamage(RiderSkillFlags.MIGHTY_PUNCH, (player, target, main, off) -> {
-            hurt(player, target, 15);
-            knockBack(player, target, 2);
-            return true;
-        });
     }
 
     // ==========辅助方法==========
@@ -160,11 +161,18 @@ public class PWSkillUtils {
         }
     }
 
+    /**
+     * 遍历顺序遵循 {@link #BUFFERED_HANDLERS} 的注册顺序（{@link LinkedHashMap}），
+     * 通过一次性取 {@code activeFlags} 快照避免对每个 handler 都做一次 {@code isActive} 查表。
+     */
     private static void handleBufferedDamage(Player player, LivingEntity target,
                                              ItemStack mainHand, ItemStack offHand) {
-        for (var entry : BUFFERED_HANDLERS.entrySet()) {
+        Set<ResourceLocation> active = StateFlagManager.activeFlags(player);
+        if (active.isEmpty()) return;
+
+        for (Map.Entry<ResourceLocation, BufferedDamageHandler> entry : BUFFERED_HANDLERS.entrySet()) {
             ResourceLocation flag = entry.getKey();
-            if (!RiderSkillFlags.isActive(player, flag)) continue;
+            if (!active.contains(flag)) continue;
 
             if (entry.getValue().tryApply(player, target, mainHand, offHand)) {
                 RiderSkillFlags.remove(player, flag);

@@ -19,7 +19,8 @@ import java.util.Map;
 
 import static com.jpigeon.ridebattlelib.common.api.RideBattleAPI.scheduleTicks;
 import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Kuuga.PEGASUS_ELEMENT;
-import static com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils.*;
+import static com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils.createExplosion;
+import static com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils.performRiderKick;
 
 public class KuugaSkills {
     private KuugaSkills() {
@@ -29,6 +30,7 @@ public class KuugaSkills {
         PWSkillUtils.registerSkillMap(Map.ofEntries(
                 Map.entry(RiderSkills.GROWING_KICK, KuugaSkills::growingKick),
                 Map.entry(RiderSkills.MIGHTY_KICK, KuugaSkills::mightyKick),
+                Map.entry(RiderSkills.MIGHTY_PUNCH, player -> RiderSkillFlags.apply(player, RiderSkillFlags.MIGHTY_PUNCH, 100)),
                 Map.entry(RiderSkills.SPLASH_DRAGON, KuugaSkills::splashDragon),
                 Map.entry(RiderSkills.BLAST_PEGASUS, KuugaSkills::blastPegasus),
                 Map.entry(RiderSkills.CALAMITY_TITAN, KuugaSkills::calamityTitan),
@@ -165,7 +167,7 @@ public class KuugaSkills {
         kuugaKick(player, RiderSkillFlags.ULTIMATE_KICK);
     }
 
-    private static int kuugaKick(Player player, ResourceLocation flag) {
-        return performRiderKick(player, flag, 40);
+    private static void kuugaKick(Player player, ResourceLocation flag) {
+        performRiderKick(player, flag, 40);
     }
 }

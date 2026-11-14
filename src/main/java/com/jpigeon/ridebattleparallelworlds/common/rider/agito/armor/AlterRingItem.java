@@ -35,7 +35,6 @@ public class AlterRingItem extends BaseRiderArmorItem implements FormIdAnimatabl
         addController(registrar, "burning", createLoopController("burning"));
     }
 
-    // 变身方法
     public void triggerAppear() {
         setAnimState("appear");
     }
@@ -55,7 +54,8 @@ public class AlterRingItem extends BaseRiderArmorItem implements FormIdAnimatabl
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
+                                @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltip, tooltipFlag);
         if (Screen.hasShiftDown()) {
             tooltip.add(Component.translatable("tooltip.arcle.tutorial"));

@@ -6,6 +6,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.agito.entity.AgitoKickE
 import com.jpigeon.ridebattleparallelworlds.common.rider.decade.entity.DecadeHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.entity.RyukiHenshinEffect;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.bus.api.IEventBus;
@@ -26,30 +27,27 @@ public class ModEntities {
                             .build("skill_projectile"));
 
     public static final Supplier<EntityType<DecadeHenshinEffect>> DECADE_SPECIAL_EFFECT =
-            ENTITY_TYPES.register("decade_special_effect",
-                    () -> EntityType.Builder.of(DecadeHenshinEffect::new, MobCategory.MISC)
-                            .sized(0.2f, 1.8f)
-                            .clientTrackingRange(32)
-                            .updateInterval(10)
-                            .build("decade_special_effect"));
+            effect("decade_special_effect", DecadeHenshinEffect::new, 0.2f, 1.8f);
 
     public static final Supplier<EntityType<AgitoKickEffect>> AGITO_KICK_EFFECT =
-            ENTITY_TYPES.register("agito_kick_effect",
-                    () -> EntityType.Builder.of(AgitoKickEffect::new, MobCategory.MISC)
-                            .sized(4f, 0.1f)
-                            .clientTrackingRange(32)
-                            .updateInterval(10)
-                            .build("agito_kick_effect"));
+            effect("agito_kick_effect", AgitoKickEffect::new, 4f, 0.1f);
 
     public static final Supplier<EntityType<RyukiHenshinEffect>> RYUKI_HENSHIN_EFFECT =
-            ENTITY_TYPES.register("ryuki_henshin_effect",
-                    () -> EntityType.Builder.of(RyukiHenshinEffect::new, MobCategory.MISC)
-                            .sized(0.2f, 1.8f)
-                            .clientTrackingRange(32)
-                            .updateInterval(10)
-                            .build("ryuki_henshin_effect"));
+            effect("ryuki_henshin_effect", RyukiHenshinEffect::new, 0.2f, 1.8f);
 
-    public static void register(IEventBus eventBus){
+    private static <T extends Entity> Supplier<EntityType<T>> effect(
+            String name, EntityType.EntityFactory<T> factory, float width, float height
+    ) {
+        return ENTITY_TYPES.register(name, () ->
+                EntityType.Builder.of(factory, MobCategory.MISC)
+                        .sized(width, height)
+                        .clientTrackingRange(32)
+                        .updateInterval(10)
+                        .build(name));
+
+    }
+
+    public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }
 }

@@ -113,6 +113,7 @@ public class PWCommands {
                 Component.literal("=== 重置所有变身数据 ===")
                         .withStyle(ChatFormatting.BOLD), false);
         data.refreshRegisteredForms();
+        ParallelWorldsApi.syncPlayerData(player);
         return 1;
     }
 
@@ -122,6 +123,7 @@ public class PWCommands {
         PWData data = player.getData(PWAttachments.PW_DATA);
         data.resetFormUnlocksToDefaults();
         player.setData(PWAttachments.PW_DATA, data);
+        ParallelWorldsApi.syncPlayerData(player);
         source.sendSuccess(
                 () -> Component.literal("已重置形态解锁到默认状态")
                         .withStyle(ChatFormatting.GREEN), false);

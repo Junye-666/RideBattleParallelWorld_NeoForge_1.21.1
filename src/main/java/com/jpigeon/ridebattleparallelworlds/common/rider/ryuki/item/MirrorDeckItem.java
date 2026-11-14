@@ -3,8 +3,10 @@ package com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.item;
 import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattleparallelworlds.common.network.packet.DeckPackets;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModItems;
+import com.jpigeon.ridebattleparallelworlds.common.registry.worldgen.dimension.mirror.MirrorConstants;
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.MirrorAnimations;
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.armor.VBuckleItem;
+import com.jpigeon.ridebattleparallelworlds.server.util.ModTags;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -18,6 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,8 +72,12 @@ public class MirrorDeckItem extends Item {
         if (usedHand != InteractionHand.OFF_HAND) {
             return InteractionResultHolder.fail(deck);
         }
-        if (RideBattleAPI.isTransformed(player)) {
-            return InteractionResultHolder.pass(deck);
+        if (!RideBattleAPI.isTransformed(player)) {
+            if (!MirrorConstants.isMirror(player.level())) {
+                if (!isFacingMirrorBlock(player)) {
+                    return InteractionResultHolder.pass(deck);
+                }
+            }
         }
 
         ItemStack leg = player.getItemBySlot(EquipmentSlot.LEGS);
@@ -87,6 +95,14 @@ public class MirrorDeckItem extends Item {
             }
         }
         return InteractionResultHolder.pass(deck);
+    }
+
+    private static boolean isFacingMirrorBlock(Player player) {
+        HitResult hit = player.pick(6.0, 0.0f, false);
+        if (!(hit instanceof BlockHitResult blockHit)) return false;
+        return player.level()
+                .getBlockState(blockHit.getBlockPos())
+                .is(ModTags.Blocks.REFLECTIVE_BLOCKS);
     }
 
     @Override

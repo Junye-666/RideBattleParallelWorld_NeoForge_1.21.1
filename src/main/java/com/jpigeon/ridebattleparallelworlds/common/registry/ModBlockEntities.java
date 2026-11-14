@@ -1,7 +1,7 @@
 package com.jpigeon.ridebattleparallelworlds.common.registry;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
-import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.block.KuugaCoffinBlockEntity;
+import com.jpigeon.ridebattleparallelworlds.common.registry.block.KuugaCoffinBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
