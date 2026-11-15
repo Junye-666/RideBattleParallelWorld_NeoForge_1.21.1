@@ -61,6 +61,11 @@ public final class MirrorWorldHandler {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+
+        // 先处理主世界中尚未完成的镜世界生成任务
+        MirrorTeleportUtil.tickGeneration(player);
+
+        // 以下保留原来的镜世界边界处理
         if (!MirrorConstants.isMirror(player.level())) return;
 
         int yBottom = MirrorTeleportUtil.getYBottom(player);
@@ -111,8 +116,10 @@ public final class MirrorWorldHandler {
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
-        // 镜世界：保留所有状态（tag、effect），让玩家下次登录继续
-        // 主世界：清理残留
+        // 清理尚未完成的镜世界生成任务
+        MirrorTeleportUtil.cancelGeneration(player);
+
+        // 以下保留原来的逻辑
         if (!MirrorConstants.isMirror(player.level())) {
             MirrorTeleportUtil.clearYBottom(player);
             MirrorTeleportUtil.clearBoundary(player);
