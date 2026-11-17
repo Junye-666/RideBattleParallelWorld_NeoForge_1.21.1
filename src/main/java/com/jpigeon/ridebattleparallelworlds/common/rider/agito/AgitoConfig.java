@@ -5,6 +5,7 @@ import com.jpigeon.ridebattlelib.common.api.builder.RiderBuilder;
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWUnlockRegistry;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import net.minecraft.resources.ResourceLocation;
@@ -115,6 +116,23 @@ public class AgitoConfig {
             .skill(RiderSkills.SHINING_CALIBUR)
             .build();
 
+    public static final FormConfig AGITO_SHINING_FORM = FormBuilder.create(SHINING_ID)
+            .armor(
+                    SHINING_HELMET.get(),
+                    SHINING_CHESTPLATE.get(),
+                    null,
+                    SHINING_BOOTS.get()
+            )
+            .shouldPause(true)
+            .effect(MobEffects.DAMAGE_BOOST, 3)
+            .effect(MobEffects.NIGHT_VISION, 0)
+            .effect(MobEffects.MOVEMENT_SPEED, 1)
+            .effect(MobEffects.FIRE_RESISTANCE, 0)
+            .requiredItem(ALTER_RING_CORE, SHINING_ELEMENT.get())
+            .attribute(Attributes.MAX_HEALTH, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .skill(RiderSkills.SHINING_CALIBUR)
+            .build();
+
     public static final RiderConfig AGITO = RiderBuilder.create(RiderIds.AGITO_ID)
             .driver(ALTER_RING.get(), EquipmentSlot.LEGS)
             .slot(
@@ -130,10 +148,17 @@ public class AgitoConfig {
             .form(AGITO_STORM_FORM)
             .form(AGITO_TRINITY_FORM)
             .form(AGITO_BURNING_FORM)
+            .form(AGITO_SHINING_FORM)
             .baseForm(AGITO_GROUND_FORM.getFormId())
             .build();
 
     public static void init() {
         RiderRegistry.registerRider(AGITO);
+
+        // 注册亚极陀的形态解锁系统，初始解锁 Ground Form
+        PWUnlockRegistry.enableUnlock(
+                RiderIds.AGITO_ID,
+                List.of(AGITO_GROUND_FORM.getFormId())
+        );
     }
 }

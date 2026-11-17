@@ -9,6 +9,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.handler.KuugaClientHandler;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.handler.KuugaServerHandler;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.Map;
 
@@ -35,6 +36,8 @@ public class KuugaPack extends AbstractRiderPack {
 
     @Override
     protected IRiderServerHandler serverHandler() {
+        NeoForge.EVENT_BUS.register(KuugaServerHandler.class);
+
         return new KuugaServerHandler();
     }
 

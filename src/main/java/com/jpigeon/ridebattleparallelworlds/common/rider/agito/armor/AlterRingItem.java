@@ -4,7 +4,6 @@ package com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseRiderArmorItem;
-import com.jpigeon.rideevolutionlib.util.api.FormIdAnimatable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -14,11 +13,12 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
-public class AlterRingItem extends BaseRiderArmorItem implements FormIdAnimatable {
+public class AlterRingItem extends BaseRiderArmorItem {
     public AlterRingItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(RideBattleParallelWorlds.MODID, "agito", "alter_ring", material, type, properties, true);
     }
@@ -35,24 +35,6 @@ public class AlterRingItem extends BaseRiderArmorItem implements FormIdAnimatabl
         addController(registrar, "burning", createLoopController("burning"));
     }
 
-    public void triggerAppear() {
-        setAnimState("appear");
-    }
-
-    public void shrinkInBody() {
-        setAnimState("shrink");
-    }
-
-    @Override
-    public void setStateByFormId(ResourceLocation formId) {
-        if (formId == null) return;
-        if (formId.equals(AgitoConfig.GROUND_ID)) setAnimState("ground");
-        else if (formId.equals(AgitoConfig.FLAME_ID)) setAnimState("flame");
-        else if (formId.equals(AgitoConfig.STORM_ID)) setAnimState("storm");
-        else if (formId.equals(AgitoConfig.TRINITY_ID)) setAnimState("trinity");
-        else if (formId.equals(AgitoConfig.BURNING_ID)) setAnimState("burning");
-    }
-
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
                                 @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
@@ -62,5 +44,34 @@ public class AlterRingItem extends BaseRiderArmorItem implements FormIdAnimatabl
         } else {
             tooltip.add(Component.translatable("tooltip.alterRing.description").withStyle(ChatFormatting.GOLD));
         }
+    }
+
+    @Nullable
+    public String getAnimationStateByFormId(ResourceLocation formId) {
+        if (formId == null) {
+            return null;
+        }
+
+        if (formId.equals(AgitoConfig.GROUND_ID)) {
+            return "ground";
+        }
+
+        if (formId.equals(AgitoConfig.FLAME_ID)) {
+            return "flame";
+        }
+
+        if (formId.equals(AgitoConfig.STORM_ID)) {
+            return "storm";
+        }
+
+        if (formId.equals(AgitoConfig.TRINITY_ID)) {
+            return "trinity";
+        }
+
+        if (formId.equals(AgitoConfig.BURNING_ID)) {
+            return "burning";
+        }
+
+        return null;
     }
 }

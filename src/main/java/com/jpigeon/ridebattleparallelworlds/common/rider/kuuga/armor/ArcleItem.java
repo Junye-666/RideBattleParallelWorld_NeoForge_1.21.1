@@ -4,7 +4,6 @@ package com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.armor;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseRiderArmorItem;
-import com.jpigeon.rideevolutionlib.util.api.FormIdAnimatable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
@@ -14,11 +13,12 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 
 import java.util.List;
 
-public class ArcleItem extends BaseRiderArmorItem implements FormIdAnimatable {
+public class ArcleItem extends BaseRiderArmorItem {
     public ArcleItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(RideBattleParallelWorlds.MODID, "kuuga", "arcle", material, type, properties, true);
     }
@@ -42,27 +42,54 @@ public class ArcleItem extends BaseRiderArmorItem implements FormIdAnimatable {
         addController(registrar, "ultimate", createLoopController("ultimate"));
     }
 
-    public void triggerAppear() {
-        setAnimState("appear");
-    }
+    @Nullable
+    public String getAnimationStateByFormId(ResourceLocation formId) {
+        if (formId == null) {
+            return null;
+        }
 
-    public void shrinkInBody() {
-        setAnimState("shrink");
-    }
+        if (formId.equals(KuugaConfig.MIGHTY_ID)
+                || formId.equals(KuugaConfig.GROWING_ID)) {
+            return "mighty";
+        }
 
-    @Override
-    public void setStateByFormId(ResourceLocation formId) {
-        if (formId == null) return;
-        if (formId.equals(KuugaConfig.MIGHTY_ID) || formId.equals(KuugaConfig.GROWING_ID)) setAnimState("mighty");
-        else if (formId.equals(KuugaConfig.DRAGON_ID)) setAnimState("dragon");
-        else if (formId.equals(KuugaConfig.PEGASUS_ID)) setAnimState("pegasus");
-        else if (formId.equals(KuugaConfig.TITAN_ID)) setAnimState("titan");
-        else if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) setAnimState("rising_mighty");
-        else if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) setAnimState("rising_dragon");
-        else if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) setAnimState("rising_pegasus");
-        else if (formId.equals(KuugaConfig.RISING_TITAN_ID)) setAnimState("rising_titan");
-        else if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) setAnimState("amazing_mighty");
-        else if (formId.equals(KuugaConfig.ULTIMATE_ID)) setAnimState("ultimate");
+        if (formId.equals(KuugaConfig.DRAGON_ID)) {
+            return "dragon";
+        }
+
+        if (formId.equals(KuugaConfig.PEGASUS_ID)) {
+            return "pegasus";
+        }
+
+        if (formId.equals(KuugaConfig.TITAN_ID)) {
+            return "titan";
+        }
+
+        if (formId.equals(KuugaConfig.RISING_MIGHTY_ID)) {
+            return "rising_mighty";
+        }
+
+        if (formId.equals(KuugaConfig.RISING_DRAGON_ID)) {
+            return "rising_dragon";
+        }
+
+        if (formId.equals(KuugaConfig.RISING_PEGASUS_ID)) {
+            return "rising_pegasus";
+        }
+
+        if (formId.equals(KuugaConfig.RISING_TITAN_ID)) {
+            return "rising_titan";
+        }
+
+        if (formId.equals(KuugaConfig.AMAZING_MIGHTY_ID)) {
+            return "amazing_mighty";
+        }
+
+        if (formId.equals(KuugaConfig.ULTIMATE_ID)) {
+            return "ultimate";
+        }
+
+        return null;
     }
 
     @Override

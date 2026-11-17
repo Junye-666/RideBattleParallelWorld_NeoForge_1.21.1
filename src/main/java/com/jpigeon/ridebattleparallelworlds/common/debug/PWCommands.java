@@ -56,7 +56,7 @@ public class PWCommands {
         PWData dataBefore = player.getData(PWAttachments.PW_DATA);
         boolean wasUnlocked = dataBefore.isFormUnlocked(riderId, formId);
 
-        if (Config.DEBUG_MODE.get()) {
+        if (Config.debug()) {
             source.sendSuccess(() ->
                     Component.literal("解锁前: " + (wasUnlocked ? "已解锁" : "未解锁"))
                             .withStyle(ChatFormatting.YELLOW), false);
@@ -66,11 +66,11 @@ public class PWCommands {
         // 执行解锁
         boolean success = ParallelWorldsApi.unlockForm(player, riderId, formId);
 
-        if (success && Config.DEBUG_MODE.get()) {
+        if (success && Config.debug()) {
             source.sendSuccess(() ->
                     Component.literal("成功解锁形态" + formId.getPath())
                             .withStyle(ChatFormatting.GREEN), false);
-        } else if (Config.DEBUG_MODE.get()) {
+        } else if (Config.debug()) {
             source.sendFailure(Component.literal("解锁失败或形态已解锁"));
         }
 

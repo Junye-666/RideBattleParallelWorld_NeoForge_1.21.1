@@ -15,12 +15,16 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.armor.VBuckleItem
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.entity.RyukiHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.server.handler.MirrorDeckHandler;
 import com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.GeoAnimationApi;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -99,6 +103,70 @@ public class MirrorServerHandler implements IRiderServerHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.LEGS);
+
+        if (stack.getItem() instanceof VBuckleItem vBuckle) {
+            GeoAnimationApi.setState(
+                    vBuckle,
+                    stack,
+                    player,
+                    "idle"
+            );
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerEquip(LivingEquipmentChangeEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        if (event.getSlot() != EquipmentSlot.LEGS) {
+            return;
+        }
+
+        ItemStack equippedStack = event.getTo();
+
+        if (!(equippedStack.getItem() instanceof VBuckleItem vBuckle)) {
+            return;
+        }
+
+        // 装备后播放出现动画
+        GeoAnimationApi.setState(
+                vBuckle,
+                equippedStack,
+                player,
+                "appear"
+        );
+
+        // 32 tick 后恢复 idle
+        scheduleTicks(32, () -> {
+            ItemStack currentStack =
+                    player.getItemBySlot(EquipmentSlot.LEGS);
+
+            if (currentStack.getItem() instanceof VBuckleItem currentBuckle) {
+                GeoAnimationApi.setState(
+                        currentBuckle,
+                        currentStack,
+                        player,
+                        "idle"
+                );
+            }
+        });
+    }
+
     /**
      * 拦截 V_DECK 槽位里 RYUKI_DECK 的取出：
      * 取消取出，改为抽一张卡。
@@ -106,6 +174,7 @@ public class MirrorServerHandler implements IRiderServerHandler {
      * 触发时机：玩家按 X（返还物品）时，DriverSystem 会遍历所有槽位逐个 extract，
      * 走到 V_DECK 时先发 SlotExtractionEvent.Pre 给我们。
      */
+    @SubscribeEvent
     public static void onExtractPre(SlotExtractionEvent.Pre event) {
         Player player = event.getPlayer();
         if (!(player instanceof ServerPlayer)) return;

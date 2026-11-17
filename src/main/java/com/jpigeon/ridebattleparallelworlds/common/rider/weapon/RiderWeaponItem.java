@@ -54,22 +54,37 @@ public abstract class RiderWeaponItem extends BaseRiderGeoItem {
     /**
      * 客户端与服务端都会调用；只有非客户端、非变身、非目标形态才会跳过。
      */
-    protected void onUse(Player player, InteractionHand hand) {
+    protected void onUse(ItemStack stack, Player player, InteractionHand hand) {
     }
 
     @Override
     public final @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+            @NotNull Level level,
+            @NotNull Player player,
+            @NotNull InteractionHand hand
+    ) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!RideBattleAPI.isTransformed(player)) return InteractionResultHolder.success(stack);
-        if (!canUse(player)) return InteractionResultHolder.success(stack);
 
-        onUse(player, hand);
+        if (!RideBattleAPI.isTransformed(player)) {
+            return InteractionResultHolder.success(stack);
+        }
 
-        if (level.isClientSide()) return InteractionResultHolder.success(stack);
+        if (!canUse(player)) {
+            return InteractionResultHolder.success(stack);
+        }
+
+        // 客户端不执行动画状态修改、技能触发和冷却逻辑。
+        // 这些操作全部由服务端负责。
+        if (level.isClientSide()) {
+            return InteractionResultHolder.success(stack);
+        }
+
+        onUse(stack, player, hand);
 
         player.getCooldowns().addCooldown(this, cooldownTicks());
+
         RideBattleAPI.triggerSkill(player, skill(), triggerType());
+
         return InteractionResultHolder.success(stack);
     }
 

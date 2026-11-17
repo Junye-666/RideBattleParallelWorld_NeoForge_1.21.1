@@ -173,6 +173,10 @@ public class ModItems {
         public static final DeferredItem<ParallelRiderArmor> BURNING_CHESTPLATE = armor("burning", ArmorItem.Type.CHESTPLATE);
         public static final DeferredItem<ParallelRiderArmor> BURNING_BOOTS = armor("burning", ArmorItem.Type.BOOTS);
 
+        public static final DeferredItem<ParallelRiderArmor> SHINING_HELMET = armor("shining", ArmorItem.Type.HELMET);
+        public static final DeferredItem<ParallelRiderArmor> SHINING_CHESTPLATE = armor("shining", ArmorItem.Type.CHESTPLATE);
+        public static final DeferredItem<ParallelRiderArmor> SHINING_BOOTS = armor("shining", ArmorItem.Type.BOOTS);
+
         // 武器
         public static final DeferredItem<FlameSaberItem> FLAME_SABER = ITEMS.register("agito_flame_saber", ()
                 -> new FlameSaberItem(new Item.Properties().attributes(SwordItem.createAttributes(Tiers.DIAMOND, 3, 0)).rarity(Rarity.RARE)));

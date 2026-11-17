@@ -4,6 +4,9 @@
 		"idle": {
 			"loop": true
 		},
+		"closed": {
+			"loop": true
+		},
 		"open": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 0.25,
@@ -42,6 +45,32 @@
 							"easing": "easeOutBack",
 							"easingArgs": [0.5]
 						}
+					}
+				}
+			}
+		},
+		"opened": {
+			"loop": true,
+			"bones": {
+				"core": {
+					"rotation": {
+						"vector": [0, 0, 90],
+						"easing": "easeOutBack",
+						"easingArgs": [0.5]
+					}
+				},
+				"left": {
+					"position": {
+						"vector": [1, 0, 0],
+						"easing": "easeOutBack",
+						"easingArgs": [0.5]
+					}
+				},
+				"right": {
+					"position": {
+						"vector": [-1, 0, 0],
+						"easing": "easeOutBack",
+						"easingArgs": [0.5]
 					}
 				}
 			}

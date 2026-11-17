@@ -7,6 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.handler.AgitoClientHandler;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.handler.AgitoServerHandler;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class AgitoPack extends AbstractRiderPack {
     @Override
@@ -26,6 +27,8 @@ public class AgitoPack extends AbstractRiderPack {
 
     @Override
     protected IRiderServerHandler serverHandler() {
+        NeoForge.EVENT_BUS.register(AgitoServerHandler.class);
+
         return new AgitoServerHandler();
     }
 

@@ -5,6 +5,7 @@ import com.jpigeon.ridebattlelib.common.api.builder.RiderBuilder;
 import com.jpigeon.ridebattlelib.common.config.FormConfig;
 import com.jpigeon.ridebattlelib.common.config.RiderConfig;
 import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
+import com.jpigeon.ridebattleparallelworlds.common.data.attachment.PWUnlockRegistry;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import net.minecraft.resources.ResourceLocation;
@@ -247,5 +248,11 @@ public class KuugaConfig {
 
     public static void init() {
         RiderRegistry.registerRider(KUUGA);
+
+        // 注册空我的形态解锁系统，初始解锁 Growing Form
+        PWUnlockRegistry.enableUnlock(
+                RiderIds.KUUGA_ID,
+                List.of(KUUGA_GROWING_FORM.getFormId())
+        );
     }
 }

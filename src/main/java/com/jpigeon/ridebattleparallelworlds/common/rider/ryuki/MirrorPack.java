@@ -27,7 +27,7 @@ public class MirrorPack extends AbstractRiderPack {
 
     @Override
     protected IRiderServerHandler serverHandler() {
-        NeoForge.EVENT_BUS.addListener(MirrorServerHandler::onExtractPre);
+        NeoForge.EVENT_BUS.register(MirrorServerHandler.class);
 
         return new MirrorServerHandler();
     }

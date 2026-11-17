@@ -25,13 +25,17 @@ public class Config {
                 .defineInRange("riderSoundsVolume", 100, 1, 100);
         MIRROR_Y_BOTTOM = BUILDER
                 .comment("镜世界底部 Y 坐标（低于此值的区域不会生成镜像）")
-                .defineInRange("mirrorYBottom", 60, -64, 320);
+                .defineInRange("mirrorYBottom", -56, -64, 320);
         MIRROR_SCAN_RADIUS = BUILDER
                 .comment("镜世界单次扫描半径（区块数），值越大单次加载范围越广，但生成耗时和存档体积会相应增加")
                 .defineInRange("mirrorScanRadius", 2, 1, 8);
         DEBUG_MODE = BUILDER
                 .comment("开发者向Debug模式")
                 .define("debugMode", false);
+    }
+
+    public static boolean debug() {
+        return DEBUG_MODE.get();
     }
 
     static final ModConfigSpec SPEC = BUILDER.build();

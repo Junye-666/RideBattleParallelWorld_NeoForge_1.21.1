@@ -5,7 +5,6 @@ import com.jpigeon.ridebattlelib.server.event.SkillEvent;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.data.component.ModDataComponents;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModSounds;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -97,14 +95,13 @@ public class VentCardItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         if (Screen.hasShiftDown()) {
             tooltipComponents.add(Component.translatable("tooltip.ventCard.owner"));
-            if (FMLEnvironment.dist.isClient()) {
-                Level level = Minecraft.getInstance().level;
-                UUID ownerId = stack.get(ModDataComponents.ITEM_OWNER.get());
-                Player owner = (level != null && ownerId != null) ? level.getPlayerByUUID(ownerId) : null;
-                tooltipComponents.add(owner != null
-                        ? owner.getName()
-                        : Component.literal("None"));
-            }
+
+            Level level = context.level();
+            UUID ownerId = stack.get(ModDataComponents.ITEM_OWNER.get());
+            Player owner = (level != null && ownerId != null) ? level.getPlayerByUUID(ownerId) : null;
+            tooltipComponents.add(owner != null
+                    ? owner.getName()
+                    : Component.literal("None"));
         }
     }
 }

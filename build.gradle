@@ -131,11 +131,11 @@ configurations {
 dependencies {
     implementation files("libs/ridebattlelib-1.3.4.jar")
     implementation files("libs/rideevolutionlib-0.2.4-1.3.4.jar")
-    implementation "curse.maven:playeranimator-658587:7389814"
+    implementation "curse.maven:playeranimator-658587:7389814" // PlayerAnimator
     // implementation "curse.maven:player-animation-library-1283899:7611367"
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    runtimeOnly ("curse.maven:mmmmmmmmmmmm-225738:7943676") // Mmm
-    runtimeOnly ("curse.maven:selene-499980:8426304") // moonlight
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}" // GecokLib
+    runtimeOnly ("curse.maven:mmmmmmmmmmmm-225738:8903254") // Mmm
+    runtimeOnly("curse.maven:selene-499980:9519534") // moonlight
     runtimeOnly ("curse.maven:neat-238372:7774002") // Neat
     runtimeOnly ("curse.maven:shoulder-surfing-reloaded-243190:8424116") // ShoulderSurf
     runtimeOnly ("curse.maven:explosive-enhancement-reforged-1036246:6520579") // ExplosiveEnhance

@@ -6,10 +6,12 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.entity.AgitoKickEffect;
 import com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.GeoAnimationApi;
 import com.jpigeon.rideevolutionlib.util.item.TempItemUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import java.util.Map;
@@ -54,14 +56,44 @@ public class AgitoSkills {
 
     private static void groundKick(Player player) {
         Level level = player.level();
-        AgitoKickEffect effect = new AgitoKickEffect(ModEntities.AGITO_KICK_EFFECT.get(), level);
+
+        AgitoKickEffect effect = new AgitoKickEffect(
+                ModEntities.AGITO_KICK_EFFECT.get(),
+                level
+        );
+
         effect.setOwner(player);
         level.addFreshEntity(effect);
 
-        int duration = PWSkillUtils.performRiderKick(player, RiderSkillFlags.GROUND_KICK, 70);
-        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
-            agitoGround.triggerOpen();
-            scheduleTicks(duration, agitoGround::setClosed);
+        int duration = PWSkillUtils.performRiderKick(
+                player,
+                RiderSkillFlags.GROUND_KICK,
+                70
+        );
+
+        ItemStack helmetStack = player.getItemBySlot(EquipmentSlot.HEAD);
+
+        if (helmetStack.getItem() instanceof AgitoGroundItem agitoGround) {
+
+            GeoAnimationApi.setState(
+                    agitoGround,
+                    helmetStack,
+                    player,
+                    "open"
+            );
+
+            scheduleTicks(duration, () -> {
+                ItemStack currentHelmet = player.getItemBySlot(EquipmentSlot.HEAD);
+
+                if (currentHelmet.getItem() instanceof AgitoGroundItem currentGround) {
+                    GeoAnimationApi.setState(
+                            currentGround,
+                            currentHelmet,
+                            player,
+                            "idle"
+                    );
+                }
+            });
         }
     }
 

@@ -5,12 +5,17 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.weapon.RiderWeaponItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.GeoAnimationApi;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.List;
+import java.util.Map;
 
 public class DragonRodItem extends RiderWeaponItem {
     public DragonRodItem(Properties properties) {
@@ -33,14 +38,34 @@ public class DragonRodItem extends RiderWeaponItem {
     }
 
     @Override
-    protected void onUse(Player player, InteractionHand hand) {
-        setAnimState(hand.equals(InteractionHand.MAIN_HAND) ? "spin_main" : "spin_off");
+    protected void onUse(ItemStack stack, Player player, InteractionHand hand) {
+        GeoAnimationApi.trigger(
+                this,
+                stack,
+                player,
+                "actions",
+                hand == InteractionHand.MAIN_HAND ? "spin_main" : "spin_off"
+        );
     }
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createLoopController("idle"));
-        addController(registrar, "spin_main", createOnceController("spin_main"));
-        addController(registrar, "spin_off", createOnceController("spin_off"));
+        addController(registrar, "actions",
+                createTriggerController("actions",
+                        Map.of(
+                                "spin_main",
+                                RawAnimation.begin().then(
+                                        "spin_main",
+                                        Animation.LoopType.PLAY_ONCE
+                                ),
+                                "spin_off",
+                                RawAnimation.begin().then(
+                                        "spin_off",
+                                        Animation.LoopType.PLAY_ONCE
+                                )
+                        )
+                )
+        );
     }
 }

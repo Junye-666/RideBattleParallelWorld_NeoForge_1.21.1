@@ -3,6 +3,7 @@
   "package": "com.jpigeon.ridebattleparallelworlds.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "common.LevelChunkMixin",
     "common.ServerLevelMixin"
   ],
   "injectors": {

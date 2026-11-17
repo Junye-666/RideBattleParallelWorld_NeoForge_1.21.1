@@ -31,9 +31,6 @@ public class ParallelWorldsApi {
         // 解锁形态
         boolean success = data.unlockForm(riderId, formId);
         if (success) {
-            // 设置数据回玩家以触发保存
-            player.setData(PWAttachments.PW_DATA, data);
-
             // 同步到客户端
             syncPlayerData(player);
 
@@ -68,7 +65,8 @@ public class ParallelWorldsApi {
 
     /**
      * 获取骑士已解锁的形态列表
-     * @param player 玩家
+     *
+     * @param player  玩家
      * @param riderId 骑士ID
      * @return 已解锁的形态ID列表
      */

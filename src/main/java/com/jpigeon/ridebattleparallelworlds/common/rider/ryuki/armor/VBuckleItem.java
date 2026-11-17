@@ -1,6 +1,5 @@
 package com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.armor;
 
-import com.jpigeon.ridebattlelib.common.api.RideBattleAPI;
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModSounds;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseRiderArmorItem;
@@ -25,15 +24,6 @@ public class VBuckleItem extends BaseRiderArmorItem {
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createLoopController("idle"));
         addController(registrar, "appear", createOnceController("appear"));
-    }
-
-    public void triggerAppear() {
-        setAnimState("appear");
-        RideBattleAPI.scheduleTicks(32, this::setIdle);
-    }
-
-    public void setIdle() {
-        setAnimState("idle");
     }
 
     @Override

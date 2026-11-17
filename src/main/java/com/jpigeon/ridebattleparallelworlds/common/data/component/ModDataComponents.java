@@ -1,9 +1,11 @@
 package com.jpigeon.ridebattleparallelworlds.common.data.component;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -18,8 +20,10 @@ public class ModDataComponents {
     /**
      * 物品变换 数据
      */
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemData>> ORIGIN_ITEM_DATA = register("origin_item_data",
-            builder -> builder.persistent(ItemData.CODEC)
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemData>> ORIGIN_ITEM_DATA =
+            register("origin_item_data",
+            builder -> builder
+                    .persistent(ItemData.CODEC)
     );
 
     /**
@@ -29,6 +33,20 @@ public class ModDataComponents {
             register("item_owner", builder -> builder
                     .persistent(UUIDUtil.CODEC)
                     .networkSynchronized(UUIDUtil.STREAM_CODEC));
+
+    /**
+     * 物品状态数据
+     * <p>
+     * 每个 ItemStack 独立保存自己的状态。
+     * 支持存档持久化和客户端同步。
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>>
+            ITEM_STATE = register(
+            "item_state",
+            builder -> builder
+                    .persistent(Codec.STRING)
+                    .networkSynchronized(ByteBufCodecs.STRING_UTF8)
+    );
 
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                            UnaryOperator<DataComponentType.Builder<T>> builderOperator) {

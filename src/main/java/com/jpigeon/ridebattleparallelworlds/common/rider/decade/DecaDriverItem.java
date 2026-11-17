@@ -10,8 +10,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.List;
+import java.util.Map;
 
 public class DecaDriverItem extends BaseRiderArmorItem {
     public DecaDriverItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
@@ -20,18 +23,30 @@ public class DecaDriverItem extends BaseRiderArmorItem {
 
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
-        addController(registrar, "idle", createLoopController("idle"));
-        addController(registrar, "open", createHoldController("open"));
-        addController(registrar, "close", createHoldController("close"));
-    }
+        // 持续状态：驱动器展开
+        addController(registrar, "opened", createLoopController("opened"));
 
-    // 变身方法
-    public void triggerOpen() {
-        setAnimState("open");
-    }
+        // 持续状态：驱动器关闭
+        addController(registrar, "closed", createLoopController("closed"));
 
-    public void triggerClose() {
-        setAnimState("close");
+        // 一次性动作：开合动画
+        addController(registrar, "actions",
+                createTriggerController(
+                        "actions",
+                        Map.of(
+                                "open",
+                                RawAnimation.begin().then(
+                                        "open",
+                                        Animation.LoopType.PLAY_ONCE
+                                ),
+                                "close",
+                                RawAnimation.begin().then(
+                                        "close",
+                                        Animation.LoopType.PLAY_ONCE
+                                )
+                        )
+                )
+        );
     }
 
     @Override

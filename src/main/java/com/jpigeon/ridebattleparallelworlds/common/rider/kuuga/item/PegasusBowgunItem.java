@@ -5,12 +5,17 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.weapon.RiderWeaponItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.GeoAnimationApi;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.List;
+import java.util.Map;
 
 public class PegasusBowgunItem extends RiderWeaponItem {
     public PegasusBowgunItem(Properties properties) {
@@ -33,15 +38,31 @@ public class PegasusBowgunItem extends RiderWeaponItem {
     }
 
     @Override
-    protected void onUse(Player player, InteractionHand hand) {
-        setAnimState("shoot");
+    protected void onUse(ItemStack stack, Player player, InteractionHand hand) {
+        GeoAnimationApi.trigger(
+                this,
+                stack,
+                player,
+                "actions",
+                "shoot"
+        );
     }
-
     @Override
     protected void registerAnimationControllers(AnimatableManager.ControllerRegistrar registrar) {
         addController(registrar, "idle", createLoopController("idle"));
         addController(registrar, "pull", createLoopController("pull"));
         addController(registrar, "release", createLoopController("release"));
-        addController(registrar, "shoot", createOnceController("shoot"));
+
+        addController(registrar, "actions",
+                createTriggerController("actions",
+                        Map.of(
+                                "shoot",
+                                RawAnimation.begin().then(
+                                        "shoot",
+                                        Animation.LoopType.PLAY_ONCE
+                                )
+                        )
+                )
+        );
     }
 }

@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import static com.jpigeon.ridebattleparallelworlds.common.registry.ModItems.Kuuga.*;
-import static com.jpigeon.rideevolutionlib.util.api.DriverItemStateUtil.setDriverAnim;
 
 public final class KuugaClientHandler implements IRiderClientHandler {
     @Override
@@ -26,13 +25,15 @@ public final class KuugaClientHandler implements IRiderClientHandler {
     @Override
     public void onPending(ClientRiderContext ctx) {
         LocalPlayer player = ctx.player();
-        if (!(ctx.driverStack().getItem() instanceof ArcleItem arcle)) return;
+
+        if (!(ctx.driverStack().getItem() instanceof ArcleItem)) {
+            return;
+        }
 
         boolean alreadyTransformed = RideBattleAPI.isTransformed(player);
-        ResourceLocation formId = ctx.pendingFormId();
 
+        // 蹲下快速变身，不播放普通变身动画
         if (player.isCrouching()) {
-            setDriverAnim(ctx.driverStack(), formId);
             return;
         }
 
@@ -40,17 +41,6 @@ public final class KuugaClientHandler implements IRiderClientHandler {
             KuugaAnimations.SWITCH.play(player);
         } else {
             KuugaAnimations.HENSHIN.play(player);
-            if (arcle.getCurrentAnimState().equals("inBody") || arcle.getCurrentAnimState().equals("shrink")) {
-                RideBattleAPI.scheduleTicks(5, arcle::triggerAppear);
-            }
-        }
-        setDriverAnim(ctx.driverStack(), formId);
-    }
-
-    @Override
-    public void postUnhenshin(ClientRiderContext ctx) {
-        if (ctx.driverStack().getItem() instanceof ArcleItem arcle) {
-            arcle.shrinkInBody();
         }
     }
 

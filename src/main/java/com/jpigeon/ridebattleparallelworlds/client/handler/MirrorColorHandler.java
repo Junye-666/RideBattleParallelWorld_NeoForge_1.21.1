@@ -47,7 +47,12 @@ public class MirrorColorHandler {
             // 镜世界：全用入口处那一个颜色
             if (level != null && MirrorConstants.isMirror(level)) {
                 int color = ClientMirrorColorCache.getGrassColor();
-                return color != -1 ? color : DEFAULT_GRASS_COLOR;
+
+                if (color == -1 || (color & 0xFFFFFF) == 0) {
+                    return DEFAULT_GRASS_COLOR;
+                }
+
+                return color;
             }
 
             // 主世界：复现原版逻辑

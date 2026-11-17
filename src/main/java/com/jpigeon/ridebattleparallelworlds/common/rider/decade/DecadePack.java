@@ -9,6 +9,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.decade.handler.DecadeClientHandler;
 import com.jpigeon.ridebattleparallelworlds.common.rider.decade.handler.DecadeServerHandler;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.Map;
 
@@ -36,6 +37,8 @@ public class DecadePack extends AbstractRiderPack {
 
     @Override
     protected IRiderServerHandler serverHandler() {
+        NeoForge.EVENT_BUS.register(DecadeServerHandler.class);
+
         return new DecadeServerHandler();
     }
 

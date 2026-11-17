@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -24,9 +26,22 @@ import org.jetbrains.annotations.Nullable;
 public class KuugaCoffinBlock extends BaseEntityBlock{
     public static final VoxelShape SHAPE = Block.box(0, 0, -8, 16, 8, 24);
     public static final MapCodec<KuugaCoffinBlock> CODEC = simpleCodec(KuugaCoffinBlock::new);
+    public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     public KuugaCoffinBlock(Properties properties) {
         super(properties.noTerrainParticles().destroyTime(5).explosionResistance(5).sound(SoundType.DEEPSLATE));
+
+        this.registerDefaultState(
+                this.stateDefinition.any()
+                        .setValue(OPEN, false)
+        );
+    }
+
+    @Override
+    protected void createBlockStateDefinition(
+            StateDefinition.Builder<Block, BlockState> builder
+    ) {
+        builder.add(OPEN);
     }
 
     @Override
@@ -61,23 +76,52 @@ public class KuugaCoffinBlock extends BaseEntityBlock{
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof KuugaCoffinBlockEntity coffinBlockEntity) {
-            if (coffinBlockEntity.isOpen()) {
-                level.destroyBlock(pos, false, player, 1);
-            } else {
-                coffinBlockEntity.triggerOpen();
-                level.updateNeighbourForOutputSignal(pos, this);
-            }
+        if (!(level.getBlockEntity(pos) instanceof KuugaCoffinBlockEntity)) {
+            return super.useWithoutItem(
+                    state,
+                    level,
+                    pos,
+                    player,
+                    hitResult
+            );
         }
-        return super.useWithoutItem(state, level, pos, player, hitResult);
+
+        // 客户端只响应交互，不修改实际状态
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (state.getValue(OPEN)) {
+            // 已打开：第二次点击摧毁棺材
+            level.destroyBlock(pos, false, player, 1);
+        } else {
+            // 未打开：切换 BlockState
+            level.setBlock(
+                    pos,
+                    state.setValue(OPEN, true),
+                    Block.UPDATE_ALL
+            );
+
+            level.updateNeighbourForOutputSignal(pos, this);
+        }
+
+        return InteractionResult.SUCCESS;
     }
 
     @Override
     protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (movedByPiston) return;
-        if (!level.isClientSide() && state != newState) {
-            level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), ModItems.Kuuga.ARCLE.toStack()));
+        if (!level.isClientSide()
+                && state.getBlock() != newState.getBlock()) {
+            level.addFreshEntity(
+                    new ItemEntity(
+                            level,
+                            pos.getX(), pos.getY(), pos.getZ(),
+                            ModItems.Kuuga.ARCLE.toStack()
+                    )
+            );
+
             level.updateNeighbourForOutputSignal(pos, this);
         }
     }

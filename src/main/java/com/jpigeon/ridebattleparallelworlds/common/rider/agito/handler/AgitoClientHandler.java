@@ -8,18 +8,14 @@ import com.jpigeon.ridebattleparallelworlds.common.registry.ModItems;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderSkills;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoAnimations;
-import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AgitoGroundItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AlterRingItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-
-import static com.jpigeon.rideevolutionlib.util.api.DriverItemStateUtil.setDriverAnim;
 
 public final class AgitoClientHandler implements IRiderClientHandler {
     @Override
@@ -41,36 +37,21 @@ public final class AgitoClientHandler implements IRiderClientHandler {
         } else {
             AgitoAnimations.PREP.play(player);
         }
-
-        if (ctx.driverStack().getItem() instanceof AlterRingItem alterRing) {
-            alterRing.setStateByFormId(ctx.pendingFormId());
-        }
     }
 
     @Override
     public void onPending(ClientRiderContext ctx) {
         LocalPlayer player = ctx.player();
+
         if (!(ctx.driverStack().getItem() instanceof AlterRingItem)) return;
+
+
         Minecraft minecraft = Minecraft.getInstance();
         minecraft.getSoundManager().stop();
 
-        ResourceLocation formId = ctx.pendingFormId();
-
-        if (player.isCrouching()) {
-            setDriverAnim(ctx.driverStack(), formId);
-            return;
-        }
+        if (player.isCrouching()) return;
 
         AgitoAnimations.HENSHIN.play(player);
-
-        RideBattleAPI.scheduleTicks(10, () -> setDriverAnim(ctx.driverStack(), formId));
-    }
-
-    @Override
-    public void postUnhenshin(ClientRiderContext ctx) {
-        if (ctx.driverStack().getItem() instanceof AlterRingItem alterRing) {
-            alterRing.shrinkInBody();
-        }
     }
 
     @Override
@@ -91,11 +72,6 @@ public final class AgitoClientHandler implements IRiderClientHandler {
     }
 
     private static void groundKick(LocalPlayer player) {
-        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof AgitoGroundItem agitoGround) {
-            agitoGround.triggerOpen();
-            RideBattleAPI.scheduleTicks(70, agitoGround::setClosed);
-        }
-
         SkillMovementUtils.riderKickJump(player, 1.3, 30);
         SkillMovementUtils.riderKickForward(player, 1.8, 45);
     }

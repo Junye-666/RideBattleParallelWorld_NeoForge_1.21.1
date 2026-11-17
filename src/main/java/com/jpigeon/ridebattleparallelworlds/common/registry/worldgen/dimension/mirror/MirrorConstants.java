@@ -17,9 +17,7 @@ public class MirrorConstants {
     public static final int BOUNCE_THRESHOLD = 2;
     public static final int REPULSION = 3;
     public static final int CORROSION_DURATION_SECONDS = 600;
-    public static final int BFS_LIMIT = 4096;
 
-    // === 改成方法，按调用时读 Config ===
     public static int yBottom() {
         return Config.MIRROR_Y_BOTTOM.get();
     }

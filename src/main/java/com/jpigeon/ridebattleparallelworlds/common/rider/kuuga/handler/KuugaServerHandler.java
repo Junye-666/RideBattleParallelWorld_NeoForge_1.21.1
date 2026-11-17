@@ -15,6 +15,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.armor.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.server.util.AbilitiesUtils;
 import com.jpigeon.ridebattleparallelworlds.server.util.PWSkillUtils;
 import com.jpigeon.ridebattleparallelworlds.server.util.RiderUtils;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.GeoAnimationApi;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
@@ -25,9 +26,12 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -74,6 +78,7 @@ public final class KuugaServerHandler implements IRiderServerHandler {
         RiderUtils.playSound(player, ModSounds.ARCLE_APPEAR.get());
 
         FormConfig form = RideBattleAPI.getFormConfig(player, event.getFormId());
+        scheduleTicks(5, () -> setArcleState(player, "appear"));
         scheduleTicks(10, () -> RiderUtils.playHenshinSound(player, form));
         ModSounds.getSoundLength(form).ifPresent(len -> RideBattleAPI.completeIn(len, player));
     }
@@ -81,6 +86,9 @@ public final class KuugaServerHandler implements IRiderServerHandler {
     @Override
     public void onHenshinPost(HenshinEvent.@NotNull Post event) {
         Player player = event.getPlayer();
+
+        applyArcleFormState(player, event.getFormId());
+
         PWSkillUtils.addSaturation(player, 40);
         PWSkillUtils.addRegeneration(player, 20);
     }
@@ -116,11 +124,16 @@ public final class KuugaServerHandler implements IRiderServerHandler {
         } else {
             removeKuugaWeaponForForm(player, oldFormId);
         }
+        applyArcleFormState(player, newFormId);
     }
 
     @Override
     public void onUnhenshinPost(UnhenshinEvent.@NotNull Post event) {
-        removeKuugaWeaponForForm(event.getPlayer(), event.getFormId());
+        Player player = event.getPlayer();
+
+        setArcleState(player, "shrink");
+
+        removeKuugaWeaponForForm(player, event.getFormId());
     }
 
     private static void removeKuugaWeaponForForm(Player player, ResourceLocation formId) {
@@ -148,6 +161,91 @@ public final class KuugaServerHandler implements IRiderServerHandler {
             convertItemTo(player, originalItem, weapon);
             return;
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        if (RideBattleAPI.isTransformed(player)) {
+            applyArcleFormState(
+                    player,
+                    RideBattleAPI.getCurrentFormId(player)
+            );
+        } else {
+            setArcleState(player, "shrink");
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerEquip(LivingEquipmentChangeEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        if (player.level().isClientSide()) {
+            return;
+        }
+
+        if (event.getSlot() != EquipmentSlot.LEGS) {
+            return;
+        }
+
+        if (!(event.getTo().getItem() instanceof ArcleItem)) {
+            return;
+        }
+
+        if (RideBattleAPI.isTransformed(player)) {
+            applyArcleFormState(
+                    player,
+                    RideBattleAPI.getCurrentFormId(player)
+            );
+        } else {
+            setArcleState(player, "shrink");
+        }
+    }
+
+    private static void setArcleState(Player player, String state) {
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.LEGS);
+
+        if (!(stack.getItem() instanceof ArcleItem arcle)) {
+            return;
+        }
+
+        GeoAnimationApi.setState(
+                arcle,
+                stack,
+                player,
+                state
+        );
+    }
+
+    private static void applyArcleFormState(
+            Player player,
+            @Nullable ResourceLocation formId
+    ) {
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.LEGS);
+
+        if (!(stack.getItem() instanceof ArcleItem arcle)) {
+            return;
+        }
+
+        String state = arcle.getAnimationStateByFormId(formId);
+
+        if (state == null) {
+            state = "shrink";
+        }
+
+        GeoAnimationApi.setState(
+                arcle,
+                stack,
+                player,
+                state
+        );
     }
 
     // ========== 内部类型 ==========

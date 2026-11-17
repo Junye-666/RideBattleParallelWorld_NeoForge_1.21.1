@@ -9,6 +9,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.StormHalberdItem;
+import com.jpigeon.rideevolutionlib.compat.geckoLib.GeoAnimationApi;
 import com.jpigeon.rideevolutionlib.util.skill.SkillUtils;
 import com.jpigeon.rideevolutionlib.util.state.StateFlagManager;
 import net.minecraft.core.BlockPos;
@@ -49,8 +50,10 @@ public class PWSkillUtils {
     @SubscribeEvent
     public static void onDamageEntity(AttackEntityEvent event) {
         Player player = event.getEntity();
+        if (player.level().isClientSide()) return;
         Entity target = event.getTarget();
         if (!(target instanceof LivingEntity living)) return;
+
         handleDamageEntity(player, living);
     }
 
@@ -82,7 +85,8 @@ public class PWSkillUtils {
      * 遍历会立刻停止并清除对应的 flag。
      * <p>
      * 实现应保证：<b>不修改 mainHand/offHand</b> 本体（保持只读），
-     * 命中逻辑里自己调 {@code player.getCooldowns().addCooldown} 或 {@code setClose}。
+     * 命中逻辑可以通过 {@code GeoAnimationApi.setState()}
+     * 更新对应 ItemStack 的动画状态。
      */
     @FunctionalInterface
     public interface BufferedDamageHandler {
@@ -98,54 +102,105 @@ public class PWSkillUtils {
 
     public static void registerBufferedDamage(ResourceLocation flag, BufferedDamageHandler handler) {
         if (BUFFERED_HANDLERS.putIfAbsent(flag, handler) != null) {
-            if (Config.DEBUG_MODE.get()) {
+            if (Config.debug()) {
                 RideBattleParallelWorlds.LOGGER.warn("重复注册 buffered damage flag: {}（后注册的被忽略）", flag);
             }
         }
     }
 
     static {
-        // 空我 — 强力拳（无武器要求）
-        registerBufferedDamage(RiderSkillFlags.MIGHTY_PUNCH, (player, target, main, off) -> {
-            hurt(player, target, 15);
-            knockBack(player, target, 2);
-            return true;
-        });
+        // 空我 — 强力拳
+        registerBufferedDamage(RiderSkillFlags.MIGHTY_PUNCH,
+                (player, target, main, off) -> {
+                    hurt(player, target, 15);
+                    knockBack(player, target, 2);
+                    return true;
+                });
 
         // 亚极陀 — 火焰军刀单刀
-        registerBufferedDamage(RiderSkillFlags.SABER_SLASH, (player, target, main, off) -> {
-            if (!(main.getItem() instanceof FlameSaberItem saber)) return false;
-            hurt(player, target, 30);
-            saber.setClose();
-            return true;
-        });
+        registerBufferedDamage(RiderSkillFlags.SABER_SLASH,
+                (player, target, main, off) -> {
+                    if (!(main.getItem() instanceof FlameSaberItem saber)) {
+                        return false;
+                    }
+
+                    hurt(player, target, 30);
+
+                    GeoAnimationApi.setState(
+                            saber,
+                            main,
+                            player,
+                            "idle"
+                    );
+
+                    return true;
+                });
 
         // 亚极陀 — 暴风战戟单持
-        registerBufferedDamage(RiderSkillFlags.HALBERD_SPIN, (player, target, main, off) -> {
-            if (!(main.getItem() instanceof StormHalberdItem halberd)) return false;
-            hurt(player, target, 35);
-            halberd.setClose();
-            return true;
-        });
+        registerBufferedDamage(RiderSkillFlags.HALBERD_SPIN,
+                (player, target, main, off) -> {
+                    if (!(main.getItem() instanceof StormHalberdItem halberd)) {
+                        return false;
+                    }
+
+                    hurt(player, target, 35);
+
+                    GeoAnimationApi.setState(
+                            halberd,
+                            main,
+                            player,
+                            "idle"
+                    );
+
+                    return true;
+                });
 
         // 亚极陀 — 火焰军刀 + 暴风战戟（双持合击）
-        registerBufferedDamage(RiderSkillFlags.FIRESTORM_ATTACK, (player, target, main, off) -> {
-            if (!(main.getItem() instanceof FlameSaberItem saber)) return false;
-            if (!(off.getItem() instanceof StormHalberdItem halberd)) return false;
-            hurt(player, target, 70);
-            saber.setClose();
-            halberd.setClose();
-            return true;
-        });
+        registerBufferedDamage(RiderSkillFlags.FIRESTORM_ATTACK,
+                (player, target, main, off) -> {
+                    if (!(main.getItem() instanceof FlameSaberItem saber)) {
+                        return false;
+                    }
 
-        // 亚极陀 — 燃烧形态的燃烧炸弹
-        registerBufferedDamage(RiderSkillFlags.BURNING_BOMBER, (player, target, main, off) -> {
-            if (!(main.getItem() instanceof ShiningCaliburItem)) return false;
-            hurt(player, target, 60);
-            knockBack(player, target, 2);
-            scheduleTicks(20, () -> createExplosion(player, target, 4));
-            return true;
-        });
+                    if (!(off.getItem() instanceof StormHalberdItem halberd)) {
+                        return false;
+                    }
+
+                    hurt(player, target, 70);
+
+                    GeoAnimationApi.setState(
+                            saber,
+                            main,
+                            player,
+                            "idle"
+                    );
+
+                    GeoAnimationApi.setState(
+                            halberd,
+                            off,
+                            player,
+                            "idle"
+                    );
+
+                    return true;
+                });
+
+        // 亚极陀 — 燃烧
+        registerBufferedDamage(RiderSkillFlags.BURNING_BOMBER,
+                (player, target, main, off) -> {
+                    if (!(main.getItem() instanceof ShiningCaliburItem)) {
+                        return false;
+                    }
+
+                    hurt(player, target, 60);
+                    knockBack(player, target, 2);
+
+                    scheduleTicks(20, () ->
+                            createExplosion(player, target, 4)
+                    );
+
+                    return true;
+                });
     }
 
     // ==========辅助方法==========
