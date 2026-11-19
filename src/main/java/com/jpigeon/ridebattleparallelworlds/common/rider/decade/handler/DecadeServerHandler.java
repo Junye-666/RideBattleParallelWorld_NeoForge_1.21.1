@@ -10,7 +10,7 @@ import com.jpigeon.ridebattlelib.server.event.SlotExtractionEvent;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModEntities;
 import com.jpigeon.ridebattleparallelworlds.common.registry.ModSounds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
-import com.jpigeon.ridebattleparallelworlds.common.rider.decade.DecaDriverItem;
+import com.jpigeon.ridebattleparallelworlds.common.rider.decade.armor.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.decade.DecadeConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.decade.entity.DecadeHenshinEffect;
 import com.jpigeon.ridebattleparallelworlds.server.util.ModTags;

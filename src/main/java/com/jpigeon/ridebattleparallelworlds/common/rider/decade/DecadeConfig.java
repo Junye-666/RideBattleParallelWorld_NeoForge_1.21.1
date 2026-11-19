@@ -8,6 +8,7 @@ import com.jpigeon.ridebattlelib.common.config.TriggerType;
 import com.jpigeon.ridebattlelib.common.registry.RiderRegistry;
 import com.jpigeon.ridebattleparallelworlds.common.rider.RiderIds;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.AgitoConfig;
+import com.jpigeon.ridebattleparallelworlds.common.rider.faiz.FaizConfig;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.KuugaConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -100,6 +101,17 @@ public class DecadeConfig {
             .setTriggerType(TriggerType.AUTO)
             .addGrantedItem(Agito.SHINING_CALIBUR.get());
 
+    public static final FormConfig DECADE_AGITO_SHINING = AgitoConfig.AGITO_SHINING_FORM.copyWithoutItemsAndSkills(ride(AgitoConfig.SHINING_ID))
+            .addRequiredItem(DECA_CARD, FORM_RIDE_AGITO_SHINING.get())
+            .setShouldPause(true)
+            .setTriggerType(TriggerType.AUTO)
+            .addGrantedItem(Agito.SHINING_CALIBUR.get());
+
+    public static final FormConfig DECADE_FAIZ_BASE = FaizConfig.FAIZ_BASE_FORM.copyWithoutItemsAndSkills(ride(FaizConfig.FAIZ_BASE_ID))
+            .addRequiredItem(DECA_CARD, KAMEN_RIDE_FAIZ.get())
+            .setShouldPause(true)
+            .setTriggerType(TriggerType.AUTO);
+
     public static final RiderConfig DECADE = RiderBuilder.create(RiderIds.DECADE_ID)
             .driver(DECA_DRIVER.get())
             .slot(
@@ -119,6 +131,9 @@ public class DecadeConfig {
             .form(DECADE_AGITO_FLAME)
             .form(DECADE_AGITO_STORM)
             .form(DECADE_AGITO_BURNING)
+            .form(DECADE_AGITO_SHINING)
+
+            .form(DECADE_FAIZ_BASE)
 
             .baseForm(DECADE_BASE.getFormId())
             .build();

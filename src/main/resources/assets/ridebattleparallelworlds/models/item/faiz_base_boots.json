@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ridebattleparallelworlds:item/faiz/armor/faiz_base_boots"
+  }
+}

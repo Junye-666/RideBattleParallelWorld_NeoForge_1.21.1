@@ -1,4 +1,4 @@
-package com.jpigeon.ridebattleparallelworlds.common.rider.decade;
+package com.jpigeon.ridebattleparallelworlds.common.rider.decade.armor;
 
 import com.jpigeon.ridebattleparallelworlds.RideBattleParallelWorlds;
 import com.jpigeon.rideevolutionlib.compat.geckoLib.armor.BaseRiderArmorItem;

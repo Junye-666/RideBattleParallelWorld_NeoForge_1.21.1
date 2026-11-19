@@ -7,7 +7,7 @@ import com.jpigeon.ridebattleparallelworlds.common.rider.agito.armor.AlterRingIt
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.FlameSaberItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.ShiningCaliburItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.agito.item.StormHalberdItem;
-import com.jpigeon.ridebattleparallelworlds.common.rider.decade.DecaDriverItem;
+import com.jpigeon.ridebattleparallelworlds.common.rider.decade.armor.DecaDriverItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.armor.ArcleItem;
 import com.jpigeon.ridebattleparallelworlds.common.rider.kuuga.item.*;
 import com.jpigeon.ridebattleparallelworlds.common.rider.ryuki.MirrorConfig;
@@ -26,11 +26,8 @@ public class ModItems {
         private Kuuga() {
         }
 
-        /**
-         * 通用形态盔甲三件套工厂
-         */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "kuuga", form, PWArmorMaterial.KUUGA_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "kuuga", form, PWArmorMaterial.CHOGODAI_MATERIAL, type);
         }
 
         // 物品
@@ -57,7 +54,7 @@ public class ModItems {
 
         // 盔甲
         public static final DeferredItem<ArcleItem> ARCLE = ITEMS.register("kuuga_arcle", ()
-                -> new ArcleItem(PWArmorMaterial.KUUGA_MATERIAL, ArcleItem.Type.LEGGINGS, new Item.Properties()));
+                -> new ArcleItem(PWArmorMaterial.CHOGODAI_MATERIAL, ArcleItem.Type.LEGGINGS, new Item.Properties()));
 
         public static final DeferredItem<ParallelRiderArmor> GROWING_HELMET = armor("growing", ArmorItem.Type.HELMET);
         public static final DeferredItem<ParallelRiderArmor> GROWING_CHESTPLATE = armor("growing", ArmorItem.Type.CHESTPLATE);
@@ -125,9 +122,6 @@ public class ModItems {
         private Agito() {
         }
 
-        /**
-         * 通用形态盔甲三件套工厂
-         */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
             return ArmorFactory.create(ITEMS, "agito", form, PWArmorMaterial.AGITO_MATERIAL, type);
         }
@@ -193,11 +187,8 @@ public class ModItems {
         private Ryuki() {
         }
 
-        /**
-         * 通用形态盔甲三件套工厂
-         */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "mirror", form, PWArmorMaterial.MIRROR_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "mirror", form, PWArmorMaterial.SMART_BRAIN_MATERIAL, type);
         }
 
         // TODO: 合成配方
@@ -211,7 +202,7 @@ public class ModItems {
                 -> new MirrorDeckItem(() -> MirrorConfig.RYUKI_BASE_ID, new Item.Properties()));
 
         public static final DeferredItem<VBuckleItem> V_BUCKLE = ITEMS.register("mirror_v-buckle", ()
-                -> new VBuckleItem(PWArmorMaterial.MIRROR_MATERIAL, VBuckleItem.Type.LEGGINGS, new Item.Properties()));
+                -> new VBuckleItem(PWArmorMaterial.SMART_BRAIN_MATERIAL, VBuckleItem.Type.LEGGINGS, new Item.Properties()));
 
         // 盔甲
         public static final DeferredItem<ParallelRiderArmor> RYUKI_BASE_HELMET = armor("ryuki", ArmorItem.Type.HELMET);
@@ -240,44 +231,68 @@ public class ModItems {
         }
     }
 
+    public static class Faiz {
+        private Faiz() {
+        }
+
+        private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
+            return ArmorFactory.create(ITEMS, "faiz", form, PWArmorMaterial.SMART_BRAIN_MATERIAL, type);
+        }
+
+        public static final DeferredItem<Item> SMART_BRAIN_CHIP = ITEMS.register("smart_brain_chip",
+                () -> new Item(new Item.Properties()));
+
+        // 盔甲
+        public static final DeferredItem<ParallelRiderArmor> FAIZ_BASE_HELMET = armor("base", ArmorItem.Type.HELMET);
+        public static final DeferredItem<ParallelRiderArmor> FAIZ_BASE_CHESTPLATE = armor("base", ArmorItem.Type.CHESTPLATE);
+        public static final DeferredItem<ParallelRiderArmor> FAIZ_BASE_BOOTS = armor("base", ArmorItem.Type.BOOTS);
+
+        public static void init() {
+        }
+    }
+
     public static class Decade {
         private Decade() {
         }
 
-        /**
-         * 通用形态盔甲三件套工厂
-         */
         private static DeferredItem<ParallelRiderArmor> armor(String form, ArmorItem.Type type) {
-            return ArmorFactory.create(ITEMS, "decade", form, PWArmorMaterial.DECADE_MATERIAL, type);
+            return ArmorFactory.create(ITEMS, "decade", form, PWArmorMaterial.DAISHOCKER_MATERIAL, type);
+        }
+
+        private static DeferredItem<Item> kamenRide(String rider) {
+            return ITEMS.register("decade_kamen_ride_" + rider + "_card", () -> new Item(new Item.Properties()));
+        }
+
+        private static DeferredItem<Item> formRide(String form) {
+            return ITEMS.register("decade_form_ride_" + form + "_card", () -> new Item(new Item.Properties()));
         }
 
         public static final DeferredItem<Item> WORLDS_FRAGMENT = ITEMS.register("decade_worlds_fragment", ()
                 -> new Item(new Item.Properties()));
+
         // TODO: 合成配方
+        // 卡片
         public static final DeferredItem<Item> DECADE_BLANK_CARD = ITEMS.register("decade_blank_card", ()
                 -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> KAMEN_RIDE_DECADE = ITEMS.register("decade_kamen_ride_decade_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> KAMEN_RIDE_KUUGA = ITEMS.register("decade_kamen_ride_kuuga_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> FORM_RIDE_KUUGA_DRAGON = ITEMS.register("decade_form_ride_kuuga_dragon_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> FORM_RIDE_KUUGA_PEGASUS = ITEMS.register("decade_form_ride_kuuga_pegasus_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> FORM_RIDE_KUUGA_TITAN = ITEMS.register("decade_form_ride_kuuga_titan_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> KAMEN_RIDE_AGITO = ITEMS.register("decade_kamen_ride_agito_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> FORM_RIDE_AGITO_FLAME = ITEMS.register("decade_form_ride_agito_flame_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> FORM_RIDE_AGITO_STORM = ITEMS.register("decade_form_ride_agito_storm_card", ()
-                -> new Item(new Item.Properties()));
-        public static final DeferredItem<Item> FORM_RIDE_AGITO_BURNING = ITEMS.register("decade_form_ride_agito_burning_card", ()
-                -> new Item(new Item.Properties()));
+        public static final DeferredItem<Item> KAMEN_RIDE_DECADE = kamenRide("decade");
+        // 空我
+        public static final DeferredItem<Item> KAMEN_RIDE_KUUGA = kamenRide("kuuga");
+        public static final DeferredItem<Item> FORM_RIDE_KUUGA_DRAGON = formRide("kuuga_dragon");
+        public static final DeferredItem<Item> FORM_RIDE_KUUGA_PEGASUS = formRide("kuuga_pegasus");
+        public static final DeferredItem<Item> FORM_RIDE_KUUGA_TITAN = formRide("kuuga_titan");
+        // 亚极陀
+        public static final DeferredItem<Item> KAMEN_RIDE_AGITO = kamenRide("agito");
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_FLAME = formRide("agito_flame");
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_STORM = formRide("agito_storm");
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_BURNING = formRide("agito_burning");
+        public static final DeferredItem<Item> FORM_RIDE_AGITO_SHINING = formRide("agito_shining");
+        // 龙骑
+        // Faiz
+        public static final DeferredItem<Item> KAMEN_RIDE_FAIZ = kamenRide("faiz");
 
         // 盔甲
         public static final DeferredItem<DecaDriverItem> DECA_DRIVER = ITEMS.register("decade_deca_driver", ()
-                -> new DecaDriverItem(PWArmorMaterial.DECADE_MATERIAL, DecaDriverItem.Type.LEGGINGS, new Item.Properties()));
+                -> new DecaDriverItem(PWArmorMaterial.DAISHOCKER_MATERIAL, DecaDriverItem.Type.LEGGINGS, new Item.Properties()));
 
         public static final DeferredItem<ParallelRiderArmor> DECADE_HELMET = armor("base", ArmorItem.Type.HELMET);
         public static final DeferredItem<ParallelRiderArmor> DECADE_CHESTPLATE = armor("base", ArmorItem.Type.CHESTPLATE);
@@ -319,6 +334,7 @@ public class ModItems {
         Kuuga.init();
         Agito.init();
         Ryuki.init();
+        Faiz.init();
         Decade.init();
         Misc.init();
 

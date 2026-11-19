@@ -21,8 +21,8 @@ public class PWArmorMaterial {
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS =
             DeferredRegister.create(BuiltInRegistries.ARMOR_MATERIAL, RideBattleParallelWorlds.MODID);
 
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> DECADE_MATERIAL =
-            register("decade",
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> DAISHOCKER_MATERIAL =
+            register("daishocker",
                     protectionMap(map -> {
                         map.put(ArmorItem.Type.BOOTS, 3);
                         map.put(ArmorItem.Type.LEGGINGS, 6);
@@ -33,8 +33,8 @@ public class PWArmorMaterial {
                     16, 2f, 0.1f,
                     () -> ModItems.Decade.WORLDS_FRAGMENT.get());
 
-    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> KUUGA_MATERIAL =
-            register("kuuga",
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> CHOGODAI_MATERIAL =
+            register("chogodai",
                     protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 3);
                         map.put(ArmorItem.Type.CHESTPLATE, 8);
@@ -46,7 +46,7 @@ public class PWArmorMaterial {
                     () -> ModItems.Kuuga.MIGHTY_ELEMENT.get());
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> AGITO_MATERIAL =
-            register("agito",
+            register("white_god",
                     protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 4);
                         map.put(ArmorItem.Type.CHESTPLATE, 7);
@@ -58,7 +58,19 @@ public class PWArmorMaterial {
                     () -> ModItems.Agito.GROUND_ELEMENT.get());
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> MIRROR_MATERIAL =
-            register("ryuki",
+            register("mirror",
+                    protectionMap(map -> {
+                        map.put(ArmorItem.Type.HELMET, 3);
+                        map.put(ArmorItem.Type.CHESTPLATE, 8);
+                        map.put(ArmorItem.Type.LEGGINGS, 5);
+                        map.put(ArmorItem.Type.BOOTS, 4);
+                        map.put(ArmorItem.Type.BODY, 7);
+                    }),
+                    8, 1f, 0.2f,
+                    () -> ModItems.Ryuki.MIRROR_FRAGMENT.get());
+
+    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> SMART_BRAIN_MATERIAL =
+            register("smart_brain",
                     protectionMap(map -> {
                         map.put(ArmorItem.Type.HELMET, 4);
                         map.put(ArmorItem.Type.CHESTPLATE, 7);
@@ -67,8 +79,8 @@ public class PWArmorMaterial {
                         map.put(ArmorItem.Type.BODY, 8);
                     }),
                     8, 1f, 0.2f,
-                    () -> ModItems.Ryuki.MIRROR_FRAGMENT.get());
-
+                    () -> ModItems.Faiz.SMART_BRAIN_CHIP.get());
+    
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> RIDER_MATERIAL =
             register("rider",
                     protectionMap(map -> {
